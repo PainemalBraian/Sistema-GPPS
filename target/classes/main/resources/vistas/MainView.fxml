@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<StackPane prefHeight="105.0" prefWidth="658.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.main.MainController">
+    <Label prefHeight="96.0" prefWidth="460.0" text="¡Hola GPPS!" />
+   <AmbientLight lightOn="true">
+      <color>
+         <Color red="0.5538255572319031" green="0.7368420958518982" blue="0.35818713903427124" />
+      </color>
+   </AmbientLight>
+</StackPane>

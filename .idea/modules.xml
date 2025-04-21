@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Sistema-GPPS.iml" filepath="$PROJECT_DIR$/Sistema-GPPS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gpps.iml" filepath="$PROJECT_DIR$/gpps.iml" />
     </modules>
   </component>
 </project>
