@@ -2,12 +2,9 @@
 <module version="4">
   <component name="AdditionalModuleElements">
     <content url="file://$MODULE_DIR$" dumb="true">
-      <sourceFolder url="file://$MODULE_DIR$/Frontend/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Frontend/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Frontend/src/main/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/Backend/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Backend/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Backend/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/Frontend" />
     </content>
   </component>
 </module>

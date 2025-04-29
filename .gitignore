@@ -1,6 +1,6 @@
 ### IntelliJ IDEA ###
 out/
-!Frontend/src/main/java/com/main/**/out/
+!src/main/java/Frontend/com/main/**/out/
 !**/src/test/**/out/
 
 ### Eclipse ###
@@ -12,7 +12,7 @@ out/
 .springBeans
 .sts4-cache
 bin/
-!Frontend/src/main/java/com/main/**/bin/
+!src/main/java/Frontend/com/main/**/bin/
 !**/src/test/**/bin/
 
 ### NetBeans ###
