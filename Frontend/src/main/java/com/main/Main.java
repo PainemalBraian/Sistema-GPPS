@@ -7,20 +7,24 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/vistas/MainView.fxml"));
-        Scene scene = new Scene(root);
-        primaryStage.setTitle("Prueba JavaFX con FXML");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public void start(Stage pantalla) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vistas/Ingreso.fxml"));
+            Parent root = loader.load();
+
+            Scene login = new Scene(root);
+
+            pantalla.setResizable(false);
+            pantalla.setScene(login);
+            pantalla.show();
+        } catch (IOException e) {
+            System.err.println("Error al cargar la ventana: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 }
