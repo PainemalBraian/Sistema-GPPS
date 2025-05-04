@@ -10,41 +10,55 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.layout.StackPane?>
-<StackPane prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.main.RegistroController">
-    <AnchorPane fx:id="PaneBase" prefHeight="518.0" prefWidth="700.0" styleClass="root" stylesheets="@../StyleSheets/registro.css">
+<StackPane prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.main.RegistroController">
 
+    <AnchorPane fx:id="PaneBase" prefHeight="550.0" prefWidth="700.0">
+        <children>
+            <VBox alignment="CENTER" layoutX="-4.0" prefHeight="550.0" prefWidth="454.0" spacing="10.0" styleClass="root" stylesheets="@../StyleSheets/registro.css">
+                <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Registro de Usuario - GPPS" />
 
-    <VBox alignment="CENTER" layoutX="2.0" prefHeight="536.0" prefWidth="520.0" spacing="10.0">
-        <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Registro de Usuario - GPPS" />
+                <TextField fx:id="nombreField" prefHeight="31.0" prefWidth="150.0" promptText="Nombre completo" />
+                <TextField fx:id="correoField" promptText="Correo institucional" />
+                <PasswordField fx:id="contrasenaField" promptText="Contraseña" />
+                <PasswordField fx:id="confirmarContrasenaField" promptText="Confirmar contraseña" />
 
-        <TextField fx:id="nombreField" promptText="Nombre completo" />
-        <TextField fx:id="correoField" promptText="Correo institucional" />
-        <TextField fx:id="matriculaField" promptText="Matrícula" />
-        <PasswordField fx:id="contrasenaField" promptText="Contraseña" />
-        <PasswordField fx:id="confirmarContrasenaField" promptText="Confirmar contraseña" />
+                <VBox fx:id="camposEstudiante" spacing="5.0" visible="false">
+                    <TextField fx:id="matriculaField" promptText="Matrícula" />
+                    <TextField fx:id="carreraField" promptText="Carrera" />
+                </VBox>
 
-        <ComboBox fx:id="rolComboBox" promptText="Seleccionar rol">
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="Estudiante" />
-                    <String fx:value="Tutor Académico" />
-                    <String fx:value="Tutor Empresa" />
-                    <String fx:value="Dirección de Carrera" />
-                    <String fx:value="Entidad Colaboradora" />
-                </FXCollections>
-            </items>
-        </ComboBox>
+                <VBox fx:id="camposDocente" spacing="5.0" visible="false">
+                    <TextField fx:id="legajoField" promptText="Legajo" />
+                    <TextField fx:id="departamentoField" promptText="Departamento" />
+                </VBox>
 
-        <Button maxWidth="150" onAction="#registrarse" text="Registrarse" />
-    </VBox>
-   <ImageView fitHeight="562.0" fitWidth="373.0" layoutX="522.0" layoutY="-26.0">
-      <image>
-         <Image url="@../imagenes/fondo_Registro.jpg" />
-      </image>
-   </ImageView>
+                <VBox fx:id="camposEntidad" spacing="5.0" visible="false">
+                    <TextField fx:id="nombreEntidadField" promptText="Nombre de la Entidad" />
+                    <TextField fx:id="cuitField" promptText="CUIT/CUIL" />
+                    <TextField fx:id="nombreContactoField" promptText="Nombre del Contacto" />
+                </VBox>
 
-</AnchorPane>
+                <ComboBox fx:id="rolComboBox" promptText="Seleccionar rol" styleClass="root" stylesheets="@../StyleSheets/registro.css">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Estudiante" />
+                            <String fx:value="Docente" />
+                            <String fx:value="Representante de Entidad Colaboradora" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+
+                <Button maxWidth="150.0" onAction="#registrarse" text="Registrarse" />
+            </VBox>
+
+            <ImageView fitHeight="550.0" fitWidth="250.0" layoutX="450.0">
+                <image>
+                    <Image url="@../imagenes/fondo_Registro.jpg" />
+                </image>
+            </ImageView>
+        </children>
+    </AnchorPane>
 </StackPane>

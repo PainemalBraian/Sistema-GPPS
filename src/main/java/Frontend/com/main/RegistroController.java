@@ -1,89 +1,78 @@
 package Frontend.com.main;
 
-import Backend.API.API;
-import Backend.API.PersistanceAPI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import java.util.ResourceBundle;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 public class RegistroController {
 
-    API api = new PersistanceAPI() {};
-
-    @FXML public TextField nombreField;
-    @FXML public TextField correoField;
-    @FXML public TextField matriculaField;
-    @FXML public PasswordField contrasenaField;
-    @FXML public PasswordField confirmarContrasenaField;
-    @FXML public ComboBox<String> rolComboBox;
-    @FXML public Button registrarseButton;
-
-    @FXML public Label labelTitulo;
+    @FXML
+    private TextField nombreField;
+    @FXML
+    private TextField correoField;
+    @FXML
+    private PasswordField contrasenaField;
+    @FXML
+    private PasswordField confirmarContrasenaField;
+    @FXML
+    private ComboBox<String> rolComboBox;
 
     @FXML
+    private VBox camposEstudiante;
+    @FXML
+    private TextField matriculaField;
+    @FXML
+    private TextField carreraField;
+
+    @FXML
+    private VBox camposDocente;
+    @FXML
+    private TextField legajoField;
+    @FXML
+    private TextField departamentoField;
+
+    @FXML
+    private VBox camposEntidad;
+    @FXML
+    private TextField nombreEntidadField;
+    @FXML
+    private TextField cuitField;
+    @FXML
+    private TextField nombreContactoField;
+
     public void initialize() {
-        actualizarIdioma();
+        rolComboBox.setOnAction((ActionEvent event) -> {
+            String selectedRol = rolComboBox.getValue();
+            camposEstudiante.setVisible(selectedRol != null && selectedRol.equals("Estudiante"));
+            camposDocente.setVisible(selectedRol != null && selectedRol.equals("Docente"));
+            camposEntidad.setVisible(selectedRol != null && selectedRol.equals("Representante de Entidad Colaboradora"));
+        });
     }
 
     @FXML
-    public void registrarse(ActionEvent event) {
+    private void registrarse() {
         String nombre = nombreField.getText();
         String correo = correoField.getText();
-        String matricula = matriculaField.getText();
         String contrasena = contrasenaField.getText();
-        String confirmar = confirmarContrasenaField.getText();
+        String confirmarContrasena = confirmarContrasenaField.getText();
         String rol = rolComboBox.getValue();
-/*
-        if (nombre.isEmpty() || correo.isEmpty() || matricula.isEmpty() ||
-                contrasena.isEmpty() || confirmar.isEmpty() || rol == null) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error", "Todos los campos son obligatorios.");
-            return;
-        }
 
-        if (!contrasena.equals(confirmar)) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error", "Las contraseñas no coinciden.");
-            return;
-        } */
+        String matricula = camposEstudiante.isVisible() ? matriculaField.getText() : "";
+        String carrera = camposEstudiante.isVisible() ? carreraField.getText() : "";
+        String legajo = camposDocente.isVisible() ? legajoField.getText() : "";
+        String departamento = camposDocente.isVisible() ? departamentoField.getText() : "";
+        String nombreEntidad = camposEntidad.isVisible() ? nombreEntidadField.getText() : "";
+        String cuit = camposEntidad.isVisible() ? cuitField.getText() : "";
+        String nombreContacto = camposEntidad.isVisible() ? nombreContactoField.getText() : "";
 
-        // Aquí podrías llamar a tu backend para registrar al usuario
-        //boolean exito = api.registrarUsuario(nombre, correo, matricula, contrasena, rol); // Suponiendo que tengas esto
-/*
-        if (exito) {
-            mostrarAlerta(Alert.AlertType.INFORMATION, "Registro exitoso", "Usuario registrado correctamente.");
-            limpiarCampos();
-        } else {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo registrar el usuario.");
-        } */
-    }
+        System.out.println("Registrando a: " + nombre + ", Correo: " + correo + ", Rol: " + rol);
+        if (!matricula.isEmpty()) System.out.println("Matrícula: " + matricula + ", Carrera: " + carrera);
+        if (!legajo.isEmpty()) System.out.println("Legajo: " + legajo + ", Departamento: " + departamento);
+        if (!nombreEntidad.isEmpty()) System.out.println("Entidad: " + nombreEntidad + ", CUIT: " + cuit + ", Contacto: " + nombreContacto);
 
-    private void actualizarIdioma() {
-        ResourceBundle bundle = api.obtenerIdioma();
-
-        if (labelTitulo != null) labelTitulo.setText(bundle.getString("label.registroTitulo"));
-        if (nombreField != null) nombreField.setPromptText(bundle.getString("field.nombre"));
-        if (correoField != null) correoField.setPromptText(bundle.getString("field.correo"));
-        if (matriculaField != null) matriculaField.setPromptText(bundle.getString("field.matricula"));
-        if (contrasenaField != null) contrasenaField.setPromptText(bundle.getString("field.contrasena"));
-        if (confirmarContrasenaField != null) confirmarContrasenaField.setPromptText(bundle.getString("field.confirmar"));
-        if (rolComboBox != null) rolComboBox.setPromptText(bundle.getString("field.rol"));
-        if (registrarseButton != null) registrarseButton.setText(bundle.getString("button.registrarse"));
-    }
-/*
-    private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
-        Alert alert = new Alert(tipo);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
-    } */
-
-    private void limpiarCampos() {
-        nombreField.clear();
-        correoField.clear();
-        matriculaField.clear();
-        contrasenaField.clear();
-        confirmarContrasenaField.clear();
-        rolComboBox.setValue(null);
+        //ógica para guardar los datos del usuario
     }
 }

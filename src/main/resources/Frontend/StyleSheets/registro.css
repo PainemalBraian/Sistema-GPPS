@@ -1,1 +1,125 @@
--fx-background-color: linear-gradient(to bottom right, #4CAF50, #81C784);
+/* Estilo general de la aplicación */
+.root {
+    -fx-font-family: "Segoe UI", "Roboto", sans-serif;
+    -fx-base: #222;
+    -fx-control-inner-background: #333;
+    -fx-control-inner-background-alt: #444;
+    -fx-accent: #00bfff;
+    -fx-focus-color: -fx-accent;
+    -fx-faint-focus-color: transparent;
+    -fx-selection-fill: -fx-accent;
+    -fx-selection-text-fill: #fff;
+    -fx-text-fill: #eee;
+    -fx-background-color: linear-gradient(to bottom, #181818, #282828);
+}
+
+/* Estilo para Labels */
+.label {
+    -fx-text-fill: #ddd;
+    -fx-font-size: 14px;
+}
+
+/* Estilo para Labels más importantes o títulos */
+.label-header {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-accent;
+}
+
+/* Estilo para TextFields y PasswordFields */
+.text-field, .password-field {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-text-fill: #eee;
+    -fx-prompt-text-fill: #888;
+    -fx-border-color: #555;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: -fx-accent;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,191,255,0.4), 8, 0, 0, 0);
+}
+
+/* Estilo para ComboBox */
+.combo-box {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-text-fill: #eee;
+    -fx-prompt-text-fill: #888;
+    -fx-border-color: #555;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+}
+
+.combo-box:focused {
+    -fx-border-color: -fx-accent;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,191,255,0.4), 8, 0, 0, 0);
+}
+
+.combo-box .list-cell {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-text-fill: #eee;
+}
+
+.combo-box .list-cell:filled:hover {
+    -fx-background-color: -fx-control-inner-background-alt;
+}
+
+.combo-box .list-cell:filled:selected {
+    -fx-background-color: -fx-accent;
+    -fx-text-fill: #222;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #eee;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-border-color: transparent;
+}
+
+/* Estilo para Buttons */
+.button {
+    -fx-background-color: -fx-accent;
+    -fx-text-fill: #222;
+    -fx-font-weight: bold;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-padding: 8px 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,191,255,0.6), 5, 0, 0, 0);
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #00cfff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,207,255,0.8), 7, 0, 0, 0);
+}
+
+.button:pressed {
+    -fx-background-color: #0099cc;
+    -fx-effect: null;
+}
+
+/* Estilo para VBox (Contenedor vertical) */
+.vbox {
+    -fx-spacing: 10px;
+}
+
+.vbox-campos-rol {
+    -fx-padding: 10px;
+    -fx-border-color: #555;
+    -fx-border-radius: 3px;
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para AnchorPane (Panel de anclaje) */
+.anchor-pane {
+    -fx-background-color: linear-gradient(to bottom, #181818, #282828);
+}
+
+/* Estilo para StackPane (Panel de pila) */
+.stack-pane {
+    -fx-background-color: linear-gradient(to bottom, #181818, #282828);
+}
+
