@@ -4,11 +4,16 @@ import Backend.API.API;
 import Backend.API.PersistanceAPI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ResourceBundle;
 
 public class IngresoController {
@@ -58,6 +63,24 @@ public class IngresoController {
         PasswordFieldClave.setPromptText(bundle.getString("field.clave"));
         TextFieldUsuario.setPromptText(bundle.getString("field.usuario"));
         newUser.setText(bundle.getString("field.newUser"));
+    }
+
+    @FXML
+    public void abrirRegistro(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/registro.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Registro - GPPS");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Opcional: cerrar la ventana actual
+            ((Stage)((Button)event.getSource()).getScene().getWindow()).close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
