@@ -24,8 +24,6 @@ GPPS es una aplicación desarrollada en Java utilizando JavaFX y Maven, diseñad
 
 - **Gestor de dependencias:** Maven
 
-- **Base de datos:** (por definir: H2, PostgreSQL, MySQL, etc.)
-
-- **ORM:** Hibernate / JPA *(si se aplica)*
+- **Base de datos:** SQL
 
 - **Estilos UI:** CSS para JavaFX
