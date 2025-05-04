@@ -24,6 +24,7 @@ public class IngresoController {
     @FXML public Button ButtonIngresar;
     @FXML public ImageView IMGIngreso;
     @FXML public MenuButton MenuIdiomas;
+    @FXML public Label newUser;
 
     @FXML
     public void initialize() {
@@ -56,6 +57,7 @@ public class IngresoController {
         ButtonRegistro.setText(bundle.getString("button.registro"));
         PasswordFieldClave.setPromptText(bundle.getString("field.clave"));
         TextFieldUsuario.setPromptText(bundle.getString("field.usuario"));
+        newUser.setText(bundle.getString("field.newUser"));
     }
 
 

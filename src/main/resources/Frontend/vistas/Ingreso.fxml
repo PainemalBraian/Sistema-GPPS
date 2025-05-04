@@ -14,49 +14,62 @@
 <?import javafx.scene.text.Font?>
 
 <StackPane prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.main.IngresoController">
-   <AnchorPane fx:id="PaneBase" prefHeight="200.0" prefWidth="200.0" styleClass="root" stylesheets="@../StyleSheets/Ingreso.css">
+   <AnchorPane fx:id="PaneBase" prefHeight="518.0" prefWidth="700.0" styleClass="root" stylesheets="@../StyleSheets/Ingreso.css">
       <children>
-         <Pane fx:id="PaneIMG" layoutX="418.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="400.0" prefWidth="282.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <Pane fx:id="PaneIMG" layoutX="455.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="400.0" prefWidth="282.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="-37.0">
             <children>
                <ImageView fx:id="IMGIngreso" fitHeight="400.0" fitWidth="282.0" nodeOrientation="INHERIT" pickOnBounds="true">
                   <image>
                      <Image url="@../imagenes/Ingreso.jpg" />
                   </image>
                </ImageView>
+               <Label fx:id="LabelIngreso1" graphicTextGap="0.0" layoutX="43.0" layoutY="289.0" lineSpacing="5.0" prefHeight="97.0" prefWidth="231.0" text="AlgoLab - UNRN" textFill="RED">
+                  <font>
+                     <Font name="Arial Black" size="26.0" />
+                  </font>
+               </Label>
+               <MenuButton fx:id="MenuIdiomas" contentDisplay="RIGHT" layoutX="36.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="102.0" styleClass="root" text="Idioma" textAlignment="JUSTIFY">
+                 <items>
+                   <MenuItem fx:id="MenuItemES" mnemonicParsing="false" onAction="#idiomaES" text="ES" />
+                   <MenuItem fx:id="MenuItemEN" mnemonicParsing="false" onAction="#idiomaEN" text="EN" />
+                     <MenuItem fx:id="MenuItemPT" mnemonicParsing="false" onAction="#idiomaPT" text="PT" visible="false" />
+                     <MenuItem fx:id="MenuItemIT" mnemonicParsing="false" onAction="#idiomaIT" text="IT" visible="false" />
+                 </items>
+                  <font>
+                     <Font name="Javanese Text" size="12.0" />
+                  </font>
+               </MenuButton>
             </children>
          </Pane>
-          <Label fx:id="LabelIngreso" graphicTextGap="0.0" layoutX="14.0" layoutY="45.0" lineSpacing="5.0" prefHeight="42.0" prefWidth="260.0" text="INGRESO GPPS">
+          <Label fx:id="LabelIngreso" graphicTextGap="0.0" layoutX="14.0" layoutY="25.0" lineSpacing="5.0" prefHeight="42.0" prefWidth="434.0" text="Gestion de Practicas Profesionales Supervisadas">
             <font>
-               <Font name="Goudy Old Style" size="20.0" />
+               <Font name="Javanese Text" size="20.0" />
             </font>
          </Label>
-         <PasswordField fx:id="PasswordFieldClave" layoutX="54.0" layoutY="219.0" prefHeight="25.0" prefWidth="231.0" promptText="Ingrese su clave" />
+         <PasswordField fx:id="PasswordFieldClave" layoutX="54.0" layoutY="216.0" prefHeight="25.0" prefWidth="231.0" promptText="Ingrese su clave" />
          <TextField fx:id="TextFieldUsuario" layoutX="54.0" layoutY="129.0" prefHeight="25.0" prefWidth="231.0" promptText="Ingrese su usuario" />
          <Label fx:id="LabelUsuario" layoutX="54.0" layoutY="87.0" prefHeight="42.0" prefWidth="260.0" text="Nombre de Usuario">
             <font>
-               <Font name="Goudy Old Style" size="20.0" />
+               <Font name="Javanese Text" size="20.0" />
             </font></Label>
-         <Label fx:id="LabelContrasena" layoutX="54.0" layoutY="167.0" prefHeight="42.0" prefWidth="260.0" text="Contraseña">
+         <Label fx:id="LabelContrasena" layoutX="54.0" layoutY="172.0" prefHeight="42.0" prefWidth="260.0" text="Contraseña">
             <font>
-               <Font name="Goudy Old Style" size="20.0" />
+               <Font name="Javanese Text" size="20.0" />
             </font></Label>
-         <Button fx:id="ButtonIngresar" layoutX="72.0" layoutY="281.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="114.0" text="Ingreso">
+         <Button fx:id="ButtonIngresar" layoutX="79.0" layoutY="270.0" minWidth="-Infinity" mnemonicParsing="false" prefHeight="33.0" prefWidth="182.0" text="Ingresar" textFill="#061014" textOverrun="CENTER_ELLIPSIS" AnchorPane.rightAnchor="439.0">
             <font>
-               <Font name="Source Sans Pro Semibold" size="12.0" />
+               <Font name="Arial Black" size="12.0" />
             </font></Button>
-         <Button fx:id="ButtonRegistro" layoutX="72.0" layoutY="327.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="114.0" text="Registro">
+         <Button fx:id="ButtonRegistro" layoutX="213.0" layoutY="326.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="155.0" text="Crear cuenta">
             <font>
-               <Font name="Source Sans Pro Semibold" size="12.0" />
+               <Font name="Arial Black" size="12.0" />
             </font>
          </Button>
-         <MenuButton fx:id="MenuIdiomas" mnemonicParsing="false" text="Idioma">
-           <items>
-             <MenuItem fx:id="MenuItemES" mnemonicParsing="false" onAction="#idiomaES" text="ES" />
-             <MenuItem fx:id="MenuItemEN" mnemonicParsing="false" onAction="#idiomaEN" text="EN" />
-               <MenuItem fx:id="MenuItemPT" mnemonicParsing="false" onAction="#idiomaPT" text="PT" visible="false" />
-               <MenuItem fx:id="MenuItemIT" mnemonicParsing="false" onAction="#idiomaIT" text="IT" visible="false" />
-           </items>
-         </MenuButton>
+         <Label fx:id="newUser" graphicTextGap="0.0" layoutX="40.0" layoutY="314.0" lineSpacing="5.0" prefHeight="49.0" prefWidth="173.0" text="¿Usuario Nuevo? ">
+            <font>
+               <Font name="Javanese Text" size="20.0" />
+            </font>
+         </Label>
       </children>
    </AnchorPane>
 </StackPane>
