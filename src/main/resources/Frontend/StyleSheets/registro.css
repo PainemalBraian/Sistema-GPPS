@@ -121,5 +121,7 @@
 /* Estilo para StackPane (Panel de pila) */
 .stack-pane {
     -fx-background-color: linear-gradient(to bottom, #181818, #282828);
+
+
 }
 

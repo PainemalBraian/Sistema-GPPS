@@ -2,10 +2,17 @@ package Frontend.com.main;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class RegistroController {
 
@@ -52,6 +59,23 @@ public class RegistroController {
                     "Tutor externo".equals(selectedRol);
             camposEntidad_o_Tutor.setVisible(esEntidadOTutor);
         });
+    }
+    @FXML
+    public void volverLogin(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Ingreso.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle(" Login - GPPS");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Opcional: cerrar la ventana actual
+            ((Stage)((Button)event.getSource()).getScene().getWindow()).close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
