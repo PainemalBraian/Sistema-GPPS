@@ -35,7 +35,7 @@ public class RegistroController {
     private TextField departamentoField;
 
     @FXML
-    private VBox camposEntidad;
+    private VBox camposEntidad_o_Tutor;
     @FXML
     private TextField nombreEntidadField;
     @FXML
@@ -48,7 +48,9 @@ public class RegistroController {
             String selectedRol = rolComboBox.getValue();
             camposEstudiante.setVisible(selectedRol != null && selectedRol.equals("Estudiante"));
             camposDocente.setVisible(selectedRol != null && selectedRol.equals("Docente"));
-            camposEntidad.setVisible(selectedRol != null && selectedRol.equals("Representante de Entidad Colaboradora"));
+            boolean esEntidadOTutor = "Representante de Entidad Colaboradora".equals(selectedRol) ||
+                    "Tutor externo".equals(selectedRol);
+            camposEntidad_o_Tutor.setVisible(esEntidadOTutor);
         });
     }
 
@@ -64,9 +66,9 @@ public class RegistroController {
         String carrera = camposEstudiante.isVisible() ? carreraField.getText() : "";
         String legajo = camposDocente.isVisible() ? legajoField.getText() : "";
         String departamento = camposDocente.isVisible() ? departamentoField.getText() : "";
-        String nombreEntidad = camposEntidad.isVisible() ? nombreEntidadField.getText() : "";
-        String cuit = camposEntidad.isVisible() ? cuitField.getText() : "";
-        String nombreContacto = camposEntidad.isVisible() ? nombreContactoField.getText() : "";
+        String nombreEntidad = camposEntidad_o_Tutor.isVisible() ? nombreEntidadField.getText() : "";
+        String cuit = camposEntidad_o_Tutor.isVisible() ? cuitField.getText() : "";
+        String nombreContacto = camposEntidad_o_Tutor.isVisible() ? nombreContactoField.getText() : "";
 
         System.out.println("Registrando a: " + nombre + ", Correo: " + correo + ", Rol: " + rol);
         if (!matricula.isEmpty()) System.out.println("Matrícula: " + matricula + ", Carrera: " + carrera);

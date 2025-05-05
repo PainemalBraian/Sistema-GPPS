@@ -20,25 +20,29 @@
             <VBox alignment="CENTER" layoutX="-4.0" prefHeight="550.0" prefWidth="454.0" spacing="10.0" styleClass="root" stylesheets="@../StyleSheets/registro.css">
                 <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Registro de Usuario - GPPS" />
 
+                <TextField fx:id="dni" prefHeight="31.0" prefWidth="150.0" promptText="Documento Nacional de Identidad (DNI) o Cédula de Identidad" />
                 <TextField fx:id="nombreField" prefHeight="31.0" prefWidth="150.0" promptText="Nombre completo" />
                 <TextField fx:id="correoField" promptText="Correo institucional" />
                 <PasswordField fx:id="contrasenaField" promptText="Contraseña" />
                 <PasswordField fx:id="confirmarContrasenaField" promptText="Confirmar contraseña" />
 
                 <VBox fx:id="camposEstudiante" spacing="5.0" visible="false">
-                    <TextField fx:id="matriculaField" promptText="Matrícula" />
+                    <TextField fx:id="matriculaField" promptText="Matrícula o legajo" />
                     <TextField fx:id="carreraField" promptText="Carrera" />
                 </VBox>
 
                 <VBox fx:id="camposDocente" spacing="5.0" visible="false">
                     <TextField fx:id="legajoField" promptText="Legajo" />
-                    <TextField fx:id="departamentoField" promptText="Departamento" />
                 </VBox>
 
-                <VBox fx:id="camposEntidad" spacing="5.0" visible="false">
+                <VBox fx:id="camposEntidad_o_Tutor" spacing="5.0" visible="false">
                     <TextField fx:id="nombreEntidadField" promptText="Nombre de la Entidad" />
                     <TextField fx:id="cuitField" promptText="CUIT/CUIL" />
                     <TextField fx:id="nombreContactoField" promptText="Nombre del Contacto" />
+                </VBox>
+
+                <VBox fx:id="camposDirectivo" spacing="5.0" visible="false">
+                    <TextField fx:id="cargoDirectivoField" promptText="Cargo (Ej. Director de la Carrera, Rector, Director de la universidad)" />
                 </VBox>
 
                 <ComboBox fx:id="rolComboBox" promptText="Seleccionar rol" styleClass="root" stylesheets="@../StyleSheets/registro.css">
@@ -47,9 +51,12 @@
                             <String fx:value="Estudiante" />
                             <String fx:value="Docente" />
                             <String fx:value="Representante de Entidad Colaboradora" />
+                            <String fx:value="Tutor externo" />
+                            <String fx:value="Directivo Universitario" />
                         </FXCollections>
                     </items>
                 </ComboBox>
+
 
                 <Button maxWidth="150.0" onAction="#registrarse" text="Registrarse" />
             </VBox>
