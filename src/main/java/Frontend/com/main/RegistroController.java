@@ -1,6 +1,7 @@
 package Frontend.com.main;
 
 import Backend.API.PersistanceAPI;
+import Backend.DTO.RolDTO;
 import Backend.Exceptions.RegisterExceptions;
 import Backend.Exceptions.UserExceptions;
 import javafx.event.ActionEvent;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class RegistroController {
 
@@ -29,7 +31,8 @@ public class RegistroController {
     @FXML
     private PasswordField confirmarContrasenaField;
     @FXML
-    private ComboBox<String> rolComboBox;
+    private ComboBox<RolDTO> rolComboBox;
+
 
     @FXML
     private VBox camposEstudiante;
@@ -53,15 +56,22 @@ public class RegistroController {
     private TextField direccionEntidadField;
 
     public void initialize() {
+        inicializarRoles(); // ✔ primero cargar los roles
+
         rolComboBox.setOnAction((ActionEvent event) -> {
-            String selectedRol = rolComboBox.getValue();
-            camposEstudiante.setVisible(selectedRol != null && selectedRol.equals("Estudiante"));
-            camposDocente.setVisible(selectedRol != null && selectedRol.equals("Docente"));
-            boolean esEntidadOTutor = "Representante de Entidad Colaboradora".equals(selectedRol) ||
-                    "Tutor externo".equals(selectedRol);
+            RolDTO selectedRol = rolComboBox.getValue(); // ✔ ya es un RolDTO
+            String nombreRol = selectedRol != null ? selectedRol.getNombre() : "";
+
+            camposEstudiante.setVisible(nombreRol.equals("Estudiante"));
+            camposDocente.setVisible(nombreRol.equals("Docente"));
+
+            boolean esEntidadOTutor = nombreRol.equals("Representante de Entidad Colaboradora") ||
+                    nombreRol.equals("Tutor externo");
             camposEntidad.setVisible(esEntidadOTutor);
         });
     }
+
+
 
     @FXML
     public void volverLogin(ActionEvent event) {
@@ -80,16 +90,33 @@ public class RegistroController {
             e.printStackTrace();
         }
     }
+
+
+    private void inicializarRoles() {
+        rolComboBox.getItems().clear(); // Evita duplicados si se llama varias veces
+
+        rolComboBox.getItems().addAll(
+                new RolDTO(1, "Estudiante", true),
+                new RolDTO(2, "Docente", true),
+                new RolDTO(3, "Representante de Entidad Colaboradora", true),
+                new RolDTO(4, "Tutor externo", true)
+        );
+    }
+
+
+
     @FXML
     private void registrarse() {
+        RolDTO rol = rolComboBox.getValue();
+
         try {
             PersistanceAPI api = new PersistanceAPI();
             api.registrarUsuario(
-                    nombreField.getText(),                    // username
-                    contrasenaField.getText(),                // password
-                    correoField.getText(),                    // email
-                    nombreField.getText(),                    // nombre
-                    Integer.parseInt(rolComboBox.getValue()), // rolId
+                    nombreField.getText(),
+                    contrasenaField.getText(),
+                    correoField.getText(),
+                    nombreField.getText(),
+                    rol.getId(), // ✅ aquí usás el ID directamente
                     matriculaField.getText(),
                     carreraField.getText(),
                     legajoField.getText(),
@@ -98,12 +125,11 @@ public class RegistroController {
                     direccionEntidadField.getText()
             );
             System.out.println("Usuario registrado exitosamente");
-        } catch (RegisterExceptions | UserExceptions e) {
-            System.err.println(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
 
 }
