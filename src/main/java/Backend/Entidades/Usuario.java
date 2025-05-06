@@ -10,6 +10,14 @@ public class Usuario {
     private Rol rol;
     private boolean activo;
     private int id;
+    private int dni;
+    private String matricula;
+    private String Legajo;
+    private String nombreEntidad;
+    private String cuit;
+    private String direccionEntidad;
+    private String carrera;
+
 
     public Usuario() {
     }
@@ -106,6 +114,55 @@ public class Usuario {
         this.rol = rol;
     }
 
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public String getLegajo() {
+        return Legajo;
+    }
+
+    public void setLegajo(String legajo) {
+        Legajo = legajo;
+    }
+
+    public String getNombreEntidad() {
+        return nombreEntidad;
+    }
+
+    public void setNombreEntidad(String nombreEntidad) {
+        this.nombreEntidad = nombreEntidad;
+    }
+
+    public String getCuit() {
+        return cuit;
+    }
+
+    public void setCuit(String cuit) {
+        this.cuit = cuit;
+    }
+
+    public String getDireccionEntidad() {
+        return direccionEntidad;
+    }
+
+    public void setDireccionEntidad(String direccionEntidad) {
+        this.direccionEntidad = direccionEntidad;
+    }
+
+    public void setCarrera(String carrera) {
+        this.carrera = carrera;
+    }
+
+    public String getCarrera() {
+        return carrera;
+    }
+
+
     public boolean isActivo() {
         return activo;
     }
@@ -157,6 +214,13 @@ public class Usuario {
         return dato == null || dato.trim().isEmpty();
     }
 
+    public int getDni() {
+        return dni;
+    }
+
+    public void setDni(int dni) {
+        this.dni = dni;
+    }
 }
 
 

@@ -5,6 +5,7 @@ import Backend.DTO.*;
 import Backend.Entidades.*;
 import Backend.Exceptions.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +29,7 @@ public class PersistanceAPI implements API {
     public void cambiarIdioma(String idioma) {
         labels = ResourceBundle.getBundle("Backend.labels", new Locale(idioma));
     }
+
 
     @Override
     public void activarUsuario(String username) throws UserExceptions, UpdateException {
@@ -145,6 +147,7 @@ public class PersistanceAPI implements API {
         }
     }
 
+
     @Override
     public List<RolDTO> obtenerRolesActivos() throws ReadException {
         List<RolDTO> rolDTOs = new ArrayList<>();
@@ -204,23 +207,49 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-    public void registrarUsuario(String username, String password, String email, String nombre, int rol)
-            throws RegisterExceptions, UserExceptions, Exception{
+    public void registrarUsuario(
+            String username,
+            String password,
+            String email,
+            String nombre,
+            int rolId,
+            String matricula,
+            String carrera,
+            String legajo,
+            String nombreEntidad,
+            String cuit,
+            String direccionEntidad
+    ) throws RegisterExceptions, UserExceptions, Exception {
 
+        // Validar que el username y email no estén en uso
         UsuarioDAODB.validarUsernameYEmailUnicos(username, email);
 
-        if(password.length() < 8){
+        // Validación de contraseña
+        if (password == null || password.length() < 8) {
             throw new RegisterExceptions("Error: La contraseña debe tener al menos 8 caracteres");
         }
-        RolDTO rolDTO = obtenerRolPorId(rol);
 
-        Rol role = new Rol(rolDTO.getId(), rolDTO.getNombre());
+        // Obtener Rol desde ID
+        RolDTO rolDTO = obtenerRolPorId(rolId);
+        Rol rol = new Rol(rolDTO.getId(), rolDTO.getNombre());
+        rol.setActivo(rolDTO.isActivo());
 
-        role.setActivo(rolDTO.isActivo());
-        Usuario usuario = new Usuario(username, password, nombre, email, role);
+        // Crear el objeto Usuario
+        Usuario usuario = new Usuario(username, password, nombre, email, rol);
 
+        // Asignar atributos adicionales si aplican
+        usuario.setMatricula(matricula);
+        usuario.setCarrera(carrera);
+        usuario.setLegajo(legajo);
+        usuario.setNombreEntidad(nombreEntidad);
+        usuario.setCuit(cuit);
+        usuario.setDireccionEntidad(direccionEntidad);
+        usuario.setActivo(true);
+
+        // Guardar en la base de datos
         UsuarioDAODB.create(usuario);
     }
+
 
     @Override
     public RolDTO obtenerRolPorId(int id) throws ReadException{
