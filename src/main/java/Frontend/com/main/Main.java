@@ -13,7 +13,7 @@ public class Main extends Application {
     @Override
     public void start(Stage pantalla) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Ingreso.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/ingreso.fxml"));
             Parent root = loader.load();
 
             Scene login = new Scene(root);
