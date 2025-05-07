@@ -35,14 +35,10 @@
                     <TextField fx:id="legajoField" promptText="Legajo" />
                 </VBox>
 
-                <VBox fx:id="camposEntidad_o_Tutor" spacing="5.0" visible="false">
+                <VBox fx:id="camposEntidad" spacing="5.0" visible="false">
                     <TextField fx:id="nombreEntidadField" promptText="Nombre de la Entidad" />
                     <TextField fx:id="cuitField" promptText="CUIT/CUIL" />
-                    <TextField fx:id="nombreContactoField" promptText="Nombre del Contacto" />
-                </VBox>
-
-                <VBox fx:id="camposDirectivo" spacing="5.0" visible="false">
-                    <TextField fx:id="cargoDirectivoField" promptText="Cargo (Ej. Director de la Carrera, Rector, Director de la universidad)" />
+                    <TextField fx:id="direccionEntidadField" promptText="Dirección de la Entidad" />
                 </VBox>
 
                 <ComboBox fx:id="rolComboBox" promptText="Seleccionar rol" styleClass="root" stylesheets="@../StyleSheets/registro.css">
@@ -52,7 +48,6 @@
                             <String fx:value="Docente" />
                             <String fx:value="Representante de Entidad Colaboradora" />
                             <String fx:value="Tutor externo" />
-                            <String fx:value="Directivo Universitario" />
                         </FXCollections>
                     </items>
                 </ComboBox>
