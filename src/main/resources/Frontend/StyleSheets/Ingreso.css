@@ -9,7 +9,7 @@
     -fx-selection-fill: -fx-accent;
     -fx-selection-text-fill: #fff;
     -fx-text-fill: #eee;
-    -fx-background-color: linear-gradient(to bottom, #181818, #282828);
+    -fx-background-color: linear-gradient(to bottom, #e4e0d7, #e9d041, #b44040);
 }
 
 /* Estilo para el contenedor principal del login */

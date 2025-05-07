@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class RegistroController {
 
@@ -72,7 +73,6 @@ public class RegistroController {
     }
 
 
-
     @FXML
     public void volverLogin(ActionEvent event) {
         try {
@@ -108,7 +108,7 @@ public class RegistroController {
     @FXML
     private void registrarse() {
         RolDTO rol = rolComboBox.getValue();
-
+        System.out.println(rol.getNombre() + rol.getId());
         try {
             PersistanceAPI api = new PersistanceAPI();
             api.registrarUsuario(
@@ -116,7 +116,7 @@ public class RegistroController {
                     contrasenaField.getText(),
                     correoField.getText(),
                     nombreField.getText(),
-                    rol.getId(), // ✅ aquí usás el ID directamente
+                    rol.getId(),
                     matriculaField.getText(),
                     carreraField.getText(),
                     legajoField.getText(),

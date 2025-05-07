@@ -14,8 +14,12 @@
         <maven.compiler.target>24</maven.compiler.target>
         <javafx.version>24.0.1</javafx.version>
     </properties>
-
     <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
+        </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>

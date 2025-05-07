@@ -43,13 +43,14 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO{
             statement.setString(10, user.getLegajo());           // Docente
             statement.setString(11, user.getNombreEntidad());    // Entidad
             statement.setString(12, user.getCuit());             // Entidad
-            statement.setString(12, user.getDireccionEntidad()); // Entidad
+            statement.setString(13, user.getDireccionEntidad()); // Entidad
 
 
             statement.executeUpdate();  // Cambié executeQuery() por executeUpdate()
             statement.close();
             disconnect();
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RegisterExceptions("Error al crear y guardar el usuario: " + e.getMessage());
         }catch(ConnectionException e){
             throw new RegisterExceptions(e.getMessage());
@@ -276,6 +277,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO{
             }
             return true;
         } catch (ConnectionException e) {
+            e.printStackTrace();
             throw new UserExceptions("Error al conectar con la base de datos: " + e.getMessage());
         }
     }

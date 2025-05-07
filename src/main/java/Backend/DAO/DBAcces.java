@@ -14,11 +14,12 @@ public class DBAcces {
     private static Properties getProperties() throws RuntimeException {
         Properties prop = new Properties();
         try {
-            ResourceBundle infoDataBase = ResourceBundle.getBundle("database");
+            ResourceBundle infoDataBase = ResourceBundle.getBundle("Backend.database");
             prop.setProperty("connection", infoDataBase.getString("db.url"));
             prop.setProperty("username", infoDataBase.getString("db.user"));
             prop.setProperty("password", infoDataBase.getString("db.password"));
         } catch (Exception e1) {
+            e1.printStackTrace();
             throw new RuntimeException("Ocurrio un error al leer la configuracion desde el archivo");
         }
         return prop;
@@ -35,6 +36,7 @@ public class DBAcces {
             conn.setAutoCommit(true); // Asegura que los cambios se guarden automáticamente
             return conn;
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new ConnectionException("Error al conectar con base de datos");
         }
     }

@@ -224,11 +224,6 @@ public class PersistanceAPI implements API {
         // Validar que el username y email no estén en uso
         UsuarioDAODB.validarUsernameYEmailUnicos(username, email);
 
-        // Validación de contraseña
-        if (password == null || password.length() < 8) {
-            throw new RegisterExceptions("Error: La contraseña debe tener al menos 8 caracteres");
-        }
-
         // Obtener Rol desde ID
         RolDTO rolDTO = obtenerRolPorId(rolId);
         Rol rol = new Rol(rolDTO.getId(), rolDTO.getNombre());

@@ -33,6 +33,10 @@ public class Usuario {
         if(isNull(contrasena)){
             throw new UserExceptions("La contraseña no puede estar vacía");
         }
+
+        if (isNull(contrasena)  || contrasena.length() < 8) {
+            throw new UserExceptions("Error: La contraseña debe tener al menos 8 caracteres");
+        }
         if(isNull(nombre)){
             throw new UserExceptions("Debe completar el nombre");
         }
@@ -58,6 +62,7 @@ public class Usuario {
         if(isNull(nombre)){
             throw new UserExceptions("Debe completar el nombre");
         }
+
         this.id = id;
         this.username = username;
         this.contrasena = contrasena;
