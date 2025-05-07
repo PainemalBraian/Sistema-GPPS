@@ -1,3 +1,82 @@
+/* Estilo general de la aplicación para el login */
 .root {
-  -fx-background-color: linear-gradient(to bottom, #e4e0d7, #e9d041, #b44040);
+    -fx-font-family: "Segoe UI", "Roboto", sans-serif;
+    -fx-base: #222;
+    -fx-control-inner-background: #333;
+    -fx-accent: #00bfff;
+    -fx-focus-color: -fx-accent;
+    -fx-faint-focus-color: transparent;
+    -fx-selection-fill: -fx-accent;
+    -fx-selection-text-fill: #fff;
+    -fx-text-fill: #eee;
+    -fx-background-color: linear-gradient(to bottom, #181818, #282828);
+}
+
+/* Estilo para el contenedor principal del login */
+.login-pane {
+    -fx-background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
+    -fx-background-radius: 10px;
+    -fx-padding: 30px;
+}
+
+/* Estilo para el título del login */
+.login-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-accent;
+    -fx-margin-bottom: 20px;
+}
+
+/* Estilo para las etiquetas de los campos */
+.login-label {
+    -fx-text-fill: #ddd;
+    -fx-font-size: 14px;
+    -fx-margin-bottom: 5px;
+}
+
+/* Estilo para los campos de texto y contraseña */
+.login-field {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-text-fill: #eee;
+    -fx-prompt-text-fill: #888;
+    -fx-border-color: #555;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px;
+    -fx-margin-bottom: 15px;
+}
+
+.login-field:focused {
+    -fx-border-color: -fx-accent;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,191,255,0.4), 8, 0, 0, 0);
+}
+
+/* Estilo para el botón de login */
+.login-button {
+    -fx-background-color: -fx-accent;
+    -fx-text-fill: #222;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,191,255,0.6), 5, 0, 0, 0);
+    -fx-cursor: hand;
+    -fx-margin-top: 20px;
+}
+
+.login-button:hover {
+    -fx-background-color: #00cfff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,207,255,0.8), 7, 0, 0, 0);
+}
+
+.login-button:pressed {
+    -fx-background-color: #0099cc;
+    -fx-effect: null;
+}
+
+/* Estilo para el mensaje de error (si es necesario) */
+.login-error {
+    -fx-text-fill: #ff4d4d; /* Rojo */
+    -fx-font-size: 12px;
+    -fx-margin-top: 10px;
 }
