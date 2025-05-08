@@ -79,10 +79,10 @@ public class RolDAODB extends DBAcces implements ROLDAO {
             ResultSet results = statement.executeQuery();
 
             while (results.next()) {
-                Rol rol = new Rol(results.getInt("idRol"),
+                Rol rol = new Rol(results.getInt("id"),
                         results.getString("nombre")
                 );
-                rol.setActivo(results.getBoolean("activo"));
+                rol.setActivo(results.getBoolean("activoRol"));
                 roles.add(rol);
             }
 
