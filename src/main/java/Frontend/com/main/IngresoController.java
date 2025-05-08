@@ -70,6 +70,7 @@ public class IngresoController {
         PasswordFieldClave.setPromptText(bundle.getString("field.clave"));
         TextFieldUsuario.setPromptText(bundle.getString("field.usuario"));
         newUser.setText(bundle.getString("field.newUser"));
+        MenuIdiomas.setText(bundle.getString("button.idioma"));
     }
 
     @FXML
@@ -94,6 +95,8 @@ public class IngresoController {
 
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
