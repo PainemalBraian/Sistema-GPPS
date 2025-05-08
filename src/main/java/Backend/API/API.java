@@ -11,8 +11,7 @@ public interface API {
 
     void cambiarIdioma(String idioma);
 
-    void registrarUsuario(String username, String password, String email, String nombre, int rol) throws RegisterExceptions, UserExceptions, Exception; // Registra el usuario en la bd
-
+    void registrarUsuario(String username, String password, String email, String nombre, int rolId, String matricula, String carrera, String legajo, String nombreEntidad, String cuit, String direccionEntidad) throws RegisterExceptions, UserExceptions, Exception;
     UsuarioDTO obtenerUsuario(String username) throws UserExceptions; // Devuelve el usuario según username
 
     void eliminarUsuario(int id) throws UserExceptions, DeleteException; // Eliminar un usuario por username de la bd
