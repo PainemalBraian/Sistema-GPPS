@@ -2,6 +2,7 @@ package Frontend.com.main;
 
 
 import Backend.API.API;
+import Backend.API.PersistanceAPI;
 import Backend.DTO.RolDTO;
 import Backend.Exceptions.RegisterExceptions;
 import Backend.Exceptions.UserExceptions;
@@ -52,11 +53,10 @@ public class RegistroController {
     private TextField nombreEntidadField;
     @FXML
     private TextField cuitField;
-    @FXML
 
-    private TextField nombreContactoField;
     API api;
   
+    @FXML
     private TextField direccionEntidadField;
 
     public void initialize() {
@@ -117,10 +117,9 @@ public class RegistroController {
         legajoField.setPromptText(bundle.getString("label.legajo"));
         nombreEntidadField.setPromptText(bundle.getString("label.nombreEntidad"));
         cuitField.setPromptText(bundle.getString("label.cuit"));
-        nombreContactoField.setPromptText(bundle.getString("label.nombreContacto"));
-
         // ComboBox
         rolComboBox.setPromptText(bundle.getString("combo.rol"));
+    }
       
     private void inicializarRoles() {
         rolComboBox.getItems().clear(); // Evita duplicados si se llama varias veces
@@ -136,27 +135,21 @@ public class RegistroController {
 
 
     @FXML
-    private void registrarse() {
+    private void registrarse(ActionEvent actionEvent) {
 
         String nombre = nombreField.getText();
         String correo = correoField.getText();
         String contrasena = contrasenaField.getText();
         String confirmarContrasena = confirmarContrasenaField.getText();
-        String rol = rolComboBox.getValue();
+
 
         String matricula = camposEstudiante.isVisible() ? matriculaField.getText() : "";
         String carrera = camposEstudiante.isVisible() ? carreraField.getText() : "";
         String legajo = camposDocente.isVisible() ? legajoField.getText() : "";
  
-        String nombreEntidad = camposEntidad_o_Tutor.isVisible() ? nombreEntidadField.getText() : "";
-        String cuit = camposEntidad_o_Tutor.isVisible() ? cuitField.getText() : "";
-        String nombreContacto = camposEntidad_o_Tutor.isVisible() ? nombreContactoField.getText() : "";
+        String nombreEntidad = camposEntidad.isVisible() ? nombreEntidadField.getText() : "";
+        String cuit = camposEntidad.isVisible() ? cuitField.getText() : "";
 
-        System.out.println("Registrando a: " + nombre + ", Correo: " + correo + ", Rol: " + rol);
-        if (!matricula.isEmpty()) System.out.println("Matrícula: " + matricula + ", Carrera: " + carrera);
-        if (!nombreEntidad.isEmpty()) System.out.println("Entidad: " + nombreEntidad + ", CUIT: " + cuit + ", Contacto: " + nombreContacto);
-
-        //lógica para guardar los datos del usuario
 
         RolDTO rol = rolComboBox.getValue();
         System.out.println(rol.getNombre() + rol.getId());
