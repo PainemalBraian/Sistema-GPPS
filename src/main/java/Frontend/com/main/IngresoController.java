@@ -17,7 +17,8 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 public class IngresoController {
-    API api = new PersistanceAPI() {};
+    public ImageView IconLogin;
+     API api;
     @FXML public Button ButtonRegistro;
     @FXML public Pane PaneIMG;
     @FXML public AnchorPane PaneBase;
@@ -31,9 +32,10 @@ public class IngresoController {
     @FXML public MenuButton MenuIdiomas;
     @FXML public Label newUser;
 
+
     @FXML
     public void initialize() {
-        actualizarIdioma();
+     //   actualizarIdioma();
     }
 
     public void idiomaEN(ActionEvent actionEvent) {
@@ -53,6 +55,11 @@ public class IngresoController {
         actualizarIdioma();
     }
 
+    public void setPersistenceAPI(API persistenceAPI) {
+        this.api = persistenceAPI;
+        actualizarIdioma();
+    }
+
     private void actualizarIdioma() {
         ResourceBundle bundle = api.obtenerIdioma();
         LabelUsuario.setText(bundle.getString("label.usuario"));
@@ -68,13 +75,20 @@ public class IngresoController {
     @FXML
     public void abrirRegistro(ActionEvent event) {
         try {
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/registro.fxml"));
             Parent root = loader.load();
+
+            // Obtener el controlador
+            RegistroController controller = loader.getController();
+
+            // Crear y pasar la instancia de PersistenceAPI
+            controller.setPersistenceAPI(api);
+
             Stage stage = new Stage();
             stage.setTitle("Registro - GPPS");
             stage.setScene(new Scene(root));
             stage.show();
-
             // Opcional: cerrar la ventana actual
             ((Stage)((Button)event.getSource()).getScene().getWindow()).close();
 

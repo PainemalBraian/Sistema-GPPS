@@ -1,5 +1,7 @@
 package Frontend.com.main;
 
+import Backend.API.API;
+import Backend.API.PersistanceAPI;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,15 +18,23 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/ingreso.fxml"));
             Parent root = loader.load();
 
-            Scene login = new Scene(root);
+            // Obtener el controlador
+            IngresoController controller = loader.getController();
 
+            // Crear y pasar la instancia de PersistenceAPI
+            API api = new PersistanceAPI() {};
+            controller.setPersistenceAPI(api);
+
+            Scene login = new Scene(root);
             pantalla.setResizable(false);
             pantalla.setScene(login);
             pantalla.show();
+
         } catch (IOException e) {
             System.err.println("Error al cargar la ventana: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
 
 }
