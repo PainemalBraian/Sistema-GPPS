@@ -35,12 +35,13 @@
                     <TextField fx:id="legajoField" promptText="Legajo" />
                 </VBox>
 
-                <VBox fx:id="camposEntidad_o_Tutor" spacing="5.0" visible="false">
+                <VBox fx:id="camposEntidad" spacing="5.0" visible="false">
                     <TextField fx:id="nombreEntidadField" promptText="Nombre de la Entidad" />
                     <TextField fx:id="cuitField" promptText="CUIT/CUIL" />
-                    <TextField fx:id="nombreContactoField" promptText="Nombre del Contacto" />
-                </VBox>
 
+
+                    <TextField fx:id="direccionEntidadField" promptText="Dirección de la Entidad" />
+                </VBox>
 
                 <ComboBox fx:id="rolComboBox" promptText="Seleccionar rol" styleClass="root" stylesheets="@../StyleSheets/registro.css">
                     <items>

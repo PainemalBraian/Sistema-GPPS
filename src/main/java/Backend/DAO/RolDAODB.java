@@ -136,6 +136,7 @@ public class RolDAODB extends DBAcces implements ROLDAO {
     @Override
     public Rol findOne(int id) throws ReadException {
         try {
+            System.out.println(id);
             Rol rol = null;
             Connection conn = connect();
 
@@ -143,7 +144,7 @@ public class RolDAODB extends DBAcces implements ROLDAO {
                 throw new ReadException("No se pudo establecer la conexión.");
             }
 
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Roles WHERE idRol = ?");
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Roles WHERE id = ?");
             if (statement == null) {
                 throw new ReadException("No se pudo preparar la consulta.");
             }
@@ -153,9 +154,9 @@ public class RolDAODB extends DBAcces implements ROLDAO {
 
             if (result.next()) {
                 rol = new Rol();
-                rol.setId(result.getInt("idRol"));
+                rol.setId(result.getInt("id"));
                 rol.setNombre(result.getString("nombre"));
-                rol.setActivo(result.getBoolean("activo"));
+                rol.setActivo(result.getBoolean("activoRol"));
             }
             disconnect();
 
@@ -163,6 +164,7 @@ public class RolDAODB extends DBAcces implements ROLDAO {
         } catch(ConnectionException e){
             throw new ReadException(e.getMessage());
         } catch(SQLException e){
+            e.printStackTrace();
             throw new ReadException("Error al obtener el rol");
         }
 

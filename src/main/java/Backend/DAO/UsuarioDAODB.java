@@ -24,27 +24,39 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO{
             Connection conn = connect();
 
             PreparedStatement statement = conn.prepareStatement(
-                    "INSERT INTO Usuarios(nombre, apellido, email, username, password, idRol, activo) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO Usuarios(nombre, apellido, email, username, password, idRol, activo, " +
+                            "matricula, carrera, legajo, nombreEntidad, cuit, direccionEntidad) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             );
 
             statement.setString(1, user.getNombre());
-            statement.setString(2, "-");
+            statement.setString(2, "-"); // Apellido por defecto
             statement.setString(3, user.getEmail());
             statement.setString(4, user.getUsername());
             statement.setString(5, user.getContrasena());
             statement.setInt(6, user.getRol().getId());
             statement.setBoolean(7, user.isActivo());
 
+            // Extras por tipo de usuario
+            statement.setString(8, user.getMatricula());         // Estudiante
+            statement.setString(9, user.getCarrera());           // Estudiante
+            statement.setString(10, user.getLegajo());           // Docente
+            statement.setString(11, user.getNombreEntidad());    // Entidad
+            statement.setString(12, user.getCuit());             // Entidad
+            statement.setString(13, user.getDireccionEntidad()); // Entidad
+
+
             statement.executeUpdate();  // Cambié executeQuery() por executeUpdate()
             statement.close();
             disconnect();
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RegisterExceptions("Error al crear y guardar el usuario: " + e.getMessage());
         }catch(ConnectionException e){
             throw new RegisterExceptions(e.getMessage());
         }
     }
+
 
     @Override
     public List<Usuario> read() throws SQLException, UserExceptions{
@@ -265,6 +277,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO{
             }
             return true;
         } catch (ConnectionException e) {
+            e.printStackTrace();
             throw new UserExceptions("Error al conectar con la base de datos: " + e.getMessage());
         }
     }
