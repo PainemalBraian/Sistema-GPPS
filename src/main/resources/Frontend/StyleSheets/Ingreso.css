@@ -1,82 +1,71 @@
-/* Estilo general de la aplicación para el login */
 .root {
     -fx-font-family: "Segoe UI", "Roboto", sans-serif;
-    -fx-base: #222;
-    -fx-control-inner-background: #333;
-    -fx-accent: #00bfff;
-    -fx-focus-color: -fx-accent;
-    -fx-faint-focus-color: transparent;
-    -fx-selection-fill: -fx-accent;
-    -fx-selection-text-fill: #fff;
-    -fx-text-fill: #eee;
-    -fx-background-color: linear-gradient(to bottom, #181818, #282828);
+    -fx-background-color: linear-gradient(to right, #B9CDB6, #F3D4B3, #C53F2D);
+
 }
 
-/* Estilo para el contenedor principal del login */
+.image-pane {
+    -fx-background-color: #0000;
+}
+
 .login-pane {
-    -fx-background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
+    -fx-background-color: white;
+    -fx-padding: 20px;
     -fx-background-radius: 10px;
-    -fx-padding: 30px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
 }
 
-/* Estilo para el título del login */
 .login-title {
-    -fx-font-size: 24px;
+    -fx-font-size: 32px;
     -fx-font-weight: bold;
-    -fx-text-fill: -fx-accent;
-    -fx-margin-bottom: 20px;
+    -fx-text-fill: #0f2f6b;
 }
 
-/* Estilo para las etiquetas de los campos */
-.login-label {
-    -fx-text-fill: #ddd;
+.login-subtitle {
     -fx-font-size: 14px;
-    -fx-margin-bottom: 5px;
+    -fx-text-fill: #333;
+    -fx-wrap-text: true;
+    -fx-max-width: 300px;
 }
 
-/* Estilo para los campos de texto y contraseña */
+.login-label {
+    -fx-text-fill: #555;
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+}
+
 .login-field {
-    -fx-background-color: -fx-control-inner-background;
-    -fx-text-fill: #eee;
-    -fx-prompt-text-fill: #888;
-    -fx-border-color: #555;
+    -fx-background-color: #eef1f5;
+    -fx-text-fill: #000;
+    -fx-prompt-text-fill: #999;
+    -fx-border-color: #ccc;
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
     -fx-padding: 8px;
-    -fx-margin-bottom: 15px;
 }
 
 .login-field:focused {
-    -fx-border-color: -fx-accent;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,191,255,0.4), 8, 0, 0, 0);
+    -fx-border-color: #3478f6;
+    -fx-effect: dropshadow(three-pass-box, rgba(52,120,246,0.2), 5, 0, 0, 0);
 }
 
-/* Estilo para el botón de login */
 .login-button {
-    -fx-background-color: -fx-accent;
-    -fx-text-fill: #222;
+    -fx-background-color: #3478f6;
+    -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-border-radius: 5px;
     -fx-background-radius: 5px;
-    -fx-padding: 10px 20px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,191,255,0.6), 5, 0, 0, 0);
+    -fx-padding: 10px 0;
     -fx-cursor: hand;
-    -fx-margin-top: 20px;
 }
 
 .login-button:hover {
-    -fx-background-color: #00cfff;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,207,255,0.8), 7, 0, 0, 0);
+    -fx-background-color: #5593f8;
 }
 
-.login-button:pressed {
-    -fx-background-color: #0099cc;
-    -fx-effect: null;
-}
-
-/* Estilo para el mensaje de error (si es necesario) */
-.login-error {
-    -fx-text-fill: #ff4d4d; /* Rojo */
+.login-button-small {
+    -fx-background-color: transparent;
+    -fx-text-fill: #3478f6;
+    -fx-border-color: transparent;
     -fx-font-size: 12px;
-    -fx-margin-top: 10px;
+    -fx-cursor: hand;
 }
