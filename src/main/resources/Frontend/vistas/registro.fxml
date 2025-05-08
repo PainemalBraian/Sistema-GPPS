@@ -38,8 +38,6 @@
                 <VBox fx:id="camposEntidad" spacing="5.0" visible="false">
                     <TextField fx:id="nombreEntidadField" promptText="Nombre de la Entidad" />
                     <TextField fx:id="cuitField" promptText="CUIT/CUIL" />
-
-
                     <TextField fx:id="direccionEntidadField" promptText="Dirección de la Entidad" />
                 </VBox>
 
