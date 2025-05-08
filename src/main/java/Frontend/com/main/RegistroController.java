@@ -1,5 +1,8 @@
 package Frontend.com.main;
 
+
+import Backend.API.API;
+import Backend.API.PersistanceAPI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 public class RegistroController {
 
@@ -38,8 +42,8 @@ public class RegistroController {
     private VBox camposDocente;
     @FXML
     private TextField legajoField;
-    @FXML
-    private TextField departamentoField;
+ //   @FXML
+//    private TextField departamentoField;
 
     @FXML
     private VBox camposEntidad_o_Tutor;
@@ -49,8 +53,11 @@ public class RegistroController {
     private TextField cuitField;
     @FXML
     private TextField nombreContactoField;
+    API api;
+
 
     public void initialize() {
+        //actualizarIdioma();
         rolComboBox.setOnAction((ActionEvent event) -> {
             String selectedRol = rolComboBox.getValue();
             camposEstudiante.setVisible(selectedRol != null && selectedRol.equals("Estudiante"));
@@ -65,6 +72,12 @@ public class RegistroController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Ingreso.fxml"));
             Parent root = loader.load();
+            // Obtener el controlador
+            IngresoController controller = loader.getController();
+
+            // Crear y pasar la instancia de PersistenceAPI
+            controller.setPersistenceAPI(api);
+
             Stage stage = new Stage();
             stage.setTitle(" Login - GPPS");
             stage.setScene(new Scene(root));
@@ -78,6 +91,37 @@ public class RegistroController {
         }
     }
 
+
+    public void setPersistenceAPI(API persistenceAPI) {
+        this.api = persistenceAPI;
+        actualizarIdioma();
+    }
+    private void actualizarIdioma() {
+        ResourceBundle bundle = api.obtenerIdioma();
+        bundle.keySet().forEach(key ->
+                System.out.println(key + " = " + bundle.getString(key))
+        );
+
+
+
+        // Labels
+        nombreField.setPromptText(bundle.getString("label.nombre"));
+        correoField.setPromptText(bundle.getString("label.correo"));
+        contrasenaField.setPromptText(bundle.getString("label.contrasena"));
+        confirmarContrasenaField.setPromptText(bundle.getString("label.confirmarContrasena"));
+        matriculaField.setPromptText(bundle.getString("label.matricula"));
+        carreraField.setPromptText(bundle.getString("label.carrera"));
+        legajoField.setPromptText(bundle.getString("label.legajo"));
+        nombreEntidadField.setPromptText(bundle.getString("label.nombreEntidad"));
+        cuitField.setPromptText(bundle.getString("label.cuit"));
+        nombreContactoField.setPromptText(bundle.getString("label.nombreContacto"));
+
+        // ComboBox
+        rolComboBox.setPromptText(bundle.getString("combo.rol"));
+    }
+
+
+
     @FXML
     private void registrarse() {
         String nombre = nombreField.getText();
@@ -89,14 +133,14 @@ public class RegistroController {
         String matricula = camposEstudiante.isVisible() ? matriculaField.getText() : "";
         String carrera = camposEstudiante.isVisible() ? carreraField.getText() : "";
         String legajo = camposDocente.isVisible() ? legajoField.getText() : "";
-        String departamento = camposDocente.isVisible() ? departamentoField.getText() : "";
+        // String departamento = camposDocente.isVisible() ? departamentoField.getText() : "";
         String nombreEntidad = camposEntidad_o_Tutor.isVisible() ? nombreEntidadField.getText() : "";
         String cuit = camposEntidad_o_Tutor.isVisible() ? cuitField.getText() : "";
         String nombreContacto = camposEntidad_o_Tutor.isVisible() ? nombreContactoField.getText() : "";
 
         System.out.println("Registrando a: " + nombre + ", Correo: " + correo + ", Rol: " + rol);
         if (!matricula.isEmpty()) System.out.println("Matrícula: " + matricula + ", Carrera: " + carrera);
-        if (!legajo.isEmpty()) System.out.println("Legajo: " + legajo + ", Departamento: " + departamento);
+      //  if (!legajo.isEmpty()) System.out.println("Legajo: " + legajo + ", Departamento: " + departamento);
         if (!nombreEntidad.isEmpty()) System.out.println("Entidad: " + nombreEntidad + ", CUIT: " + cuit + ", Contacto: " + nombreContacto);
 
         //ógica para guardar los datos del usuario
