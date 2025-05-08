@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 public class IngresoController {
+    public ImageView IconLogin;
     API api = new PersistanceAPI() {};
     @FXML public Button ButtonRegistro;
     @FXML public Pane PaneIMG;
