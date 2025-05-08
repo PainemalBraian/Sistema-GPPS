@@ -4,8 +4,6 @@ import Backend.DAO.*;
 import Backend.DTO.*;
 import Backend.Entidades.*;
 import Backend.Exceptions.*;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -16,9 +14,7 @@ public class PersistanceAPI implements API {
     UsuarioDAODB UsuarioDAODB = new UsuarioDAODB();
     RolDAODB RolDAODB = new RolDAODB();
 
-
     ResourceBundle labels = ResourceBundle.getBundle("Backend.labels", Locale.getDefault());
-
 
     @Override
     public ResourceBundle obtenerIdioma() {
@@ -29,7 +25,6 @@ public class PersistanceAPI implements API {
     public void cambiarIdioma(String idioma) {
         labels = ResourceBundle.getBundle("Backend.labels", new Locale(idioma));
     }
-
 
     @Override
     public void activarUsuario(String username) throws UserExceptions, UpdateException {
@@ -57,21 +52,16 @@ public class PersistanceAPI implements API {
 
     @Override
     public void desactivarRol(int id) throws ReadException, UpdateException {
-
         Rol rol = RolDAODB.findOne(id);
         rol.desactivar();
         RolDAODB.update(rol);
-
-
     }
 
     @Override
     public void desactivarUsuario(String username) throws UserExceptions, UpdateException{
         Usuario user = UsuarioDAODB.findByUsername(username);
-
         Usuario userDB = new Usuario(user.getId(), user.getUsername(), user.getContrasena(),
                 user.getNombre(), user.getEmail(), user.getRol());
-
         userDB.desactivar();
         UsuarioDAODB.update(userDB);
     }
@@ -100,15 +90,8 @@ public class PersistanceAPI implements API {
 
         try {
             Usuario user = UsuarioDAODB.findByUsername(username);
-
-            if (user == null || !user.getContrasena().equals(password)) {
-                throw new LoginException("Usuario o contraseña inválidos");
-            }
-
-            if (!user.isActivo()) {
-                throw new LoginException("El usuario está inactivo");
-            }
-
+            if (user == null || !user.getContrasena().equals(password)) {throw new LoginException("Usuario o contraseña inválidos");}
+            if (!user.isActivo())                                       {throw new LoginException("El usuario está inactivo");}
             RolDTO rol = convertirARolDTO(user.getRol());
             userSession = user;
 
@@ -146,7 +129,6 @@ public class PersistanceAPI implements API {
             throw new Exception("Error al obtener los roles");
         }
     }
-
 
     @Override
     public List<RolDTO> obtenerRolesActivos() throws ReadException {
@@ -251,7 +233,6 @@ public class PersistanceAPI implements API {
         // Guardar en la base de datos
         UsuarioDAODB.create(usuario);
     }
-
 
     @Override
     public RolDTO obtenerRolPorId(int id) throws ReadException{

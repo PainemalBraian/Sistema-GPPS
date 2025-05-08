@@ -1,4 +1,4 @@
-package Backend.DAO;
+package Backend.DAO.interfaces;
 
 import java.sql.SQLException;
 import java.util.List;
