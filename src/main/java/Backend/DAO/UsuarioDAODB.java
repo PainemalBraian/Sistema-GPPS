@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Backend.DAO.interfaces.USUARIODAO;
 import Backend.Exceptions.ConnectionException;
 import Backend.Exceptions.DeleteException;
 import Backend.Exceptions.RegisterExceptions;
@@ -15,7 +16,7 @@ import Backend.Exceptions.UserExceptions;
 import Backend.Entidades.Rol;
 import Backend.Entidades.Usuario;
 
-public class UsuarioDAODB extends DBAcces implements USUARIODAO{
+public class UsuarioDAODB extends DBAcces implements USUARIODAO {
 
     @Override
     public void create(Object usuario) throws RegisterExceptions {
