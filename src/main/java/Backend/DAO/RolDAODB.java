@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Backend.DAO.interfaces.ROLDAO;
 import Backend.Exceptions.ConnectionException;
 import Backend.Exceptions.CreateException;
 import Backend.Exceptions.DeleteException;

@@ -3,24 +3,26 @@ package Backend.Entidades;
 import Backend.Exceptions.UserExceptions;
 
 public class Usuario {
+    private int id;
     private String username;
     private String contrasena;
     private String nombre;
     private String email;
-    private Rol rol;
     private boolean activo;
-    private int id;
     private int dni;
+    private Rol rol;
+
     private String matricula;
+    private String carrera;
+
     private String Legajo;
+
     private String nombreEntidad;
     private String cuit;
     private String direccionEntidad;
-    private String carrera;
 
 
-    public Usuario() {
-    }
+    public Usuario() {}
 
     public Usuario(String username, String contrasena, String nombre, String email, Rol rol) throws UserExceptions {
 
@@ -166,7 +168,6 @@ public class Usuario {
     public String getCarrera() {
         return carrera;
     }
-
 
     public boolean isActivo() {
         return activo;
