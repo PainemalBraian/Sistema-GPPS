@@ -13,12 +13,12 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.main.RegistroController">
+<StackPane prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.gui.RegistroController">
 
     <AnchorPane fx:id="PaneBase" prefHeight="550.0" prefWidth="700.0">
         <children>
             <VBox alignment="CENTER" layoutX="-4.0" prefHeight="550.0" prefWidth="454.0" spacing="10.0" styleClass="root" stylesheets="@../StyleSheets/registro.css">
-                <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Registro de Usuario - GPPS" />
+                <Label fx:id="registroField" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Registro de Usuario - GPPS" />
 
                 <TextField fx:id="dni" prefHeight="31.0" prefWidth="150.0" promptText="Documento Nacional de Identidad (DNI) o Cédula de Identidad" />
                 <TextField fx:id="nombreField" prefHeight="31.0" prefWidth="150.0" promptText="Nombre completo" />
@@ -38,8 +38,6 @@
                 <VBox fx:id="camposEntidad" spacing="5.0" visible="false">
                     <TextField fx:id="nombreEntidadField" promptText="Nombre de la Entidad" />
                     <TextField fx:id="cuitField" promptText="CUIT/CUIL" />
-
-
                     <TextField fx:id="direccionEntidadField" promptText="Dirección de la Entidad" />
                 </VBox>
 
@@ -55,23 +53,21 @@
                 </ComboBox>
 
 
-                <Button maxWidth="150.0" onAction="#registrarse" text="Registrarse" />
+                <Button fx:id="BottonRegistrarse" maxWidth="150.0" onAction="#registrarse" text="Registrarse" />
             </VBox>
 
-            <ImageView fitHeight="550.0" fitWidth="250.0" layoutX="450.0">
+            <ImageView fitHeight="514.0" fitWidth="236.0" layoutX="457.0" layoutY="128.0" preserveRatio="true" smooth="false">
                 <image>
                     <Image url="@../imagenes/fondo_Registro.jpg" />
                 </image>
             </ImageView>
-            <Button id="volver_login"
-                    layoutX="528.0"
-                    layoutY="489.0"
-                    onAction="#volverLogin"
-                    mnemonicParsing="false"
-                    prefHeight="47.0"
-                    prefWidth="141.0"
-                    text="Volver"
-                    style="-fx-background-color: #2c2c2c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;" />
+            
+            <ImageView fitHeight="106.0" fitWidth="250.0" layoutX="450.0" smooth="false"> <!-- Ajusta la posición según necesites -->
+                <image>
+                    <Image url="@../imagenes/Logo_AlgoLab.png" />
+                </image>
+            </ImageView>
+            <Button fx:id="volver_login" layoutX="528.0" layoutY="489.0" mnemonicParsing="false" onAction="#volverLogin" prefHeight="47.0" prefWidth="141.0" style="-fx-background-color: #2c2c2c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;" text="Volver" />
 
         </children>
     </AnchorPane>
