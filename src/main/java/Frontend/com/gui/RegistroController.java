@@ -1,11 +1,9 @@
-package Frontend.com.main;
+package Frontend.com.gui;
 
 
 import Backend.API.API;
 import Backend.API.PersistanceAPI;
 import Backend.DTO.RolDTO;
-import Backend.Exceptions.RegisterExceptions;
-import Backend.Exceptions.UserExceptions;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,7 +15,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import java.util.ResourceBundle;

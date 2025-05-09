@@ -1,7 +1,6 @@
-package Frontend.com.main;
+package Frontend.com.gui;
 
 import Backend.API.API;
-import Backend.API.PersistanceAPI;
 import Backend.DTO.UsuarioDTO;
 import Backend.Exceptions.LoginException;
 import javafx.event.ActionEvent;
@@ -109,10 +108,7 @@ public class IngresoController {
 
         try {
             UsuarioDTO usuario = api.login(username, password);
-            System.out.println("Username: " + usuario.getUsername());
-            System.out.println("Rol: " + usuario.getRol());
-            // Si el login es exitoso, cargar la vista principal (por ejemplo)
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/principal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/home.fxml"));
             Parent root = loader.load();
 
             // Obtener el controlador de la vista principal
@@ -137,6 +133,7 @@ public class IngresoController {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

@@ -1,8 +1,6 @@
-package Frontend.com.main;
+package Frontend.com.gui;
 
 import Backend.API.API;
-import Backend.DTO.UsuarioDTO;
-import Backend.Exceptions.UserExceptions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
