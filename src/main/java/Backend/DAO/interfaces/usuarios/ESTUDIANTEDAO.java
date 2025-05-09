@@ -1,4 +1,4 @@
-package Backend.DAO.interfaces;
+package Backend.DAO.interfaces.usuarios;
 
 import Backend.Entidades.Estudiante;
 import Backend.Exceptions.RegisterExceptions;
@@ -15,6 +15,9 @@ public interface ESTUDIANTEDAO {
     List<Estudiante> read() throws SQLException, UserExceptions;
 
     Estudiante buscarByUsername(String username) throws SQLException, UserExceptions;
+
+    boolean validarMatriculaUnica(String matricula) throws SQLException, UserExceptions;
+
 
 //    Estudiante buscarById(int id) throws SQLException, UserExceptions;
 }

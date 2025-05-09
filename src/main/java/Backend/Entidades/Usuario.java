@@ -2,6 +2,8 @@ package Backend.Entidades;
 
 import Backend.Exceptions.UserExceptions;
 
+import static java.util.Objects.isNull;
+
 public class Usuario {
     private int idUsuario;
     private String username;
@@ -11,11 +13,6 @@ public class Usuario {
     private boolean activo;
     private int dni;
     private Rol rol;
-
-//    private String matricula;
-//    private String carrera;
-
-    private String Legajo;
 
     private String nombreEntidad;
     private String cuit;
@@ -35,21 +32,22 @@ public class Usuario {
         if(isNull(contrasena)){
             throw new UserExceptions("La contraseña no puede estar vacía");
         }
-
-        if (isNull(contrasena)  || contrasena.length() < 8) {
-            throw new UserExceptions("Error: La contraseña debe tener al menos 8 caracteres");
-        }
         if(isNull(nombre)){
             throw new UserExceptions("Debe completar el nombre");
         }
+        if (isNull(contrasena)  || contrasena.length() < 8) {
+            throw new UserExceptions("Error: La contraseña debe tener al menos 8 caracteres");
+        }
+
 
         this.username = username;
         this.contrasena = contrasena;
         this.nombre = nombre;
         this.email = email;
         this.rol = rol;
+        this.activo=true;
     }
-
+    //Constructor para DAO
     public Usuario(int id, String username, String contrasena, String nombre, String email, Rol rol) throws UserExceptions {
 
         if(isNull(username)){
@@ -59,11 +57,15 @@ public class Usuario {
             throw new UserExceptions("El email no puede estar vacio");
         }
         if(isNull(contrasena)){
-            throw new UserExceptions("La contraseña no puede estar vacia");
+            throw new UserExceptions("La contraseña no puede estar vacía");
         }
         if(isNull(nombre)){
             throw new UserExceptions("Debe completar el nombre");
         }
+        if (isNull(contrasena)  || contrasena.length() < 8) {
+            throw new UserExceptions("Error: La contraseña debe tener al menos 8 caracteres");
+        }
+
 
         this.idUsuario = id;
         this.username = username;
@@ -121,20 +123,12 @@ public class Usuario {
         this.rol = rol;
     }
 
-//    public void setMatricula(int matricula) {
-//        this.matricula = matricula;
-//    }
-//
-//    public String getMatricula() {
-//        return matricula;
-//    }
-
-    public String getLegajo() {
-        return Legajo;
+    public int getDni() {
+        return dni;
     }
 
-    public void setLegajo(String legajo) {
-        Legajo = legajo;
+    public void setDni(int dni) {
+        this.dni = dni;
     }
 
     public String getNombreEntidad() {
@@ -160,14 +154,6 @@ public class Usuario {
     public void setDireccionEntidad(String direccionEntidad) {
         this.direccionEntidad = direccionEntidad;
     }
-
-//    public void setCarrera(String carrera) {
-//        this.carrera = carrera;
-//    }
-//
-//    public String getCarrera() {
-//        return carrera;
-//    }
 
     public boolean isActivo() {
         return activo;
@@ -216,17 +202,6 @@ public class Usuario {
         return true;
     }
 
-    private boolean isNull(String dato) {
-        return dato == null || dato.trim().isEmpty();
-    }
-
-    public int getDni() {
-        return dni;
-    }
-
-    public void setDni(int dni) {
-        this.dni = dni;
-    }
 }
 
 
