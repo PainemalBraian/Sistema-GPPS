@@ -19,7 +19,9 @@ import java.util.ResourceBundle;
 
 public class IngresoController {
     public ImageView IconLogin;
-     API api;
+    public Button ButtonIngresarEstudiante;
+    public Label LabelGPPS;
+    API api;
     @FXML public Button ButtonRegistro;
     @FXML public Pane PaneIMG;
     @FXML public AnchorPane PaneBase;
@@ -72,6 +74,8 @@ public class IngresoController {
         TextFieldUsuario.setPromptText(bundle.getString("field.usuario"));
         newUser.setText(bundle.getString("field.newUser"));
         MenuIdiomas.setText(bundle.getString("button.idioma"));
+        ButtonIngresarEstudiante.setText(bundle.getString("button.IngresarEstudiante"));
+        LabelGPPS.setText(bundle.getString("label.GPPS"));
     }
 
     @FXML
@@ -137,5 +141,29 @@ public class IngresoController {
             throw new RuntimeException(e);
         }
     }
+
+    public void IngresarComoEstudiante(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/home.fxml"));
+            Parent root = loader.load();
+
+            // Obtener el controlador de la vista principal
+            HomeController controllerHome = loader.getController();
+            controllerHome.setPersistenceAPI(api);
+
+            Stage stage = new Stage();
+            stage.setTitle("Principal - GPPS");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Cerrar la ventana actual de ingreso
+            ((Stage)((Button)actionEvent.getSource()).getScene().getWindow()).close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }
