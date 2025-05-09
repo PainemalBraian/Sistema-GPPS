@@ -2,6 +2,8 @@ package Frontend.com.main;
 
 import Backend.API.API;
 import Backend.API.PersistanceAPI;
+import Backend.DTO.UsuarioDTO;
+import Backend.Exceptions.LoginException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -100,6 +102,43 @@ public class IngresoController {
         }
     }
 
+    @FXML
+    public void loginUsuario(ActionEvent event) {
+        String username = TextFieldUsuario.getText();
+        String password = PasswordFieldClave.getText();
 
-// Por ahora no hace nada, pero podés agregar métodos y @FXML si conectás botones o eventos
+        try {
+            UsuarioDTO usuario = api.login(username, password);
+            System.out.println("Username: " + usuario.getUsername());
+            System.out.println("Rol: " + usuario.getRol());
+            // Si el login es exitoso, cargar la vista principal (por ejemplo)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/principal.fxml"));
+            Parent root = loader.load();
+
+            // Obtener el controlador de la vista principal
+            HomeController controllerHome = loader.getController();
+            controllerHome.setPersistenceAPI(api);
+
+            Stage stage = new Stage();
+            stage.setTitle("Principal - GPPS");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Cerrar la ventana actual de ingreso
+            ((Stage)((Button)event.getSource()).getScene().getWindow()).close();
+
+        } catch (LoginException e) {
+            // Mostrar alerta si el login falla
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error de inicio de sesión");
+            alert.setHeaderText("Credenciales inválidas");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

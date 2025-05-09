@@ -183,6 +183,13 @@ public class PersistanceAPI implements API {
                 usuario.getEmail(), rol, usuario.isActivo());
         return usuarioDTO;
     }
+    @Override
+    public String obtenerNombreUsuario() throws UserExceptions {
+        try {
+            return userSession.getNombre();
+        }catch (Exception e){
+            throw new UserExceptions("No hay un usuario en la sesión");}
+    }
 
     @Override
     public UsuarioDTO obtenerUsuarioByEmail(String email) throws UserExceptions {

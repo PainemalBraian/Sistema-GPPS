@@ -128,7 +128,9 @@
          </Label>
 
                                           <Button fx:id="ButtonRegistro" layoutX="387.0" layoutY="358.0" mnemonicParsing="false" onAction="#abrirRegistro" prefHeight="33.0" prefWidth="155.0" text="Crear cuenta" />
-         <Button fx:id="ButtonIngresar" layoutX="247.0" layoutY="269.0" minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="208.0" text="Ingresar" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
+         <Button fx:id="ButtonIngresar" layoutX="247.0" layoutY="269.0" minWidth="-Infinity" mnemonicParsing="false"
+                 prefHeight="42.0" prefWidth="208.0" text="Ingresar" textFill="#061014" textOverrun="CENTER_ELLIPSIS"
+                 onAction="#loginUsuario">
             <font>
                <Font name="Arial Black" size="20.0" />
             </font>
@@ -142,6 +144,7 @@
                <String fx:value="login-pane" />
             </styleClass>
          </Button>
+
          <PasswordField fx:id="PasswordFieldClave" layoutX="222.0" layoutY="215.0" prefHeight="25.0" prefWidth="231.0" promptText="Ingrese su clave" />
          <Label fx:id="LabelContrasena" layoutX="221.0" layoutY="166.0" prefHeight="42.0" prefWidth="260.0" text="Contraseña">
             <font>

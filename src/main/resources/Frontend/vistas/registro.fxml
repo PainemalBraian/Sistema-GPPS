@@ -56,20 +56,18 @@
                 <Button fx:id="BottonRegistrarse" maxWidth="150.0" onAction="#registrarse" text="Registrarse" />
             </VBox>
 
-            <ImageView fitHeight="550.0" fitWidth="250.0" layoutX="450.0">
+            <ImageView fitHeight="514.0" fitWidth="236.0" layoutX="457.0" layoutY="128.0" preserveRatio="true" smooth="false">
                 <image>
                     <Image url="@../imagenes/fondo_Registro.jpg" />
                 </image>
             </ImageView>
-            <Button fx:id="volver_login"
-                    layoutX="528.0"
-                    layoutY="489.0"
-                    onAction="#volverLogin"
-                    mnemonicParsing="false"
-                    prefHeight="47.0"
-                    prefWidth="141.0"
-                    text="Volver"
-                    style="-fx-background-color: #2c2c2c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;" />
+            
+            <ImageView fitHeight="106.0" fitWidth="250.0" layoutX="450.0" smooth="false"> <!-- Ajusta la posición según necesites -->
+                <image>
+                    <Image url="@../imagenes/Logo_AlgoLab.png" />
+                </image>
+            </ImageView>
+            <Button fx:id="volver_login" layoutX="528.0" layoutY="489.0" mnemonicParsing="false" onAction="#volverLogin" prefHeight="47.0" prefWidth="141.0" style="-fx-background-color: #2c2c2c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;" text="Volver" />
 
         </children>
     </AnchorPane>
