@@ -1,4 +1,4 @@
-package Frontend.com.gui;
+package Frontend.com.gui.Controller;
 
 import Backend.API.API;
 import javafx.event.ActionEvent;
@@ -254,7 +254,7 @@ public class HomeController  {
 
     public void setPersistenceAPI(API persistenceAPI) throws Exception {
         this.api = persistenceAPI;
-        this.bundle = api.obtenerIdioma();
+       // this.bundle = api.obtenerIdioma();
         actualizarIdioma();
         verificarEstadoPPS();
         cargarAvisosRecientes();

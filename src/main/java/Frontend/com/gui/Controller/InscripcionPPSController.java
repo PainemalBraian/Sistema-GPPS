@@ -6,7 +6,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -30,6 +36,8 @@ public class InscripcionPPSController {
     @FXML private TextArea taDescripcion;
     @FXML private TextArea taRequisitos;
     @FXML private Button btnInscribir;
+    @FXML public Button btnVolverHome;
+
     //@FXML private VBox vboxDetail; // Contenedor de detalles para ocultar/mostrar inicialmente
 
     /**
@@ -67,13 +75,12 @@ public class InscripcionPPSController {
             // Aquí se implementaría la llamada a tu API para obtener las oportunidades
             // List<OportunidadPPS_DTO> oportunidades = api.obtenerOportunidadesDisponibles();
 
-            // --- Mock de datos para prueba ---
+            // --- datos para prueba ---
             List<OportunidadPPS_DTO> oportunidades = List.of(
                     new OportunidadPPS_DTO(1, "Desarrollador Java Junior", "Empresa Tech Solutions", "Desarrollo de Software", 5, "Desarrollo de nuevas funcionalidades y mantenimiento de aplicaciones existentes.", "Conocimiento en Java, Spring Boot, SQL. Estudiante avanzado de Ingeniería en Sistemas."),
                     new OportunidadPPS_DTO(2, "Analista de Datos", "Data Insights S.A.", "Análisis de Datos", 2, "Análisis de grandes volúmenes de datos, creación de informes y dashboards.", "Conocimiento en Python, Pandas, SQL, herramientas de visualización (Tableau/PowerBI)."),
                     new OportunidadPPS_DTO(3, "Diseñador UX/UI", "Creative Minds", "Diseño", 3, "Diseño de interfaces de usuario y experiencia de usuario para aplicaciones web y móviles.", "Conocimiento en herramientas de diseño (Figma, Adobe XD), principios de UX/UI.")
             );
-            // --- Fin Mock de datos ---
 
 
             oportunidadesList = FXCollections.observableArrayList(oportunidades);
@@ -129,7 +136,6 @@ public class InscripcionPPSController {
 
     /**
      * Maneja la acción del botón "Inscribirme a esta PPS".
-     * @param event El evento de acción.
      */
     @FXML
     private void handleInscribir(ActionEvent event) {
@@ -162,15 +168,39 @@ public class InscripcionPPSController {
         }
     }
 
-    /**
-     * Método auxiliar para mostrar alertas.
-     */
+
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+    @FXML
+    public void VolverLogin(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/home.fxml"));
+            Parent root = loader.load();
+            // Obtener el controlador
+            HomeController controller = loader.getController();
+
+            // Crear y pasar la instancia de PersistenceAPI
+            controller.setPersistenceAPI(api);
+
+            Stage stage = new Stage();
+            stage.setTitle(" Home - GPPS");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Opcional: cerrar la ventana actual
+            ((Stage) ((Button) event.getSource()).getScene().getWindow()).close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /*
@@ -189,10 +219,7 @@ public class InscripcionPPSController {
     // }
 
 
-    /**
-     * Clase interna de ejemplo para representar una Oportunidad de PPS.
-     * Deberías reemplazar esto con tu DTO real de Backend.
-     */
+
     public static class OportunidadPPS_DTO {
         private int idOportunidad;
         private String titulo;
