@@ -19,9 +19,9 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class InscripcionPPSController {
+public class PuestosDisponiblesController {
 
-    private static final Logger LOGGER = Logger.getLogger(InscripcionPPSController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PuestosDisponiblesController.class.getName());
 
     private API api; // Instancia de tu API para interactuar con el backend
     private ResourceBundle bundle; // Para localización, similar al HomeController
