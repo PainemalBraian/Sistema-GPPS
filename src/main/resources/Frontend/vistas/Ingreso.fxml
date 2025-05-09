@@ -45,6 +45,20 @@
                      <Font name="Javanese Text" size="12.0" />
                   </font>
                </MenuButton>
+               <Button fx:id="ButtonIngresarEstudiante" layoutX="61.0" layoutY="114.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#IngresarComoEstudiante" prefHeight="25.0" prefWidth="173.0" text="Ingresar como Estudiante" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
+                  <font>
+                     <Font name="Arial Black" size="10.0" />
+                  </font>
+                  <styleClass>
+                     <String fx:value="login-label" />
+                     <String fx:value="login-button" />
+                     <String fx:value="login-button" />
+                     <String fx:value="login-button" />
+                     <String fx:value="login-title" />
+                     <String fx:value="login-button" />
+                     <String fx:value="login-pane" />
+                  </styleClass>
+               </Button>
 
             </children>
          </Pane>
@@ -53,7 +67,7 @@
                <Font name="Javanese Text" size="20.0" />
             </font>
          </Label>
-         <Label fx:id="LabelIngreso11" graphicTextGap="0.0" layoutX="301.0" layoutY="-13.0" lineSpacing="5.0" prefHeight="97.0" prefWidth="231.0" text="GPPS">
+         <Label fx:id="LabelGPPS" graphicTextGap="0.0" layoutX="301.0" layoutY="-13.0" lineSpacing="5.0" prefHeight="97.0" prefWidth="231.0" text="GPPS">
             <font>
                <Font name="Arial Black" size="26.0" />
             </font>
@@ -128,9 +142,7 @@
          </Label>
 
                                           <Button fx:id="ButtonRegistro" layoutX="387.0" layoutY="358.0" mnemonicParsing="false" onAction="#abrirRegistro" prefHeight="33.0" prefWidth="155.0" text="Crear cuenta" />
-         <Button fx:id="ButtonIngresar" layoutX="247.0" layoutY="269.0" minWidth="-Infinity" mnemonicParsing="false"
-                 prefHeight="42.0" prefWidth="208.0" text="Ingresar" textFill="#061014" textOverrun="CENTER_ELLIPSIS"
-                 onAction="#loginUsuario">
+         <Button fx:id="ButtonIngresar" layoutX="234.0" layoutY="267.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#loginUsuario" prefHeight="42.0" prefWidth="208.0" text="Ingresar" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
             <font>
                <Font name="Arial Black" size="20.0" />
             </font>

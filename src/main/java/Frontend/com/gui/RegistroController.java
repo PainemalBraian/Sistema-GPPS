@@ -45,7 +45,7 @@ public class RegistroController {
 
     public void initialize() throws Exception {
         rolComboBox.setOnAction((ActionEvent event) -> {
-            RolDTO selectedRol = rolComboBox.getValue(); // ✔ ya es un RolDTO
+            RolDTO selectedRol = rolComboBox.getValue();
             String nombreRol = selectedRol != null ? selectedRol.getNombre() : "";
 
             camposEstudiante.setVisible(nombreRol.equals("Estudiante"));
@@ -118,44 +118,41 @@ public class RegistroController {
 
     @FXML
     private void registrarse(ActionEvent actionEvent) {
-
         String nombre = nombreField.getText();
         String correo = correoField.getText();
         String contrasena = contrasenaField.getText();
         String confirmarContrasena = confirmarContrasenaField.getText();
 
-
         String matricula = camposEstudiante.isVisible() ? matriculaField.getText() : "";
         String carrera = camposEstudiante.isVisible() ? carreraField.getText() : "";
         String legajo = camposDocente.isVisible() ? legajoField.getText() : "";
- 
+
         String nombreEntidad = camposEntidad.isVisible() ? nombreEntidadField.getText() : "";
         String cuit = camposEntidad.isVisible() ? cuitField.getText() : "";
-
 
         RolDTO rol = rolComboBox.getValue();
 
         try {
             PersistanceAPI api = new PersistanceAPI();
             api.registrarUsuario(
-                    nombreField.getText(),
-                    contrasenaField.getText(),
-                    correoField.getText(),
-                    nombreField.getText(),
+                    nombre,
+                    contrasena,
+                    correo,
+                    nombre,
                     rol.getId(),
-                    matriculaField.getText(),
-                    carreraField.getText(),
-                    legajoField.getText(),
-                    nombreEntidadField.getText(),
-                    cuitField.getText(),
+                    matricula,
+                    carrera,
+                    legajo,
+                    nombreEntidad,
+                    cuit,
                     direccionEntidadField.getText()
             );
-            System.out.println("Usuario registrado exitosamente");
+            volverLogin(actionEvent);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
 
 
 

@@ -4,7 +4,6 @@ import Backend.API.API;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -12,86 +11,45 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Controlador para la vista Home de estudiantes en la aplicación GPPS.
- * Maneja la interacción del usuario con la interfaz principal.
- */
-public class HomeController implements Initializable {
+public class HomeController  {
 
     private static final Logger LOGGER = Logger.getLogger(HomeController.class.getName());
 
     private API api;
     private ResourceBundle bundle;
 
-    @FXML
-    private Label lblBienvenida;
+    @FXML private Label lblBienvenida;
 
-    @FXML
-    private Label lblNombreUsuario;
+    @FXML private Label lblNombreUsuario;
 
-    @FXML
-    private Label lblEstadoPPS;
+    @FXML private Label lblEstadoPPS;
 
-    @FXML
-    private Label lblFechaInicio;
+    @FXML private Label lblFechaInicio;
 
-    @FXML
-    private Label lblFechaFin;
+    @FXML private Label lblFechaFin;
 
-    @FXML
-    private Label lblNoAvisos;
+    @FXML private Label lblNoAvisos;
 
-    @FXML
-    private VBox vboxNotificaciones;
+    @FXML private VBox vboxNotificaciones;
 
-    @FXML
-    private Button btnInscribir;
+    @FXML private Button btnInscribir;
 
-    @FXML
-    private Button btnListarPuestos;
+    @FXML private Button btnListarPuestos;
 
-    @FXML
-    private Button btnEntregarProyecto;
+    @FXML private Button btnEntregarProyecto;
 
-    @FXML
-    private Button btnPresentarPropuesta;
+    @FXML private Button btnPresentarPropuesta;
 
-    @FXML
-    private Button btnMensajes;
+    @FXML private Button btnMensajes;
 
-    @FXML
-    private Button btnCerrarSesion;
+    @FXML private Button btnCerrarSesion;
 
-    /**
-     * Constructor del controlador.
-     */
-    public HomeController() {
-        // El constructor se deja vacío ya que la inicialización se hará en el método initialize
-    }
 
-    /**
-     * Inicializa el controlador después de que se carga el FXML.
-     * Configura los componentes de la interfaz y carga los datos iniciales.
-     *
-     * @param location La ubicación utilizada para resolver rutas relativas para el objeto raíz.
-     * @param resources Los recursos utilizados para localizar el objeto raíz.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-/*
-            actualizarIdioma();
-            verificarEstadoPPS();
-            cargarAvisosRecientes();
-*/
-
-    }
 
     /**
      * Configura los textos de la interfaz según el idioma seleccionado.
@@ -188,9 +146,7 @@ public class HomeController implements Initializable {
         }
     }
 
-    /**
-     * Maneja la acción de inscribir a una PPS.
-     */
+
     @FXML
     public void inscribirPPS(ActionEvent event) {
         try {
@@ -201,9 +157,7 @@ public class HomeController implements Initializable {
         }
     }
 
-    /**
-     * Maneja la acción de listar puestos disponibles.
-     */
+
     @FXML
     public void listarPuestosDisponibles(ActionEvent event) {
         try {
@@ -214,9 +168,7 @@ public class HomeController implements Initializable {
         }
     }
 
-    /**
-     * Maneja la acción de entregar un proyecto.
-     */
+
     @FXML
     public void entregarProyecto(ActionEvent event) {
         try {
@@ -227,9 +179,7 @@ public class HomeController implements Initializable {
         }
     }
 
-    /**
-     * Maneja la acción de presentar una propuesta.
-     */
+
     @FXML
     public void presentarPropuesta(ActionEvent event) {
         try {
@@ -240,9 +190,7 @@ public class HomeController implements Initializable {
         }
     }
 
-    /**
-     * Maneja la acción de ver mensajes.
-     */
+
     @FXML
     public void verMensajes(ActionEvent event) {
         try {
@@ -253,9 +201,7 @@ public class HomeController implements Initializable {
         }
     }
 
-    /**
-     * Maneja la acción de cerrar sesión.
-     */
+
     @FXML
     public void cerrarSesion(ActionEvent event) {
         try {
@@ -282,13 +228,6 @@ public class HomeController implements Initializable {
         }
     }
 
-    /**
-     * Método auxiliar para navegar entre ventanas.
-     *
-     * @param fxmlPath Ruta al archivo FXML de destino
-     * @param title Título para la nueva ventana
-     * @throws IOException Si ocurre un error al cargar el FXML
-     */
     private void navegarA(String fxmlPath, String title) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
         Parent root = loader.load();
@@ -304,13 +243,7 @@ public class HomeController implements Initializable {
         stage.show();
     }
 
-    /**
-     * Muestra una alerta al usuario.
-     *
-     * @param titulo El título de la alerta.
-     * @param mensaje El mensaje a mostrar.
-     * @param tipo El tipo de alerta (INFO, WARNING, ERROR, etc.).
-     */
+
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
@@ -319,11 +252,6 @@ public class HomeController implements Initializable {
         alert.showAndWait();
     }
 
-    /**
-     * Método público para establecer la API, utilizado cuando se navega desde otra vista.
-     *
-     * @throws Exception Si ocurre un error al configurar la API
-     */
     public void setPersistenceAPI(API persistenceAPI) throws Exception {
         this.api = persistenceAPI;
         this.bundle = api.obtenerIdioma();
