@@ -15,10 +15,10 @@
             <VBox alignment="TOP_LEFT" layoutX="0.0" layoutY="0.0" prefHeight="550.0" prefWidth="200.0" spacing="5.0" styleClass="sidebar" stylesheets="@../StyleSheets/home.css">
                 <Label alignment="CENTER" prefHeight="60.0" prefWidth="200.0" styleClass="app-title" text="GPPS" />
 
-                <Button fx:id="btnInscribir" maxWidth="200.0" onAction="#inscribirPPS" prefHeight="50.0" prefWidth="200.0" styleClass="menu-button" text="Inscribir a PPS" />
-                <Button fx:id="btnListarPuestos" maxWidth="200.0" onAction="#listarPuestosDisponibles" prefHeight="50.0" prefWidth="200.0" styleClass="menu-button" text="Listar puestos disponibles" />
-                <Button fx:id="btnEntregarProyecto" maxWidth="200.0" onAction="#entregarProyecto" prefHeight="50.0" prefWidth="200.0" styleClass="menu-button" text="Entregar Proyecto" />
+                <Button fx:id="btnPuestosDisponibles" maxWidth="200.0" onAction="#PuestosDisponibles" prefHeight="50.0" prefWidth="200.0" styleClass="menu-button" text="Puestos Disponibles" />
+                <Button fx:id="btnTareas" maxWidth="200.0" onAction="#Tareas" prefHeight="50.0" prefWidth="200.0" styleClass="menu-button" text="Tareas" />
                 <Button fx:id="btnPresentarPropuesta" maxWidth="200.0" onAction="#presentarPropuesta" prefHeight="50.0" prefWidth="200.0" styleClass="menu-button" text="Presentar Propuesta" />
+                <Button fx:id="btnInformes" maxWidth="200.0" onAction="#Informes" prefHeight="50.0" prefWidth="200.0" styleClass="menu-button" text="informes" />
                 <Button fx:id="btnMensajes" maxWidth="200.0" onAction="#verMensajes" prefHeight="50.0" prefWidth="200.0" styleClass="menu-button" text="Mensajes" />
 
                 <AnchorPane prefHeight="200" VBox.vgrow="ALWAYS" />

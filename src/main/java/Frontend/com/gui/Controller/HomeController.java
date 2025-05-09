@@ -39,17 +39,16 @@ public class HomeController  {
 
     @FXML private VBox vboxNotificaciones;
 
-    @FXML private Button btnInscribir;
+    @FXML private Button btnPuestosDisponibles;
 
-    @FXML private Button btnListarPuestos;
-
-    @FXML private Button btnEntregarProyecto;
+    @FXML public Button btnTareas;
 
     @FXML private Button btnPresentarPropuesta;
 
     @FXML private Button btnMensajes;
 
     @FXML private Button btnCerrarSesion;
+    @FXML public Button btnInformes;
 
 
 
@@ -60,9 +59,8 @@ public class HomeController  {
         try {
             // Obtener textos del bundle de idioma
             lblBienvenida.setText(bundle.getString("label.bienvenida"));
-            btnInscribir.setText(bundle.getString("button.inscribir"));
-            btnListarPuestos.setText(bundle.getString("button.listarPuestos"));
-            btnEntregarProyecto.setText(bundle.getString("button.entregarProyecto"));
+            btnPuestosDisponibles.setText(bundle.getString("button.puestos"));
+            btnTareas.setText(bundle.getString("button.Tareas"));
             btnPresentarPropuesta.setText(bundle.getString("button.presentarPropuesta"));
             btnMensajes.setText(bundle.getString("button.mensajes"));
             btnCerrarSesion.setText(bundle.getString("button.cerrarSesion"));
@@ -150,34 +148,23 @@ public class HomeController  {
 
 
     @FXML
-    public void inscribirPPS(ActionEvent event) {
+    public void PuestosDisponibles(ActionEvent event) {
         try {
-            navegarA("/Frontend/vistas/InscripcionPPS.fxml", "Inscripción a PPS - GPPS", event);
+            navegarA("/Frontend/vistas/PuestosDisponibles.fxml", "Puestos para PPS Disponibles", event);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al navegar a inscripción PPS", e);
-            mostrarAlerta("Error", "No se pudo abrir el formulario de inscripción", Alert.AlertType.ERROR);
-        }
-    }
-
-
-    @FXML
-    public void listarPuestosDisponibles(ActionEvent event) {
-        try {
-            navegarA("/Frontend/vistas/ListadoPuestos.fxml", "Puestos Disponibles - GPPS", event);
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error al navegar a listado de puestos", e);
             mostrarAlerta("Error", "No se pudo abrir el listado de puestos", Alert.AlertType.ERROR);
         }
     }
 
 
     @FXML
-    public void entregarProyecto(ActionEvent event) {
+    public void Tareas(ActionEvent event) {
         try {
-            navegarA("/Frontend/vistas/EntregaProyecto.fxml", "Entrega de Proyecto - GPPS", event);
+            navegarA("/Frontend/vistas/Tareas.fxml", "Tareas - GPPS", event);
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error al navegar a entrega de proyecto", e);
-            mostrarAlerta("Error", "No se pudo abrir el formulario de entrega de proyecto", Alert.AlertType.ERROR);
+            LOGGER.log(Level.SEVERE, "Error al navegar a listado de puestos", e);
+            mostrarAlerta("Error", "No se pudo abrir el listado de puestos", Alert.AlertType.ERROR);
         }
     }
 
@@ -202,6 +189,17 @@ public class HomeController  {
             mostrarAlerta("Error", "No se pudo abrir la bandeja de mensajes", Alert.AlertType.ERROR);
         }
     }
+
+    @FXML
+    public void verInformes(ActionEvent event) {
+        try {
+            navegarA("/Frontend/vistas/Informes.fxml", "Informes - GPPS", event);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al navegar a informes", e);
+            mostrarAlerta("Error", "No se pudo abrir la ventana de informes", Alert.AlertType.ERROR);
+        }
+    }
+
 
 
     @FXML
@@ -264,5 +262,8 @@ public class HomeController  {
         actualizarIdioma();
         verificarEstadoPPS();
         cargarAvisosRecientes();
+    }
+
+    public void Informes(ActionEvent actionEvent) {
     }
 }
