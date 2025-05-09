@@ -60,7 +60,7 @@ public class PersistanceAPI implements API {
     @Override
     public void desactivarUsuario(String username) throws UserExceptions, UpdateException{
         Usuario user = UsuarioDAODB.findByUsername(username);
-        Usuario userDB = new Usuario(user.getId(), user.getUsername(), user.getContrasena(),
+        Usuario userDB = new Usuario(user.getIdUsuario(), user.getUsername(), user.getContrasena(),
                 user.getNombre(), user.getEmail(), user.getRol());
         userDB.desactivar();
         UsuarioDAODB.update(userDB);
@@ -96,7 +96,7 @@ public class PersistanceAPI implements API {
             userSession = user;
 
             return new UsuarioDTO(
-                    user.getId(),
+                    user.getIdUsuario(),
                     user.getUsername(),
                     user.getContrasena(),
                     user.getNombre(),
@@ -150,7 +150,7 @@ public class PersistanceAPI implements API {
     @Override
     public UsuarioDTO obtenerSesionDeUsuario() {
         RolDTO rol = convertirARolDTO(userSession.getRol());
-        UsuarioDTO user = new UsuarioDTO(userSession.getId(), userSession.getUsername(), userSession.getContrasena(), userSession.getNombre(),
+        UsuarioDTO user = new UsuarioDTO(userSession.getIdUsuario(), userSession.getUsername(), userSession.getContrasena(), userSession.getNombre(),
                 userSession.getEmail(), rol, userSession.isActivo());
         return user;
     }
@@ -160,7 +160,7 @@ public class PersistanceAPI implements API {
         UsuarioDTO usuarioDTO=null;
         Usuario usuario = UsuarioDAODB.findByUsername(username);
         RolDTO rol = convertirARolDTO(usuario.getRol());
-        usuarioDTO = new UsuarioDTO(usuario.getId(), usuario.getUsername(),
+        usuarioDTO = new UsuarioDTO(usuario.getIdUsuario(), usuario.getUsername(),
                 usuario.getContrasena(), usuario.getNombre(),
                 usuario.getEmail(), rol, usuario.isActivo());
         return usuarioDTO;
@@ -186,7 +186,7 @@ public class PersistanceAPI implements API {
 
             for (Usuario usuario : usuarios) {
                 RolDTO rol = convertirARolDTO(usuario.getRol());
-                usuarioDTOs.add(new UsuarioDTO(usuario.getId(), usuario.getUsername(), usuario.getContrasena(),
+                usuarioDTOs.add(new UsuarioDTO(usuario.getIdUsuario(), usuario.getUsername(), usuario.getContrasena(),
                         usuario.getNombre(), usuario.getEmail(), rol, usuario.isActivo()));
             }
             return usuarioDTOs;
@@ -221,9 +221,18 @@ public class PersistanceAPI implements API {
         // Crear el objeto Usuario
         Usuario usuario = new Usuario(username, password, nombre, email, rol);
 
+        if (rol.getNombre().equals("Estudiante")){
+            Estudiante estudiante=new Estudiante(usuario,matricula,carrera);
+            estudiante.setMatricula(matricula);
+            estudiante.setCarrera(carrera);
+        }
+        if (rol.getNombre().equals("Docente")){}
+        if (rol.getNombre().equals("Representante de Entidad Colaboradora")){}
+        if (rol.getNombre().equals("Tutor externo")){}
+        if (rol.getNombre().equals("Director de Carrera")){}
+        if (rol.getNombre().equals("Administrador")){}
+
         // Asignar atributos adicionales si aplican
-        usuario.setMatricula(matricula);
-        usuario.setCarrera(carrera);
         usuario.setLegajo(legajo);
         usuario.setNombreEntidad(nombreEntidad);
         usuario.setCuit(cuit);

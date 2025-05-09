@@ -39,8 +39,8 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
             statement.setBoolean(7, user.isActivo());
 
             // Extras por tipo de usuario
-            statement.setString(8, user.getMatricula());         // Estudiante
-            statement.setString(9, user.getCarrera());           // Estudiante
+            statement.setString(8, "user.getMatricula()");         // Estudiante
+            statement.setString(9, "user.getCarrera()");           // Estudiante
             statement.setString(10, user.getLegajo());           // Docente
             statement.setString(11, user.getNombreEntidad());    // Entidad
             statement.setString(12, user.getCuit());             // Entidad
@@ -115,7 +115,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
             statement.setString(3, user.getEmail());
             statement.setBoolean(4, user.isActivo());
             statement.setInt(5, user.getRol().getId());
-            statement.setInt(6, user.getId());
+            statement.setInt(6, user.getIdUsuario());
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected < 1) {
