@@ -1,9 +1,11 @@
-package Frontend.com.gui.Controller;
+package Frontend.com.main;
 
 
 import Backend.API.API;
 import Backend.API.PersistanceAPI;
 import Backend.DTO.RolDTO;
+import Backend.Exceptions.RegisterExceptions;
+import Backend.Exceptions.UserExceptions;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +22,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class RegistroController {
+    API api;
 
     @FXML public Label registroField;
     @FXML public Button BottonRegistrarse;
@@ -38,8 +41,7 @@ public class RegistroController {
     @FXML private TextField cuitField;
     @FXML private TextField dni;
     @FXML private Button volver_login;
-    API api;
-  
+
     @FXML
     private TextField direccionEntidadField;
 
@@ -55,6 +57,13 @@ public class RegistroController {
                     nombreRol.equals("Tutor externo");
             camposEntidad.setVisible(esEntidadOTutor);
         });
+        // Agregar un ChangeListener para permitir solo números y máximo de 6 dígitos
+        matriculaField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d{0,6}")) {
+                matriculaField.setText(oldValue);
+            }
+        });
+
     }
 
 
@@ -78,7 +87,7 @@ public class RegistroController {
             ((Stage) ((Button) event.getSource()).getScene().getWindow()).close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            mostrarAlerta("Error", "Ocurrió un error al intentar volver\n" + e.getMessage());
         }
     }
 
@@ -87,6 +96,7 @@ public class RegistroController {
         actualizarIdioma();
         inicializarRoles();
     }
+
     private void actualizarIdioma() {
         ResourceBundle bundle = api.obtenerIdioma();
 
@@ -107,13 +117,12 @@ public class RegistroController {
         //Botones
         BottonRegistrarse.setText(bundle.getString("button.registrarse"));
         volver_login.setText(bundle.getString("button.volver"));
-
     }
+
     private void inicializarRoles() throws Exception {
         rolComboBox.getItems().clear(); // Evita duplicados si se llama varias veces
         List<RolDTO> roles = api.obtenerRoles();
         rolComboBox.getItems().addAll(roles);
-
     }
 
     @FXML
@@ -126,14 +135,13 @@ public class RegistroController {
         String matricula = camposEstudiante.isVisible() ? matriculaField.getText() : "";
         String carrera = camposEstudiante.isVisible() ? carreraField.getText() : "";
         String legajo = camposDocente.isVisible() ? legajoField.getText() : "";
-
+ 
         String nombreEntidad = camposEntidad.isVisible() ? nombreEntidadField.getText() : "";
         String cuit = camposEntidad.isVisible() ? cuitField.getText() : "";
 
         RolDTO rol = rolComboBox.getValue();
 
         try {
-            PersistanceAPI api = new PersistanceAPI();
             api.registrarUsuario(
                     nombre,
                     contrasena,
@@ -148,10 +156,20 @@ public class RegistroController {
                     direccionEntidadField.getText()
             );
             volverLogin(actionEvent);
+            mostrarAlerta("Registro Exitoso", "Usuario registrado exitosamente.");
         } catch (Exception e) {
-            e.printStackTrace();
+            mostrarAlerta("Error de Registro", "Ocurrió un error al registrar el usuario:\n" + e.getMessage());
         }
     }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
+    }
+
 
 
 
