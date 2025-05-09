@@ -1,67 +1,49 @@
-package Frontend.com.main;
+package Frontend.com.gui;
 
 
 import Backend.API.API;
+import Backend.API.PersistanceAPI;
 import Backend.DTO.RolDTO;
-import Backend.Exceptions.RegisterExceptions;
-import Backend.Exceptions.UserExceptions;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import java.util.ResourceBundle;
 
 public class RegistroController {
 
-    @FXML
-    private TextField nombreField;
-    @FXML
-    private TextField correoField;
-    @FXML
-    private PasswordField contrasenaField;
-    @FXML
-    private PasswordField confirmarContrasenaField;
-    @FXML
-    private ComboBox<RolDTO> rolComboBox;
-    @FXML
-    private VBox camposEstudiante;
-    @FXML
-    private TextField matriculaField;
-    @FXML
-    private TextField carreraField;
-    @FXML
-    private VBox camposDocente;
-    @FXML
-    private TextField legajoField;
-    @FXML
-    private VBox camposEntidad;
-    @FXML
-    private TextField nombreEntidadField;
-    @FXML
-    private TextField cuitField;
-    @FXML
-
-    private TextField nombreContactoField;
+    @FXML public Label registroField;
+    @FXML public Button BottonRegistrarse;
+    @FXML private TextField nombreField;
+    @FXML private TextField correoField;
+    @FXML private PasswordField contrasenaField;
+    @FXML private PasswordField confirmarContrasenaField;
+    @FXML private ComboBox<RolDTO> rolComboBox;
+    @FXML private VBox camposEstudiante;
+    @FXML private TextField matriculaField;
+    @FXML private TextField carreraField;
+    @FXML private VBox camposDocente;
+    @FXML private TextField legajoField;
+    @FXML private VBox camposEntidad;
+    @FXML private TextField nombreEntidadField;
+    @FXML private TextField cuitField;
+    @FXML private TextField dni;
+    @FXML private Button volver_login;
     API api;
   
+    @FXML
     private TextField direccionEntidadField;
 
-    public void initialize() {
-        inicializarRoles(); // ✔ primero cargar los roles
-
+    public void initialize() throws Exception {
         rolComboBox.setOnAction((ActionEvent event) -> {
             RolDTO selectedRol = rolComboBox.getValue(); // ✔ ya es un RolDTO
             String nombreRol = selectedRol != null ? selectedRol.getNombre() : "";
@@ -100,14 +82,17 @@ public class RegistroController {
         }
     }
 
-    public void setPersistenceAPI(API persistenceAPI) {
+    public void setPersistenceAPI(API persistenceAPI) throws Exception {
         this.api = persistenceAPI;
         actualizarIdioma();
+        inicializarRoles();
     }
     private void actualizarIdioma() {
         ResourceBundle bundle = api.obtenerIdioma();
 
         // Labels
+        registroField.setText(bundle.getString("label.registro"));
+        dni.setPromptText(bundle.getString("label.dni"));
         nombreField.setPromptText(bundle.getString("label.nombre"));
         correoField.setPromptText(bundle.getString("label.correo"));
         contrasenaField.setPromptText(bundle.getString("label.contrasena"));
@@ -117,49 +102,39 @@ public class RegistroController {
         legajoField.setPromptText(bundle.getString("label.legajo"));
         nombreEntidadField.setPromptText(bundle.getString("label.nombreEntidad"));
         cuitField.setPromptText(bundle.getString("label.cuit"));
-        nombreContactoField.setPromptText(bundle.getString("label.nombreContacto"));
-
         // ComboBox
         rolComboBox.setPromptText(bundle.getString("combo.rol"));
-      
-    private void inicializarRoles() {
-        rolComboBox.getItems().clear(); // Evita duplicados si se llama varias veces
+        //Botones
+        BottonRegistrarse.setText(bundle.getString("button.registrarse"));
+        volver_login.setText(bundle.getString("button.volver"));
 
-        rolComboBox.getItems().addAll(
-                new RolDTO(1, "Estudiante", true),
-                new RolDTO(2, "Docente", true),
-                new RolDTO(3, "Representante de Entidad Colaboradora", true),
-                new RolDTO(4, "Tutor externo", true)
-        );
+    }
+    private void inicializarRoles() throws Exception {
+        rolComboBox.getItems().clear(); // Evita duplicados si se llama varias veces
+        List<RolDTO> roles = api.obtenerRoles();
+        rolComboBox.getItems().addAll(roles);
+
     }
 
-
-
     @FXML
-    private void registrarse() {
+    private void registrarse(ActionEvent actionEvent) {
 
         String nombre = nombreField.getText();
         String correo = correoField.getText();
         String contrasena = contrasenaField.getText();
         String confirmarContrasena = confirmarContrasenaField.getText();
-        String rol = rolComboBox.getValue();
+
 
         String matricula = camposEstudiante.isVisible() ? matriculaField.getText() : "";
         String carrera = camposEstudiante.isVisible() ? carreraField.getText() : "";
         String legajo = camposDocente.isVisible() ? legajoField.getText() : "";
  
-        String nombreEntidad = camposEntidad_o_Tutor.isVisible() ? nombreEntidadField.getText() : "";
-        String cuit = camposEntidad_o_Tutor.isVisible() ? cuitField.getText() : "";
-        String nombreContacto = camposEntidad_o_Tutor.isVisible() ? nombreContactoField.getText() : "";
+        String nombreEntidad = camposEntidad.isVisible() ? nombreEntidadField.getText() : "";
+        String cuit = camposEntidad.isVisible() ? cuitField.getText() : "";
 
-        System.out.println("Registrando a: " + nombre + ", Correo: " + correo + ", Rol: " + rol);
-        if (!matricula.isEmpty()) System.out.println("Matrícula: " + matricula + ", Carrera: " + carrera);
-        if (!nombreEntidad.isEmpty()) System.out.println("Entidad: " + nombreEntidad + ", CUIT: " + cuit + ", Contacto: " + nombreContacto);
-
-        //lógica para guardar los datos del usuario
 
         RolDTO rol = rolComboBox.getValue();
-        System.out.println(rol.getNombre() + rol.getId());
+
         try {
             PersistanceAPI api = new PersistanceAPI();
             api.registrarUsuario(
