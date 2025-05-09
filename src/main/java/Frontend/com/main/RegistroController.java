@@ -42,7 +42,7 @@ public class RegistroController {
     @FXML private TextField dni;
     @FXML private Button volver_login;
     API api;
-  
+
     @FXML
     private TextField direccionEntidadField;
 
@@ -58,6 +58,13 @@ public class RegistroController {
                     nombreRol.equals("Tutor externo");
             camposEntidad.setVisible(esEntidadOTutor);
         });
+        // Agregar un ChangeListener para permitir solo números y máximo de 6 dígitos
+        matriculaField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d{0,6}")) {
+                matriculaField.setText(oldValue);
+            }
+        });
+
     }
 
 
@@ -68,7 +75,6 @@ public class RegistroController {
             Parent root = loader.load();
             // Obtener el controlador
             IngresoController controller = loader.getController();
-
             // Crear y pasar la instancia de PersistenceAPI
             controller.setPersistenceAPI(api);
 
@@ -92,7 +98,6 @@ public class RegistroController {
     }
     private void actualizarIdioma() {
         ResourceBundle bundle = api.obtenerIdioma();
-
         // Labels
         registroField.setText(bundle.getString("label.registro"));
         dni.setPromptText(bundle.getString("label.dni"));
@@ -121,44 +126,50 @@ public class RegistroController {
 
     @FXML
     private void registrarse(ActionEvent actionEvent) {
-
         String nombre = nombreField.getText();
         String correo = correoField.getText();
         String contrasena = contrasenaField.getText();
         String confirmarContrasena = confirmarContrasenaField.getText();
 
-
-        String matricula = camposEstudiante.isVisible() ? matriculaField.getText() : "";
+        String matriculaText = camposEstudiante.isVisible() ? matriculaField.getText() : "";
         String carrera = camposEstudiante.isVisible() ? carreraField.getText() : "";
         String legajo = camposDocente.isVisible() ? legajoField.getText() : "";
- 
+
         String nombreEntidad = camposEntidad.isVisible() ? nombreEntidadField.getText() : "";
         String cuit = camposEntidad.isVisible() ? cuitField.getText() : "";
-
 
         RolDTO rol = rolComboBox.getValue();
 
         try {
-            PersistanceAPI api = new PersistanceAPI();
+//            PersistanceAPI api = new PersistanceAPI();
             api.registrarUsuario(
                     nombreField.getText(),
                     contrasenaField.getText(),
                     correoField.getText(),
                     nombreField.getText(),
                     rol.getId(),
-                    matriculaField.getText(),
+                    matriculaText,
                     carreraField.getText(),
                     legajoField.getText(),
                     nombreEntidadField.getText(),
                     cuitField.getText(),
                     direccionEntidadField.getText()
             );
-            System.out.println("Usuario registrado exitosamente");
+            mostrarAlerta("Registro Exitoso", "Usuario registrado exitosamente.");
         } catch (Exception e) {
+            mostrarAlerta("Error de Registro", "Ocurrió un error al registrar el usuario:\n" + e.getMessage());
             e.printStackTrace();
         }
 
     }
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
+    }
+
 
 
 

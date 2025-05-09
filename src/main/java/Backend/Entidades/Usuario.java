@@ -3,7 +3,7 @@ package Backend.Entidades;
 import Backend.Exceptions.UserExceptions;
 
 public class Usuario {
-    private int id;
+    private int idUsuario;
     private String username;
     private String contrasena;
     private String nombre;
@@ -12,8 +12,8 @@ public class Usuario {
     private int dni;
     private Rol rol;
 
-    private String matricula;
-    private String carrera;
+//    private String matricula;
+//    private String carrera;
 
     private String Legajo;
 
@@ -65,7 +65,7 @@ public class Usuario {
             throw new UserExceptions("Debe completar el nombre");
         }
 
-        this.id = id;
+        this.idUsuario = id;
         this.username = username;
         this.contrasena = contrasena;
         this.nombre = nombre;
@@ -73,12 +73,12 @@ public class Usuario {
         this.rol = rol;
     }
 
-    public int getId() {
-        return id;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getUsername() {
@@ -121,13 +121,13 @@ public class Usuario {
         this.rol = rol;
     }
 
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
-
-    public String getMatricula() {
-        return matricula;
-    }
+//    public void setMatricula(int matricula) {
+//        this.matricula = matricula;
+//    }
+//
+//    public String getMatricula() {
+//        return matricula;
+//    }
 
     public String getLegajo() {
         return Legajo;
@@ -161,13 +161,13 @@ public class Usuario {
         this.direccionEntidad = direccionEntidad;
     }
 
-    public void setCarrera(String carrera) {
-        this.carrera = carrera;
-    }
-
-    public String getCarrera() {
-        return carrera;
-    }
+//    public void setCarrera(String carrera) {
+//        this.carrera = carrera;
+//    }
+//
+//    public String getCarrera() {
+//        return carrera;
+//    }
 
     public boolean isActivo() {
         return activo;
