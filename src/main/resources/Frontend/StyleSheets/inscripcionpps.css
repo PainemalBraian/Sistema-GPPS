@@ -1,0 +1,123 @@
+/* Estilo base para el panel principal */
+.root {
+    -fx-background-color: #f4f4f4; /* Color de fondo claro */
+}
+
+/* Estilo para el panel de la lista (izquierda) */
+.list-pane {
+    -fx-background-color: #ffffff; /* Fondo blanco para la lista */
+    -fx-border-color: #d3d3d3; /* Borde ligero */
+    -fx-border-width: 0 1px 0 0; /* Solo borde derecho */
+}
+
+/* Estilo para el título del panel */
+.panel-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333; /* Color de texto oscuro */
+    -fx-padding: 0 0 10px 0; /* Espacio inferior */
+}
+
+/* Estilo para la lista de oportunidades */
+.opportunity-list {
+    -fx-background-color: transparent; /* Fondo transparente para que se vea el fondo del panel */
+    -fx-border-color: transparent; /* Sin borde */
+}
+
+/* Estilo para cada item de la lista (celda) */
+.opportunity-list .list-cell {
+    -fx-background-color: transparent; /* Fondo transparente */
+    -fx-padding: 10px; /* Espaciado interno */
+    -fx-border-color: #eeeeee; /* Separador entre items */
+    -fx-border-width: 0 0 1px 0; /* Borde inferior */
+    -fx-text-fill: #555555; /* Color de texto */
+    -fx-font-size: 13px;
+}
+
+/* Estilo cuando se selecciona un item de la lista */
+.opportunity-list .list-cell:selected {
+    -fx-background-color: #e0e0e0; /* Fondo gris claro al seleccionar */
+    -fx-text-fill: #000000; /* Color de texto más oscuro */
+}
+
+/* Estilo cuando se pasa el mouse sobre un item de la lista */
+.opportunity-list .list-cell:hover {
+     -fx-background-color: #f0f0f0; /* Fondo un poco más claro al pasar el mouse */
+}
+
+
+/* Estilo para el panel de detalles (derecha) */
+.detail-pane {
+    -fx-background-color: #ffffff; /* Fondo blanco para los detalles */
+    -fx-padding: 10px;
+}
+
+/* Estilo para el contenedor de detalles */
+.vbox-detail {
+    /* Puedes añadir estilos específicos aquí si es necesario */
+}
+
+/* Estilo para el título de la oportunidad en los detalles */
+.detail-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0077b5; /* Color que simula el azul de LinkedIn */
+    -fx-padding: 0 0 5px 0;
+}
+
+/* Estilo para los subtítulos (Empresa, Área, Vacantes) */
+.detail-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666666; /* Color de texto gris */
+    -fx-padding: 0 0 2px 0;
+}
+
+/* Estilo para las etiquetas de descripción y requisitos */
+.detail-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-padding: 10px 0 5px 0; /* Espacio antes y después */
+}
+
+/* Estilo para las áreas de texto (descripción, requisitos) */
+.detail-description, .detail-requirements {
+    -fx-font-size: 13px;
+    -fx-text-fill: #444444;
+    -fx-control-inner-background: #f9f9f9; /* Fondo ligeramente diferente */
+    -fx-border-color: #d3d3d3;
+    -fx-border-radius: 3px;
+    -fx-padding: 5px;
+}
+
+/* Estilo para el botón de inscripción */
+.inscribe-button {
+    -fx-background-color: #0077b5; /* Azul de LinkedIn */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand; /* Cambia el cursor al pasar por encima */
+}
+
+.inscribe-button:hover {
+    -fx-background-color: #005582; /* Azul más oscuro al pasar el mouse */
+}
+
+.inscribe-button:pressed {
+    -fx-background-color: #00334f; /* Azul aún más oscuro al presionar */
+}
+
+.inscribe-button:disabled {
+    -fx-background-color: #cccccc; /* Gris para botón deshabilitado */
+    -fx-text-fill: #666666;
+    -fx-cursor: default;
+}
+
+/* Estilo para las alertas */
+.alert-text {
+    -fx-fill: red; /* Color rojo para mensajes de error en Labels */
+    -fx-font-weight: bold;
+}
