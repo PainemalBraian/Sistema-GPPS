@@ -21,6 +21,8 @@ import java.util.List;
 
 import java.util.ResourceBundle;
 
+import static java.util.Objects.isNull;
+
 public class RegistroController {
     API api;
 
@@ -135,13 +137,18 @@ public class RegistroController {
         String matricula = camposEstudiante.isVisible() ? matriculaField.getText() : "";
         String carrera = camposEstudiante.isVisible() ? carreraField.getText() : "";
         String legajo = camposDocente.isVisible() ? legajoField.getText() : "";
- 
+
         String nombreEntidad = camposEntidad.isVisible() ? nombreEntidadField.getText() : "";
         String cuit = camposEntidad.isVisible() ? cuitField.getText() : "";
 
         RolDTO rol = rolComboBox.getValue();
 
         try {
+            if (isNull(rol))
+                throw new RuntimeException("Debes seleccionar un rol");
+            if (!contrasena.equals(confirmarContrasena))
+                throw new RuntimeException("Las contraseñas deben coincidir");
+
             api.registrarUsuario(
                     nombre,
                     contrasena,

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Backend.DAO.interfaces.USUARIODAO;
+import Backend.Entidades.Estudiante;
 import Backend.Exceptions.ConnectionException;
 import Backend.Exceptions.DeleteException;
 import Backend.Exceptions.RegisterExceptions;
@@ -19,37 +20,40 @@ import Backend.Entidades.Usuario;
 public class UsuarioDAODB extends DBAcces implements USUARIODAO {
 
     @Override
-    public void create(Object usuario) throws RegisterExceptions {
+    public int create(Object usuario) throws RegisterExceptions {
         Usuario user = (Usuario) usuario;
         try {
             Connection conn = connect();
-
             PreparedStatement statement = conn.prepareStatement(
-                    "INSERT INTO Usuarios(nombre, apellido, email, username, password, idRol, activo, " +
-                            "matricula, carrera, legajo, nombreEntidad, cuit, direccionEntidad) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO Usuarios(nombreCompleto, email, username, password, idRol, activo) " +
+                            "VALUES (?, ?, ?, ?, ?, ?)", //, " + "matricula, carrera, legajo, nombreEntidad, cuit, direccionEntidad
+                    PreparedStatement.RETURN_GENERATED_KEYS
             );
 
             statement.setString(1, user.getNombre());
-            statement.setString(2, "-"); // Apellido por defecto
-            statement.setString(3, user.getEmail());
-            statement.setString(4, user.getUsername());
-            statement.setString(5, user.getContrasena());
-            statement.setInt(6, user.getRol().getId());
-            statement.setBoolean(7, user.isActivo());
+            statement.setString(2, user.getEmail());
+            statement.setString(3, user.getUsername());
+            statement.setString(4, user.getContrasena());
+            statement.setInt(5, user.getRol().getId());
+            statement.setBoolean(6, user.isActivo());
 
-            // Extras por tipo de usuario
-            statement.setString(8, "user.getMatricula()");         // Estudiante
-            statement.setString(9, "user.getCarrera()");           // Estudiante
-            statement.setString(10, user.getLegajo());           // Docente
-            statement.setString(11, user.getNombreEntidad());    // Entidad
-            statement.setString(12, user.getCuit());             // Entidad
-            statement.setString(13, user.getDireccionEntidad()); // Entidad
-
-
-            statement.executeUpdate();  // Cambié executeQuery() por executeUpdate()
+//            // Extras por tipo de usuario
+//            statement.setString(10, user.getLegajo());           // Docente
+//            statement.setString(11, user.getNombreEntidad());    // Entidad
+//            statement.setString(12, user.getCuit());             // Entidad
+//            statement.setString(13, user.getDireccionEntidad()); // Entidad
+//
+            statement.executeUpdate();
+            // Obtener el ID generado
+            ResultSet rs = statement.getGeneratedKeys();
+            int idGenerado = 0;
+            if (rs.next()) {
+                idGenerado = rs.getInt(1);
+            }
+            rs.close();
             statement.close();
             disconnect();
+            return idGenerado;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RegisterExceptions("Error al crear y guardar el usuario: " + e.getMessage());
@@ -105,7 +109,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
         }
 
         Usuario user = (Usuario) objeto;
-        String sql = "UPDATE Usuarios SET nombre = ?, password = ?, email = ?, activo = ?, idRol = ? WHERE idUsuario = ?";
+        String sql = "UPDATE Usuarios SET nombreCompleto = ?, password = ?, email = ?, activo = ?, idRol = ? WHERE idUsuario = ?";
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -148,7 +152,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
                 user = new Usuario(result.getInt("idUsuario"),
                         result.getString("username"),
                         result.getString("password"),
-                        result.getString("nombre"),
+                        result.getString("nombreCompleto"),
                         result.getString("email"),
                         null
                 );
@@ -188,22 +192,22 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
         }
     }
 
-    public void delete(String username) throws SQLException {
-        String sql = "DELETE FROM Usuarios WHERE idUsuario = ?";
-
-        try (Connection conn = connect();
-             PreparedStatement statement = conn.prepareStatement(sql)) {
-
-            statement.setString(1, username);
-            int rowsAffected = statement.executeUpdate();
-
-            if (rowsAffected < 1) {
-                throw new SQLException("No se ha podido eliminar el usuario");
-            }
-        }catch(ConnectionException e){
-            throw new SQLException(e.getMessage());
-        }
-    }
+//    public void delete(String username) throws SQLException {
+//        String sql = "DELETE FROM Usuarios WHERE idUsuario = ?";
+//
+//        try (Connection conn = connect();
+//             PreparedStatement statement = conn.prepareStatement(sql)) {
+//
+//            statement.setString(1, username);
+//            int rowsAffected = statement.executeUpdate();
+//
+//            if (rowsAffected < 1) {
+//                throw new SQLException("No se ha podido eliminar el usuario");
+//            }
+//        }catch(ConnectionException e){
+//            throw new SQLException(e.getMessage());
+//        }
+//    }
     @Override
     public Usuario findByUsername(String username) throws UserExceptions {
         try {
@@ -244,7 +248,6 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
         }
     }
 
-
     @Override
     public Usuario findById(int id) throws SQLException, UserExceptions {
         try {
@@ -261,7 +264,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
                 rol.setActivo(result.getBoolean("activo"));
 
                 Usuario usuario = new Usuario(result.getInt("idUsuario"), result.getString("username"),
-                        result.getString("password"), result.getString("nombre"),
+                        result.getString("password"), result.getString("nombreCompleto"),
                         result.getString("email"), rol);
                 usuario.activar();
                 return usuario;
