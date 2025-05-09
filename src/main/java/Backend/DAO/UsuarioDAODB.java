@@ -204,36 +204,45 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO{
         }
     }
     @Override
-    public Usuario findByUsername(String username) throws  UserExceptions {
+    public Usuario findByUsername(String username) throws UserExceptions {
         try {
             Connection conn = connect();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Usuarios u JOIN Roles ON u.idRol = Roles.idRol WHERE username = ?");
+            PreparedStatement statement = conn.prepareStatement(
+                    "SELECT * FROM Usuarios u JOIN Roles r ON u.idRol = r.id WHERE u.username = ?"
+            );
             statement.setString(1, username);
 
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
+                Rol rol = new Rol(
+                        result.getInt("idRol"),  // viene de Usuarios, así que sí existe
+                        result.getString("r.nombre")
+                );
+                rol.setActivo(result.getBoolean("r.activoRol"));
 
-                Rol rol = new Rol(result.getInt("idRol"), result.getString("Roles.nombre"));
+                Usuario usuario = new Usuario(
+                        result.getInt("u.id"),
+                        result.getString("u.username"),
+                        result.getString("u.password"),
+                        result.getString("u.nombre"),
+                        result.getString("u.email"),
+                        rol
+                );
+                usuario.setActivo(result.getBoolean("u.activo"));
 
-                rol.setActivo(result.getBoolean("activo"));
-
-                Usuario usuario = new Usuario(result.getInt("idUsuario"), result.getString("username"),
-                        result.getString("password"), result.getString("nombre"),
-                        result.getString("email"), rol);
-
-                usuario.setActivo(result.getBoolean("activo"));
                 return usuario;
             } else {
                 throw new UserExceptions("Usuario no encontrado.");
             }
 
-        } catch(ConnectionException e){
+        } catch (ConnectionException e) {
             throw new UserExceptions(e.getMessage());
-        } catch(SQLException e){
+        } catch (SQLException e) {
             throw new UserExceptions(e.getMessage());
         }
     }
+
 
     @Override
     public Usuario findById(int id) throws SQLException, UserExceptions {
