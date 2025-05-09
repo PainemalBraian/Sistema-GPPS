@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 public class HomeController  {
 
@@ -150,7 +152,7 @@ public class HomeController  {
     @FXML
     public void inscribirPPS(ActionEvent event) {
         try {
-            navegarA("/Frontend/vistas/InscripcionPPS.fxml", "Inscripción a PPS - GPPS");
+            navegarA("/Frontend/vistas/InscripcionPPS.fxml", "Inscripción a PPS - GPPS", event);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al navegar a inscripción PPS", e);
             mostrarAlerta("Error", "No se pudo abrir el formulario de inscripción", Alert.AlertType.ERROR);
@@ -161,7 +163,7 @@ public class HomeController  {
     @FXML
     public void listarPuestosDisponibles(ActionEvent event) {
         try {
-            navegarA("/Frontend/vistas/ListadoPuestos.fxml", "Puestos Disponibles - GPPS");
+            navegarA("/Frontend/vistas/ListadoPuestos.fxml", "Puestos Disponibles - GPPS", event);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al navegar a listado de puestos", e);
             mostrarAlerta("Error", "No se pudo abrir el listado de puestos", Alert.AlertType.ERROR);
@@ -172,7 +174,7 @@ public class HomeController  {
     @FXML
     public void entregarProyecto(ActionEvent event) {
         try {
-            navegarA("/Frontend/vistas/EntregaProyecto.fxml", "Entrega de Proyecto - GPPS");
+            navegarA("/Frontend/vistas/EntregaProyecto.fxml", "Entrega de Proyecto - GPPS", event);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al navegar a entrega de proyecto", e);
             mostrarAlerta("Error", "No se pudo abrir el formulario de entrega de proyecto", Alert.AlertType.ERROR);
@@ -183,7 +185,7 @@ public class HomeController  {
     @FXML
     public void presentarPropuesta(ActionEvent event) {
         try {
-            navegarA("/Frontend/vistas/PresentacionPropuesta.fxml", "Presentación de Propuesta - GPPS");
+            navegarA("/Frontend/vistas/PresentacionPropuesta.fxml", "Presentación de Propuesta - GPPS", event);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al navegar a presentación de propuesta", e);
             mostrarAlerta("Error", "No se pudo abrir el formulario de presentación de propuesta", Alert.AlertType.ERROR);
@@ -194,7 +196,7 @@ public class HomeController  {
     @FXML
     public void verMensajes(ActionEvent event) {
         try {
-            navegarA("/Frontend/vistas/Mensajes.fxml", "Mensajes - GPPS");
+            navegarA("/Frontend/vistas/Mensajes.fxml", "Mensajes - GPPS", event);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al navegar a mensajes", e);
             mostrarAlerta("Error", "No se pudo abrir la bandeja de mensajes", Alert.AlertType.ERROR);
@@ -228,20 +230,24 @@ public class HomeController  {
         }
     }
 
-    private void navegarA(String fxmlPath, String title) throws IOException {
+    private void navegarA(String fxmlPath, String title, ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
         Parent root = loader.load();
 
-        // Intentar configurar el controlador con la API si implementa la interfaz apropiada
+        // Obtener el controlador si necesitas usarlo
         Object controller = loader.getController();
-        // Aquí se debería verificar si el controlador implementa alguna interfaz común
-        // y configurar la API según corresponda
+        // Puedes verificar si implementa una interfaz común si es necesario
 
         Stage stage = new Stage();
         stage.setTitle(title);
         stage.setScene(new Scene(root));
         stage.show();
+
+        // Cerrar la ventana actual que disparó el evento
+        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        currentStage.close();
     }
+
 
 
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {

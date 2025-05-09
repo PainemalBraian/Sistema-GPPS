@@ -178,7 +178,7 @@ public class InscripcionPPSController {
     }
 
     @FXML
-    public void VolverLogin(ActionEvent event) {
+    public void VolverHome(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/home.fxml"));
             Parent root = loader.load();
