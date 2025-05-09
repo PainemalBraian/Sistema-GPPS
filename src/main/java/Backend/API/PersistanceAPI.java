@@ -1,6 +1,7 @@
 package Backend.API;
 
 import Backend.DAO.*;
+import Backend.DAO.dom.usuarios.EstudianteDAODB;
 import Backend.DTO.*;
 import Backend.Entidades.*;
 import Backend.Exceptions.*;
@@ -10,9 +11,10 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class PersistanceAPI implements API {
-    Usuario userSession;
+    Usuario userSession = new Usuario();
     UsuarioDAODB UsuarioDAODB = new UsuarioDAODB();
     RolDAODB RolDAODB = new RolDAODB();
+    EstudianteDAODB EstudianteDAODB= new EstudianteDAODB();
 
     ResourceBundle labels = ResourceBundle.getBundle("Backend.labels", Locale.getDefault());
 
@@ -215,25 +217,28 @@ public class PersistanceAPI implements API {
         Usuario usuario = new Usuario(username, password, nombre, email, rol);
 
         if (rol.getNombre().equals("Estudiante")){
+            // Validar que la matricula no esté en uso
+            EstudianteDAODB.validarMatriculaUnica(matricula);
+            // Guardar en la base de datos
             Estudiante estudiante=new Estudiante(usuario,matricula,carrera);
-            estudiante.setMatricula(matricula);
-            estudiante.setCarrera(carrera);
+            EstudianteDAODB.create(estudiante);
         }
-        if (rol.getNombre().equals("Docente")){}
-        if (rol.getNombre().equals("Representante de Entidad Colaboradora")){}
+
+
+
+        if (rol.getNombre().equals("Docente")){
+            usuario.setLegajo(legajo);
+        }
+        if (rol.getNombre().equals("Representante de Entidad Colaboradora")){
+            usuario.setNombreEntidad(nombreEntidad);
+            usuario.setCuit(cuit);
+            usuario.setDireccionEntidad(direccionEntidad);
+        }
         if (rol.getNombre().equals("Tutor externo")){}
         if (rol.getNombre().equals("Director de Carrera")){}
         if (rol.getNombre().equals("Administrador")){}
 
-        // Asignar atributos adicionales si aplican
-        usuario.setLegajo(legajo);
-        usuario.setNombreEntidad(nombreEntidad);
-        usuario.setCuit(cuit);
-        usuario.setDireccionEntidad(direccionEntidad);
-        usuario.setActivo(true);
 
-        // Guardar en la base de datos
-        UsuarioDAODB.create(usuario);
     }
 
     @Override

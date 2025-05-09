@@ -22,6 +22,8 @@ import java.util.List;
 
 import java.util.ResourceBundle;
 
+import static java.util.Objects.isNull;
+
 public class RegistroController {
 
     @FXML public Label registroField;
@@ -141,7 +143,11 @@ public class RegistroController {
         RolDTO rol = rolComboBox.getValue();
 
         try {
-//            PersistanceAPI api = new PersistanceAPI();
+            if (isNull(rol))
+                throw new RuntimeException("Debes seleccionar un rol");
+            if (!contrasena.equals(confirmarContrasena))
+                throw new RuntimeException("Las contraseñas deben coincidir");
+
             api.registrarUsuario(
                     nombreField.getText(),
                     contrasenaField.getText(),
@@ -155,6 +161,7 @@ public class RegistroController {
                     cuitField.getText(),
                     direccionEntidadField.getText()
             );
+
             mostrarAlerta("Registro Exitoso", "Usuario registrado exitosamente.");
         } catch (Exception e) {
             mostrarAlerta("Error de Registro", "Ocurrió un error al registrar el usuario:\n" + e.getMessage());
