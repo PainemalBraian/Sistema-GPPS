@@ -37,7 +37,7 @@ public class PersistanceAPI implements API {
     @Override
     public void activarUsuario(String username) throws UserException, UpdateException {
         try {
-            Usuario user = UsuarioDAODB.findByUsername(username);
+            Usuario user = UsuarioDAODB.buscarByUsername(username);
             user.activar();
             UsuarioDAODB.update(user);
         } catch (UserException e) {
@@ -54,20 +54,20 @@ public class PersistanceAPI implements API {
 
     @Override
     public void activarRol(int idRol) throws ReadException {
-        Rol rol = RolDAODB.findOne(idRol);
+        Rol rol = RolDAODB.buscarByID(idRol);
         rol.activar();
     }
 
     @Override
     public void desactivarRol(int id) throws ReadException, UpdateException {
-        Rol rol = RolDAODB.findOne(id);
+        Rol rol = RolDAODB.buscarByID(id);
         rol.desactivar();
         RolDAODB.update(rol);
     }
 
     @Override
     public void desactivarUsuario(String username) throws UserException, UpdateException{
-        Usuario user = UsuarioDAODB.findByUsername(username);
+        Usuario user = UsuarioDAODB.buscarByUsername(username);
         Usuario userDB = new Usuario(user.getIdUsuario(), user.getUsername(), user.getContrasena(),
                 user.getNombre(), user.getEmail(), user.getRol());
         userDB.desactivar();
@@ -97,7 +97,7 @@ public class PersistanceAPI implements API {
         }
 
         try {
-            Usuario user = UsuarioDAODB.findByUsername(username);
+            Usuario user = UsuarioDAODB.buscarByUsername(username);
             if (user == null || !user.getContrasena().equals(password)) {throw new LoginException("Usuario o contraseña inválidos");}
             if (!user.isActivo())                                       {throw new LoginException("El usuario está inactivo");}
             RolDTO rol = convertirARolDTO(user.getRol());
@@ -166,7 +166,7 @@ public class PersistanceAPI implements API {
     @Override
     public UsuarioDTO obtenerUsuario(String username) throws UserException {
         UsuarioDTO usuarioDTO=null;
-        Usuario usuario = UsuarioDAODB.findByUsername(username);
+        Usuario usuario = UsuarioDAODB.buscarByUsername(username);
         RolDTO rol = convertirARolDTO(usuario.getRol());
         usuarioDTO = new UsuarioDTO(usuario.getIdUsuario(), usuario.getUsername(),
                 usuario.getContrasena(), usuario.getNombre(),
@@ -263,7 +263,7 @@ public class PersistanceAPI implements API {
     @Override
     public RolDTO obtenerRolPorId(int id) throws ReadException{
 
-        Rol rol = RolDAODB.findOne(id);
+        Rol rol = RolDAODB.buscarByID(id);
 
         return new RolDTO(id, rol.getNombre(), rol.isActivo());
     }
@@ -271,7 +271,7 @@ public class PersistanceAPI implements API {
     @Override
     public RolDTO obtenerRolUsuarioId(int id) throws Exception{
         try {
-            Usuario usuario = UsuarioDAODB.findById(id);
+            Usuario usuario = UsuarioDAODB.buscarById(id);
             Rol rolUsuario = usuario.getRol();
             return new RolDTO(rolUsuario.getId(), rolUsuario.getNombre(), rolUsuario.isActivo());
         } catch (Exception e) {
