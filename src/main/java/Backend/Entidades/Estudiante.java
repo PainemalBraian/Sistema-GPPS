@@ -1,6 +1,6 @@
 package Backend.Entidades;
 
-import Backend.Exceptions.UserExceptions;
+import Backend.Exceptions.UserException;
 
 import static java.util.Objects.isNull;
 
@@ -11,19 +11,19 @@ public class Estudiante extends Usuario{
     public Estudiante() {
     }
 
-    public Estudiante(Usuario user, String matricula, String carrera) throws UserExceptions {
+    public Estudiante(Usuario user, String matricula, String carrera) throws UserException {
         super(user.getUsername(), user.getContrasena(), user.getNombre(), user.getEmail(), user.getRol());
         // Verificar la cantidad de dígitos
 
         if ( isNull(matricula)) {
-            throw new UserExceptions("El campo Matrícula es obligatorio para estudiantes.");
+            throw new UserException("El campo Matrícula es obligatorio para estudiantes.");
         }
         int cantidadDigitos = matricula.length();
         if (cantidadDigitos != 6) {
-            throw new UserExceptions("El matricula debe contener 6 dígitos.");
+            throw new UserException("El matricula debe contener 6 dígitos.");
         }
         if ( isNull(carrera) || carrera.isEmpty()) {
-            throw new UserExceptions("La carrera debe existir.");
+            throw new UserException("La carrera debe existir.");
         }
         this.matricula = matricula;
         this.carrera = carrera;

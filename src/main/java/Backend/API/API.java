@@ -11,11 +11,11 @@ public interface API {
 
     void cambiarIdioma(String idioma);
 
-    void registrarUsuario(String username, String password, String email, String nombre, int rolId, String matricula, String carrera, String legajo, String nombreEntidad, String cuit, String direccionEntidad) throws RegisterExceptions, UserExceptions, Exception;
+    void registrarUsuario(String username, String password, String email, String nombre, int rolId, String matricula, String carrera, String legajo, String nombreEntidad, String cuit, String direccionEntidad) throws RegisterExceptions, UserException, Exception;
 
-    UsuarioDTO obtenerUsuario(String username) throws UserExceptions; // Devuelve el usuario según username
+    UsuarioDTO obtenerUsuario(String username) throws UserException; // Devuelve el usuario según username
 
-    void eliminarUsuario(int id) throws UserExceptions, DeleteException; // Eliminar un usuario por username de la bd
+    void eliminarUsuario(int id) throws UserException, DeleteException; // Eliminar un usuario por username de la bd
 
     List<RolDTO> obtenerRoles() throws Exception; // Devuelve los roles en bd
 
@@ -29,15 +29,15 @@ public interface API {
 
     void desactivarRol(int id) throws ReadException, UpdateException; // Recuperar el objeto Rol, imp
 
-    List<UsuarioDTO> obtenerUsuarios() throws UserExceptions; // Recuperar todos los usuarios
+    List<UsuarioDTO> obtenerUsuarios() throws UserException; // Recuperar todos los usuarios
 
-    void activarUsuario(String username) throws  UserExceptions, UpdateException; // Recuperar el objeto Usuario, implementar el comportamiento de estado.
+    void activarUsuario(String username) throws UserException, UpdateException; // Recuperar el objeto Usuario, implementar el comportamiento de estado.
 
-    void desactivarUsuario(String username) throws UserExceptions, UpdateException; // Recuperar el objeto Usuario, implementar el comportamiento de estado.
+    void desactivarUsuario(String username) throws UserException, UpdateException; // Recuperar el objeto Usuario, implementar el comportamiento de estado.
 
     String obtenerNombreUsuario() throws UserExceptions; //Devuelve el nombre del usuario logeado
 
-    UsuarioDTO obtenerUsuarioByEmail(String email) throws UserExceptions; // Devuelve el usuario si fue encontrado por email
+    UsuarioDTO obtenerUsuarioByEmail(String email) throws UserException; // Devuelve el usuario si fue encontrado por email
 
     UsuarioDTO login(String username, String password) throws LoginException; // Loguea el usuario y si todo es correcto devuelve el Usuario, sino null
 
