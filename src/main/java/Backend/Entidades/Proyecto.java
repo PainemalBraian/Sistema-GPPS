@@ -10,14 +10,14 @@ import static java.util.Objects.isNull;
 public class Proyecto extends Item{
     private String areaDeInteres;
     private String ubicación;
-    private List<String> objetivos = new ArrayList<>();
-    private List<String> requisitos = new ArrayList<>();
+    private String objetivos;
+    private String requisitos;
     private TutorExterno encargado;
 
     public Proyecto() {
     }
 
-    public Proyecto(int id, String titulo, String descripcion, String areaDeInteres, String ubicación, List<String> objetivos, List<String> requisitos, TutorExterno encargado) throws EmptyException {
+    public Proyecto(int id, String titulo, String descripcion, String areaDeInteres, String ubicación, String objetivos, String requisitos, TutorExterno encargado) throws EmptyException {
         super(id, titulo, descripcion);
         if (isNull(areaDeInteres) || areaDeInteres.isEmpty()) {
             throw new EmptyException("El área de interés no puede estar vacío.");
@@ -49,11 +49,11 @@ public class Proyecto extends Item{
         return ubicación;
     }
 
-    public List<String> getObjetivos() {
+    public String getObjetivos() {
         return objetivos;
     }
 
-    public List<String> getRequisitos() {
+    public String getRequisitos() {
         return requisitos;
     }
 

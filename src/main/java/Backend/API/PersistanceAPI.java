@@ -1,7 +1,10 @@
 package Backend.API;
 
 import Backend.DAO.*;
+import Backend.DAO.dom.usuarios.DocenteDAODB;
+import Backend.DAO.dom.usuarios.EntidadColaborativaDAODB;
 import Backend.DAO.dom.usuarios.EstudianteDAODB;
+import Backend.DAO.dom.usuarios.TutorExternoDAODB;
 import Backend.DTO.*;
 import Backend.Entidades.*;
 import Backend.Exceptions.*;
@@ -15,6 +18,9 @@ public class PersistanceAPI implements API {
     UsuarioDAODB UsuarioDAODB = new UsuarioDAODB();
     RolDAODB RolDAODB = new RolDAODB();
     EstudianteDAODB EstudianteDAODB= new EstudianteDAODB();
+    DocenteDAODB DocenteDAODB = new DocenteDAODB();
+    TutorExternoDAODB TutorExternoDAODB = new TutorExternoDAODB();
+    EntidadColaborativaDAODB EntidadColaborativaDAODB = new EntidadColaborativaDAODB();
 
     ResourceBundle labels = ResourceBundle.getBundle("Backend.labels", Locale.getDefault());
 
@@ -29,15 +35,15 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-    public void activarUsuario(String username) throws UserExceptions, UpdateException {
+    public void activarUsuario(String username) throws UserException, UpdateException {
         try {
             Usuario user = UsuarioDAODB.findByUsername(username);
             user.activar();
             UsuarioDAODB.update(user);
-        } catch (UserExceptions e) {
-            throw new UserExceptions(e.getMessage());
+        } catch (UserException e) {
+            throw new UserException(e.getMessage());
         }catch(Exception e){
-            throw new UserExceptions(e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 
@@ -60,7 +66,7 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-    public void desactivarUsuario(String username) throws UserExceptions, UpdateException{
+    public void desactivarUsuario(String username) throws UserException, UpdateException{
         Usuario user = UsuarioDAODB.findByUsername(username);
         Usuario userDB = new Usuario(user.getIdUsuario(), user.getUsername(), user.getContrasena(),
                 user.getNombre(), user.getEmail(), user.getRol());
@@ -69,7 +75,7 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-    public void eliminarUsuario(int id) throws UserExceptions, DeleteException {
+    public void eliminarUsuario(int id) throws UserException, DeleteException {
         UsuarioDAODB.delete(id);
     }
 
@@ -107,7 +113,7 @@ public class PersistanceAPI implements API {
                     user.isActivo()
             );
 
-        } catch (UserExceptions e) {
+        } catch (UserException e) {
             throw new LoginException(e.getMessage());
         }
     }
@@ -158,7 +164,7 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-    public UsuarioDTO obtenerUsuario(String username) throws UserExceptions {
+    public UsuarioDTO obtenerUsuario(String username) throws UserException {
         UsuarioDTO usuarioDTO=null;
         Usuario usuario = UsuarioDAODB.findByUsername(username);
         RolDTO rol = convertirARolDTO(usuario.getRol());
@@ -176,12 +182,12 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-    public UsuarioDTO obtenerUsuarioByEmail(String email) throws UserExceptions {
+    public UsuarioDTO obtenerUsuarioByEmail(String email) throws UserException {
         return null;
     }
 
     @Override
-    public List<UsuarioDTO> obtenerUsuarios() throws UserExceptions {
+    public List<UsuarioDTO> obtenerUsuarios() throws UserException {
         try {
             List<UsuarioDTO> usuarioDTOs = new ArrayList<>();
             List<Usuario> usuarios = UsuarioDAODB.read();
@@ -193,7 +199,7 @@ public class PersistanceAPI implements API {
             }
             return usuarioDTOs;
         } catch (Exception e) {
-            throw new UserExceptions("Error al obtener los usuarios");
+            throw new UserException("Error al obtener los usuarios");
         }
     }
 
@@ -210,7 +216,7 @@ public class PersistanceAPI implements API {
             String nombreEntidad,
             String cuit,
             String direccionEntidad
-    ) throws RegisterExceptions, UserExceptions, Exception {
+    ) throws RegisterExceptions, UserException,ReadException {
 
         // Validar que el username y email no estén en uso
         UsuarioDAODB.validarUsernameYEmailUnicos(username, email);
@@ -230,22 +236,35 @@ public class PersistanceAPI implements API {
             Estudiante estudiante=new Estudiante(usuario,matricula,carrera);
             EstudianteDAODB.create(estudiante);
         }
-
-
-
         if (rol.getNombre().equals("Docente")){
-            usuario.setLegajo(legajo);
+            // Validar que la matricula no esté en uso
+            DocenteDAODB.validarLegajoUnico(legajo);
+            // Guardar en la base de datos
+            Docente docente=new Docente(usuario,legajo);
+            DocenteDAODB.create(docente);
         }
         if (rol.getNombre().equals("Representante de Entidad Colaboradora")){
-            usuario.setNombreEntidad(nombreEntidad);
-            usuario.setCuit(cuit);
-            usuario.setDireccionEntidad(direccionEntidad);
+            // Validar que los datos de la Entidad no esté en uso
+            EntidadColaborativaDAODB.validarDatosUnicos(nombreEntidad,cuit,direccionEntidad);
+            // Guardar en la base de datos
+            EntidadColaborativa entidad = new EntidadColaborativa(usuario,nombreEntidad,cuit,direccionEntidad);
+            EntidadColaborativaDAODB.create(entidad);
         }
-        if (rol.getNombre().equals("Tutor externo")){}
-        if (rol.getNombre().equals("Director de Carrera")){}
-        if (rol.getNombre().equals("Administrador")){}
-
-
+        if (rol.getNombre().equals("Tutor externo")){
+            // Validar que los datos de la Entidad no esté en uso
+            TutorExternoDAODB.validarExistenciaEntidad(nombreEntidad);
+            // Guardar en la base de datos
+            TutorExterno tutorExterno = new TutorExterno(usuario,nombreEntidad);
+            TutorExternoDAODB.create(tutorExterno);
+        }
+        if (rol.getNombre().equals("Director de Carrera")){
+            DirectorCarrera director = new DirectorCarrera();
+            UsuarioDAODB.create(director);
+        }
+        if (rol.getNombre().equals("Administrador")){
+            Administrador administrador = new Administrador();
+            UsuarioDAODB.create(administrador);
+        }
     }
 
     @Override
