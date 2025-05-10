@@ -2,10 +2,7 @@ package Frontend.com.main;
 
 
 import Backend.API.API;
-import Backend.API.PersistanceAPI;
 import Backend.DTO.RolDTO;
-import Backend.Exceptions.RegisterExceptions;
-import Backend.Exceptions.UserExceptions;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,7 +14,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import java.util.ResourceBundle;
@@ -25,7 +21,7 @@ import java.util.ResourceBundle;
 import static java.util.Objects.isNull;
 
 public class RegistroController {
-
+    API api;
     @FXML public Label registroField;
     @FXML public Button BottonRegistrarse;
     @FXML private TextField nombreField;
@@ -43,12 +39,14 @@ public class RegistroController {
     @FXML private TextField cuitField;
     @FXML private TextField dni;
     @FXML private Button volver_login;
-    API api;
-
-    @FXML
-    private TextField direccionEntidadField;
+    @FXML private TextField direccionEntidadField;
 
     public void initialize() throws Exception {
+        cargarComboBoxRoles();
+        setearLogicaDeCampos();
+    }
+
+    private void cargarComboBoxRoles() {
         rolComboBox.setOnAction((ActionEvent event) -> {
             RolDTO selectedRol = rolComboBox.getValue(); // ✔ ya es un RolDTO
             String nombreRol = selectedRol != null ? selectedRol.getNombre() : "";
@@ -60,13 +58,25 @@ public class RegistroController {
                     nombreRol.equals("Tutor externo");
             camposEntidad.setVisible(esEntidadOTutor);
         });
+    }
+
+    private void setearLogicaDeCampos() {
         // Agregar un ChangeListener para permitir solo números y máximo de 6 dígitos
         matriculaField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d{0,6}")) {
                 matriculaField.setText(oldValue);
             }
         });
-
+        legajoField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d{0,6}")) {
+                legajoField.setText(oldValue);
+            }
+        });
+        cuitField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d{0,11}")) {
+                cuitField.setText(oldValue);
+            }
+        });
     }
 
 
@@ -98,6 +108,7 @@ public class RegistroController {
         actualizarIdioma();
         inicializarRoles();
     }
+
     private void actualizarIdioma() {
         ResourceBundle bundle = api.obtenerIdioma();
         // Labels
@@ -117,13 +128,12 @@ public class RegistroController {
         //Botones
         BottonRegistrarse.setText(bundle.getString("button.registrarse"));
         volver_login.setText(bundle.getString("button.volver"));
-
     }
+
     private void inicializarRoles() throws Exception {
-        rolComboBox.getItems().clear(); // Evita duplicados si se llama varias veces
+        rolComboBox.getItems().clear();// Evita duplicados si se llama varias veces
         List<RolDTO> roles = api.obtenerRoles();
         rolComboBox.getItems().addAll(roles);
-
     }
 
     @FXML
@@ -165,7 +175,6 @@ public class RegistroController {
             mostrarAlerta("Registro Exitoso", "Usuario registrado exitosamente.");
         } catch (Exception e) {
             mostrarAlerta("Error de Registro", "Ocurrió un error al registrar el usuario:\n" + e.getMessage());
-            e.printStackTrace();
         }
 
     }
@@ -176,8 +185,5 @@ public class RegistroController {
         alerta.setContentText(mensaje);
         alerta.showAndWait();
     }
-
-
-
 
 }

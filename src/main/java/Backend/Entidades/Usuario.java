@@ -1,6 +1,6 @@
 package Backend.Entidades;
 
-import Backend.Exceptions.UserExceptions;
+import Backend.Exceptions.UserException;
 
 import static java.util.Objects.isNull;
 
@@ -14,32 +14,24 @@ public class Usuario {
     private int dni;
     private Rol rol;
 
-    private String nombreEntidad;
-    private String cuit;
-    private String direccionEntidad;
-
-
     public Usuario() {}
 
-    public Usuario(String username, String contrasena, String nombre, String email, Rol rol) throws UserExceptions {
-
-        if(isNull(username)){
-            throw new UserExceptions("El username no puede estar vacio");
+    public Usuario(String username, String contrasena, String nombre, String email, Rol rol) throws UserException {
+        if(isNull(username)|| username.isEmpty()){
+            throw new UserException("El username no puede estar vacio");
         }
-        if(isNull(email)){
-            throw new UserExceptions("El email no puede estar vacio");
+        if(isNull(email)||email.isEmpty()){
+            throw new UserException("El email no puede estar vacio");
         }
-        if(isNull(contrasena)){
-            throw new UserExceptions("La contraseña no puede estar vacía");
+        if(isNull(contrasena)||contrasena.isEmpty()){
+            throw new UserException("La contraseña no puede estar vacía");
         }
-        if(isNull(nombre)){
-            throw new UserExceptions("Debe completar el nombre");
+        if(isNull(nombre)||nombre.isEmpty()){
+            throw new UserException("Debe completar el nombre");
         }
-        if (isNull(contrasena)  || contrasena.length() < 8) {
-            throw new UserExceptions("Error: La contraseña debe tener al menos 8 caracteres");
+        if (contrasena.length() < 8) {
+            throw new UserException("Error: La contraseña debe tener al menos 8 caracteres");
         }
-
-
         this.username = username;
         this.contrasena = contrasena;
         this.nombre = nombre;
@@ -48,24 +40,22 @@ public class Usuario {
         this.activo=true;
     }
     //Constructor para DAO
-    public Usuario(int id, String username, String contrasena, String nombre, String email, Rol rol) throws UserExceptions {
-
-        if(isNull(username)){
-            throw new UserExceptions("El username no puede estar vacio");
+    public Usuario(int id, String username, String contrasena, String nombre, String email, Rol rol) throws UserException {
+        if(isNull(username)|| username.isEmpty()){
+            throw new UserException("El username no puede estar vacio");
         }
-        if(isNull(email)){
-            throw new UserExceptions("El email no puede estar vacio");
+        if(isNull(email)||email.isEmpty()){
+            throw new UserException("El email no puede estar vacio");
         }
-        if(isNull(contrasena)){
-            throw new UserExceptions("La contraseña no puede estar vacía");
+        if(isNull(contrasena)||contrasena.isEmpty()){
+            throw new UserException("La contraseña no puede estar vacía");
         }
-        if(isNull(nombre)){
-            throw new UserExceptions("Debe completar el nombre");
+        if(isNull(nombre)||nombre.isEmpty()){
+            throw new UserException("Debe completar el nombre");
         }
-        if (isNull(contrasena)  || contrasena.length() < 8) {
-            throw new UserExceptions("Error: La contraseña debe tener al menos 8 caracteres");
+        if (contrasena.length() < 8) {
+            throw new UserException("Error: La contraseña debe tener al menos 8 caracteres");
         }
-
 
         this.idUsuario = id;
         this.username = username;
@@ -129,30 +119,6 @@ public class Usuario {
 
     public void setDni(int dni) {
         this.dni = dni;
-    }
-
-    public String getNombreEntidad() {
-        return nombreEntidad;
-    }
-
-    public void setNombreEntidad(String nombreEntidad) {
-        this.nombreEntidad = nombreEntidad;
-    }
-
-    public String getCuit() {
-        return cuit;
-    }
-
-    public void setCuit(String cuit) {
-        this.cuit = cuit;
-    }
-
-    public String getDireccionEntidad() {
-        return direccionEntidad;
-    }
-
-    public void setDireccionEntidad(String direccionEntidad) {
-        this.direccionEntidad = direccionEntidad;
     }
 
     public boolean isActivo() {

@@ -137,7 +137,6 @@ public class RolDAODB extends DBAcces implements ROLDAO {
     @Override
     public Rol findOne(int id) throws ReadException {
         try {
-            System.out.println(id);
             Rol rol = null;
             Connection conn = connect();
 
