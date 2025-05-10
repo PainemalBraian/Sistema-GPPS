@@ -6,7 +6,7 @@ import Backend.DAO.interfaces.usuarios.ESTUDIANTEDAO;
 import Backend.Entidades.Estudiante;
 import Backend.Exceptions.ConnectionException;
 import Backend.Exceptions.RegisterExceptions;
-import Backend.Exceptions.UserExceptions;
+import Backend.Exceptions.UserException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,8 +18,7 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
     UsuarioDAODB UsuarioDAODB=new UsuarioDAODB();
 
     @Override
-    public void create(Object object) throws RegisterExceptions {
-        Estudiante estudiante = (Estudiante) object;
+    public void create(Estudiante estudiante) throws RegisterExceptions {
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(
@@ -35,30 +34,29 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
             statement.close();
             disconnect();
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RegisterExceptions("Error al crear y guardar el estudiante: " + e.getMessage());
         }catch(ConnectionException e){
-            throw new RegisterExceptions(e.getMessage());
+            throw new RegisterExceptions("Error al conectar con la base de datos: " + e.getMessage());
         }
     }
 
     @Override
-    public Estudiante buscarEstudiante(int id) throws UserExceptions, SQLException {
+    public Estudiante buscarByID(int id) throws UserException {
         return null;
     }
 
     @Override
-    public List<Estudiante> read() throws SQLException, UserExceptions {
+    public List<Estudiante> read() throws UserException {
         return List.of();
     }
 
     @Override
-    public Estudiante buscarByUsername(String username) throws SQLException, UserExceptions {
+    public Estudiante buscarByUsername(String username) throws UserException {
         return null;
     }
 
     @Override
-    public boolean validarMatriculaUnica(String matricula) throws SQLException, UserExceptions {
+    public boolean validarMatriculaUnica(String matricula) throws UserException {
         try (Connection conn = connect()) {
             String sql = "SELECT COUNT(*) AS total FROM Estudiantes WHERE matricula = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -67,12 +65,15 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
             ResultSet result = statement.executeQuery();
 
             if (result.next() && result.getInt("total") > 0) {
-                throw new UserExceptions("Matricula existente.");
+                throw new UserException("Matricula existente.");
             }
             return true;
-        } catch (ConnectionException e) {
-            e.printStackTrace();
-            throw new UserExceptions("Error al conectar con la base de datos: " + e.getMessage());
+        }
+        catch (SQLException e) {
+            throw new UserException("Error al validar: " + e.getMessage());
+        }
+        catch (ConnectionException e) {
+            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
         }
     }
 }

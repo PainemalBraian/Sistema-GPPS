@@ -2,22 +2,21 @@ package Backend.DAO.interfaces.usuarios;
 
 import Backend.Entidades.Estudiante;
 import Backend.Exceptions.RegisterExceptions;
-import Backend.Exceptions.UserExceptions;
+import Backend.Exceptions.UserException;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface ESTUDIANTEDAO {
-    void create(Object objeto) throws RegisterExceptions;
+    void create(Estudiante estudiante) throws RegisterExceptions;
 
-    Estudiante buscarEstudiante(int id) throws UserExceptions, SQLException;
+    Estudiante buscarByID(int id) throws UserException;
 
-    List<Estudiante> read() throws SQLException, UserExceptions;
+    List<Estudiante> read() throws  UserException;
 
-    Estudiante buscarByUsername(String username) throws SQLException, UserExceptions;
+    Estudiante buscarByUsername(String username) throws  UserException;
 
-    boolean validarMatriculaUnica(String matricula) throws SQLException, UserExceptions;
+    boolean validarMatriculaUnica(String matricula) throws  UserException;
 
 
-//    Estudiante buscarById(int id) throws SQLException, UserExceptions;
+//    Estudiante buscarById(int id) throws  UserExceptions;
 }
