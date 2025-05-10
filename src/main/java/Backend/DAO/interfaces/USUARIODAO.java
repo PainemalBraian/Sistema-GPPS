@@ -1,6 +1,5 @@
 package Backend.DAO.interfaces;
 
-import java.sql.SQLException;
 import java.util.List;
 import Backend.Exceptions.RegisterExceptions;
 import Backend.Exceptions.UserException;
@@ -12,9 +11,9 @@ public interface USUARIODAO extends DAO {
 
     List<Usuario> read() throws  UserException;
 
-    Usuario findByUsername(String username) throws  UserException;
+    Usuario buscarByUsername(String username) throws  UserException;
 
-    Usuario findById(int id) throws  UserException;
+    Usuario buscarById(int id) throws  UserException;
 
     boolean validarUsernameYEmailUnicos(String username, String email) throws  UserException;
 
