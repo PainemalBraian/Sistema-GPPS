@@ -127,7 +127,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
         }catch(SQLException e){
             throw new UpdateException("Error al actualizar" + e.getMessage());
         }
-        return user;
+
     }
 
     @Override
@@ -169,12 +169,10 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
 //        }
 //    }
     @Override
-    public Usuario findByUsername(String username) throws  UserException {
+    public Usuario buscarByUsername(String username) throws UserException {
         try {
             Connection conn = connect();
-            PreparedStatement statement = conn.prepareStatement(
-                    "SELECT * FROM Usuarios u JOIN Roles r ON u.idRol = r.id WHERE u.username = ?"
-            );
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Usuarios u JOIN Roles ON u.idRol = Roles.idRol WHERE username = ?");
             statement.setString(1, username);
 
             ResultSet result = statement.executeQuery();
@@ -203,18 +201,20 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
     }
 
     @Override
-    public Usuario findById(int id) throws UserException {
+    public Usuario buscarById(int id) throws UserException {
         try {
             Connection conn = connect();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Usuarios u JOIN Roles ON u.idRol = Roles.idRol WHERE idUsuario = ?");
+            PreparedStatement statement = conn.prepareStatement(
+                    "SELECT * FROM Usuarios u " +
+                    "JOIN Roles r ON u.idRol = r.idRol " +
+                    "WHERE u.idUsuario = ?");
             statement.setInt(1, id);
 
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
 
-                Rol rol = new Rol(result.getInt("idRol"), result.getString("Roles.nombre"));
-
+                Rol rol = new Rol(result.getInt("idRol"), result.getString("r.nombre"));
                 rol.setActivo(result.getBoolean("activo"));
 
                 Usuario usuario = new Usuario(result.getInt("idUsuario"), result.getString("username"),
@@ -234,6 +234,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
             throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
         }
     }
+
     public boolean validarUsernameYEmailUnicos(String username, String email) throws UserException {
         try (Connection conn = connect()) {
             String sql = "SELECT COUNT(*) AS total FROM Usuarios WHERE username = ? OR email = ?";

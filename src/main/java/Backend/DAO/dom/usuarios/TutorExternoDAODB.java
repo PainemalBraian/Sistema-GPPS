@@ -23,7 +23,7 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(
-                    "INSERT INTO TutoresExternos(idTutor, nombreEntidadColaborativa) " +
+                    "INSERT INTO TutoresExternos(idUsuario, nombreEntidadColaborativa) " +
                             "VALUES (?, ?)"
             );
             // Guardar en la base de datos
@@ -41,18 +41,41 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
     }
 
     @Override
-    public List<Usuario> read() throws UserException {
+    public List<TutorExterno> read() throws UserException {
         return List.of();
     }
 
     @Override
-    public Usuario findByUsername(String username) throws UserException {
+    public TutorExterno buscarByUsername(String username) throws UserException {
         return null;
     }
 
     @Override
-    public Usuario findById(int id) throws UserException {
-        return null;
+    public TutorExterno buscarByID(int id) throws UserException {
+        try {
+            Connection conn = connect();
+            PreparedStatement statement = conn.prepareStatement(
+                    "SELECT * FROM TutoresExternos TE " +
+                            "JOIN Usuarios U ON TE.idUsuario = U.idUsuario " +
+                            "WHERE TE.idUsuario = ?");
+            statement.setInt(1, id);
+
+            ResultSet tutor = statement.executeQuery();
+
+            if (tutor.next()) {
+                Usuario usuario = UsuarioDAODB.buscarById(tutor.getInt("idUsuario"));
+                TutorExterno tutorExt = new TutorExterno(usuario, tutor.getString("nombreEntidadColaborativa") );
+                return tutorExt;
+            } else {
+                throw new UserException("Tutor no encontrado.");
+            }
+        }
+        catch (SQLException e) {
+            throw new UserException("Error al buscar el usuario en la base de datos: " + e.getMessage());
+        }
+        catch(ConnectionException e){
+            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+        }
     }
 
     @Override
