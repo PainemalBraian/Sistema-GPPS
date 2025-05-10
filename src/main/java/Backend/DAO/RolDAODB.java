@@ -135,7 +135,7 @@ public class RolDAODB extends DBAcces implements ROLDAO {
     }
 
     @Override
-    public Rol findOne(int id) throws ReadException {
+    public Rol buscarByID(int id) throws ReadException {
         try {
             Rol rol = null;
             Connection conn = connect();

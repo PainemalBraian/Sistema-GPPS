@@ -2,14 +2,11 @@ package Backend.Entidades;
 
 import Backend.Exceptions.EmptyException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static java.util.Objects.isNull;
 
 public class Proyecto extends Item{
     private String areaDeInteres;
-    private String ubicación;
+    private String ubicacion;
     private String objetivos;
     private String requisitos;
     private TutorExterno encargado;
@@ -17,12 +14,12 @@ public class Proyecto extends Item{
     public Proyecto() {
     }
 
-    public Proyecto(int id, String titulo, String descripcion, String areaDeInteres, String ubicación, String objetivos, String requisitos, TutorExterno encargado) throws EmptyException {
+    public Proyecto(int id, String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos, TutorExterno encargado) throws EmptyException {
         super(id, titulo, descripcion);
         if (isNull(areaDeInteres) || areaDeInteres.isEmpty()) {
             throw new EmptyException("El área de interés no puede estar vacío.");
         }
-        if (isNull(ubicación) || ubicación.isEmpty()) {
+        if (isNull(ubicacion) || ubicacion.isEmpty()) {
             throw new EmptyException("La ubicación no puede estar vacía.");
         }
         if (isNull(objetivos) || objetivos.isEmpty()) {
@@ -35,7 +32,7 @@ public class Proyecto extends Item{
             throw new EmptyException("El encargado debe existir.");
         }
         this.areaDeInteres = areaDeInteres;
-        this.ubicación = ubicación;
+        this.ubicacion = ubicacion;
         this.objetivos = objetivos;
         this.requisitos = requisitos;
         this.encargado = encargado;
@@ -45,19 +42,39 @@ public class Proyecto extends Item{
         return areaDeInteres;
     }
 
-    public String getUbicación() {
-        return ubicación;
+    public void setAreaDeInteres(String areaDeInteres) {
+        this.areaDeInteres = areaDeInteres;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
     public String getObjetivos() {
         return objetivos;
     }
 
+    public void setObjetivos(String objetivos) {
+        this.objetivos = objetivos;
+    }
+
     public String getRequisitos() {
         return requisitos;
     }
 
+    public void setRequisitos(String requisitos) {
+        this.requisitos = requisitos;
+    }
+
     public TutorExterno getEncargado() {
         return encargado;
+    }
+
+    public void setEncargado(TutorExterno encargado) {
+        this.encargado = encargado;
     }
 }

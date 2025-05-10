@@ -24,6 +24,9 @@ public class Item {
         this.descripcion = descripcion;
     }
 
+    public int getId() {
+        return id;
+    }
 
     public boolean isId(int id) {
         return id == this.id;
