@@ -123,7 +123,7 @@ public class PersistanceAPI implements API {
     public List<RolDTO> obtenerRoles() throws Exception {
         List<RolDTO> rolesDTO = new ArrayList<>();
         try {
-            List<Rol> roles = RolDAODB.buscarRoles();  // Seria conveniente implementar un metodo en el Dao par que filtre ahi mismo por campo "activo", acá se hace el bucle 2 veces
+            List<Rol> roles = RolDAODB.buscarRoles();
             for (Rol rol : roles) {
                 rolesDTO.add(new RolDTO(rol.getId(), rol.getNombre(), rol.isActivo()));
             }
@@ -138,7 +138,7 @@ public class PersistanceAPI implements API {
     public List<RolDTO> obtenerRolesActivos() throws ReadException {
         List<RolDTO> rolesDTO = new ArrayList<>();
         try {
-            List<Rol> roles = RolDAODB.buscarRoles();
+            List<Rol> roles = RolDAODB.buscarRoles();// Seria conveniente implementar un metodo en el Dao par que filtre ahi mismo por campo "activo", acá se hace el bucle 2 veces
             for (Rol rol : roles) {
                 if (rol.isActivo()) {
                     rolesDTO.add(new RolDTO(rol.getId(), rol.getNombre(), rol.isActivo()));
@@ -168,11 +168,11 @@ public class PersistanceAPI implements API {
         return usuarioDTO;
     }
     @Override
-    public String obtenerNombreUsuario() throws UserExceptions {
+    public String obtenerNombreUsuario() throws UserException {
         try {
             return userSession.getNombre();
         }catch (Exception e){
-            throw new UserExceptions("No hay un usuario en la sesión");}
+            throw new UserException("No hay un usuario en la sesión");}
     }
 
 //    @Override
@@ -241,11 +241,11 @@ public class PersistanceAPI implements API {
             TutorExternoDAODB.create(tutorExterno);
         }
         if (rol.getNombre().equals("Director de Carrera")){
-            DirectorCarrera director = new DirectorCarrera();
+            DirectorCarrera director = new DirectorCarrera(usuario);
             UsuarioDAODB.create(director);
         }
         if (rol.getNombre().equals("Administrador")){
-            Administrador administrador = new Administrador();
+            Administrador administrador = new Administrador(usuario);
             UsuarioDAODB.create(administrador);
         }
     }
