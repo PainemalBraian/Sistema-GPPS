@@ -17,7 +17,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<StackPane prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.main.IngresoController">
+<StackPane prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.gui.Controller.IngresoController">
    <AnchorPane fx:id="PaneBase" prefHeight="518.0" prefWidth="700.0" styleClass="root" stylesheets="@../StyleSheets/Ingreso.css">
       <children>
          <ImageView fx:id="IMGIngreso" fitHeight="400.0" fitWidth="292.0" layoutY="1.0" nodeOrientation="INHERIT" pickOnBounds="true">
@@ -45,6 +45,20 @@
                      <Font name="Javanese Text" size="12.0" />
                   </font>
                </MenuButton>
+               <Button fx:id="ButtonIngresarEstudiante" layoutX="61.0" layoutY="114.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#IngresarComoEstudiante" prefHeight="25.0" prefWidth="173.0" text="Ingresar como Estudiante" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
+                  <font>
+                     <Font name="Arial Black" size="10.0" />
+                  </font>
+                  <styleClass>
+                     <String fx:value="login-label" />
+                     <String fx:value="login-button" />
+                     <String fx:value="login-button" />
+                     <String fx:value="login-button" />
+                     <String fx:value="login-title" />
+                     <String fx:value="login-button" />
+                     <String fx:value="login-pane" />
+                  </styleClass>
+               </Button>
 
             </children>
          </Pane>
@@ -53,7 +67,7 @@
                <Font name="Javanese Text" size="20.0" />
             </font>
          </Label>
-         <Label fx:id="LabelIngreso11" graphicTextGap="0.0" layoutX="301.0" layoutY="-13.0" lineSpacing="5.0" prefHeight="97.0" prefWidth="231.0" text="GPPS">
+         <Label fx:id="LabelGPPS" graphicTextGap="0.0" layoutX="301.0" layoutY="-13.0" lineSpacing="5.0" prefHeight="97.0" prefWidth="231.0" text="GPPS">
             <font>
                <Font name="Arial Black" size="26.0" />
             </font>
@@ -128,7 +142,7 @@
          </Label>
 
                                           <Button fx:id="ButtonRegistro" layoutX="387.0" layoutY="358.0" mnemonicParsing="false" onAction="#abrirRegistro" prefHeight="33.0" prefWidth="155.0" text="Crear cuenta" />
-         <Button fx:id="ButtonIngresar" layoutX="247.0" layoutY="269.0" minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="208.0" text="Ingresar" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
+         <Button fx:id="ButtonIngresar" layoutX="234.0" layoutY="267.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#loginUsuario" prefHeight="42.0" prefWidth="208.0" text="Ingresar" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
             <font>
                <Font name="Arial Black" size="20.0" />
             </font>
@@ -142,6 +156,7 @@
                <String fx:value="login-pane" />
             </styleClass>
          </Button>
+
          <PasswordField fx:id="PasswordFieldClave" layoutX="222.0" layoutY="215.0" prefHeight="25.0" prefWidth="231.0" promptText="Ingrese su clave" />
          <Label fx:id="LabelContrasena" layoutX="221.0" layoutY="166.0" prefHeight="42.0" prefWidth="260.0" text="Contraseña">
             <font>

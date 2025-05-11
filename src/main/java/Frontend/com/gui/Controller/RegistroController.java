@@ -1,5 +1,4 @@
-package Frontend.com.main;
-
+package Frontend.com.gui.Controller;
 
 import Backend.API.API;
 import Backend.DTO.RolDTO;
@@ -15,7 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
-
 import java.util.ResourceBundle;
 
 import static java.util.Objects.isNull;
@@ -48,7 +46,7 @@ public class RegistroController {
 
     private void cargarComboBoxRoles() {
         rolComboBox.setOnAction((ActionEvent event) -> {
-            RolDTO selectedRol = rolComboBox.getValue(); // ✔ ya es un RolDTO
+            RolDTO selectedRol = rolComboBox.getValue();
             String nombreRol = selectedRol != null ? selectedRol.getNombre() : "";
 
             camposEstudiante.setVisible(nombreRol.equals("Estudiante"));
@@ -99,7 +97,7 @@ public class RegistroController {
             ((Stage) ((Button) event.getSource()).getScene().getWindow()).close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            mostrarAlerta("Error", "Ocurrió un error al intentar volver\n" + e.getMessage());
         }
     }
 
@@ -143,7 +141,11 @@ public class RegistroController {
         String contrasena = contrasenaField.getText();
         String confirmarContrasena = confirmarContrasenaField.getText();
 
+<<<<<<< HEAD:src/main/java/Frontend/com/main/RegistroController.java
         String matriculaText = camposEstudiante.isVisible() ? matriculaField.getText() : "";
+=======
+        String matricula = camposEstudiante.isVisible() ? matriculaField.getText() : "";
+>>>>>>> b23489114d35815ce1fb0bf2fa6b3a671ca73759:src/main/java/Frontend/com/gui/Controller/RegistroController.java
         String carrera = camposEstudiante.isVisible() ? carreraField.getText() : "";
         String legajo = camposDocente.isVisible() ? legajoField.getText() : "";
 
@@ -159,11 +161,12 @@ public class RegistroController {
                 throw new RuntimeException("Las contraseñas deben coincidir");
 
             api.registrarUsuario(
-                    nombreField.getText(),
-                    contrasenaField.getText(),
-                    correoField.getText(),
-                    nombreField.getText(),
+                    nombre,
+                    contrasena,
+                    correo,
+                    nombre,
                     rol.getId(),
+<<<<<<< HEAD:src/main/java/Frontend/com/main/RegistroController.java
                     matriculaText,
                     carreraField.getText(),
                     legajoField.getText(),
@@ -172,11 +175,28 @@ public class RegistroController {
                     direccionEntidadField.getText()
             );
 
+=======
+                    matricula,
+                    carrera,
+                    legajo,
+                    nombreEntidad,
+                    cuit,
+                    direccionEntidadField.getText()
+            );
+            volverLogin(actionEvent);
+>>>>>>> b23489114d35815ce1fb0bf2fa6b3a671ca73759:src/main/java/Frontend/com/gui/Controller/RegistroController.java
             mostrarAlerta("Registro Exitoso", "Usuario registrado exitosamente.");
         } catch (Exception e) {
             mostrarAlerta("Error de Registro", "Ocurrió un error al registrar el usuario:\n" + e.getMessage());
         }
+    }
 
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
     }
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
@@ -185,5 +205,6 @@ public class RegistroController {
         alerta.setContentText(mensaje);
         alerta.showAndWait();
     }
+
 
 }
