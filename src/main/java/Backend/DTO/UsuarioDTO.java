@@ -1,19 +1,14 @@
 package Backend.DTO;
 
 public class UsuarioDTO {
-    private int id;
+    private int idUsuario;
     private String username;
     private String password;
     private String nombre;
     private String email;
     private RolDTO rol;
     private boolean activo;
-
 //    private int dni;
-//    private String nombreEntidad;
-//    private String cuit;
-//    private String direccionEntidad;
-//    private String carrera;
 
 
     public UsuarioDTO() {}
@@ -27,8 +22,8 @@ public class UsuarioDTO {
         this.activo = activo;
     }
 
-    public UsuarioDTO(int id, String username, String password, String nombre, String email, RolDTO rol2, boolean activo) {
-        this.id = id;
+    public UsuarioDTO(int idUsuario, String username, String password, String nombre, String email, RolDTO rol2, boolean activo) {
+        this.idUsuario = idUsuario;
         this.username = username;
         this.password = password;
         this.nombre = nombre;
@@ -85,12 +80,12 @@ public class UsuarioDTO {
         this.activo = activo;
     }
 
-    public int getId() {
-        return id;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public void setContrasena(String contrasena) {
