@@ -1,26 +1,29 @@
 package Backend.DTO;
 
-import Backend.Entidades.Rol;
-
 public class UsuarioDTO {
-    private int id;
+    private int idUsuario;
     private String username;
     private String password;
     private String nombre;
     private String email;
     private RolDTO rol;
     private boolean activo;
-    private int dni;
-    private String matricula;
-    private String Legajo;
-    private String nombreEntidad;
-    private String cuit;
-    private String direccionEntidad;
-    private String carrera;
+//    private int dni;
 
 
-    public UsuarioDTO(int id, String username, String password, String nombre, String email, RolDTO rol2, boolean activo) {
-        this.id = id;
+    public UsuarioDTO() {}
+
+    public UsuarioDTO( String username, String password, String nombre, String email, RolDTO rol2, boolean activo) {
+        this.username = username;
+        this.password = password;
+        this.nombre = nombre;
+        this.email = email;
+        this.rol = rol2;
+        this.activo = activo;
+    }
+
+    public UsuarioDTO(int idUsuario, String username, String password, String nombre, String email, RolDTO rol2, boolean activo) {
+        this.idUsuario = idUsuario;
         this.username = username;
         this.password = password;
         this.nombre = nombre;
@@ -77,60 +80,12 @@ public class UsuarioDTO {
         this.activo = activo;
     }
 
-    public int getId() {
-        return id;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getMatricula() {
-        return matricula;
-    }
-
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
-
-    public String getLegajo() {
-        return Legajo;
-    }
-
-    public void setLegajo(String legajo) {
-        Legajo = legajo;
-    }
-
-    public String getNombreEntidad() {
-        return nombreEntidad;
-    }
-
-    public void setNombreEntidad(String nombreEntidad) {
-        this.nombreEntidad = nombreEntidad;
-    }
-
-    public String getCuit() {
-        return cuit;
-    }
-
-    public void setCuit(String cuit) {
-        this.cuit = cuit;
-    }
-
-    public String getDireccionEntidad() {
-        return direccionEntidad;
-    }
-
-    public void setDireccionEntidad(String direccionEntidad) {
-        this.direccionEntidad = direccionEntidad;
-    }
-
-    public String getCarrera() {
-        return carrera;
-    }
-
-    public void setCarrera(String carrera) {
-        this.carrera = carrera;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public void setContrasena(String contrasena) {

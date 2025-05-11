@@ -7,59 +7,56 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Backend.DAO.interfaces.USUARIODAO;
 import Backend.Exceptions.ConnectionException;
 import Backend.Exceptions.DeleteException;
 import Backend.Exceptions.RegisterExceptions;
 import Backend.Exceptions.UpdateException;
-import Backend.Exceptions.UserExceptions;
+import Backend.Exceptions.UserException;
 import Backend.Entidades.Rol;
 import Backend.Entidades.Usuario;
 
-public class UsuarioDAODB extends DBAcces implements USUARIODAO{
+public class UsuarioDAODB extends DBAcces implements USUARIODAO {
 
     @Override
-    public void create(Object usuario) throws RegisterExceptions {
+    public int create(Object usuario) throws RegisterExceptions {
         Usuario user = (Usuario) usuario;
         try {
             Connection conn = connect();
-
             PreparedStatement statement = conn.prepareStatement(
-                    "INSERT INTO Usuarios(nombre, apellido, email, username, password, idRol, activo, " +
-                            "matricula, carrera, legajo, nombreEntidad, cuit, direccionEntidad) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO Usuarios(nombreCompleto, email, username, password, idRol, activo) " +
+                            "VALUES (?, ?, ?, ?, ?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS //Retorna el id AA generado por la db
             );
 
             statement.setString(1, user.getNombre());
-            statement.setString(2, "-"); // Apellido por defecto
-            statement.setString(3, user.getEmail());
-            statement.setString(4, user.getUsername());
-            statement.setString(5, user.getContrasena());
-            statement.setInt(6, user.getRol().getId());
-            statement.setBoolean(7, user.isActivo());
+            statement.setString(2, user.getEmail());
+            statement.setString(3, user.getUsername());
+            statement.setString(4, user.getContrasena());
+            statement.setInt(5, user.getRol().getId());
+            statement.setBoolean(6, user.isActivo());
 
-            // Extras por tipo de usuario
-            statement.setString(8, user.getMatricula());         // Estudiante
-            statement.setString(9, user.getCarrera());           // Estudiante
-            statement.setString(10, user.getLegajo());           // Docente
-            statement.setString(11, user.getNombreEntidad());    // Entidad
-            statement.setString(12, user.getCuit());             // Entidad
-            statement.setString(13, user.getDireccionEntidad()); // Entidad
+            statement.executeUpdate();
 
-
-            statement.executeUpdate();  // Cambié executeQuery() por executeUpdate()
+            // Obtener el ID generado
+            ResultSet rs = statement.getGeneratedKeys();
+            int idGenerado = 0;
+            if (rs.next()) {
+                idGenerado = rs.getInt(1);
+            }
+            rs.close();
             statement.close();
             disconnect();
+            return idGenerado;
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RegisterExceptions("Error al crear y guardar el usuario: " + e.getMessage());
         }catch(ConnectionException e){
-            throw new RegisterExceptions(e.getMessage());
+            throw new RegisterExceptions("Error al conectar con la base de datos: " + e.getMessage());
         }
     }
 
-
     @Override
-    public List<Usuario> read() throws SQLException, UserExceptions{
+    public List<Usuario> read() throws UserException {
         List<Usuario> usuarios = new ArrayList<>();
         Usuario user = null;
         try (Connection conn = connect();
@@ -68,11 +65,11 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO{
 
             while (result.next()) {
                 Rol rol = new Rol();
-                rol.setId(result.getInt("idRol"));
+                rol.setId(result.getInt("R.idRol"));
 
                 rol.setNombre(result.getString("R.nombre"));
 
-                rol.setActivo(result.getBoolean("activo"));
+                rol.setActivo(result.getBoolean("R.activo"));
 
                 user = new Usuario(
                         result.getInt("idUsuario"),
@@ -87,11 +84,11 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO{
             }
             disconnect();
         } catch (SQLException e) {
-            throw new SQLException("Error: " + e);
-        } catch (UserExceptions e) {
-            throw new UserExceptions(e.getMessage());
+            throw new UserException("Error al leer en la base de datos: " + e);
+        } catch (UserException e) {
+            throw new UserException(e.getMessage());
         }catch(ConnectionException e){
-            throw new UserExceptions(e.getMessage());
+            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
         }
 
         return usuarios;
@@ -104,7 +101,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO{
         }
 
         Usuario user = (Usuario) objeto;
-        String sql = "UPDATE Usuarios SET nombre = ?, password = ?, email = ?, activo = ?, idRol = ? WHERE idUsuario = ?";
+        String sql = "UPDATE Usuarios SET nombreCompleto = ?, password = ?, email = ?, activo = ?, idRol = ?, username = ? WHERE idUsuario = ?";
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -114,57 +111,19 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO{
             statement.setString(3, user.getEmail());
             statement.setBoolean(4, user.isActivo());
             statement.setInt(5, user.getRol().getId());
-            statement.setInt(6, user.getId());
+            statement.setString(6, user.getUsername());
+            statement.setInt(7, user.getIdUsuario());
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected < 1) {
                 throw new UpdateException("No se han podido actualizar los datos.");
             }
-
         } catch(ConnectionException e){
-            throw new UpdateException(e.getMessage());
+            throw new UpdateException("Error al conectar con la base de datos: " + e.getMessage());
         }catch(SQLException e){
-            throw new UpdateException("Error al actualizar");
+            throw new UpdateException("Error al actualizar" + e.getMessage());
         }
 
-    }
-
-
-
-
-    @Override
-    public Usuario findOne(int id) throws UserExceptions, SQLException {
-        Usuario user = null;
-        try (Connection conn = connect();
-             PreparedStatement statement = conn.prepareStatement(
-                     "SELECT * FROM Usuarios U JOIN Roles R ON U.idRol = R.idRol WHERE U.idUsuario = ?"
-             )) {
-            statement.setInt(1, id);
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                // Crear instancia de Usuario
-                user = new Usuario(result.getInt("idUsuario"),
-                        result.getString("username"),
-                        result.getString("password"),
-                        result.getString("nombre"),
-                        result.getString("email"),
-                        null
-                );
-                Rol rol = new Rol();
-                rol.setId(result.getInt("idRol"));
-                rol.setNombre(result.getString("R.nombre"));
-                user.setRol(rol);
-            }
-            disconnect();
-        } catch (SQLException e) {
-            throw new UserExceptions(e.getMessage());
-        }catch(UserExceptions e){
-            throw new UserExceptions(e.getMessage());
-        }catch(ConnectionException e){
-            throw new UserExceptions(e.getMessage());
-        }
-        return user;
     }
 
     @Override
@@ -181,98 +140,97 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO{
                 throw new DeleteException("No se ha podido eliminar el usuario");
             }
         }catch(ConnectionException e){
-            throw new DeleteException(e.getMessage());
+            throw new DeleteException("Error al conectar con la base de datos: " + e.getMessage());
         }catch(SQLException e){
-            throw new DeleteException("Error al eliminar"+e.getMessage());
+            throw new DeleteException("Error al eliminar: "+e.getMessage());
         }
     }
 
-    public void delete(String username) throws SQLException {
-        String sql = "DELETE FROM Usuarios WHERE idUsuario = ?";
+//    public void delete(String username) throws DeleteException {
+//        String sql = "DELETE FROM Usuarios WHERE idUsuario = ?";
+//
+//        try (Connection conn = connect();
+//             PreparedStatement statement = conn.prepareStatement(sql)) {
+//
+//            statement.setString(1, username);
+//            int rowsAffected = statement.executeUpdate();
+//
+//            if (rowsAffected < 1) {
+//                throw new DeleteException("No se ha podido eliminar el usuario");
+//            }
+//        }catch(ConnectionException e){
+//          throw new DeleteException("Error al conectar con la base de datos: " + e.getMessage());
+//        } catch (SQLException e) {
+//            throw new DeleteException("No se ha podido eliminar el usuario: " + e.getMessage());
+//        }
+//    }
 
-        try (Connection conn = connect();
-             PreparedStatement statement = conn.prepareStatement(sql)) {
-
-            statement.setString(1, username);
-            int rowsAffected = statement.executeUpdate();
-
-            if (rowsAffected < 1) {
-                throw new SQLException("No se ha podido eliminar el usuario");
-            }
-        }catch(ConnectionException e){
-            throw new SQLException(e.getMessage());
-        }
-    }
     @Override
-    public Usuario findByUsername(String username) throws UserExceptions {
+    public Usuario buscarByUsername(String username) throws UserException {
         try {
             Connection conn = connect();
-            PreparedStatement statement = conn.prepareStatement(
-                    "SELECT * FROM Usuarios u JOIN Roles r ON u.idRol = r.id WHERE u.username = ?"
-            );
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Usuarios u JOIN Roles R ON u.idRol = R.idRol WHERE u.username = ?");
             statement.setString(1, username);
 
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Rol rol = new Rol(
-                        result.getInt("idRol"),  // viene de Usuarios, así que sí existe
-                        result.getString("r.nombre")
-                );
-                rol.setActivo(result.getBoolean("r.activoRol"));
 
-                Usuario usuario = new Usuario(
-                        result.getInt("u.id"),
-                        result.getString("u.username"),
-                        result.getString("u.password"),
-                        result.getString("u.nombre"),
-                        result.getString("u.email"),
-                        rol
-                );
-                usuario.setActivo(result.getBoolean("u.activo"));
+                Rol rol = new Rol(result.getInt("R.idRol"), result.getString("R.nombre"));
 
+                rol.setActivo(result.getBoolean("R.activo"));
+
+                Usuario usuario = new Usuario(result.getInt("idUsuario"), result.getString("username"),
+                        result.getString("password"), result.getString("nombreCompleto"),
+                        result.getString("email"), rol);
+
+                usuario.setActivo(result.getBoolean("activo"));
                 return usuario;
             } else {
-                throw new UserExceptions("Usuario no encontrado.");
+                throw new UserException("Usuario no encontrado.");
             }
-
-        } catch (ConnectionException e) {
-            throw new UserExceptions(e.getMessage());
-        } catch (SQLException e) {
-            throw new UserExceptions(e.getMessage());
+        } catch(ConnectionException e){
+            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+        } catch(SQLException e){
+            throw new UserException("Error al buscar el usuario en la base de datos: " + e.getMessage());
         }
     }
 
-
     @Override
-    public Usuario findById(int id) throws SQLException, UserExceptions {
+    public Usuario buscarById(int id) throws UserException {
         try {
             Connection conn = connect();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Usuarios u JOIN Roles ON u.idRol = Roles.idRol WHERE idUsuario = ?");
+            PreparedStatement statement = conn.prepareStatement(
+                    "SELECT * FROM Usuarios u " +
+                    "JOIN Roles r ON u.idRol = r.idRol " +
+                    "WHERE u.idUsuario = ?");
             statement.setInt(1, id);
 
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
 
-                Rol rol = new Rol(result.getInt("idRol"), result.getString("Roles.nombre"));
-
+                Rol rol = new Rol(result.getInt("idRol"), result.getString("r.nombre"));
                 rol.setActivo(result.getBoolean("activo"));
 
                 Usuario usuario = new Usuario(result.getInt("idUsuario"), result.getString("username"),
-                        result.getString("password"), result.getString("nombre"),
+                        result.getString("password"), result.getString("nombreCompleto"),
                         result.getString("email"), rol);
                 usuario.activar();
                 return usuario;
             } else {
-                throw new UserExceptions("Usuario no encontrado.");
+                throw new UserException("Usuario no encontrado.");
             }
-
-        } catch(ConnectionException e){
-            throw new UserExceptions(e.getMessage());
+        }
+        catch (SQLException e) {
+            throw new UserException("Error al buscar el usuario en la base de datos: " + e.getMessage());
+        }
+        catch(ConnectionException e){
+            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
         }
     }
-    public boolean validarUsernameYEmailUnicos(String username, String email) throws SQLException, UserExceptions {
+
+    public boolean validarUsernameYEmailUnicos(String username, String email) throws UserException {
         try (Connection conn = connect()) {
             String sql = "SELECT COUNT(*) AS total FROM Usuarios WHERE username = ? OR email = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -282,12 +240,15 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO{
             ResultSet result = statement.executeQuery();
 
             if (result.next() && result.getInt("total") > 0) {
-                throw new UserExceptions("El username o el email ya están registrados.");
+                throw new UserException("El username o el email ya están registrados.");
             }
             return true;
-        } catch (ConnectionException e) {
-            e.printStackTrace();
-            throw new UserExceptions("Error al conectar con la base de datos: " + e.getMessage());
+        }
+        catch (SQLException e) {
+            throw new RuntimeException("Error al validar: " + e.getMessage());
+        }
+        catch (ConnectionException e) {
+            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
         }
     }
 }
