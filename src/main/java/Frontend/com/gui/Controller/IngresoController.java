@@ -100,8 +100,10 @@ public class IngresoController {
 
         } catch (IOException e) {
             e.printStackTrace();
+            mostrarAlerta("Error I/O", "" + e.getMessage());
+
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            mostrarAlerta("Error", "" + e.getMessage());
         }
     }
 
@@ -128,17 +130,21 @@ public class IngresoController {
             ((Stage)((Button)event.getSource()).getScene().getWindow()).close();
 
         } catch (LoginException e) {
-            // Mostrar alerta si el login falla
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error de inicio de sesión");
-            alert.setHeaderText("Credenciales inválidas");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            mostrarAlerta("Error", "" + e.getMessage());
+
+//            // Mostrar alerta si el login falla
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("Error de inicio de sesión");
+//            alert.setHeaderText("Credenciales inválidas");
+//            alert.setContentText(e.getMessage());
+//            alert.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
+            mostrarAlerta("Error I/O", "" + e.getMessage());
+
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            mostrarAlerta("Error", "" + e.getMessage());
         }
     }
 
@@ -161,8 +167,16 @@ public class IngresoController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            mostrarAlerta("Error", "" + e.getMessage());
         }
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
     }
 
 
