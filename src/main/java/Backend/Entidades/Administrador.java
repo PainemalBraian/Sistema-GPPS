@@ -1,13 +1,13 @@
 package Backend.Entidades;
 
-import Backend.Exceptions.UserExceptions;
+import Backend.Exceptions.UserException;
 
 public class Administrador extends Usuario{
 
     public Administrador() {
     }
 
-    public Administrador(Usuario user) throws UserExceptions {
+    public Administrador(Usuario user) throws UserException {
         super(user.getUsername(), user.getContrasena(), user.getNombre(), user.getEmail(), user.getRol());
     }
 

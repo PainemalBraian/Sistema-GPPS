@@ -7,14 +7,15 @@ import java.util.ResourceBundle;
 
 public interface API {
 
-    ResourceBundle obtenerIdioma();
+    ResourceBundle obtenerIdioma(); // Retorna el ResourceBundle del idioma que esté seteado en esta instancia.
 
-    void cambiarIdioma(String idioma);
+    void cambiarIdioma(String idioma); //Modifica el resourceBundle para que busque en el label del idioma enviado.
 
-    void registrarUsuario(String username, String password, String email, String nombre, int rolId, String matricula, String carrera, String legajo, String nombreEntidad, String cuit, String direccionEntidad) throws RegisterExceptions, UserExceptions, Exception;
-    UsuarioDTO obtenerUsuario(String username) throws UserExceptions; // Devuelve el usuario según username
+    void registrarUsuario(String username, String password, String email, String nombre, int rolId, String matricula, String carrera, String legajo, String nombreEntidad, String cuit, String direccionEntidad) throws RegisterExceptions, UserException, Exception;
 
-    void eliminarUsuario(int id) throws UserExceptions, DeleteException; // Eliminar un usuario por username de la bd
+    UsuarioDTO obtenerUsuarioByUsername(String username) throws UserException; // Devuelve el usuario según username
+
+    void eliminarUsuario(int id) throws UserException, DeleteException; // Eliminar un usuario por username de la bd
 
     List<RolDTO> obtenerRoles() throws Exception; // Devuelve los roles en bd
 
@@ -24,26 +25,30 @@ public interface API {
 
     RolDTO obtenerRolPorId(int id) throws Exception; // Recuperar el rol almacenado
 
-    void activarRol(int id) throws  ReadException; // Recuperar el objeto Rol, implementar el comportamiento de estado.
+    void activarRol(int id) throws ReadException, UpdateException; // Recuperar el objeto Rol, implementar el comportamiento de estado.
 
     void desactivarRol(int id) throws ReadException, UpdateException; // Recuperar el objeto Rol, imp
 
-    List<UsuarioDTO> obtenerUsuarios() throws UserExceptions; // Recuperar todos los usuarios
+    List<UsuarioDTO> obtenerUsuarios() throws UserException; // Recuperar todos los usuarios
 
-    void activarUsuario(String username) throws  UserExceptions, UpdateException; // Recuperar el objeto Usuario, implementar el comportamiento de estado.
+    void activarUsuarioByUsername(String username) throws UserException, UpdateException; // Recuperar el objeto Usuario, implementar el comportamiento de estado.
 
-    void desactivarUsuario(String username) throws UserExceptions, UpdateException; // Recuperar el objeto Usuario, implementar el comportamiento de estado.
+    void desactivarUsuarioByUsername(String username) throws UserException, UpdateException; // Recuperar el objeto Usuario, implementar el comportamiento de estado.
 
-    String obtenerNombreUsuario() throws UserExceptions; //Devuelve el nombre del usuario logeado
+//    UsuarioDTO obtenerUsuarioByEmail(String email) throws UserException; // Devuelve el usuario si fue encontrado por email
+    String obtenerNombreUsuario() throws UserException; //Devuelve el nombre del usuario logeado
 
-    UsuarioDTO obtenerUsuarioByEmail(String email) throws UserExceptions; // Devuelve el usuario si fue encontrado por email
+//    UsuarioDTO obtenerUsuarioByEmail(String email) throws UserException; // Devuelve el usuario si fue encontrado por email
 
     UsuarioDTO login(String username, String password) throws LoginException; // Loguea el usuario y si todo es correcto devuelve el Usuario, sino null
 
-    UsuarioDTO obtenerSesionDeUsuario(); // Devuelve el usuario que esta logueado
+    UsuarioDTO obtenerSesionDeUsuario() throws UserException; // Devuelve el usuario que esta logueado
 
     void cerrarSesion(); // Cierra la sesion del usuario
 
-    RolDTO obtenerRolUsuarioId(int id) throws Exception; // Obtiene el rol de un usuario mediante su ID
+    RolDTO obtenerRolByUsuarioId(int id) throws Exception; // Obtiene el rol de un usuario mediante su ID
 
+    void cargarProyecto(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos, String tutorEncargado) throws CreateException;
+
+    ProyectoDTO obtenerProyectoByTitulo(String titulo) throws ReadException;
 }

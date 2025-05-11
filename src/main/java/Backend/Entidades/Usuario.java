@@ -1,46 +1,63 @@
 package Backend.Entidades;
 
-import Backend.Exceptions.UserExceptions;
+import Backend.Exceptions.UserException;
+
+import static java.util.Objects.isNull;
 
 public class Usuario {
+    private int idUsuario;
     private String username;
     private String contrasena;
     private String nombre;
     private String email;
-    private Rol rol;
     private boolean activo;
-    private int id;
     private int dni;
-    private String matricula;
-    private String Legajo;
-    private String nombreEntidad;
-    private String cuit;
-    private String direccionEntidad;
-    private String carrera;
+    private Rol rol;
 
+    public Usuario() {}
 
-    public Usuario() {
+    public Usuario(String username, String contrasena, String nombre, String email, Rol rol) throws UserException {
+        if(isNull(username)|| username.isEmpty()){
+            throw new UserException("El username no puede estar vacio");
+        }
+        if(isNull(email)||email.isEmpty()){
+            throw new UserException("El email no puede estar vacio");
+        }
+        if(isNull(contrasena)||contrasena.isEmpty()){
+            throw new UserException("La contraseña no puede estar vacía");
+        }
+        if(isNull(nombre)||nombre.isEmpty()){
+            throw new UserException("Debe completar el nombre");
+        }
+        if (contrasena.length() < 8) {
+            throw new UserException("Error: La contraseña debe tener al menos 8 caracteres");
+        }
+        this.username = username;
+        this.contrasena = contrasena;
+        this.nombre = nombre;
+        this.email = email;
+        this.rol = rol;
+        this.activo=true;
     }
-
-    public Usuario(String username, String contrasena, String nombre, String email, Rol rol) throws UserExceptions {
-
-        if(isNull(username)){
-            throw new UserExceptions("El username no puede estar vacio");
+    //Constructor para DAO
+    public Usuario(int id, String username, String contrasena, String nombre, String email, Rol rol) throws UserException {
+        if(isNull(username)|| username.isEmpty()){
+            throw new UserException("El username no puede estar vacio");
         }
-        if(isNull(email)){
-            throw new UserExceptions("El email no puede estar vacio");
+        if(isNull(email)||email.isEmpty()){
+            throw new UserException("El email no puede estar vacio");
         }
-        if(isNull(contrasena)){
-            throw new UserExceptions("La contraseña no puede estar vacía");
+        if(isNull(contrasena)||contrasena.isEmpty()){
+            throw new UserException("La contraseña no puede estar vacía");
         }
-
-        if (isNull(contrasena)  || contrasena.length() < 8) {
-            throw new UserExceptions("Error: La contraseña debe tener al menos 8 caracteres");
+        if(isNull(nombre)||nombre.isEmpty()){
+            throw new UserException("Debe completar el nombre");
         }
-        if(isNull(nombre)){
-            throw new UserExceptions("Debe completar el nombre");
+        if (contrasena.length() < 8) {
+            throw new UserException("Error: La contraseña debe tener al menos 8 caracteres");
         }
 
+        this.idUsuario = id;
         this.username = username;
         this.contrasena = contrasena;
         this.nombre = nombre;
@@ -48,35 +65,12 @@ public class Usuario {
         this.rol = rol;
     }
 
-    public Usuario(int id, String username, String contrasena, String nombre, String email, Rol rol) throws UserExceptions {
-
-        if(isNull(username)){
-            throw new UserExceptions("El username no puede estar vacio");
-        }
-        if(isNull(email)){
-            throw new UserExceptions("El email no puede estar vacio");
-        }
-        if(isNull(contrasena)){
-            throw new UserExceptions("La contraseña no puede estar vacia");
-        }
-        if(isNull(nombre)){
-            throw new UserExceptions("Debe completar el nombre");
-        }
-
-        this.id = id;
-        this.username = username;
-        this.contrasena = contrasena;
-        this.nombre = nombre;
-        this.email = email;
-        this.rol = rol;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getUsername() {
@@ -119,54 +113,13 @@ public class Usuario {
         this.rol = rol;
     }
 
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
+    public int getDni() {
+        return dni;
     }
 
-    public String getMatricula() {
-        return matricula;
+    public void setDni(int dni) {
+        this.dni = dni;
     }
-
-    public String getLegajo() {
-        return Legajo;
-    }
-
-    public void setLegajo(String legajo) {
-        Legajo = legajo;
-    }
-
-    public String getNombreEntidad() {
-        return nombreEntidad;
-    }
-
-    public void setNombreEntidad(String nombreEntidad) {
-        this.nombreEntidad = nombreEntidad;
-    }
-
-    public String getCuit() {
-        return cuit;
-    }
-
-    public void setCuit(String cuit) {
-        this.cuit = cuit;
-    }
-
-    public String getDireccionEntidad() {
-        return direccionEntidad;
-    }
-
-    public void setDireccionEntidad(String direccionEntidad) {
-        this.direccionEntidad = direccionEntidad;
-    }
-
-    public void setCarrera(String carrera) {
-        this.carrera = carrera;
-    }
-
-    public String getCarrera() {
-        return carrera;
-    }
-
 
     public boolean isActivo() {
         return activo;
@@ -215,17 +168,6 @@ public class Usuario {
         return true;
     }
 
-    private boolean isNull(String dato) {
-        return dato == null || dato.trim().isEmpty();
-    }
-
-    public int getDni() {
-        return dni;
-    }
-
-    public void setDni(int dni) {
-        this.dni = dni;
-    }
 }
 
 

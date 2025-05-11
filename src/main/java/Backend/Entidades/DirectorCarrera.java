@@ -1,13 +1,13 @@
 package Backend.Entidades;
 
-import Backend.Exceptions.UserExceptions;
+import Backend.Exceptions.UserException;
 
 public class DirectorCarrera extends Usuario{
 
     public DirectorCarrera() {
     }
 
-    public DirectorCarrera(Usuario user) throws UserExceptions {
+    public DirectorCarrera(Usuario user) throws UserException {
         super(user.getUsername(), user.getContrasena(), user.getNombre(), user.getEmail(), user.getRol());
     }
 

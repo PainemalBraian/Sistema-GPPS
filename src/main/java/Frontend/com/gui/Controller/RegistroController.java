@@ -1,8 +1,6 @@
 package Frontend.com.gui.Controller;
 
-
 import Backend.API.API;
-import Backend.API.PersistanceAPI;
 import Backend.DTO.RolDTO;
 
 import javafx.event.ActionEvent;
@@ -16,11 +14,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
-
 import java.util.ResourceBundle;
 
-public class RegistroController {
+import static java.util.Objects.isNull;
 
+public class RegistroController {
+    API api;
     @FXML public Label registroField;
     @FXML public Button BottonRegistrarse;
     @FXML private TextField nombreField;
@@ -38,12 +37,14 @@ public class RegistroController {
     @FXML private TextField cuitField;
     @FXML private TextField dni;
     @FXML private Button volver_login;
-    API api;
-  
-    @FXML
-    private TextField direccionEntidadField;
+    @FXML private TextField direccionEntidadField;
 
     public void initialize() throws Exception {
+        cargarComboBoxRoles();
+        setearLogicaDeCampos();
+    }
+
+    private void cargarComboBoxRoles() {
         rolComboBox.setOnAction((ActionEvent event) -> {
             RolDTO selectedRol = rolComboBox.getValue();
             String nombreRol = selectedRol != null ? selectedRol.getNombre() : "";
@@ -57,6 +58,25 @@ public class RegistroController {
         });
     }
 
+    private void setearLogicaDeCampos() {
+        // Agregar un ChangeListener para permitir solo números y máximo de 6 dígitos
+        matriculaField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d{0,6}")) {
+                matriculaField.setText(oldValue);
+            }
+        });
+        legajoField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d{0,6}")) {
+                legajoField.setText(oldValue);
+            }
+        });
+        cuitField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d{0,11}")) {
+                cuitField.setText(oldValue);
+            }
+        });
+    }
+
 
     @FXML
     public void volverLogin(ActionEvent event) {
@@ -65,7 +85,6 @@ public class RegistroController {
             Parent root = loader.load();
             // Obtener el controlador
             IngresoController controller = loader.getController();
-
             // Crear y pasar la instancia de PersistenceAPI
             controller.setPersistenceAPI(api);
 
@@ -78,7 +97,7 @@ public class RegistroController {
             ((Stage) ((Button) event.getSource()).getScene().getWindow()).close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            mostrarAlerta("Error", "Ocurrió un error al intentar volver\n" + e.getMessage());
         }
     }
 
@@ -87,9 +106,9 @@ public class RegistroController {
         actualizarIdioma();
         inicializarRoles();
     }
+
     private void actualizarIdioma() {
         ResourceBundle bundle = api.obtenerIdioma();
-
         // Labels
         registroField.setText(bundle.getString("label.registro"));
         dni.setPromptText(bundle.getString("label.dni"));
@@ -107,13 +126,12 @@ public class RegistroController {
         //Botones
         BottonRegistrarse.setText(bundle.getString("button.registrarse"));
         volver_login.setText(bundle.getString("button.volver"));
-
     }
+
     private void inicializarRoles() throws Exception {
-        rolComboBox.getItems().clear(); // Evita duplicados si se llama varias veces
+        rolComboBox.getItems().clear();// Evita duplicados si se llama varias veces
         List<RolDTO> roles = api.obtenerRoles();
         rolComboBox.getItems().addAll(roles);
-
     }
 
     @FXML
@@ -133,7 +151,11 @@ public class RegistroController {
         RolDTO rol = rolComboBox.getValue();
 
         try {
-            PersistanceAPI api = new PersistanceAPI();
+            if (isNull(rol))
+                throw new RuntimeException("Debes seleccionar un rol");
+            if (!contrasena.equals(confirmarContrasena))
+                throw new RuntimeException("Las contraseñas deben coincidir");
+
             api.registrarUsuario(
                     nombre,
                     contrasena,
@@ -148,9 +170,18 @@ public class RegistroController {
                     direccionEntidadField.getText()
             );
             volverLogin(actionEvent);
+            mostrarAlerta("Registro Exitoso", "Usuario registrado exitosamente.");
         } catch (Exception e) {
-            e.printStackTrace();
+            mostrarAlerta("Error de Registro", "Ocurrió un error al registrar el usuario:\n" + e.getMessage());
         }
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
     }
 
 

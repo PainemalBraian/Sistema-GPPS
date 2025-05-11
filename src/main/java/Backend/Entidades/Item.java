@@ -24,6 +24,21 @@ public class Item {
         this.descripcion = descripcion;
     }
 
+    //Sin id para manejo de creacion en bd, ya que lo genera AutoIncrement
+    public Item(String titulo, String descripcion) throws EmptyException {
+        if (isNull(titulo) || titulo.isEmpty()) {
+            throw new EmptyException("El titulo no puede estar vacío.");
+        }
+        if (isNull(descripcion) || titulo.isEmpty()) {
+            throw new EmptyException("La descripcion no puede estar vacía.");
+        }
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public boolean isId(int id) {
         return id == this.id;

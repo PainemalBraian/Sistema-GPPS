@@ -2,16 +2,19 @@ package Backend.DTO;
 
 public class ItemDTO {
     private int id;
-    private String nombre;
+    private String titulo;
     private String descripcion;
 
-    public ItemDTO(int id, String nombre, String descripcion) {
+    public ItemDTO() {
+    }
+
+    public ItemDTO(int id, String titulo, String descripcion) {
         this.setId(id);
-        this.setNombre(nombre);
+        this.setTitulo(titulo);
         this.setDescripcion(descripcion);
     }
-    public ItemDTO(String nombre, String descripcion) {
-        this.nombre = nombre;
+    public ItemDTO(String titulo, String descripcion) {
+        this.titulo = titulo;
         this.descripcion = descripcion;
     }
 
@@ -26,12 +29,12 @@ public class ItemDTO {
     public void setId(int id) {
         this.id = id;}
 
-    public String getNombre() {
-        return nombre;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getDescripcion() {
