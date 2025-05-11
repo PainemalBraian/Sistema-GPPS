@@ -23,12 +23,22 @@ public class EntidadColaborativa extends Usuario{
         if (isNull(cuit) || cuit.isEmpty()) {
             throw new UserException("El CUIT debe existir.");
         }
+<<<<<<< HEAD
         if (isNull(direccionEntidad) || direccionEntidad.isEmpty()) {
             throw new UserException("La direccion de la Entidad Colabodora debe existir.");
         }
         if (cuit.length()!=11) {
             throw new UserException("El CUIT debe contener 11 digitos.");
         }
+=======
+        if (cuit.length()!=11) {
+            throw new UserException("El CUIT debe contener 11 digitos.");
+        }
+        if (isNull(direccionEntidad) || direccionEntidad.isEmpty()) {
+            throw new UserException("La direccion de la Entidad Colabodora debe existir.");
+        }
+
+>>>>>>> b23489114d35815ce1fb0bf2fa6b3a671ca73759
         this.nombreEntidad = nombreEntidad;
         this.cuit = cuit;
         this.direccionEntidad = direccionEntidad;
