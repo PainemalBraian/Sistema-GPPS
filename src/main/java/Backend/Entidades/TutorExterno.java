@@ -10,11 +10,13 @@ import static java.util.Objects.isNull;
 public class TutorExterno extends Usuario{
     private String nombreEntidadColaborativa;
     private List<Proyecto> proyectosAsignados = new ArrayList<>();
+
     public TutorExterno() {
     }
 
+
     public TutorExterno(Usuario user, String nombreEntidadColaborativa) throws UserException {
-        super(user.getUsername(), user.getContrasena(), user.getNombre(), user.getEmail(), user.getRol());
+        super(user.getIdUsuario(),user.getUsername(), user.getContrasena(), user.getNombre(), user.getEmail(), user.getRol());
         if (isNull(nombreEntidadColaborativa)||nombreEntidadColaborativa.isEmpty()) {
             throw new UserException("El nombre de la entidad no debe estar vacío.");
         }

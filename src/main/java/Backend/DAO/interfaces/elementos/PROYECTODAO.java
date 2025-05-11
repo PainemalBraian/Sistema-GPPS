@@ -16,4 +16,8 @@ public interface PROYECTODAO {
     Proyecto buscarByID(int id) throws ReadException;
 
     List<Proyecto> obtenerProyectos() throws ReadException;
+
+    boolean validarTituloUnico(String titulo) throws CreateException;
+
+    Proyecto buscarByTitulo(String titulo) throws ReadException;
 }
