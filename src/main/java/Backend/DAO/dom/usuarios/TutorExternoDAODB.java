@@ -3,16 +3,16 @@ package Backend.DAO.dom.usuarios;
 import Backend.DAO.DBAcces;
 import Backend.DAO.UsuarioDAODB;
 import Backend.DAO.interfaces.usuarios.TUTOREXTERNODAO;
+import Backend.Entidades.Proyecto;
 import Backend.Entidades.TutorExterno;
 import Backend.Entidades.Usuario;
-import Backend.Exceptions.ConnectionException;
-import Backend.Exceptions.RegisterExceptions;
-import Backend.Exceptions.UserException;
+import Backend.Exceptions.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
@@ -41,13 +41,60 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
     }
 
     @Override
-    public List<TutorExterno> read() throws UserException {
-        return List.of();
+    public List<TutorExterno> buscarTutores() throws ReadException {
+        List<TutorExterno> tutores = new ArrayList<>();
+
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM TutoresExternos");
+             ResultSet result = statement.executeQuery()) {
+
+            while (result.next()) {
+                int idUsuario = result.getInt("idUsuario");
+
+                TutorExterno tutor = new TutorExterno(
+                        UsuarioDAODB.buscarById(idUsuario), // Obtiene el usuario
+                        result.getString("requisitos")
+                );
+//                tutor.setProyectosAsignados(buscarProyectosAsignados()); Implementar usando tabla de relacion_Tutores_Proyectos.
+                tutores.add(tutor);
+            }
+
+            return tutores;
+        } catch (SQLException e) {
+            throw new ReadException("Error al obtener los datos de los proyectos.");
+        } catch (ConnectionException e) {
+            throw new ReadException(e.getMessage());
+        } catch (UserException e) {
+            throw new ReadException("Error al construir el proyecto: " + e.getMessage());
+        }
     }
 
     @Override
     public TutorExterno buscarByUsername(String username) throws UserException {
-        return null;
+        try {
+            Connection conn = connect();
+            PreparedStatement statement = conn.prepareStatement(
+                    "SELECT * FROM TutoresExternos TE " +
+                            "JOIN Usuarios U ON TE.idUsuario = U.idUsuario " +
+                            "WHERE U.username = ?");
+            statement.setString(1, username);
+
+            ResultSet tutor = statement.executeQuery();
+
+            if (tutor.next()) {
+                Usuario usuario = UsuarioDAODB.buscarById(tutor.getInt("idUsuario"));
+                TutorExterno tutorExt = new TutorExterno(usuario, tutor.getString("nombreEntidadColaborativa") );
+                return tutorExt;
+            } else {
+                throw new UserException("Tutor no encontrado.");
+            }
+        }
+        catch (SQLException e) {
+            throw new UserException("Error al buscar el usuario en la base de datos: " + e.getMessage());
+        }
+        catch(ConnectionException e){
+            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+        }
     }
 
     @Override

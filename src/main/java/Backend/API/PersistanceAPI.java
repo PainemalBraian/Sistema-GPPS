@@ -1,10 +1,8 @@
 package Backend.API;
 
 import Backend.DAO.*;
-import Backend.DAO.dom.usuarios.DocenteDAODB;
-import Backend.DAO.dom.usuarios.EntidadColaborativaDAODB;
-import Backend.DAO.dom.usuarios.EstudianteDAODB;
-import Backend.DAO.dom.usuarios.TutorExternoDAODB;
+import Backend.DAO.dom.elementos.*;
+import Backend.DAO.dom.usuarios.*;
 import Backend.DTO.*;
 import Backend.Entidades.*;
 import Backend.Exceptions.*;
@@ -15,6 +13,8 @@ import java.util.ResourceBundle;
 
 public class PersistanceAPI implements API {
     Usuario userSession = new Usuario();
+    ResourceBundle labels = ResourceBundle.getBundle("Backend.labels", Locale.getDefault()); //Busca el labels.properties con el Tipo de idioma Local (SO)
+
     UsuarioDAODB UsuarioDAODB = new UsuarioDAODB();
     RolDAODB RolDAODB = new RolDAODB();
     EstudianteDAODB EstudianteDAODB= new EstudianteDAODB();
@@ -22,7 +22,9 @@ public class PersistanceAPI implements API {
     TutorExternoDAODB TutorExternoDAODB = new TutorExternoDAODB();
     EntidadColaborativaDAODB EntidadColaborativaDAODB = new EntidadColaborativaDAODB();
 
-    ResourceBundle labels = ResourceBundle.getBundle("Backend.labels", Locale.getDefault());
+    ProyectoDAODB ProyectoDAODB = new ProyectoDAODB();
+    InformeDAODB InformeDAODB = new InformeDAODB();
+    PPSDAODB PPSDAODB = new PPSDAODB();
 
     @Override
     public ResourceBundle obtenerIdioma() {
@@ -35,16 +37,17 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-    public void activarUsuario(String username) throws UserException, UpdateException {
-        try {
-            Usuario user = UsuarioDAODB.buscarByUsername(username);
-            user.activar();
-            UsuarioDAODB.update(user);
-        } catch (UserException e) {
-            throw new UserException(e.getMessage());
-        }catch(Exception e){
-            throw new UserException(e.getMessage());
-        }
+    public void activarUsuarioByUsername(String username) throws UserException, UpdateException {
+        Usuario user = UsuarioDAODB.buscarByUsername(username);
+        user.activar();
+        UsuarioDAODB.update(user);
+    }
+
+    @Override
+    public void desactivarUsuarioByUsername(String username) throws UserException, UpdateException{
+        Usuario user = UsuarioDAODB.buscarByUsername(username);
+        user.desactivar();
+        UsuarioDAODB.update(user);
     }
 
     @Override
@@ -53,9 +56,10 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-    public void activarRol(int idRol) throws ReadException {
+    public void activarRol(int idRol) throws ReadException, UpdateException {
         Rol rol = RolDAODB.buscarByID(idRol);
         rol.activar();
+        RolDAODB.update(rol);
     }
 
     @Override
@@ -66,16 +70,7 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-    public void desactivarUsuario(String username) throws UserException, UpdateException{
-        Usuario user = UsuarioDAODB.buscarByUsername(username);
-        Usuario userDB = new Usuario(user.getIdUsuario(), user.getUsername(), user.getContrasena(),
-                user.getNombre(), user.getEmail(), user.getRol());
-        userDB.desactivar();
-        UsuarioDAODB.update(userDB);
-    }
-
-    @Override
-    public void eliminarUsuario(int id) throws UserException, DeleteException {
+    public void eliminarUsuario(int id) throws DeleteException {
         UsuarioDAODB.delete(id);
     }
 
@@ -118,20 +113,21 @@ public class PersistanceAPI implements API {
         }
     }
 
-    private RolDTO convertirARolDTO(Rol rol) {
-        if (rol == null) return null;
+    private RolDTO convertirARolDTO(Rol rol) throws UserException {
+        if (rol == null)
+            throw new UserException("El rol que se intenta convertir no existe.");
         return new RolDTO(rol.getId(), rol.getNombre(), rol.isActivo());
     }
 
     @Override
     public List<RolDTO> obtenerRoles() throws Exception {
-        List<RolDTO> rolDTOs = new ArrayList<>();
+        List<RolDTO> rolesDTO = new ArrayList<>();
         try {
-            List<Rol> roles = RolDAODB.read();
+            List<Rol> roles = RolDAODB.buscarRoles();  // Seria conveniente implementar un metodo en el Dao par que filtre ahi mismo por campo "activo", acá se hace el bucle 2 veces
             for (Rol rol : roles) {
-                rolDTOs.add(new RolDTO(rol.getId(), rol.getNombre(), rol.isActivo()));
+                rolesDTO.add(new RolDTO(rol.getId(), rol.getNombre(), rol.isActivo()));
             }
-            return rolDTOs;
+            return rolesDTO;
         } catch (Exception e) {
             //e.getStackTrace();
             throw new Exception("Error al obtener los roles");
@@ -140,23 +136,22 @@ public class PersistanceAPI implements API {
 
     @Override
     public List<RolDTO> obtenerRolesActivos() throws ReadException {
-        List<RolDTO> rolDTOs = new ArrayList<>();
+        List<RolDTO> rolesDTO = new ArrayList<>();
         try {
-            List<Rol> roles = RolDAODB.read();
+            List<Rol> roles = RolDAODB.buscarRoles();
             for (Rol rol : roles) {
                 if (rol.isActivo()) {
-                    rolDTOs.add(new RolDTO(rol.getId(), rol.getNombre(), rol.isActivo()));
+                    rolesDTO.add(new RolDTO(rol.getId(), rol.getNombre(), rol.isActivo()));
                 }
-
             }
-            return rolDTOs;
+            return rolesDTO;
         } catch(Exception e){
             throw new ReadException(e.getMessage());
         }
     }
 
     @Override
-    public UsuarioDTO obtenerSesionDeUsuario() {
+    public UsuarioDTO obtenerSesionDeUsuario() throws UserException {
         RolDTO rol = convertirARolDTO(userSession.getRol());
         UsuarioDTO user = new UsuarioDTO(userSession.getIdUsuario(), userSession.getUsername(), userSession.getContrasena(), userSession.getNombre(),
                 userSession.getEmail(), rol, userSession.isActivo());
@@ -164,11 +159,10 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-    public UsuarioDTO obtenerUsuario(String username) throws UserException {
-        UsuarioDTO usuarioDTO=null;
+    public UsuarioDTO obtenerUsuarioByUsername(String username) throws UserException {
         Usuario usuario = UsuarioDAODB.buscarByUsername(username);
         RolDTO rol = convertirARolDTO(usuario.getRol());
-        usuarioDTO = new UsuarioDTO(usuario.getIdUsuario(), usuario.getUsername(),
+        UsuarioDTO usuarioDTO = new UsuarioDTO(usuario.getIdUsuario(), usuario.getUsername(),
                 usuario.getContrasena(), usuario.getNombre(),
                 usuario.getEmail(), rol, usuario.isActivo());
         return usuarioDTO;
@@ -181,41 +175,30 @@ public class PersistanceAPI implements API {
             throw new UserExceptions("No hay un usuario en la sesión");}
     }
 
-    @Override
-    public UsuarioDTO obtenerUsuarioByEmail(String email) throws UserException {
-        return null;
-    }
+//    @Override
+//    public UsuarioDTO obtenerUsuarioByEmail(String email) throws UserException {
+//        return null;
+//    }
 
     @Override
     public List<UsuarioDTO> obtenerUsuarios() throws UserException {
         try {
-            List<UsuarioDTO> usuarioDTOs = new ArrayList<>();
+            List<UsuarioDTO> usuariosDTO = new ArrayList<>();
             List<Usuario> usuarios = UsuarioDAODB.read();
 
             for (Usuario usuario : usuarios) {
                 RolDTO rol = convertirARolDTO(usuario.getRol());
-                usuarioDTOs.add(new UsuarioDTO(usuario.getIdUsuario(), usuario.getUsername(), usuario.getContrasena(),
+                usuariosDTO.add(new UsuarioDTO(usuario.getIdUsuario(), usuario.getUsername(), usuario.getContrasena(),
                         usuario.getNombre(), usuario.getEmail(), rol, usuario.isActivo()));
             }
-            return usuarioDTOs;
+            return usuariosDTO;
         } catch (Exception e) {
-            throw new UserException("Error al obtener los usuarios");
+            throw new UserException("Error al obtener los usuarios" + e.getMessage());
         }
     }
 
     @Override
-    public void registrarUsuario(
-            String username,
-            String password,
-            String email,
-            String nombre,
-            int rolId,
-            String matricula,
-            String carrera,
-            String legajo,
-            String nombreEntidad,
-            String cuit,
-            String direccionEntidad
+    public void registrarUsuario(String username, String password, String email, String nombre, int rolId, String matricula, String carrera, String legajo, String nombreEntidad, String cuit, String direccionEntidad
     ) throws RegisterExceptions, UserException,ReadException {
 
         // Validar que el username y email no estén en uso
@@ -276,7 +259,7 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-    public RolDTO obtenerRolUsuarioId(int id) throws Exception{
+    public RolDTO obtenerRolByUsuarioId(int id) throws Exception{
         try {
             Usuario usuario = UsuarioDAODB.buscarById(id);
             Rol rolUsuario = usuario.getRol();
@@ -284,6 +267,47 @@ public class PersistanceAPI implements API {
         } catch (Exception e) {
             throw new Exception("Error al obtener el rol del usuario");
         }
+    }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//    MÉTODOS DE ELEMENTOS
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override //probar
+    public void cargarProyecto(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos, String tutorEncargado) throws CreateException {
+        try {
+            // Validar que la matricula no esté en uso
+            ProyectoDAODB.validarTituloUnico(titulo);
+            TutorExterno encargado = TutorExternoDAODB.buscarByUsername(tutorEncargado);
+            // Guardar en la base de datos
+            Proyecto proyecto = new Proyecto(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos, encargado);
+            ProyectoDAODB.create(proyecto);
+        } catch (Exception e) {
+            throw new CreateException(e.getMessage());
+        }
+    }
+
+    @Override //probar
+    public ProyectoDTO obtenerProyectoByTitulo(String titulo) throws ReadException {
+        try {
+            Proyecto proyecto = ProyectoDAODB.buscarByTitulo(titulo);
+            TutorExternoDTO tutor = null;
+            tutor = convertirATutorDTO(proyecto.getTutorEncargado());
+            ProyectoDTO proyectoDTO = new ProyectoDTO(proyecto.getId(), proyecto.getTitulo(),
+                    proyecto.getDescripcion(), proyecto.getAreaDeInteres(),
+                    proyecto.getUbicacion(), proyecto.getObjetivos(), proyecto.getRequisitos(),tutor);
+            return proyectoDTO;
+        } catch (UserException e) {
+            throw new ReadException("Error al obtener el proyecto: "+e.getMessage());
+        }
+    }
+
+    private TutorExternoDTO convertirATutorDTO(TutorExterno tutor) throws UserException {
+        if (tutor == null)
+            throw new UserException("El rol que se intenta convertir no existe.");
+        RolDTO rolDTO = convertirARolDTO(tutor.getRol());
+        UsuarioDTO usuarioDTO = new UsuarioDTO(tutor.getIdUsuario(), tutor.getUsername(), tutor.getContrasena(), tutor.getNombre(), tutor.getEmail(),rolDTO,tutor.isActivo());
+        return new TutorExternoDTO(usuarioDTO, tutor.getNombreEntidadColaborativa());
     }
 
 }

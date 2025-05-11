@@ -1,4 +1,4 @@
 package Backend.DTO;
 
-public class InformeDTO {
+public class InformeDTO extends ItemDTO{
 }

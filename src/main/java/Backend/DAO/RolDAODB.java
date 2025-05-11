@@ -8,31 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Backend.DAO.interfaces.ROLDAO;
-import Backend.Exceptions.ConnectionException;
-import Backend.Exceptions.CreateException;
-import Backend.Exceptions.DeleteException;
-import Backend.Exceptions.ReadException;
-import Backend.Exceptions.UpdateException;
+import Backend.Exceptions.*;
 import Backend.Entidades.Rol;
 
 public class RolDAODB extends DBAcces implements ROLDAO {
 
     @Override
     public void create(Rol rol) throws CreateException {
-
-        String sql = "INSERT INTO Roles (nombre,  activoRol) VALUES (?,  ?)";
+        String sql = "INSERT INTO Roles (nombre,  activoRol) VALUES (?, ?)";
         try {
             Connection conn = connect();
-
-            if (conn == null) {
-                throw new CreateException("No se pudo establecer conexión con la base de datos.");
-            }
-
             PreparedStatement statement = conn.prepareStatement(sql);
-
-            if (statement == null) {
-                throw new CreateException("No se pudo preparar la sentencia SQL.");
-            }
 
             statement.setString(1, rol.getNombre());
             statement.setBoolean(2, rol.isActivo());
@@ -44,11 +30,10 @@ public class RolDAODB extends DBAcces implements ROLDAO {
 
             statement.close();
             disconnect();
-
         } catch (ConnectionException e) {
-            throw new CreateException(e.getMessage());
+            throw new CreateException("Error al conectar con la base de datos: " + e.getMessage());
         } catch(SQLException e){
-            throw new CreateException("Error al crear el rol");
+            throw new CreateException("Error al crear el rol: " + e.getMessage());
         }
 
     }
@@ -64,12 +49,12 @@ public class RolDAODB extends DBAcces implements ROLDAO {
         }catch(SQLException e){
             throw new DeleteException("Existen registros con este rol: " + e.getMessage());
         }catch (ConnectionException e) {
-            throw new DeleteException(e.getMessage());
+            throw new DeleteException("Error al conectar con la base de datos: " + e.getMessage());
         }
     }
 
     @Override
-    public List<Rol> read() throws ReadException {
+    public List<Rol> buscarRoles() throws ReadException {
         List<Rol> roles = new ArrayList<>();
         try {
             Connection conn = connect();
@@ -88,13 +73,11 @@ public class RolDAODB extends DBAcces implements ROLDAO {
             }
 
             disconnect();
-
             return roles;
-
         } catch(ConnectionException e){
-            throw new ReadException(e.getMessage());
+            throw new ReadException("Error al conectar con la base de datos: " + e.getMessage());
         }catch(SQLException e){
-            throw new ReadException(e.getMessage());
+            throw new ReadException("Error al buscar los roles: " + e.getMessage());
         }
     }
 
@@ -108,15 +91,9 @@ public class RolDAODB extends DBAcces implements ROLDAO {
 
             Rol rol = (Rol) objeto;
             Connection conn = connect();
-            if (conn == null) {
-                throw new UpdateException("No se pudo establecer la conexión a la base de datos.");
-            }
 
             String sql = "UPDATE Roles SET nombre = ?, activoRol = ? WHERE idRol = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
-            if (statement == null) {
-                throw new UpdateException("No se pudo preparar la sentencia SQL.");
-            }
 
             statement.setString(1, rol.getNombre());
             statement.setBoolean(3, rol.isActivo());
@@ -128,9 +105,9 @@ public class RolDAODB extends DBAcces implements ROLDAO {
             }
             disconnect();
         } catch (ConnectionException e) {
-            throw new UpdateException(e.getMessage());
+            throw new UpdateException("Error al conectar con la base de datos: " + e.getMessage());
         } catch(SQLException e){
-            throw new UpdateException("Error al actualizar");
+            throw new UpdateException("Error al actualizar roles: " + e.getMessage());
         }
     }
 
@@ -139,10 +116,6 @@ public class RolDAODB extends DBAcces implements ROLDAO {
         try {
             Rol rol = null;
             Connection conn = connect();
-
-            if (conn == null) {
-                throw new ReadException("No se pudo establecer la conexión.");
-            }
 
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM Roles WHERE idRol = ?");
             if (statement == null) {
@@ -162,10 +135,10 @@ public class RolDAODB extends DBAcces implements ROLDAO {
 
             return rol;
         } catch(ConnectionException e){
-            throw new ReadException(e.getMessage());
+            throw new ReadException("Error al conectar con la base de datos: " + e.getMessage());
         } catch(SQLException e){
             e.printStackTrace();
-            throw new ReadException("Error al obtener el rol");
+            throw new ReadException("Error al obtener el rol: " + e.getMessage());
         }
 
 
