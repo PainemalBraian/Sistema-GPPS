@@ -25,7 +25,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(
                     "INSERT INTO Usuarios(nombreCompleto, email, username, password, idRol, activo) " +
-                            "VALUES (?, ?, ?, ?, ?, ?)", // nombreEntidad, cuit, direccionEntidad
+                            "VALUES (?, ?, ?, ?, ?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS //Retorna el id AA generado por la db
             );
 
@@ -36,11 +36,8 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
             statement.setInt(5, user.getRol().getId());
             statement.setBoolean(6, user.isActivo());
 
-//            statement.setString(11, user.getNombreEntidad());    // Entidad
-//            statement.setString(12, user.getCuit());             // Entidad
-//            statement.setString(13, user.getDireccionEntidad()); // Entidad
-//
             statement.executeUpdate();
+
             // Obtener el ID generado
             ResultSet rs = statement.getGeneratedKeys();
             int idGenerado = 0;
@@ -58,7 +55,6 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
         }
     }
 
-
     @Override
     public List<Usuario> read() throws UserException {
         List<Usuario> usuarios = new ArrayList<>();
@@ -69,11 +65,11 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
 
             while (result.next()) {
                 Rol rol = new Rol();
-                rol.setId(result.getInt("idRol"));
+                rol.setId(result.getInt("R.idRol"));
 
                 rol.setNombre(result.getString("R.nombre"));
 
-                rol.setActivo(result.getBoolean("activo"));
+                rol.setActivo(result.getBoolean("R.activo"));
 
                 user = new Usuario(
                         result.getInt("idUsuario"),
@@ -105,7 +101,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
         }
 
         Usuario user = (Usuario) objeto;
-        String sql = "UPDATE Usuarios SET nombreCompleto = ?, password = ?, email = ?, activo = ?, idRol = ? WHERE idUsuario = ?";
+        String sql = "UPDATE Usuarios SET nombreCompleto = ?, password = ?, email = ?, activo = ?, idRol = ?, username = ? WHERE idUsuario = ?";
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -115,13 +111,13 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
             statement.setString(3, user.getEmail());
             statement.setBoolean(4, user.isActivo());
             statement.setInt(5, user.getRol().getId());
-            statement.setInt(6, user.getIdUsuario());
+            statement.setString(6, user.getUsername());
+            statement.setInt(7, user.getIdUsuario());
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected < 1) {
                 throw new UpdateException("No se han podido actualizar los datos.");
             }
-
         } catch(ConnectionException e){
             throw new UpdateException("Error al conectar con la base de datos: " + e.getMessage());
         }catch(SQLException e){
@@ -168,20 +164,21 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
 //            throw new DeleteException("No se ha podido eliminar el usuario: " + e.getMessage());
 //        }
 //    }
+
     @Override
     public Usuario buscarByUsername(String username) throws UserException {
         try {
             Connection conn = connect();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Usuarios u JOIN Roles ON u.idRol = Roles.idRol WHERE username = ?");
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Usuarios u JOIN Roles R ON u.idRol = R.idRol WHERE u.username = ?");
             statement.setString(1, username);
 
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
 
-                Rol rol = new Rol(result.getInt("idRol"), result.getString("Roles.nombre"));
+                Rol rol = new Rol(result.getInt("R.idRol"), result.getString("R.nombre"));
 
-                rol.setActivo(result.getBoolean("activo"));
+                rol.setActivo(result.getBoolean("R.activo"));
 
                 Usuario usuario = new Usuario(result.getInt("idUsuario"), result.getString("username"),
                         result.getString("password"), result.getString("nombreCompleto"),
@@ -192,7 +189,6 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
             } else {
                 throw new UserException("Usuario no encontrado.");
             }
-
         } catch(ConnectionException e){
             throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
         } catch(SQLException e){
@@ -225,7 +221,6 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
             } else {
                 throw new UserException("Usuario no encontrado.");
             }
-
         }
         catch (SQLException e) {
             throw new UserException("Error al buscar el usuario en la base de datos: " + e.getMessage());
