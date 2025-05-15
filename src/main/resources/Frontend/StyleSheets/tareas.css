@@ -1,0 +1,131 @@
+/* tareas.css */
+
+.anchor-pane {
+    -fx-background-color: #f4f4f4; /* Color de fondo general */
+}
+
+.titulo {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-padding-bottom: 10px;
+}
+
+.subtitulo {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #555555;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 0 0 1 0; /* Borde inferior */
+    -fx-padding-bottom: 5px;
+    -fx-margin-bottom: 10px;
+}
+
+.seccion {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dddddd;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 5);
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #444444;
+}
+
+.text-field, .text-area, .date-picker {
+    -fx-font-size: 14px;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 3px;
+}
+
+.text-area .content {
+    -fx-background-color: white; /* Asegura que el fondo del contenido del TextArea sea blanco */
+}
+
+
+.button {
+    -fx-font-size: 14px;
+    -fx-padding: 8px 15px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+}
+
+.boton-primario {
+    -fx-background-color: #007bff; /* Azul primario */
+    -fx-text-fill: white;
+}
+.boton-primario:hover {
+    -fx-background-color: #0056b3;
+}
+
+.boton-secundario {
+    -fx-background-color: #6c757d; /* Gris secundario */
+    -fx-text-fill: white;
+}
+.boton-secundario:hover {
+    -fx-background-color: #545b62;
+}
+
+.boton-accion {
+    -fx-background-color: #ffc107; /* Amarillo para acciones como editar */
+    -fx-text-fill: #333;
+}
+.boton-accion:hover {
+    -fx-background-color: #e0a800;
+}
+
+.boton-accion-peligro {
+    -fx-background-color: #dc3545; /* Rojo para acciones peligrosas */
+    -fx-text-fill: white;
+}
+.boton-accion-peligro:hover {
+    -fx-background-color: #c82333;
+}
+
+
+.table-view {
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 3px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #e9ecef; /* Fondo cabecera tabla */
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #333333;
+    -fx-font-weight: bold;
+}
+
+.progress-bar > .bar {
+    -fx-background-color: #28a745; /* Verde para la barra de progreso */
+    -fx-padding: 6px;
+    -fx-background-insets: 0;
+    -fx-background-radius: 3px;
+}
+.progress-bar > .track {
+    -fx-background-color: #e9ecef;
+    -fx-background-insets: 0;
+    -fx-background-radius: 3px;
+}
+
+.list-view {
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 3px;
+}
+
+.list-view .list-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+.list-view .list-cell:even {
+    -fx-background-color: white;
+}
+.list-view .list-cell:selected {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+}
