@@ -15,7 +15,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="599.0" prefWidth="691.0" styleClass="vista-tareas-pane" stylesheets="@../StyleSheets/tareas.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.gui.Controller.TareasController">
+<AnchorPane prefHeight="599.0" prefWidth="691.0" styleClass="vista-tareas-pane" stylesheets="@../StyleSheets/tareas.css"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Frontend.com.gui.Controller.TareasController">
     <children>
         <VBox layoutX="14.0" layoutY="9.0" prefHeight="522.0" prefWidth="536.0" spacing="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="49.0" AnchorPane.topAnchor="9.0">
             <children>
