@@ -27,6 +27,12 @@ public class PPSDTO extends ItemDTO{
         this.informes = informes;
     }
 
+    public PPSDTO(int i, String desarrolloAppGestiónAcadémica, String proyectoDeCátedra, String ingenieríaDeSoftwareIi, String s, String s1, String s2, String s3, int i1, boolean b) {
+    }
+
+    public PPSDTO(String text, String text1, String text2, String text3, String text4, String text5, String text6) {
+    }
+
     public ProyectoDTO getProyecto() {
         return proyecto;
     }
