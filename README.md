@@ -42,3 +42,7 @@ IGNORAR
 - **Base de datos:** SQL
 
 - **Estilos UI:** CSS para JavaFX
+
+
+## 👀 Visualizador WEB del diagrama de relaciones
+- **https://drawsql.app/teams/d-314/diagrams/gpps/embed**

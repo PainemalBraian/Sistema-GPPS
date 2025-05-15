@@ -161,7 +161,7 @@ public class HomeController  {
     @FXML
     public void Tareas(ActionEvent event) {
         try {
-            navegarA("/Frontend/vistas/Tareas.fxml", "Tareas - GPPS", event);
+            navegarA("/Frontend/vistas/tareas.fxml", "Tareas - GPPS", event);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al navegar a listado de puestos", e);
             mostrarAlerta("Error", "No se pudo abrir el listado de puestos", Alert.AlertType.ERROR);
@@ -172,10 +172,18 @@ public class HomeController  {
     @FXML
     public void presentarPropuesta(ActionEvent event) {
         try {
-            navegarA("/Frontend/vistas/PresentacionPropuesta.fxml", "Presentación de Propuesta - GPPS", event);
+            navegarA("/Frontend/vistas/propuestas.fxml", "Presentación de Propuesta - GPPS", event);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al navegar a presentación de propuesta", e);
             mostrarAlerta("Error", "No se pudo abrir el formulario de presentación de propuesta", Alert.AlertType.ERROR);
+        }
+    }
+    public void Informes(ActionEvent event) {
+        try {
+            navegarA("/Frontend/vistas/informes.fxml", "Informes - GPPS", event);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al navegar a informes", e);
+            mostrarAlerta("Error", "No se pudo abrir la pantalla de informes", Alert.AlertType.ERROR);
         }
     }
 
@@ -264,6 +272,4 @@ public class HomeController  {
         cargarAvisosRecientes();
     }
 
-    public void Informes(ActionEvent actionEvent) {
-    }
 }
