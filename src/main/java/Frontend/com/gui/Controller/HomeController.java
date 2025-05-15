@@ -178,6 +178,14 @@ public class HomeController  {
             mostrarAlerta("Error", "No se pudo abrir el formulario de presentación de propuesta", Alert.AlertType.ERROR);
         }
     }
+    public void Informes(ActionEvent event) {
+        try {
+            navegarA("/Frontend/vistas/informes.fxml", "Informes - GPPS", event);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al navegar a informes", e);
+            mostrarAlerta("Error", "No se pudo abrir la pantalla de informes", Alert.AlertType.ERROR);
+        }
+    }
 
 
     @FXML
@@ -264,6 +272,4 @@ public class HomeController  {
         cargarAvisosRecientes();
     }
 
-    public void Informes(ActionEvent actionEvent) {
-    }
 }
