@@ -34,42 +34,45 @@ public class EntidadColaborativa extends Usuario{
         this.direccionEntidad = direccionEntidad;
     }
 
-    public List<Proyecto> getProyectos() {
-        return proyectos;
+//////////////////////////// METHODS ///////////////////////////////
+    public void cargarProyecto(Proyecto proyecto){
+    }
+    public void borrarProyecto(Proyecto proyecto){
     }
 
-    public void setProyectos(List<Proyecto> proyectos) {
-        this.proyectos = proyectos;
+//////////////////////// GETTERS ///////////////////////////////////////////////
+    public List<Proyecto> getProyectos() {
+        return proyectos;
     }
 
     public String getNombreEntidad() {
         return nombreEntidad;
     }
 
-    public void setNombreEntidad(String nombreEntidad) {
-        this.nombreEntidad = nombreEntidad;
-    }
-
     public String getCuit() {
         return cuit;
-    }
-
-    public void setCuit(String cuit) {
-        this.cuit = cuit;
     }
 
     public String getDireccionEntidad() {
         return direccionEntidad;
     }
 
+//////////////////////// SETTERS ///////////////////////////////////////////////
     public void setDireccionEntidad(String direccionEntidad) {
-        this.direccionEntidad = direccionEntidad;
+    this.direccionEntidad = direccionEntidad;
+}
+
+    public void setProyectos(List<Proyecto> proyectos) {
+        this.proyectos = proyectos;
     }
 
-    // metodos
-    public void cargarProyecto(Proyecto proyecto){
+    public void setNombreEntidad(String nombreEntidad) {
+        this.nombreEntidad = nombreEntidad;
     }
-    public void borrarProyecto(Proyecto proyecto){
+
+    public void setCuit(String cuit) {
+        this.cuit = cuit;
     }
+
 
 }

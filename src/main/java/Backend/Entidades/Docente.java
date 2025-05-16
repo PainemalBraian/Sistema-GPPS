@@ -54,7 +54,7 @@ public class Docente extends Usuario{
     }
     public void monitorearProgreso(convenioPPS convenioPps){
     }
-    public void evaluarInforme(Informe informe){
+    public void evaluarInforme(Actividad actividad){
     }
 
 }
