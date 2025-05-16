@@ -52,7 +52,7 @@ public class Docente extends Usuario{
     public List<Estudiante> getEstudiantesAsignados() {
         return estudiantesAsignados;
     }
-    public void monitorearProgreso(PPS pps){
+    public void monitorearProgreso(convenioPPS convenioPps){
     }
     public void evaluarInforme(Informe informe){
     }

@@ -103,11 +103,7 @@ public class IngresoController {
             mostrarAlerta("Error I/O", "" + e.getMessage());
 
         } catch (Exception e) {
-<<<<<<< HEAD:src/main/java/Frontend/com/main/IngresoController.java
-            throw new RuntimeException(e.getMessage());
-=======
             mostrarAlerta("Error", "" + e.getMessage());
->>>>>>> b23489114d35815ce1fb0bf2fa6b3a671ca73759:src/main/java/Frontend/com/gui/Controller/IngresoController.java
         }
     }
 
