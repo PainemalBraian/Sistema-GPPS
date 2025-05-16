@@ -140,12 +140,8 @@ public class RegistroController {
         String correo = correoField.getText();
         String contrasena = contrasenaField.getText();
         String confirmarContrasena = confirmarContrasenaField.getText();
-
-<<<<<<< HEAD:src/main/java/Frontend/com/main/RegistroController.java
         String matriculaText = camposEstudiante.isVisible() ? matriculaField.getText() : "";
-=======
-        String matricula = camposEstudiante.isVisible() ? matriculaField.getText() : "";
->>>>>>> b23489114d35815ce1fb0bf2fa6b3a671ca73759:src/main/java/Frontend/com/gui/Controller/RegistroController.java
+
         String carrera = camposEstudiante.isVisible() ? carreraField.getText() : "";
         String legajo = camposDocente.isVisible() ? legajoField.getText() : "";
 
@@ -159,14 +155,12 @@ public class RegistroController {
                 throw new RuntimeException("Debes seleccionar un rol");
             if (!contrasena.equals(confirmarContrasena))
                 throw new RuntimeException("Las contraseñas deben coincidir");
-
             api.registrarUsuario(
                     nombre,
                     contrasena,
                     correo,
                     nombre,
                     rol.getId(),
-<<<<<<< HEAD:src/main/java/Frontend/com/main/RegistroController.java
                     matriculaText,
                     carreraField.getText(),
                     legajoField.getText(),
@@ -174,30 +168,12 @@ public class RegistroController {
                     cuitField.getText(),
                     direccionEntidadField.getText()
             );
-
-=======
-                    matricula,
-                    carrera,
-                    legajo,
-                    nombreEntidad,
-                    cuit,
-                    direccionEntidadField.getText()
-            );
-            volverLogin(actionEvent);
->>>>>>> b23489114d35815ce1fb0bf2fa6b3a671ca73759:src/main/java/Frontend/com/gui/Controller/RegistroController.java
             mostrarAlerta("Registro Exitoso", "Usuario registrado exitosamente.");
         } catch (Exception e) {
             mostrarAlerta("Error de Registro", "Ocurrió un error al registrar el usuario:\n" + e.getMessage());
         }
     }
 
-    private void mostrarAlerta(String titulo, String mensaje) {
-        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-        alerta.setTitle(titulo);
-        alerta.setHeaderText(null);
-        alerta.setContentText(mensaje);
-        alerta.showAndWait();
-    }
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
         alerta.setTitle(titulo);

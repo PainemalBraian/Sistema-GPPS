@@ -36,12 +36,8 @@ public interface API {
     void desactivarUsuarioByUsername(String username) throws UserException, UpdateException; // Recuperar el objeto Usuario, implementar el comportamiento de estado.
 
 //    UsuarioDTO obtenerUsuarioByEmail(String email) throws UserException; // Devuelve el usuario si fue encontrado por email
-<<<<<<< HEAD
-=======
-    String obtenerNombreUsuario() throws UserException; //Devuelve el nombre del usuario logeado
 
-//    UsuarioDTO obtenerUsuarioByEmail(String email) throws UserException; // Devuelve el usuario si fue encontrado por email
->>>>>>> b23489114d35815ce1fb0bf2fa6b3a671ca73759
+    String obtenerNombreUsuario() throws UserException; //Devuelve el nombre del usuario logeado
 
     UsuarioDTO login(String username, String password) throws LoginException; // Loguea el usuario y si todo es correcto devuelve el Usuario, sino null
 

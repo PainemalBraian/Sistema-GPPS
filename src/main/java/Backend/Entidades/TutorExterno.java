@@ -42,7 +42,7 @@ public class TutorExterno extends Usuario{
     //metodos
     public void supervisarEstudiante(Estudiante estudiante){
     }
-    public void evaluarDesempeno(PPS pps){
+    public void evaluarDesempeno(convenioPPS convenioPps){
     }
     public void validarActividad(){
     }
