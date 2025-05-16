@@ -9,35 +9,97 @@ import static java.util.Objects.isNull;
 
 public class convenioPPS extends Item {
     private DirectorCarrera director;
+    private boolean habilitado = false;
+    private EntidadColaborativa entidad;
     private Proyecto proyecto;
     private Docente docente;
     private Estudiante estudiante;
     private List <Actividad> actividades = new ArrayList<>();
-    private List <Informe> informes = new ArrayList<>();
 
     public convenioPPS() {
     }
 
-    public convenioPPS(int id, String titulo, String descripcion, Proyecto proyecto, Docente docente, Estudiante estudiante) throws EmptyException {
+    public convenioPPS(int id, String titulo, String descripcion, Proyecto proyecto, Docente docente, Estudiante estudiante,
+                       DirectorCarrera director, EntidadColaborativa entidad, List<Actividad> actividades) throws EmptyException {
         super(id, titulo, descripcion);
-        if (isNull(proyecto)) {
-            throw new EmptyException("El proyecto debe existir.");
-        }
-        if (isNull(docente)) {
-            throw new EmptyException("El docente debe existir.");
-        }
-        if (isNull(estudiante)) {
-            throw new EmptyException("El estudiante debe existir.");
-        }
+        if (isNull(proyecto)) { throw new EmptyException("El proyecto debe existir."); }
+        if (isNull(docente)) { throw new EmptyException("El docente debe existir."); }
+        if (isNull(estudiante)) { throw new EmptyException("El estudiante debe existir."); }
+        if (isNull(director)) { throw new EmptyException("El director debe existir."); }
+        if (isNull(entidad)) { throw new EmptyException("La entidad debe existir."); }
+        if (isNull(actividades)) { throw new EmptyException("La lista de actividades debe existir."); }
+
+        if (calcularHorasActividades(actividades) != 100 ) { throw new EmptyException("Las horas de todas las actividades deben sumar 100."); }
+
         this.proyecto = proyecto;
         this.docente = docente;
         this.estudiante = estudiante;
+        this.director = director;
     }
+
+    private int calcularHorasActividades(List<Actividad> actividades) {
+        float horasTotales = 0;
+        for (Actividad a : actividades){
+            horasTotales += a.getDuracion();
+        }
+        return 0;
+    }
+
     //metodos
-    public void cargarInforme(Informe informe) {
-        informes.add(informe);
+    public void cargarInforme(Actividad actividad) {
+        actividades.add(actividad);
     }
-    public void eliminarInforme(Informe informe) {
-        informes.add(informe);
+    public void eliminarInforme(Actividad actividad) {
+        actividades.add(actividad);
+    }
+    // Adaptar al uso de Director de carrera, con habilitación mediante DAO
+    public void habilitarProyecto() { proyecto.setHabilitado(habilitado); } // Si está habilitado este convenio, automaticamente se habilita el proyecto.
+
+
+
+////////////////////////// GETTERS ////////////////////////////////////////////////////////////////////////
+    public DirectorCarrera getDirector() { return director; }
+
+    public Proyecto getProyecto() { return proyecto; }
+
+    public Docente getDocente() { return docente; }
+
+    public Estudiante getEstudiante() { return estudiante; }
+
+    public List<Actividad> getActividades() { return actividades; }
+
+    public boolean isHabilitado() { return habilitado; }
+//////////////////////// SETTERS ////////////////////////////////////////////////////////////////
+    public void setDirector(DirectorCarrera director) throws EmptyException {
+        if (isNull(director)) { throw new EmptyException("El director debe existir."); }
+        this.director = director;
+    }
+
+    public void setProyecto(Proyecto proyecto) throws EmptyException {
+        if (isNull(proyecto)) { throw new EmptyException("El proyecto debe existir."); }
+        this.proyecto = proyecto;
+    }
+
+    public void setDocente(Docente docente) throws EmptyException {
+        if (isNull(docente)) { throw new EmptyException("El docente debe existir."); }
+        this.docente = docente;
+    }
+
+    public void setEstudiante(Estudiante estudiante) throws EmptyException {
+        if (isNull(estudiante)) {
+            throw new EmptyException("El estudiante debe existir.");
+        }
+        this.estudiante = estudiante;
+    }
+
+    public void setActividades(List<Actividad> actividades) throws EmptyException {
+        if (isNull(actividades)) {
+            throw new EmptyException("La lista de actividades debe existir.");
+        }
+        this.actividades = actividades;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
     }
 }

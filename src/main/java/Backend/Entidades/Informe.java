@@ -2,17 +2,33 @@ package Backend.Entidades;
 
 import Backend.Exceptions.EmptyException;
 
-public class Informe extends Item{
-    String contenido;
-    private int calificacion = -1;
+import java.time.LocalDate;
 
-    public Informe() {
+import static java.util.Objects.isNull;
+
+public class Informe extends Item{
+    private String contenido;
+    private LocalDate fecha = LocalDate.now();
+
+    public Informe(String contenido) {
+        this.contenido = contenido;
+        fecha = LocalDate.now();
     }
 
     public Informe(int id, String titulo, String descripcion, String contenido) throws EmptyException {
         super(id, titulo, descripcion);
         this.contenido = contenido;
+        fecha = LocalDate.now();
     }
+
+    public Informe(String titulo, String descripcion, String contenido) throws EmptyException {
+        super(titulo, descripcion);
+        if (isNull(contenido) || contenido.isEmpty())
+            throw new EmptyException("El contenido del informe no puede estar vacio.");
+        this.contenido = contenido;
+        fecha = LocalDate.now();
+    }
+
 
     public String getContenido() {
         return contenido;
@@ -22,13 +38,13 @@ public class Informe extends Item{
         this.contenido = contenido;
     }
 
-    public int getCalificacion() {
-        return calificacion;
+    public LocalDate getFecha() {
+        return fecha;
     }
 
-    public void evaluarInforme(int calificacion) {
-        if (calificacion < 0 || calificacion > 10)
-            throw new RuntimeException("La calificación debe ser entre 0 y 10");
-        this.calificacion = calificacion;
+    public void actualizarFecha(LocalDate fecha) throws EmptyException {
+        if (isNull(fecha))
+            throw new EmptyException("La fecha no puede estar vacia.");
+        this.fecha = fecha;
     }
 }
