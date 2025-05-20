@@ -291,11 +291,14 @@ public class PersistanceAPI implements API {
     public ProyectoDTO obtenerProyectoByTitulo(String titulo) throws ReadException {
         try {
             Proyecto proyecto = ProyectoDAODB.buscarByTitulo(titulo);
+            System.out.println("1");
             TutorExternoDTO tutor = null;
             tutor = convertirATutorDTO(proyecto.getTutorEncargado());
+            System.out.println("2");
             ProyectoDTO proyectoDTO = new ProyectoDTO(proyecto.getId(), proyecto.getTitulo(),
                     proyecto.getDescripcion(), proyecto.getAreaDeInteres(),
                     proyecto.getUbicacion(), proyecto.getObjetivos(), proyecto.getRequisitos(),tutor);
+            System.out.println("3");
             return proyectoDTO;
         } catch (UserException e) {
             throw new ReadException("Error al obtener el proyecto: "+e.getMessage());
