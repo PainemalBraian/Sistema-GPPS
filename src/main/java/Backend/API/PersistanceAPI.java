@@ -271,9 +271,11 @@ public class PersistanceAPI implements API {
         try {
             // Validar que la matricula no esté en uso
             ProyectoDAODB.validarTituloUnico(titulo);
+            Proyecto proyecto = new Proyecto(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos);
             TutorExterno encargado = TutorExternoDAODB.buscarByUsername(tutorEncargado);
+            proyecto.setTutorEncargado(encargado);
             // Guardar en la base de datos
-            Proyecto proyecto = new Proyecto(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos, encargado);
+
 //            proyecto.setHabilitado(false);  Por defecto es false. pero para que se entienda que existe este campo. Solo el director debe poder habilitar o admin
             ProyectoDAODB.create(proyecto);
         } catch (Exception e) {
