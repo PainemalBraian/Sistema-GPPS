@@ -18,9 +18,6 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 public class IngresoController {
-    public ImageView IconLogin;
-    public Button ButtonIngresarEstudiante;
-    public Label LabelGPPS;
     API api;
     @FXML public Button ButtonRegistro;
     @FXML public Pane PaneIMG;
@@ -34,7 +31,9 @@ public class IngresoController {
     @FXML public ImageView IMGIngreso;
     @FXML public MenuButton MenuIdiomas;
     @FXML public Label newUser;
-
+    public ImageView IconLogin;
+    public Button ButtonIngresarEstudiante;
+    public Label LabelGPPS;
 
     @FXML
     public void initialize() {

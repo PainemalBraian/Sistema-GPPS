@@ -23,51 +23,29 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class TareasController  {
-
     API api;
-    // --- Componentes FXML ---
-    @FXML
-    private DatePicker datePickerFechaTarea;
-    @FXML
-    private TextArea textAreaDescripcionTarea;
-    @FXML
-    private TextField textFieldDuracionTarea;
-    @FXML
-    private Button btnAgregarTarea;
-    @FXML
-    private Button btnActualizarTarea;
-
-    @FXML
-    private TableView<Tarea> tableViewTareas;
-    @FXML
-    private TableColumn<Tarea, String> columnaFecha;
-    @FXML
-    private TableColumn<Tarea, String> columnaDescripcion;
-    @FXML
-    private TableColumn<Tarea, Double> columnaDuracion;
-
-    @FXML
-    private Button btnEditarTarea;
-    @FXML
-    private Button btnEliminarTarea;
-
-    @FXML
-    private ListView<String> listViewCronograma;
-
-    @FXML
-    private Label labelPorcentajeAvance;
-    @FXML
-    private ProgressBar progressBarAvance;
-    @FXML
-    private Label labelHorasCompletadas;
-
+    @FXML private DatePicker datePickerFechaTarea;
+    @FXML private TextArea textAreaDescripcionTarea;
+    @FXML private TextField textFieldDuracionTarea;
+    @FXML private Button btnAgregarTarea;
+    @FXML private Button btnActualizarTarea;
+    @FXML private TableView<Tarea> tableViewTareas;
+    @FXML private TableColumn<Tarea, String> columnaFecha;
+    @FXML private TableColumn<Tarea, String> columnaDescripcion;
+    @FXML private TableColumn<Tarea, Double> columnaDuracion;
+    @FXML private Button btnEditarTarea;
+    @FXML private Button btnEliminarTarea;
+    @FXML private ListView<String> listViewCronograma;
+    @FXML private Label labelPorcentajeAvance;
+    @FXML private ProgressBar progressBarAvance;
+    @FXML private Label labelHorasCompletadas;
 
     // --- Listas y Datos ---
     private ObservableList<Tarea> listaTareasObservables;
     private ObservableList<String> listaCronogramaObservables;
 
     // Simulación: Total de horas esperadas para la práctica
-    private final double HORAS_TOTALES_ESPERADAS = 160.0; // Ejemplo, ajústalo según necesidad
+    private final double HORAS_TOTALES_ESPERADAS = 160.0; // Ejemplo
 
     private Tarea tareaSeleccionadaParaEdicion = null;
 

@@ -19,7 +19,9 @@
 
     <AnchorPane fx:id="PaneBase" prefHeight="550.0" prefWidth="700.0">
         <children>
-            <VBox alignment="CENTER" layoutX="-4.0" prefHeight="550.0" prefWidth="454.0" spacing="10.0" styleClass="root" stylesheets="@../StyleSheets/registro.css">
+            <VBox alignment="CENTER" layoutX="-4.0" prefHeight="550.0" prefWidth="454.0" spacing="10.0"
+                  styleClass="root"
+                  stylesheets="@../StyleSheets/registro.css">
                 <Label fx:id="registroField" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Registro de Usuario - GPPS" />
 
                 <TextField fx:id="dni" prefHeight="31.0" prefWidth="150.0" promptText="Documento Nacional de Identidad (DNI) o Cédula de Identidad" />
@@ -69,8 +71,11 @@
                     <Image url="@../imagenes/Logo_AlgoLab.png" />
                 </image>
             </ImageView>
-            <Button fx:id="volver_login" layoutX="528.0" layoutY="489.0" mnemonicParsing="false" onAction="#volverLogin" prefHeight="47.0" prefWidth="141.0" style="-fx-background-color: #2c2c2c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;" text="Volver" />
-
+            <Button fx:id="volver_login" layoutX="528.0" layoutY="489.0"
+                    mnemonicParsing="false"
+                    onAction="#volverLogin" prefHeight="47.0" prefWidth="141.0"
+                    style="-fx-background-color: #2c2c2c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;"
+                    text="Volver" />
         </children>
     </AnchorPane>
 </StackPane>

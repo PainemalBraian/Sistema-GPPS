@@ -70,7 +70,9 @@
                     </padding>
                     <children>
                         <TextArea fx:id="areaNuevoMensaje" promptText="Escribe un mensaje..." prefHeight="60.0" HBox.hgrow="ALWAYS" wrapText="true"/>
-                        <Button fx:id="btnEnviarMensaje" mnemonicParsing="false" onAction="#handleEnviarMensaje" styleClass="button-primary" text="Enviar" prefHeight="60.0"/>
+                        <Button fx:id="btnEnviarMensaje" mnemonicParsing="false"
+                                onAction="#handleEnviarMensaje"
+                                styleClass="button-primary" text="Enviar" prefHeight="60.0"/>
                     </children>
                 </HBox>
             </bottom>

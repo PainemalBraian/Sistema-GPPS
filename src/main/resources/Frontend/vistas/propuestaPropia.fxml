@@ -13,16 +13,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="745.0" prefWidth="855.0" styleClass="root" stylesheets="@../StyleSheets/propuestaPropia.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.gui.Controller.PropuestaPropiaController">
+<AnchorPane prefHeight="745.0" prefWidth="855.0" styleClass="root"
+            stylesheets="@../StyleSheets/propuestaPropia.css"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Frontend.com.gui.Controller.PropuestaPropiaController">
     <children>
-        <ScrollPane fitToWidth="true" prefHeight="745.0" prefWidth="855.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <ScrollPane fitToWidth="true" prefHeight="745.0" prefWidth="855.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <content>
                 <VBox alignment="TOP_CENTER" prefWidth="760.0" spacing="20.0">
                     <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                     </padding>
                     <children>
-                        <Label prefHeight="80.0" prefWidth="450.0" styleClass="header-label" text="Presentar un proyecto de Práctica Profesional Supervisada" textAlignment="CENTER" wrapText="true">
+                        <Label prefHeight="80.0" prefWidth="450.0"
+                               styleClass="header-label" text="Presentar un proyecto de Práctica Profesional Supervisada"
+                               textAlignment="CENTER" wrapText="true">
                             <font>
                                 <Font name="Arial Black" size="30.0" /> </font>
                             <VBox.margin>
@@ -80,7 +87,9 @@
             </content>
         </ScrollPane>
 
-        <Button fx:id="btnVolverHome" alignment="CENTER" mnemonicParsing="false" onAction="#VolverHome" prefHeight="35.0" prefWidth="124.0" styleClass="inscribe-button" text="Volver" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" />
+        <Button fx:id="btnVolverHome" alignment="CENTER" mnemonicParsing="false"
+                onAction="#VolverHome" prefHeight="35.0" prefWidth="124.0"
+                styleClass="inscribe-button" text="Volver" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" />
 
     </children>
 </AnchorPane>
