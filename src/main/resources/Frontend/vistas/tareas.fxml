@@ -20,7 +20,9 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Frontend.com.gui.Controller.TareasController">
     <children>
-        <VBox layoutX="14.0" layoutY="9.0" prefHeight="522.0" prefWidth="536.0" spacing="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="49.0" AnchorPane.topAnchor="9.0">
+        <VBox layoutX="14.0" layoutY="9.0" prefHeight="522.0" prefWidth="536.0"
+              spacing="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="14.0"
+              AnchorPane.rightAnchor="49.0" AnchorPane.topAnchor="9.0">
             <children>
                 <Label styleClass="titulo-seccion" text="Gestión de Tareas de PPS" />
 
@@ -45,8 +47,10 @@
                                 </HBox>
                                 <HBox spacing="10.0">
                                     <children>
-                                        <Button fx:id="btnActualizarTarea" mnemonicParsing="false" onAction="#handleActualizarTarea" styleClass="boton-secundario-tareas" text="Actualizar" visible="false" />
-                                        <Button fx:id="btnAgregarTarea" mnemonicParsing="false" onAction="#handleAgregarTarea" styleClass="boton-primario-tareas" text="Agregar Tarea" />
+                                        <Button fx:id="btnActualizarTarea" mnemonicParsing="false"
+                                                onAction="#handleActualizarTarea" styleClass="boton-secundario-tareas" text="Actualizar" visible="false" />
+                                        <Button fx:id="btnAgregarTarea" mnemonicParsing="false"
+                                                onAction="#handleAgregarTarea" styleClass="boton-primario-tareas" text="Agregar Tarea" />
 
                                     </children>
                                 </HBox>
@@ -63,10 +67,16 @@
                                     </columnResizePolicy>
                                 </TableView>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                    <Button fx:id="btnEliminarTarea" mnemonicParsing="false" onAction="#handleEliminarTarea" prefHeight="36.0" prefWidth="121.0" styleClass="boton-accion-peligro-tareas" text="Eliminar Sel." />
-                                    <Button fx:id="btnEditarTarea" mnemonicParsing="false" onAction="#handleEditarTarea" prefHeight="36.0" prefWidth="112.0" styleClass="boton-accion-tareas" text="Editar Sel." />
+                                    <Button fx:id="btnEliminarTarea" mnemonicParsing="false"
+                                            onAction="#handleEliminarTarea" prefHeight="36.0" prefWidth="121.0"
+                                            styleClass="boton-accion-peligro-tareas" text="Eliminar Sel." />
+                                    <Button fx:id="btnEditarTarea" mnemonicParsing="false"
+                                            onAction="#handleEditarTarea" prefHeight="36.0" prefWidth="112.0"
+                                            styleClass="boton-accion-tareas" text="Editar Sel." />
                                 </HBox>
-                                  <Button fx:id="btnVolverHome" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#VolverHome" prefHeight="40.0" prefWidth="131.0" styleClass="inscribe-button" text="Volver" textAlignment="CENTER" />
+                                  <Button fx:id="btnVolverHome" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false"
+                                          onAction="#VolverHome" prefHeight="40.0" prefWidth="131.0"
+                                          styleClass="inscribe-button" text="Volver" textAlignment="CENTER" />
                             </children>
                             <padding>
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -75,7 +85,8 @@
 
                         <VBox prefHeight="537.0" prefWidth="367.0" spacing="10.0" styleClass="seccion-info-tareas" HBox.hgrow="NEVER">
                             <children>
-                                <Label prefHeight="20.0" prefWidth="181.0" styleClass="subtitulo-tareas" text="Cronograma Planificado" />
+                                <Label prefHeight="20.0" prefWidth="181.0"
+                                       styleClass="subtitulo-tareas" text="Cronograma Planificado" />
                                 <ListView fx:id="listViewCronograma" prefHeight="160.0" VBox.vgrow="SOMETIMES" />
 
                                 <Label styleClass="subtitulo-tareas" text="Avance General" />

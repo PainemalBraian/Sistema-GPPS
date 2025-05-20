@@ -15,7 +15,8 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Frontend.com.gui.Controller.InformesController">
     <children>
-        <VBox layoutX="14.0" layoutY="14.0" prefHeight="522.0" prefWidth="572.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+        <VBox layoutX="14.0" layoutY="14.0" prefHeight="522.0" prefWidth="572.0"
+              spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
             <children>
                 <Label styleClass="titulo-seccion-informes" text="Gestión de Informes de PPS" />
 
@@ -24,7 +25,8 @@
                         <Label styleClass="subtitulo-informes" text="Cargar Nuevo Informe" />
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                             <children>
-                                <Button fx:id="btnSeleccionarArchivo" mnemonicParsing="false" onAction="#handleSeleccionarArchivo" text="Seleccionar Archivo PDF..." />
+                                <Button fx:id="btnSeleccionarArchivo" mnemonicParsing="false"
+                                        onAction="#handleSeleccionarArchivo" text="Seleccionar Archivo PDF..." />
                                 <Label fx:id="lblNombreArchivoSeleccionado" style="-fx-text-fill: #555;" text="Ningún archivo seleccionado" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>
@@ -35,7 +37,9 @@
                             </children>
                         </HBox>
                         <Label fx:id="lblMensajeCarga" style="-fx-font-style: italic;" text="" />
-                        <Button fx:id="btnCargarInforme" disable="true" mnemonicParsing="false" onAction="#handleCargarInforme" styleClass="boton-primario-informes" text="Cargar Informe" />
+                        <Button fx:id="btnCargarInforme" disable="true" mnemonicParsing="false"
+                                onAction="#handleCargarInforme"
+                                styleClass="boton-primario-informes" text="Cargar Informe" />
                     </children>
                     <padding>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -58,7 +62,9 @@
                         </TableView>
                     </children>
                 </VBox>
-                  <Button fx:id="btnVolverHome" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#VolverHome" prefHeight="13.0" prefWidth="124.0" styleClass="inscribe-button" text="Volver" textAlignment="CENTER" />
+                  <Button fx:id="btnVolverHome" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false"
+                          onAction="#VolverHome" prefHeight="13.0" prefWidth="124.0"
+                          styleClass="inscribe-button" text="Volver" textAlignment="CENTER" />
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -40,21 +40,28 @@ public class Docente extends Usuario{
     }
 
     //metodos
-    public String getLegajo() {
-        return legajo;
-    }
-    public void setLegajo(String legajo) {
-        this.legajo = legajo;
-    }
     public void asignarEstudiante(Estudiante estudiante) {
         estudiantesAsignados.add(estudiante);
     }
+
     public List<Estudiante> getEstudiantesAsignados() {
         return estudiantesAsignados;
     }
-    public void monitorearProgreso(PPS pps){
+
+    public void monitorearProgreso(ConvenioPPS convenioPps){ }
+
+    public void evaluarInforme(Actividad actividad){ }
+
+    public void setEstudiantesAsignados(List<Estudiante> estudiantesAsignados) {
+        this.estudiantesAsignados = estudiantesAsignados;
     }
-    public void evaluarInforme(Informe informe){
+
+    public String getLegajo() {
+        return legajo;
+    }
+
+    public void setLegajo(String legajo) {
+        this.legajo = legajo;
     }
 
 }
