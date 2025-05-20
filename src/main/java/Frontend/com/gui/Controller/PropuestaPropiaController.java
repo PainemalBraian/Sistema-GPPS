@@ -21,25 +21,15 @@ import java.io.IOException;
 
 public class PropuestaPropiaController {
 
-    @FXML
-    private TextField tituloField;
-    @FXML
-    private TextArea descripcionArea;
-    @FXML
-    private TextField areaInteresField;
-    @FXML
-    private TextField ubicacionField;
-    @FXML
-    private TextArea objetivosArea;
-    @FXML
-    private TextArea requisitosArea;
-    @FXML
-    private TextField tutorNombreField;
-    @FXML
-    private TextField tutorEmailField;
-
-    @FXML
-    private Button btnRegistrarPropuesta;
+    @FXML private TextField tituloField;
+    @FXML private TextArea descripcionArea;
+    @FXML private TextField areaInteresField;
+    @FXML private TextField ubicacionField;
+    @FXML private TextArea objetivosArea;
+    @FXML private TextArea requisitosArea;
+    @FXML private TextField tutorNombreField;
+    @FXML private TextField tutorEmailField;
+    @FXML private Button btnRegistrarPropuesta;
 
     private API api;
 
