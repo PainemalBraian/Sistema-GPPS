@@ -217,6 +217,10 @@ public class InformesController  {
         }
     }
 
+    public void setPersistenceAPI(API persistenceAPI) {
+        this.api = persistenceAPI;
+    }
+
     // --- Clase Interna para el modelo de InformeCargado ---
     public static class InformeCargado {
         private String nombreArchivo;
