@@ -10,6 +10,7 @@ public class Proyecto extends Item{
     private String objetivos;
     private String requisitos;
     private TutorExterno tutorEncargado;
+    private boolean habilitado = false;
 
     public Proyecto() {
     }
@@ -63,43 +64,52 @@ public class Proyecto extends Item{
         this.tutorEncargado = encargado;
     }
 
+////////////////////// GETTERS ///////////////////////////////////////////////////////////////////////
     public String getAreaDeInteres() {
         return areaDeInteres;
-    }
-
-    public void setAreaDeInteres(String areaDeInteres) {
-        this.areaDeInteres = areaDeInteres;
     }
 
     public String getUbicacion() {
         return ubicacion;
     }
 
-    public void setUbicacion(String ubicacion) {
-        this.ubicacion = ubicacion;
-    }
-
     public String getObjetivos() {
         return objetivos;
-    }
-
-    public void setObjetivos(String objetivos) {
-        this.objetivos = objetivos;
     }
 
     public String getRequisitos() {
         return requisitos;
     }
 
-    public void setRequisitos(String requisitos) {
-        this.requisitos = requisitos;
-    }
-
     public TutorExterno getTutorEncargado() {
         return tutorEncargado;
     }
 
+    public boolean isHabilitado() { return habilitado; }
+
+    ////////////////////// SETTERS ///////////////////////////////////////////////////////////////////////
     public void setTutorEncargado(TutorExterno tutorEncargado) {
         this.tutorEncargado = tutorEncargado;
     }
+
+    public void setRequisitos(String requisitos) {
+        this.requisitos = requisitos;
+    }
+
+    public void setObjetivos(String objetivos) {
+        this.objetivos = objetivos;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
+    public void setAreaDeInteres(String areaDeInteres) {
+        this.areaDeInteres = areaDeInteres;
+    }
+
+    public void setHabilitado(boolean habilitado) { this.habilitado = habilitado; }
+
+
+
 }

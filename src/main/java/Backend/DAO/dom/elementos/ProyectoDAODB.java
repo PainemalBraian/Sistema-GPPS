@@ -15,26 +15,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
-
+    TutorExternoDAODB tutorExternoDAODB = new TutorExternoDAODB();
     @Override
     public void create(Proyecto proyecto) throws CreateException {
         try (Connection conn = connect();
              PreparedStatement statement = conn.prepareStatement(
-                     "INSERT INTO Proyectos(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos,idTutor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+                     "INSERT INTO Proyectos(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos,idTutor, habilitado) VALUES (?, ?, ?, ?, ?, ?, ?,?)"
              )) {
+
             statement.setString(1, proyecto.getTitulo());
             statement.setString(2, proyecto.getDescripcion());
             statement.setString(3, proyecto.getAreaDeInteres());
             statement.setString(4, proyecto.getUbicacion());
             statement.setString(5, proyecto.getObjetivos());
             statement.setString(6, proyecto.getRequisitos());
-            statement.setInt(7, proyecto.getTutorEncargado().getIdUsuario());
+            statement.setInt(7, proyecto.getTutorEncargado().getIdTutor())/*,
+            statement.setBoolean(8, /*proyecto.getHabilitado())*/;
+            statement.setBoolean(8, true);
 
             statement.executeUpdate();
 
         }catch(ConnectionException e){
             throw new CreateException("Error al conectar con la base de datos: " + e.getMessage());
         }catch(SQLException e){
+            System.out.println(e);
             throw new CreateException("Error al crear el proyecto: " + e.getMessage());
         }
     }
@@ -61,6 +65,46 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
                         result.getString("requisitos"),
                         tutorExternoDAO.buscarByID(idTutor) // Obtiene el tutor asociado
                 );
+                proyecto.setHabilitado(result.getBoolean("habilitado"));
+
+                proyectos.add(proyecto);
+            }
+
+            return proyectos;
+        } catch (SQLException e) {
+            throw new ReadException("Error al obtener los datos de los proyectos.");
+        } catch (ConnectionException e) {
+            throw new ReadException(e.getMessage());
+        } catch (UserException e) {
+            throw new ReadException("Error al construir el proyecto: " + e.getMessage());
+        } catch (EmptyException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+    }
+
+    public List<Proyecto> obtenerProyectosHabilitados() throws ReadException {
+        List<Proyecto> proyectos = new ArrayList<>();
+
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM Proyectos WHERE habilitado = true ");
+             ResultSet result = statement.executeQuery()) {
+
+            while (result.next()) {
+                TutorExternoDAODB tutorExternoDAO = new TutorExternoDAODB();
+                int idTutor = result.getInt("idTutor");
+
+                Proyecto proyecto = new Proyecto(
+                        result.getInt("idProyecto"),
+                        result.getString("titulo"),
+                        result.getString("descripcion"),
+                        result.getString("areaDeInteres"),
+                        result.getString("ubicacion"),
+                        result.getString("objetivos"),
+                        result.getString("requisitos"),
+                        tutorExternoDAO.buscarByID(idTutor) // Obtiene el tutor asociado
+                );
+                proyecto.setHabilitado(result.getBoolean("habilitado"));
 
                 proyectos.add(proyecto);
             }
@@ -138,6 +182,7 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
                         result.getString("requisitos"),
                         tutor
                 );
+                proyecto.setHabilitado(result.getBoolean("habilitado"));
             }
 
             return proyecto;
@@ -159,10 +204,9 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
             String sql = "SELECT COUNT(*) AS total FROM Proyectos WHERE LOWER(titulo) = LOWER(?)"; //Lower para indistinto a Mayúsculas o minúsculas
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, titulo);
-
             ResultSet result = statement.executeQuery();
 
-            if (result.next() && result.getInt("total") == 0) {
+            if (result.next() && result.getInt("total") != 0) {
                 throw new CreateException("Proyecto con titulo insertado existente en el sistema.");
             }
             return true;
@@ -188,6 +232,7 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
             ResultSet result = statement.executeQuery();
             if (result.next()) {
                 int idTutor = result.getInt("idTutor");
+                System.out.println("Id Tutor : "+ idTutor);
                 TutorExterno tutor = new TutorExternoDAODB().buscarByID(idTutor);
                 proyecto = new Proyecto(
                         result.getInt("idProyecto"),
@@ -199,6 +244,7 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
                         result.getString("requisitos"),
                         tutor
                 );
+                proyecto.setHabilitado(result.getBoolean("habilitado"));
             }
 
             return proyecto;
