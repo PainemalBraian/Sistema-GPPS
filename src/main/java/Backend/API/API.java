@@ -46,11 +46,15 @@ public interface API {
     void cerrarSesion(); // Cierra la sesion del usuario
 
     RolDTO obtenerRolByUsuarioId(int id) throws Exception; // Obtiene el rol de un usuario mediante su ID
-
-    void cargarProyecto(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos, String tutorEncargado) throws CreateException;
-
-    ProyectoDTO obtenerProyectoByTitulo(String titulo) throws ReadException;
+    //probar
+    void cargarProyecto(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos, String tutorEncargado) throws CreateException; // Carga un proyecto, con los datos solicitados por parametro
 
     //probar
-    ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException;
+    ProyectoDTO obtenerProyectoByTitulo(String titulo) throws ReadException; // Devuelve un proyecto de la DB que es buscado dado un titulo
+
+    //probar
+    List <ProyectoDTO> obtenerProyectosHabilitados() throws ReadException; // Devuelve de la DB todos los proyectos que esten habilitados
+
+    //probar
+    ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException; // Devuelve Un convenio de PPs de la DB dado su titulo
 }

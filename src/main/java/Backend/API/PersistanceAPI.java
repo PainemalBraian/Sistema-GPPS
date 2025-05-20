@@ -86,7 +86,6 @@ public class PersistanceAPI implements API {
         if (username == null || username.trim().isEmpty()) {
             throw new LoginException("Ingrese un usuario");
         }
-
         if (password == null || password.trim().isEmpty()) {
             throw new LoginException("Ingrese una contraseña");
         }
@@ -275,6 +274,7 @@ public class PersistanceAPI implements API {
             TutorExterno encargado = TutorExternoDAODB.buscarByUsername(tutorEncargado);
             // Guardar en la base de datos
             Proyecto proyecto = new Proyecto(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos, encargado);
+//            proyecto.setHabilitado(false);  Por defecto es false. pero para que se entienda que existe este campo. Solo el director debe poder habilitar o admin
             ProyectoDAODB.create(proyecto);
         } catch (Exception e) {
             throw new CreateException(e.getMessage());
@@ -296,16 +296,27 @@ public class PersistanceAPI implements API {
     }
 
     @Override
+    public List <ProyectoDTO> obtenerProyectosHabilitados() throws ReadException {
+        try {
+            List<Proyecto> proyectos = ProyectoDAODB.obtenerProyectosHabilitados();
+            List<ProyectoDTO> proyectosDTO = convertirProyectosDTO(proyectos);
+            return proyectosDTO;
+        } catch (UserException e) {
+            throw new ReadException("Error al obtener el proyecto: "+e.getMessage());
+        }
+    }
+
+    @Override
     public ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException {
         try {
             ConvenioPPS convenio = ConvenioPPSDAODB.buscarByTitulo(titulo);
             TutorExternoDTO tutor = null;
 
-            tutor = convertirATutorDTO(proyecto.getTutorEncargado());
-            ProyectoDTO proyectoDTO = new ProyectoDTO(proyecto.getId(), proyecto.getTitulo(),
-                    proyecto.getDescripcion(), proyecto.getAreaDeInteres(),
-                    proyecto.getUbicacion(), proyecto.getObjetivos(), proyecto.getRequisitos(),tutor);
-            return proyectoDTO;
+            tutor = convertirATutorDTO(convenio.getProyecto().getTutorEncargado());
+            ProyectoDTO proyectoDTO = new ProyectoDTO(convenio.getProyecto().getId(), convenio.getProyecto().getTitulo(),
+                    convenio.getProyecto().getDescripcion(), convenio.getProyecto().getAreaDeInteres(),
+                    convenio.getProyecto().getUbicacion(), convenio.getProyecto().getObjetivos(), convenio.getProyecto().getRequisitos(),tutor);
+            return null;//proyectoDTO;
         } catch (UserException e) {
             throw new ReadException("Error al obtener el proyecto: "+e.getMessage());
         }
@@ -319,36 +330,79 @@ public class PersistanceAPI implements API {
         return new RolDTO(rol.getId(), rol.getNombre(), rol.isActivo());
     }
 
+    private UsuarioDTO convertirAUsuarioDTO(Usuario usuario) throws UserException {
+        if (usuario == null)
+            throw new UserException("El usuario que se intenta convertir no existe.");
+        RolDTO rolDTO = convertirARolDTO(usuario.getRol());
+        return new UsuarioDTO(usuario.getIdUsuario(), usuario.getUsername(), usuario.getContrasena(), usuario.getNombre(), usuario.getEmail(),rolDTO,usuario.isActivo());
+    }
+
     private TutorExternoDTO convertirATutorDTO(TutorExterno tutor) throws UserException {
         if (tutor == null)
             throw new UserException("El rol que se intenta convertir no existe.");
-        RolDTO rolDTO = convertirARolDTO(tutor.getRol());
-        UsuarioDTO usuarioDTO = new UsuarioDTO(tutor.getIdUsuario(), tutor.getUsername(), tutor.getContrasena(), tutor.getNombre(), tutor.getEmail(),rolDTO,tutor.isActivo());
+//        RolDTO rolDTO = convertirARolDTO(tutor.getRol());
+//        UsuarioDTO usuarioDTO = new UsuarioDTO(tutor.getIdUsuario(), tutor.getUsername(), tutor.getContrasena(), tutor.getNombre(), tutor.getEmail(),rolDTO,tutor.isActivo());
+        UsuarioDTO usuarioDTO = convertirAUsuarioDTO(tutor.getUsuario());
         return new TutorExternoDTO(usuarioDTO, tutor.getNombreEntidadColaborativa());
     }
 
     private DocenteDTO convertirADocenteDTO(Docente docente) throws UserException {
         if (docente == null)
             throw new UserException("El docente que se intenta convertir no existe.");
-        RolDTO rolDTO = convertirARolDTO(docente.getRol());
-        UsuarioDTO usuarioDTO = new UsuarioDTO(docente.getIdUsuario(), docente.getUsername(), docente.getContrasena(), docente.getNombre(), docente.getEmail(),rolDTO,docente.isActivo());
-        return new TutorExternoDTO(usuarioDTO, docente.getNombreEntidadColaborativa());
+//        RolDTO rolDTO = convertirARolDTO(docente.getRol());
+//        UsuarioDTO usuarioDTO = new UsuarioDTO(docente.getIdUsuario(), docente.getUsername(), docente.getContrasena(), docente.getNombre(), docente.getEmail(),rolDTO,docente.isActivo());
+        UsuarioDTO usuarioDTO = convertirAUsuarioDTO(docente.getUsuario());
+        return new DocenteDTO(usuarioDTO, docente.getLegajo());
     }
 
-    private EntidadColaborativaDTO convertirAEntidadDTO(EntidadColaborativa entidad) {
+    private EntidadColaborativaDTO convertirAEntidadDTO(EntidadColaborativa entidad) throws UserException {
         if (entidad == null)
             throw new UserException("La entidad que se intenta convertir no existe.");
-        RolDTO rolDTO = convertirARolDTO(entidad.getRol());
-        UsuarioDTO usuarioDTO = new UsuarioDTO(entidad.getIdUsuario(), entidad.getUsername(), entidad.getContrasena(), entidad.getNombre(), entidad.getEmail(),rolDTO,entidad.isActivo());
-        return new TutorExternoDTO(usuarioDTO, entidad.getNombreEntidadColaborativa());
+//        RolDTO rolDTO = convertirARolDTO(entidad.getRol());
+//        UsuarioDTO usuarioDTO = new UsuarioDTO(entidad.getIdUsuario(), entidad.getUsername(), entidad.getContrasena(), entidad.getNombre(), entidad.getEmail(),rolDTO,entidad.isActivo());
+        UsuarioDTO usuarioDTO = convertirAUsuarioDTO(entidad.getUsuario());
+        List <ProyectoDTO> proyectosDTO = convertirProyectosDTO(entidad.getProyectos());
+        return new EntidadColaborativaDTO(usuarioDTO, entidad.getNombreEntidad(),entidad.getCuit(),entidad.getDireccionEntidad(),proyectosDTO);
     }
 
-    private EstudianteDTO convertirAEstudianteDTO(Estudiante estudiante) {
+    private EstudianteDTO convertirAEstudianteDTO(Estudiante estudiante) throws UserException {
         if (estudiante == null)
-            throw new UserException("El rol que se intenta convertir no existe.");
-        RolDTO rolDTO = convertirARolDTO(estudiante.getRol());
-        UsuarioDTO usuarioDTO = new UsuarioDTO(estudiante.getIdUsuario(), estudiante.getUsername(), estudiante.getContrasena(), estudiante.getNombre(), estudiante.getEmail(),rolDTO,estudiante.isActivo());
-        return new TutorExternoDTO(usuarioDTO, estudiante.getNombreEntidadColaborativa());
+            throw new UserException("El estudiante que se intenta convertir no existe.");
+//        RolDTO rolDTO = convertirARolDTO(estudiante.getRol());
+//        UsuarioDTO usuarioDTO = new UsuarioDTO(estudiante.getIdUsuario(), estudiante.getUsername(), estudiante.getContrasena(), estudiante.getNombre(), estudiante.getEmail(),rolDTO,estudiante.isActivo());
+        UsuarioDTO usuarioDTO = convertirAUsuarioDTO(estudiante.getUsuario());
+        return new EstudianteDTO(usuarioDTO, estudiante.getMatricula(),estudiante.getCarrera());
+    }
+
+    private List<ProyectoDTO> convertirProyectosDTO(List<Proyecto> proyectos) throws UserException {
+//        if (proyectos == null){
+//            List <ProyectoDTO> proyectosDTO = new ArrayList<>();
+//            return proyectosDTO;}
+//            //throw new UserException("La lista de proyectos que se intenta convertir no existe.");
+        List <ProyectoDTO> proyectosDTO = new ArrayList<>();
+        for (Proyecto proyecto: proyectos){
+            proyectosDTO.add(convertirProyectoDTO(proyecto));
+        }
+        return proyectosDTO;
+    }
+
+    private ProyectoDTO convertirProyectoDTO(Proyecto proyecto) throws UserException {
+        if (proyecto == null) { // Forzado a creación vacia para que se permitan cargas de "proyectos vacios en espera de asignación" en caso de estudiante, o decente o tutor
+            ProyectoDTO proyectoDTO = new ProyectoDTO();
+            //throw new UserException("El proyecto que se intenta convertir no existe.");
+        }
+        TutorExternoDTO tutorDTO = convertirATutorDTO(proyecto.getTutorEncargado());
+        ProyectoDTO proyectoDTO = new ProyectoDTO(proyecto.getId(), proyecto.getTitulo(), proyecto.getDescripcion(), proyecto.getAreaDeInteres(), proyecto.getUbicacion(),
+                proyecto.getObjetivos(), proyecto.getRequisitos(),tutorDTO);
+        proyectoDTO.setHabilitado(proyecto.isHabilitado());
+
+        return proyectoDTO;
+    }
+
+    private InformeDTO convertirAInformeDTO(Informe informe) throws UserException {
+        if (informe == null)
+            throw new UserException("El informe que se intenta convertir no existe.");
+        return new InformeDTO(informe.getId(),informe.getTitulo(),informe.getDescripcion(),informe.getContenido(),informe.getFecha());
     }
 
 

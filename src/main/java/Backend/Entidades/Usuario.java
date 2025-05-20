@@ -143,6 +143,10 @@ public class Usuario {
         this.activo = 	activo;
     }
 
+    public Usuario getUsuario () throws UserException {
+        return new Usuario(getIdUsuario(),getUsername(),getContrasena(),getNombre(),getEmail(),getRol());
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
