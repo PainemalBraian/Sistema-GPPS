@@ -12,23 +12,16 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="745.0" prefWidth="855.0" styleClass="root"
-            stylesheets="@../StyleSheets/propuestaPropia.css"
-            xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.gui.Controller.PropuestaPropiaController">
+<AnchorPane prefHeight="745.0" prefWidth="855.0" styleClass="root" stylesheets="@../StyleSheets/propuestaPropia.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.gui.Controller.PropuestaPropiaController">
     <children>
-        <ScrollPane fitToWidth="true" prefHeight="745.0" prefWidth="855.0"
-                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <ScrollPane fitToWidth="true" prefHeight="745.0" prefWidth="855.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <content>
                 <VBox alignment="TOP_CENTER" prefWidth="760.0" spacing="20.0">
                     <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                     </padding>
                     <children>
-                        <Label prefHeight="76.0" prefWidth="820.0" styleClass="label-titulo"
-                               text="Presentar un proyecto de Práctica Profesional Supervisada"
-                               textAlignment="CENTER">
+                        <Label prefHeight="65.0" prefWidth="864.0" styleClass="label-titulo" text="Presentar un proyecto de Práctica Profesional Supervisada" textAlignment="CENTER">
                             <VBox.margin>
                                 <Insets bottom="10.0" />
                             </VBox.margin>
@@ -50,30 +43,28 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Label prefHeight="55.0" prefWidth="325.0" text="Título del Proyecto:"
-                                       styleClass="label-formulario"
-                                       textAlignment="JUSTIFY" GridPane.rowIndex="0" />
+                                <Label prefHeight="55.0" prefWidth="325.0" styleClass="label-formulario" text="Título del Proyecto:" textAlignment="JUSTIFY" GridPane.rowIndex="0" />
                                 <TextField fx:id="tituloField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                                <Label prefHeight="41.0" prefWidth="212.0" text="Descripción:" styleClass="label-formulario" GridPane.rowIndex="1" />
+                                <Label prefHeight="41.0" prefWidth="212.0" styleClass="label-formulario" text="Descripción:" GridPane.rowIndex="1" />
                                 <TextArea fx:id="descripcionArea" prefHeight="80.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                                <Label prefHeight="44.0" prefWidth="232.0" text="Área de Interés:" styleClass="label-formulario" GridPane.rowIndex="2" />
+                                <Label prefHeight="44.0" prefWidth="232.0" styleClass="label-formulario" text="Área de Interés:" GridPane.rowIndex="2" />
                                 <TextField fx:id="areaInteresField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                                <Label prefHeight="49.0" prefWidth="237.0" text="Ubicación:" styleClass="label-formulario" GridPane.rowIndex="3" />
+                                <Label prefHeight="49.0" prefWidth="237.0" styleClass="label-formulario" text="Ubicación:" GridPane.rowIndex="3" />
                                 <TextField fx:id="ubicacionField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                                <Label prefHeight="97.0" prefWidth="222.0" text="Objetivos:" styleClass="label-formulario" GridPane.rowIndex="4" />
+                                <Label prefHeight="97.0" prefWidth="222.0" styleClass="label-formulario" text="Objetivos:" GridPane.rowIndex="4" />
                                 <TextArea fx:id="objetivosArea" prefHeight="80.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                                <Label prefHeight="96.0" prefWidth="241.0" text="Requisitos:" styleClass="label-formulario" GridPane.rowIndex="5" />
+                                <Label prefHeight="96.0" prefWidth="241.0" styleClass="label-formulario" text="Requisitos:" GridPane.rowIndex="5" />
                                 <TextArea fx:id="requisitosArea" prefHeight="80.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-                                <Label prefHeight="50.0" prefWidth="262.0" text="Nombre del Tutor:" styleClass="label-formulario" GridPane.rowIndex="6" />
+                                <Label prefHeight="50.0" prefWidth="262.0" styleClass="label-formulario" text="Nombre del Tutor:" GridPane.rowIndex="6" />
                                 <TextField fx:id="tutorNombreField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
-                                <Label text="Email del Tutor:" styleClass="label-formulario" GridPane.rowIndex="7" />
+                                <Label styleClass="label-formulario" text="Email del Tutor:" GridPane.rowIndex="7" />
                                 <TextField fx:id="tutorEmailField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                             </children>
                         </GridPane>
@@ -88,9 +79,6 @@
             </content>
         </ScrollPane>
 
-        <Button fx:id="btnVolverHome" alignment="CENTER" mnemonicParsing="false"
-                onAction="#VolverHome" prefHeight="35.0" prefWidth="124.0"
-                styleClass="inscribe-button" text="Volver" textAlignment="CENTER"
-                AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" />
+        <Button fx:id="btnVolverHome" alignment="CENTER" mnemonicParsing="false" onAction="#VolverHome" prefHeight="35.0" prefWidth="124.0" styleClass="inscribe-button" text="Volver" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" />
     </children>
 </AnchorPane>
