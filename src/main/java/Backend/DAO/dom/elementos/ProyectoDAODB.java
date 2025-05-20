@@ -61,6 +61,46 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
                         result.getString("requisitos"),
                         tutorExternoDAO.buscarByID(idTutor) // Obtiene el tutor asociado
                 );
+                proyecto.setHabilitado(result.getBoolean("habilitado"));
+
+                proyectos.add(proyecto);
+            }
+
+            return proyectos;
+        } catch (SQLException e) {
+            throw new ReadException("Error al obtener los datos de los proyectos.");
+        } catch (ConnectionException e) {
+            throw new ReadException(e.getMessage());
+        } catch (UserException e) {
+            throw new ReadException("Error al construir el proyecto: " + e.getMessage());
+        } catch (EmptyException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+    }
+
+    public List<Proyecto> obtenerProyectosHabilitados() throws ReadException {
+        List<Proyecto> proyectos = new ArrayList<>();
+
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM Proyectos WHERE habilitado = true ");
+             ResultSet result = statement.executeQuery()) {
+
+            while (result.next()) {
+                TutorExternoDAODB tutorExternoDAO = new TutorExternoDAODB();
+                int idTutor = result.getInt("idTutor");
+
+                Proyecto proyecto = new Proyecto(
+                        result.getInt("idProyecto"),
+                        result.getString("titulo"),
+                        result.getString("descripcion"),
+                        result.getString("areaDeInteres"),
+                        result.getString("ubicacion"),
+                        result.getString("objetivos"),
+                        result.getString("requisitos"),
+                        tutorExternoDAO.buscarByID(idTutor) // Obtiene el tutor asociado
+                );
+                proyecto.setHabilitado(result.getBoolean("habilitado"));
 
                 proyectos.add(proyecto);
             }
@@ -138,6 +178,7 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
                         result.getString("requisitos"),
                         tutor
                 );
+                proyecto.setHabilitado(result.getBoolean("habilitado"));
             }
 
             return proyecto;
@@ -199,6 +240,7 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
                         result.getString("requisitos"),
                         tutor
                 );
+                proyecto.setHabilitado(result.getBoolean("habilitado"));
             }
 
             return proyecto;
