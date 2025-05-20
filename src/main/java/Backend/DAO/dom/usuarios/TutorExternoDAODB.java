@@ -84,6 +84,7 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
             if (tutor.next()) {
                 Usuario usuario = UsuarioDAODB.buscarById(tutor.getInt("idUsuario"));
                 TutorExterno tutorExt = new TutorExterno(usuario, tutor.getString("nombreEntidadColaborativa") );
+                tutorExt.setIdTutor(tutor.getInt("idTutor"));
                 return tutorExt;
             } else {
                 throw new UserException("Tutor no encontrado.");
@@ -104,16 +105,22 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
             PreparedStatement statement = conn.prepareStatement(
                     "SELECT * FROM TutoresExternos TE " +
                             "JOIN Usuarios U ON TE.idUsuario = U.idUsuario " +
-                            "WHERE TE.idUsuario = ?");
+                            "WHERE TE.idTutor = ?"
+            );
             statement.setInt(1, id);
 
             ResultSet tutor = statement.executeQuery();
+            System.out.println("ID BUSCAR: "+ id);
 
             if (tutor.next()) {
+                System.out.println("XX");
                 Usuario usuario = UsuarioDAODB.buscarById(tutor.getInt("idUsuario"));
+                System.out.println("XXX");
                 TutorExterno tutorExt = new TutorExterno(usuario, tutor.getString("nombreEntidadColaborativa") );
+                System.out.println("XXXX");
                 return tutorExt;
             } else {
+                System.out.println("asdas");
                 throw new UserException("Tutor no encontrado.");
             }
         }

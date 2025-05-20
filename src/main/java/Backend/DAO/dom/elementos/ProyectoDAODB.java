@@ -15,26 +15,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
-
+    TutorExternoDAODB tutorExternoDAODB = new TutorExternoDAODB();
     @Override
     public void create(Proyecto proyecto) throws CreateException {
         try (Connection conn = connect();
              PreparedStatement statement = conn.prepareStatement(
-                     "INSERT INTO Proyectos(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos,idTutor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+                     "INSERT INTO Proyectos(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos,idTutor, habilitado) VALUES (?, ?, ?, ?, ?, ?, ?,?)"
              )) {
+
             statement.setString(1, proyecto.getTitulo());
             statement.setString(2, proyecto.getDescripcion());
             statement.setString(3, proyecto.getAreaDeInteres());
             statement.setString(4, proyecto.getUbicacion());
             statement.setString(5, proyecto.getObjetivos());
             statement.setString(6, proyecto.getRequisitos());
-            statement.setInt(7, proyecto.getTutorEncargado().getIdUsuario());
+            statement.setInt(7, proyecto.getTutorEncargado().getIdTutor())/*,
+            statement.setBoolean(8, /*proyecto.getHabilitado())*/;
+            statement.setBoolean(8, true);
 
             statement.executeUpdate();
 
         }catch(ConnectionException e){
             throw new CreateException("Error al conectar con la base de datos: " + e.getMessage());
         }catch(SQLException e){
+            System.out.println(e);
             throw new CreateException("Error al crear el proyecto: " + e.getMessage());
         }
     }
@@ -200,10 +204,9 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
             String sql = "SELECT COUNT(*) AS total FROM Proyectos WHERE LOWER(titulo) = LOWER(?)"; //Lower para indistinto a Mayúsculas o minúsculas
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, titulo);
-
             ResultSet result = statement.executeQuery();
 
-            if (result.next() && result.getInt("total") == 0) {
+            if (result.next() && result.getInt("total") != 0) {
                 throw new CreateException("Proyecto con titulo insertado existente en el sistema.");
             }
             return true;
@@ -229,6 +232,7 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
             ResultSet result = statement.executeQuery();
             if (result.next()) {
                 int idTutor = result.getInt("idTutor");
+                System.out.println("Id Tutor : "+ idTutor);
                 TutorExterno tutor = new TutorExternoDAODB().buscarByID(idTutor);
                 proyecto = new Proyecto(
                         result.getInt("idProyecto"),
