@@ -70,7 +70,7 @@ public class PropuestaPropiaController {
 
 
             // metodo de la persistencia que crea el proyecto
-            this.api.cargarProyecto(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos, emailTutor);
+            this.api.cargarProyecto(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos, nombreTutor);
 
             // Obtener el DTO para confirmar datos o mostrar información
             ProyectoDTO proyectoCreado = this.api.obtenerProyectoByTitulo(titulo);
