@@ -44,6 +44,7 @@ public class RegistroController {
         setearLogicaDeCampos();
     }
 
+
     private void cargarComboBoxRoles() {
         rolComboBox.setOnAction((ActionEvent event) -> {
             RolDTO selectedRol = rolComboBox.getValue();

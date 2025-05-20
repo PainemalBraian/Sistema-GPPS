@@ -330,6 +330,10 @@ public class TareasController  {
         alert.showAndWait();
     }
 
+    public void setPersistenceAPI(API api) {
+
+    }
+
     // --- Clase Interna para el modelo de Tarea ---
     public static class Tarea {
         private LocalDate fecha;
