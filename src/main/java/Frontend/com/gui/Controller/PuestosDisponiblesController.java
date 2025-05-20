@@ -77,9 +77,22 @@ public class PuestosDisponiblesController {
 
             // --- datos para prueba ---
             List<OportunidadPPS_DTO> oportunidades = List.of(
-                    new OportunidadPPS_DTO(1, "Desarrollador Java Junior", "Empresa Tech Solutions", "Desarrollo de Software", 5, "Desarrollo de nuevas funcionalidades y mantenimiento de aplicaciones existentes.", "Conocimiento en Java, Spring Boot, SQL. Estudiante avanzado de Ingeniería en Sistemas."),
-                    new OportunidadPPS_DTO(2, "Analista de Datos", "Data Insights S.A.", "Análisis de Datos", 2, "Análisis de grandes volúmenes de datos, creación de informes y dashboards.", "Conocimiento en Python, Pandas, SQL, herramientas de visualización (Tableau/PowerBI)."),
-                    new OportunidadPPS_DTO(3, "Diseñador UX/UI", "Creative Minds", "Diseño", 3, "Diseño de interfaces de usuario y experiencia de usuario para aplicaciones web y móviles.", "Conocimiento en herramientas de diseño (Figma, Adobe XD), principios de UX/UI.")
+                    new OportunidadPPS_DTO(1, "Desarrollador Java Junior",
+                            "Empresa Tech Solutions", "Desarrollo de Software",
+                            5,
+                            "Desarrollo de nuevas funcionalidades y mantenimiento de aplicaciones existentes.",
+                            "Conocimiento en Java, Spring Boot, SQL. Estudiante avanzado de Ingeniería en Sistemas."),
+                    new OportunidadPPS_DTO(2, "Analista de Datos",
+                            "Data Insights S.A.",
+                            "Análisis de Datos",
+                            2,
+                            "Análisis de grandes volúmenes de datos, creación de informes y dashboards.",
+                            "Conocimiento en Python, Pandas, SQL, herramientas de visualización (Tableau/PowerBI)."),
+                    new OportunidadPPS_DTO(3, "Diseñador UX/UI",
+                            "Creative Minds", "Diseño",
+                            3,
+                            "Diseño de interfaces de usuario y experiencia de usuario para aplicaciones web y móviles.",
+                            "Conocimiento en herramientas de diseño (Figma, Adobe XD), principios de UX/UI.")
             );
 
 
