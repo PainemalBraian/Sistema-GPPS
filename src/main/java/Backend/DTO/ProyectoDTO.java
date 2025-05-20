@@ -6,6 +6,8 @@ public class ProyectoDTO extends ItemDTO {
     private String objetivos;
     private String requisitos;
     private TutorExternoDTO tutorEncargado;
+    private boolean habilitado = false;
+
 
     public ProyectoDTO(){
     }
@@ -65,5 +67,13 @@ public class ProyectoDTO extends ItemDTO {
 
     public void setTutorEncargado(TutorExternoDTO tutorEncargado) {
         this.tutorEncargado = tutorEncargado;
+    }
+
+    public boolean isHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
     }
 }

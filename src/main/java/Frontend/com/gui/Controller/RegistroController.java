@@ -141,8 +141,8 @@ public class RegistroController {
         String correo = correoField.getText();
         String contrasena = contrasenaField.getText();
         String confirmarContrasena = confirmarContrasenaField.getText();
+        String matriculaText = camposEstudiante.isVisible() ? matriculaField.getText() : "";
 
-        String matricula = camposEstudiante.isVisible() ? matriculaField.getText() : "";
         String carrera = camposEstudiante.isVisible() ? carreraField.getText() : "";
         String legajo = camposDocente.isVisible() ? legajoField.getText() : "";
 
@@ -156,21 +156,19 @@ public class RegistroController {
                 throw new RuntimeException("Debes seleccionar un rol");
             if (!contrasena.equals(confirmarContrasena))
                 throw new RuntimeException("Las contraseñas deben coincidir");
-
             api.registrarUsuario(
                     nombre,
                     contrasena,
                     correo,
                     nombre,
                     rol.getId(),
-                    matricula,
-                    carrera,
-                    legajo,
-                    nombreEntidad,
-                    cuit,
+                    matriculaText,
+                    carreraField.getText(),
+                    legajoField.getText(),
+                    nombreEntidadField.getText(),
+                    cuitField.getText(),
                     direccionEntidadField.getText()
             );
-            volverLogin(actionEvent);
             mostrarAlerta("Registro Exitoso", "Usuario registrado exitosamente.");
         } catch (Exception e) {
             mostrarAlerta("Error de Registro", "Ocurrió un error al registrar el usuario:\n" + e.getMessage());
@@ -184,8 +182,6 @@ public class RegistroController {
         alerta.setContentText(mensaje);
         alerta.showAndWait();
     }
-
-
 
 
 }
