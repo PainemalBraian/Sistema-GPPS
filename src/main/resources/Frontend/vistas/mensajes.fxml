@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="560.0" prefWidth="941.0" styleClass="root-mensajes" stylesheets="@../StyleSheets/mensajes.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.gui.Controller.MensajesController">
+    <left>
+        <VBox prefWidth="250.0" spacing="10" styleClass="conversaciones-panel">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            <children>
+                <Label styleClass="header-label-small" text="Conversaciones">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="buscarConversacionField" promptText="Buscar contacto..." />
+                <ListView fx:id="listaConversacionesView" prefHeight="200.0" VBox.vgrow="ALWAYS" />
+                <Button fx:id="btnNuevaConversacion" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleNuevaConversacion" styleClass="button-secondary" text="Nueva Conversación" />
+            </children>
+        </VBox>
+    </left>
+    <center>
+        <BorderPane fx:id="panelChatActivo" prefHeight="405.0" prefWidth="379.0">
+            <top>
+                <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="10" styleClass="chat-header">
+                    <padding>
+                        <Insets left="15.0" right="15.0" />
+                    </padding>
+                    <children>
+                        <Label fx:id="nombreContactoChatLabel" styleClass="header-label-medium" text="Seleccione una conversación">
+                            <font>
+                                <Font name="System Bold" size="20.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+            </top>
+            <center>
+                <ScrollPane fx:id="scrollPaneMensajes" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+                    <content>
+                        <VBox fx:id="contenedorMensajesVBox" spacing="10.0" styleClass="mensajes-container">
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            </center>
+            <bottom>
+                <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="743.0" spacing="10.0" styleClass="area-envio">
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                    <children>
+                        <TextArea fx:id="areaNuevoMensaje" prefHeight="60.0" promptText="Escribe un mensaje..." wrapText="true" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnEnviarMensaje" mnemonicParsing="false" onAction="#handleEnviarMensaje" prefHeight="60.0" styleClass="button-primary" text="Enviar" />
+                    </children>
+                </HBox>
+            </bottom>
+        </BorderPane>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="901.0" spacing="10" styleClass="footer-bar">
+            <padding><Insets bottom="5" left="10" right="10" top="5" /></padding>
+            <Button fx:id="btnVolverHomeMensajes" onAction="#handleVolverHome" styleClass="button-secondary" text="Volver a Home" />
+        </HBox>
+    </bottom>
+</BorderPane>

@@ -8,6 +8,7 @@ import java.util.List;
 import static java.util.Objects.isNull;
 
 public class TutorExterno extends Usuario{
+    private int idTutor;
     private String nombreEntidadColaborativa;
     private List<Proyecto> proyectosAsignados = new ArrayList<>();
 
@@ -45,6 +46,14 @@ public class TutorExterno extends Usuario{
     public void evaluarDesempeno(ConvenioPPS convenioPps){
     }
     public void validarActividad(){
+    }
+
+    public int getIdTutor() {
+        return idTutor;
+    }
+
+    public void setIdTutor(int idTutor) {
+        this.idTutor = idTutor;
     }
 
 }

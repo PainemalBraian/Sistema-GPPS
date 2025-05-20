@@ -1,0 +1,67 @@
+/* General Styles */
+.root {
+    -fx-font-family: "Arial", sans-serif;
+    -fx-background-color: #f4f4f9;
+}
+
+.header-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-padding-bottom: 15px;
+}
+
+/* GridPane y Labels */
+.grid-pane {
+    -fx-hgap: 10px;
+    -fx-vgap: 15px;
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #555555;
+}
+
+/* TextField y TextArea */
+.text-field, .text-area {
+    -fx-font-size: 14px;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #007bff;
+    -fx-effect: dropshadow(gaussian, rgba(0,123,255,0.25), 5, 0, 0, 1);
+}
+
+.text-area {
+    -fx-pref-height: 100px; /* Altura por defecto para TextAreas */
+    -fx-wrap-text: true;
+}
+
+/* Botones */
+.button {
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.button-primary {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.button-primary:hover {
+    -fx-background-color: #0056b3;
+}
+
+/* Estilos para validación (opcional, si implementas) */
+.text-field.error, .text-area.error {
+    -fx-border-color: red;
+}
