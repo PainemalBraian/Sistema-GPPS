@@ -24,7 +24,7 @@ public class PersistanceAPI implements API {
 
     ProyectoDAODB ProyectoDAODB = new ProyectoDAODB();
     InformeDAODB InformeDAODB = new InformeDAODB();
-    PPSDAODB PPSDAODB = new PPSDAODB();
+    ConvenioPPSDAODB ConvenioPPSDAODB = new ConvenioPPSDAODB();
 
     @Override
     public ResourceBundle obtenerIdioma() {
@@ -111,12 +111,6 @@ public class PersistanceAPI implements API {
         } catch (UserException e) {
             throw new LoginException(e.getMessage());
         }
-    }
-
-    private RolDTO convertirARolDTO(Rol rol) throws UserException {
-        if (rol == null)
-            throw new UserException("El rol que se intenta convertir no existe.");
-        return new RolDTO(rol.getId(), rol.getNombre(), rol.isActivo());
     }
 
     @Override
@@ -286,7 +280,6 @@ public class PersistanceAPI implements API {
             throw new CreateException(e.getMessage());
         }
     }
-
     @Override //probar
     public ProyectoDTO obtenerProyectoByTitulo(String titulo) throws ReadException {
         try {
@@ -302,6 +295,30 @@ public class PersistanceAPI implements API {
         }
     }
 
+    @Override
+    public ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException {
+        try {
+            ConvenioPPS convenio = ConvenioPPSDAODB.buscarByTitulo(titulo);
+            TutorExternoDTO tutor = null;
+
+            tutor = convertirATutorDTO(proyecto.getTutorEncargado());
+            ProyectoDTO proyectoDTO = new ProyectoDTO(proyecto.getId(), proyecto.getTitulo(),
+                    proyecto.getDescripcion(), proyecto.getAreaDeInteres(),
+                    proyecto.getUbicacion(), proyecto.getObjetivos(), proyecto.getRequisitos(),tutor);
+            return proyectoDTO;
+        } catch (UserException e) {
+            throw new ReadException("Error al obtener el proyecto: "+e.getMessage());
+        }
+    }
+
+/////////////////////////////// Conversiones de Tipos //////////////////////////////////////////////////////////////////////////
+
+    private RolDTO convertirARolDTO(Rol rol) throws UserException {
+        if (rol == null)
+            throw new UserException("El rol que se intenta convertir no existe.");
+        return new RolDTO(rol.getId(), rol.getNombre(), rol.isActivo());
+    }
+
     private TutorExternoDTO convertirATutorDTO(TutorExterno tutor) throws UserException {
         if (tutor == null)
             throw new UserException("El rol que se intenta convertir no existe.");
@@ -309,5 +326,30 @@ public class PersistanceAPI implements API {
         UsuarioDTO usuarioDTO = new UsuarioDTO(tutor.getIdUsuario(), tutor.getUsername(), tutor.getContrasena(), tutor.getNombre(), tutor.getEmail(),rolDTO,tutor.isActivo());
         return new TutorExternoDTO(usuarioDTO, tutor.getNombreEntidadColaborativa());
     }
+
+    private DocenteDTO convertirADocenteDTO(Docente docente) throws UserException {
+        if (docente == null)
+            throw new UserException("El docente que se intenta convertir no existe.");
+        RolDTO rolDTO = convertirARolDTO(docente.getRol());
+        UsuarioDTO usuarioDTO = new UsuarioDTO(docente.getIdUsuario(), docente.getUsername(), docente.getContrasena(), docente.getNombre(), docente.getEmail(),rolDTO,docente.isActivo());
+        return new TutorExternoDTO(usuarioDTO, docente.getNombreEntidadColaborativa());
+    }
+
+    private EntidadColaborativaDTO convertirAEntidadDTO(EntidadColaborativa entidad) {
+        if (entidad == null)
+            throw new UserException("La entidad que se intenta convertir no existe.");
+        RolDTO rolDTO = convertirARolDTO(entidad.getRol());
+        UsuarioDTO usuarioDTO = new UsuarioDTO(entidad.getIdUsuario(), entidad.getUsername(), entidad.getContrasena(), entidad.getNombre(), entidad.getEmail(),rolDTO,entidad.isActivo());
+        return new TutorExternoDTO(usuarioDTO, entidad.getNombreEntidadColaborativa());
+    }
+
+    private EstudianteDTO convertirAEstudianteDTO(Estudiante estudiante) {
+        if (estudiante == null)
+            throw new UserException("El rol que se intenta convertir no existe.");
+        RolDTO rolDTO = convertirARolDTO(estudiante.getRol());
+        UsuarioDTO usuarioDTO = new UsuarioDTO(estudiante.getIdUsuario(), estudiante.getUsername(), estudiante.getContrasena(), estudiante.getNombre(), estudiante.getEmail(),rolDTO,estudiante.isActivo());
+        return new TutorExternoDTO(usuarioDTO, estudiante.getNombreEntidadColaborativa());
+    }
+
 
 }

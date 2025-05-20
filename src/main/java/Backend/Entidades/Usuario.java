@@ -54,7 +54,7 @@ public class Usuario {
             throw new UserException("Debe completar el nombre");
         }
         if (contrasena.length() < 8) {
-            throw new UserException("Error: La contraseña debe tener al menos 8 caracteres");
+//            throw new UserException("Error: La contraseña debe tener al menos 8 caracteres");
         }
 
         this.idUsuario = id;
