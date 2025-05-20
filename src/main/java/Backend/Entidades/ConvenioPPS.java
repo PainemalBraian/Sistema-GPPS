@@ -7,7 +7,7 @@ import java.util.List;
 
 import static java.util.Objects.isNull;
 
-public class convenioPPS extends Item {
+public class ConvenioPPS extends Item {
     private DirectorCarrera director;
     private boolean habilitado = false;
     private EntidadColaborativa entidad;
@@ -16,10 +16,10 @@ public class convenioPPS extends Item {
     private Estudiante estudiante;
     private List <Actividad> actividades = new ArrayList<>();
 
-    public convenioPPS() {
+    public ConvenioPPS() {
     }
 
-    public convenioPPS(int id, String titulo, String descripcion, Proyecto proyecto, Docente docente, Estudiante estudiante,
+    public ConvenioPPS(int id, String titulo, String descripcion, Proyecto proyecto, Docente docente, Estudiante estudiante,
                        DirectorCarrera director, EntidadColaborativa entidad, List<Actividad> actividades) throws EmptyException {
         super(id, titulo, descripcion);
         if (isNull(proyecto)) { throw new EmptyException("El proyecto debe existir."); }

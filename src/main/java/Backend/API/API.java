@@ -50,4 +50,7 @@ public interface API {
     void cargarProyecto(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos, String tutorEncargado) throws CreateException;
 
     ProyectoDTO obtenerProyectoByTitulo(String titulo) throws ReadException;
+
+    //probar
+    ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException;
 }
