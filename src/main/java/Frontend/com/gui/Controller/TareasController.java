@@ -330,8 +330,8 @@ public class TareasController  {
         alert.showAndWait();
     }
 
-    public void setPersistenceAPI(API api) {
-
+    public void setPersistenceAPI(API persistenceAPI) {
+        this.api = persistenceAPI;
     }
 
     // --- Clase Interna para el modelo de Tarea ---

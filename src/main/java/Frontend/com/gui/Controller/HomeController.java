@@ -242,9 +242,11 @@ public class HomeController  {
     @FXML
     public void verMensajes(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Mensajes.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/mensajes.fxml"));
             Parent root = loader.load();
-            // Falta pasar la api
+
+            MensajesController controller = loader.getController();
+            controller.setPersistenceAPI(api);
 
             Stage stage = new Stage();
             stage.setTitle("Mensajes - GPPS");
