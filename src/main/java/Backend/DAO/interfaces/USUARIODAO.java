@@ -7,9 +7,9 @@ import Backend.Entidades.Usuario;
 
 public interface USUARIODAO extends DAO {
 
-    int create(Object objeto) throws RegisterExceptions;
+    int create(Usuario usuario) throws RegisterExceptions;
 
-    List<Usuario> read() throws  UserException;
+    List<Usuario> obtenerUsuarios() throws  UserException;
 
     Usuario buscarByUsername(String username) throws  UserException;
 

@@ -41,7 +41,7 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
     }
 
     @Override
-    public List<TutorExterno> buscarTutores() throws ReadException {
+    public List<TutorExterno> obtenerTutores() throws ReadException {
         List<TutorExterno> tutores = new ArrayList<>();
 
         try (Connection conn = connect();
@@ -49,10 +49,8 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
              ResultSet result = statement.executeQuery()) {
 
             while (result.next()) {
-                int idUsuario = result.getInt("idUsuario");
-
                 TutorExterno tutor = new TutorExterno(
-                        UsuarioDAODB.buscarById(idUsuario), // Obtiene el usuario
+                        UsuarioDAODB.buscarById(result.getInt("idUsuario")), // Obtiene el usuario
                         result.getString("requisitos")
                 );
 //                tutor.setProyectosAsignados(buscarProyectosAsignados()); Implementar usando tabla de relacion_Tutores_Proyectos.
@@ -110,17 +108,12 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
             statement.setInt(1, id);
 
             ResultSet tutor = statement.executeQuery();
-            System.out.println("ID BUSCAR: "+ id);
 
             if (tutor.next()) {
-                System.out.println("XX");
                 Usuario usuario = UsuarioDAODB.buscarById(tutor.getInt("idUsuario"));
-                System.out.println("XXX");
                 TutorExterno tutorExt = new TutorExterno(usuario, tutor.getString("nombreEntidadColaborativa") );
-                System.out.println("XXXX");
                 return tutorExt;
             } else {
-                System.out.println("asdas");
                 throw new UserException("Tutor no encontrado.");
             }
         }
