@@ -3,7 +3,10 @@ package Backend.DAO.dom.usuarios;
 import Backend.DAO.DBAcces;
 import Backend.DAO.UsuarioDAODB;
 import Backend.DAO.interfaces.usuarios.ESTUDIANTEDAO;
+import Backend.Entidades.EntidadColaborativa;
 import Backend.Entidades.Estudiante;
+import Backend.Entidades.TutorExterno;
+import Backend.Entidades.Usuario;
 import Backend.Exceptions.ConnectionException;
 import Backend.Exceptions.RegisterExceptions;
 import Backend.Exceptions.UserException;
@@ -12,6 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
@@ -41,18 +45,85 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
     }
 
     @Override
-    public Estudiante buscarByID(int id) throws UserException {
-        return null;
+    public Estudiante buscarById(int id) throws UserException {
+        try {
+            Connection conn = connect();
+            PreparedStatement statement = conn.prepareStatement(
+                    "SELECT * FROM Estudiantes E " +
+                            "JOIN Usuarios U ON E.idUsuario = U.idUsuario " +
+                            "WHERE E.idEstudiante = ?"
+            );
+            statement.setInt(1, id);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
+                Estudiante estudiante = new Estudiante(usuario, result.getString("matricula"),result.getString("carrera") );
+                return estudiante;
+            } else {
+                throw new UserException("Estudiante no encontrado.");
+            }
+        }
+        catch (SQLException e) {
+            throw new UserException("Error al buscar el estudiante en la base de datos: " + e.getMessage());
+        }
+        catch(ConnectionException e){
+            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+        }
     }
 
+
     @Override
-    public List<Estudiante> read() throws UserException {
-        return List.of();
+    public List<Estudiante> obtenerEstudiantes() throws UserException {
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM Estudiantes E JOIN Usuarios U ON U.idUsuario = E.idUsuario");
+             ResultSet result = statement.executeQuery()) {
+
+            List<Estudiante> estudiantes = new ArrayList<>();
+            UsuarioDAODB usuarioDAODB = new UsuarioDAODB();
+            while (result.next()) {
+                Estudiante estudiante = new Estudiante(usuarioDAODB.buscarById(result.getInt("idUsuario")), result.getString("matricula"),result.getString("carrera"));
+                estudiantes.add(estudiante);
+            }
+            disconnect();
+            return estudiantes;
+        } catch (SQLException e) {
+            throw new UserException("Error al leer en la base de datos: " + e);
+        } catch (UserException e) {
+            throw new UserException(e.getMessage());
+        }catch(ConnectionException e){
+            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+        }
     }
 
     @Override
     public Estudiante buscarByUsername(String username) throws UserException {
-        return null;
+        try {
+            Connection conn = connect();
+            PreparedStatement statement = conn.prepareStatement(
+                    "SELECT * FROM Estudiantes E " +
+                            "JOIN Usuarios U ON E.idUsuario = U.idUsuario " +
+                            "WHERE U.username = ?"
+            );
+            statement.setString(1, username);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
+                Estudiante estudiante = new Estudiante(usuario, result.getString("matricula"),result.getString("carrera") );
+                return estudiante;
+            } else {
+                throw new UserException("Estudiante no encontrado.");
+            }
+        }
+        catch (SQLException e) {
+            throw new UserException("Error al buscar el estudiante en la base de datos: " + e.getMessage());
+        }
+        catch(ConnectionException e){
+            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+        }
     }
 
     @Override

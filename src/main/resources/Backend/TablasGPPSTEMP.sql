@@ -85,7 +85,7 @@ CREATE TABLE Informes (
     idActividad INT,
     nombre VARCHAR(255) NOT NULL,
     archivo_pdf LONGBLOB, -- Contenido del PDF
-    fecha_subida TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha DATE NOT NULL,
     FOREIGN KEY (idActividad) REFERENCES Actividades(idActividad)
 );
 

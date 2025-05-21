@@ -177,7 +177,7 @@ public class PersistanceAPI implements API {
     public List<UsuarioDTO> obtenerUsuarios() throws UserException {
         try {
             List<UsuarioDTO> usuariosDTO = new ArrayList<>();
-            List<Usuario> usuarios = UsuarioDAODB.read();
+            List<Usuario> usuarios = UsuarioDAODB.obtenerUsuarios();
 
             for (Usuario usuario : usuarios) {
                 RolDTO rol = convertirARolDTO(usuario.getRol());
@@ -266,7 +266,7 @@ public class PersistanceAPI implements API {
 //    MÉTODOS DE ELEMENTOS
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @Override //probar
+    @Override
     public void cargarProyecto(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos, String tutorEncargado) throws CreateException {
         try {
             // Validar que la matricula no esté en uso
@@ -282,7 +282,7 @@ public class PersistanceAPI implements API {
             throw new CreateException(e.getMessage());
         }
     }
-    @Override //probar
+    @Override
     public ProyectoDTO obtenerProyectoByTitulo(String titulo) throws ReadException {
         try {
             Proyecto proyecto = ProyectoDAODB.buscarByTitulo(titulo);
@@ -300,7 +300,7 @@ public class PersistanceAPI implements API {
         }
     }
 
-    @Override
+    @Override //probar
     public List <ProyectoDTO> obtenerProyectosHabilitados() throws ReadException {
         try {
             List<Proyecto> proyectos = ProyectoDAODB.obtenerProyectosHabilitados();
@@ -311,7 +311,7 @@ public class PersistanceAPI implements API {
         }
     }
 
-    @Override
+    @Override //probar
     public ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException {
         try {
             ConvenioPPS convenio = ConvenioPPSDAODB.buscarByTitulo(titulo);
@@ -393,7 +393,7 @@ public class PersistanceAPI implements API {
 
     private ProyectoDTO convertirProyectoDTO(Proyecto proyecto) throws UserException {
         if (proyecto == null) { // Forzado a creación vacia para que se permitan cargas de "proyectos vacios en espera de asignación" en caso de estudiante, o decente o tutor
-            ProyectoDTO proyectoDTO = new ProyectoDTO();
+            return new ProyectoDTO();
             //throw new UserException("El proyecto que se intenta convertir no existe.");
         }
         TutorExternoDTO tutorDTO = convertirATutorDTO(proyecto.getTutorEncargado());
