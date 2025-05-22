@@ -27,14 +27,16 @@ public class ConvenioPPS extends Item {
         if (isNull(estudiante)) { throw new EmptyException("El estudiante debe existir."); }
         if (isNull(director)) { throw new EmptyException("El director debe existir."); }
         if (isNull(entidad)) { throw new EmptyException("La entidad debe existir."); }
-        if (isNull(actividades)) { throw new EmptyException("La lista de actividades debe existir."); }
-
-        if (calcularHorasActividades(actividades) != 100 ) { throw new EmptyException("Las horas de todas las actividades deben sumar 100."); }
+//        if (isNull(actividades)) { throw new EmptyException("La lista de actividades debe existir."); }
+//        if (calcularHorasActividades(actividades) != 100 ) { throw new EmptyException("Las horas de todas las actividades deben sumar 100."); }
+//          LLevar esas dos validaciones en un metodo de instancia que se utilice especificamente para cargar las actividades, inicialmente puede estar vacio
 
         this.proyecto = proyecto;
         this.docente = docente;
         this.estudiante = estudiante;
         this.director = director;
+        this.entidad = entidad;
+        this.actividades = actividades;
     }
 
     private int calcularHorasActividades(List<Actividad> actividades) {
@@ -69,7 +71,12 @@ public class ConvenioPPS extends Item {
     public List<Actividad> getActividades() { return actividades; }
 
     public boolean isHabilitado() { return habilitado; }
-//////////////////////// SETTERS ////////////////////////////////////////////////////////////////
+
+    public EntidadColaborativa getEntidad() {
+        return entidad;
+    }
+
+    //////////////////////// SETTERS ////////////////////////////////////////////////////////////////
     public void setDirector(DirectorCarrera director) throws EmptyException {
         if (isNull(director)) { throw new EmptyException("El director debe existir."); }
         this.director = director;
@@ -102,4 +109,9 @@ public class ConvenioPPS extends Item {
     public void setHabilitado(boolean habilitado) {
         this.habilitado = habilitado;
     }
+
+    public void setEntidad(EntidadColaborativa entidad) {
+        this.entidad = entidad;
+    }
+
 }
