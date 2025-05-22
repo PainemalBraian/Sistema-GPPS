@@ -130,7 +130,6 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
             statement.setInt(1, id);
 
             ResultSet result = statement.executeQuery();
-
             if (result.next()) {
                 Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
                 Docente docente = new Docente(usuario, result.getString("legajo"));
@@ -138,6 +137,9 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
             } else {
                 throw new UserException("docente no encontrado.");
             }
+        }
+        catch (UserException e) {
+            throw new UserException("Error al buscar el docente: " + e.getMessage());
         }
         catch (SQLException e) {
             throw new UserException("Error al buscar el docente en la base de datos: " + e.getMessage());

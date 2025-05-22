@@ -86,7 +86,7 @@ public class DirectorCarreraDAODB extends DBAcces implements DirectorCarreraDAO 
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(
                     "SELECT * FROM DirectoresCarrera DC " +
-                            "JOIN Usuarios u ON u.idUsuairo = DC.idUsuario " +
+                            "JOIN Usuarios u ON u.idUsuario = DC.idUsuario " +
                             "WHERE DC.idDirector = ?");
             statement.setInt(1, id);
 

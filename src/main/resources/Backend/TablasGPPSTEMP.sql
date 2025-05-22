@@ -155,12 +155,12 @@ INSERT INTO Roles (idRol, nombre, activo) VALUES
 
 -- Usuarios y Roles
 INSERT INTO Usuarios (username, password, nombreCompleto, email, idRol, activo) VALUES
-('estudiante1', 'pass123', 'Juan Perez', 'juan.perez@mail.com', 1, true),
-('docente1', 'pass123', 'Maria Gomez', 'maria.gomez@mail.com', 2, true),
-('entidad1', 'pass123', 'Entidad ABC', 'entidad.abc@mail.com', 3, true),
-('tutor1', 'pass123', 'Carlos Torres', 'carlos.torres@mail.com', 4, true),
-('director1', 'pass123', 'Ana Rodriguez', 'ana.rodriguez@mail.com', 5, true),
-('admin1', 'pass123', 'Administrador General', 'admin@mail.com', 6, true);
+('estudiante', 'contrasena123', 'Juan Perez', 'juan.perez@mail.com', 1, true),
+('docente', 'contrasena123', 'Maria Gomez', 'maria.gomez@mail.com', 2, true),
+('entidad', 'contrasena123', 'Entidad ABC', 'entidad.abc@mail.com', 3, true),
+('tutor', 'contrasena123', 'Carlos Torres', 'carlos.torres@mail.com', 4, true),
+('director', 'contrasena123', 'Ana Rodriguez', 'ana.rodriguez@mail.com', 5, true),
+('admin', 'contrasena123', 'Administrador General', 'admin@mail.com', 6, true);
 
 -- Estudiantes
 INSERT INTO Estudiantes (idUsuario, matricula, carrera) VALUES
@@ -172,7 +172,7 @@ INSERT INTO Docentes (idUsuario, legajo) VALUES
 
 -- Entidades Colaborativas
 INSERT INTO EntidadesColaborativas (idUsuario, nombreEntidad, cuit, direccionEntidad) VALUES
-(3, 'Entidad ABC', '30-12345678-9', 'Calle Falsa 123');
+(3, 'Entidad ABC', '30123456789', 'Calle Falsa 123');
 
 -- Tutores Externos
 INSERT INTO TutoresExternos (idUsuario, nombreEntidadColaborativa) VALUES
