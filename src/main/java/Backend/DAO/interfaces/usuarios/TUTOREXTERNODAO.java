@@ -10,7 +10,7 @@ import java.util.List;
 public interface TUTOREXTERNODAO {
     void create(TutorExterno tutor) throws RegisterExceptions;
 
-    List<TutorExterno> buscarTutores() throws ReadException;
+    List<TutorExterno> obtenerTutores() throws ReadException;
 
     TutorExterno buscarByUsername(String username) throws  UserException;
 

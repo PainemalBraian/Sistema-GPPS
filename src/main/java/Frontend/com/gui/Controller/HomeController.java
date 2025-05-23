@@ -25,55 +25,56 @@ public class HomeController  {
 
     private API api;
     private ResourceBundle bundle;
-
+    //Labels
     @FXML private Label lblBienvenida;
-
     @FXML private Label lblNombreUsuario;
-
     @FXML private Label lblEstadoPPS;
-
     @FXML private Label lblFechaInicio;
-
     @FXML private Label lblFechaFin;
-
     @FXML private Label lblNoAvisos;
-
     @FXML private VBox vboxNotificaciones;
+    @FXML public Label lblNotificaciones;
+    @FXML public Label lblStatus;
 
+
+    //Botones
     @FXML private Button btnPuestosDisponibles;
-
     @FXML public Button btnTareas;
-
     @FXML private Button btnPresentarPropuesta;
-
     @FXML private Button btnMensajes;
-
     @FXML private Button btnCerrarSesion;
     @FXML public Button btnInformes;
-
-
 
     /**
      * Configura los textos de la interfaz según el idioma seleccionado.
      */
+
     private void actualizarIdioma() {
-        try {
-            // Obtener textos del bundle de idioma
+        ResourceBundle bundle = api.obtenerIdioma();
+        // Labels
+            // Labels
             lblBienvenida.setText(bundle.getString("label.bienvenida"));
+            lblEstadoPPS.setText(bundle.getString("label.EstadoPPS"));
+            lblFechaInicio.setText(bundle.getString("label.FechaInicio"));
+            lblFechaFin.setText(bundle.getString("label.FechaFin"));
+            lblNoAvisos.setText(bundle.getString("label.NoAvisos"));
+            lblNotificaciones.setText(bundle.getString("label.Notificaciones"));
+            lblStatus.setText(bundle.getString("label.Estado"));
+
+            // Botones
             btnPuestosDisponibles.setText(bundle.getString("button.puestos"));
             btnTareas.setText(bundle.getString("button.Tareas"));
             btnPresentarPropuesta.setText(bundle.getString("button.presentarPropuesta"));
             btnMensajes.setText(bundle.getString("button.mensajes"));
             btnCerrarSesion.setText(bundle.getString("button.cerrarSesion"));
-
-        } catch (Exception ex) {
-            LOGGER.log(Level.WARNING, "Error al cargar los textos del idioma", ex);
-            // Usar textos predeterminados en caso de error
-            lblBienvenida.setText("Bienvenido a GPPS,");
-        }
     }
 
-
+    public void setPersistenceAPI(API persistenceAPI) throws Exception {
+        this.api = persistenceAPI;
+        actualizarIdioma();
+        //verificarEstadoPPS();
+        //cargarAvisosRecientes();
+    }
 
     /**
      * Verifica y muestra el estado actual de la PPS del estudiante.
@@ -322,12 +323,5 @@ public class HomeController  {
         alert.showAndWait();
     }
 
-    public void setPersistenceAPI(API persistenceAPI) throws Exception {
-        this.api = persistenceAPI;
-       // this.bundle = api.obtenerIdioma();
-      // actualizarIdioma();
-        //verificarEstadoPPS();
-    //    cargarAvisosRecientes();
-    }
 
 }

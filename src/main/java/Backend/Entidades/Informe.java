@@ -42,7 +42,7 @@ public class Informe extends Item{
         return fecha;
     }
 
-    public void actualizarFecha(LocalDate fecha) throws EmptyException {
+    public void setFecha(LocalDate fecha) throws EmptyException {
         if (isNull(fecha))
             throw new EmptyException("La fecha no puede estar vacia.");
         this.fecha = fecha;
