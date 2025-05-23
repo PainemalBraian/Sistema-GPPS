@@ -6,6 +6,8 @@ import Backend.DAO.dom.usuarios.*;
 import Backend.DTO.*;
 import Backend.Entidades.*;
 import Backend.Exceptions.*;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -23,9 +25,11 @@ public class PersistanceAPI implements API {
     EntidadColaborativaDAODB EntidadColaborativaDAODB = new EntidadColaborativaDAODB();
     DirectorCarreraDAODB DirectorCarreraDAODB = new DirectorCarreraDAODB();
 
-    ProyectoDAODB ProyectoDAODB = new ProyectoDAODB();
+    ActividadDAODB ActividadDAODB = new ActividadDAODB();
     InformeDAODB InformeDAODB = new InformeDAODB();
+    ProyectoDAODB ProyectoDAODB = new ProyectoDAODB();
     ConvenioPPSDAODB ConvenioPPSDAODB = new ConvenioPPSDAODB();
+    MensajeDAODB MensajeDAODB = new MensajeDAODB();
 
     @Override
     public ResourceBundle obtenerIdioma() {
@@ -268,19 +272,52 @@ public class PersistanceAPI implements API {
     //    MÉTODOS DE ELEMENTOS
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @Override
-    public void cargarConvenio()throws CreateException {
+    @Override //probar
+    public void cargarConvenio(String titulo, String descripcion, Proyecto proyecto, Docente docente, Estudiante estudiante,
+                               DirectorCarrera director, EntidadColaborativa entidad, List<Actividad> actividades)throws CreateException {
+        try {
+            ConvenioPPSDAODB.validarTituloUnico(titulo);
+            ConvenioPPS convenio = new ConvenioPPS(titulo, descripcion, proyecto, docente, estudiante, director, entidad, actividades);
+            convenio.setHabilitado(false); // false ?
 
+            ConvenioPPSDAODB.create(convenio);
+        } catch (Exception e) {
+            throw new CreateException("Error al crear el convenio: " + e.getMessage());
+        }
+    }
+
+    @Override //probar
+    public void cargarActividad(String titulo, String descripcion, LocalDate fechaFin, int duracion, LocalDate fechaInicio)throws CreateException {
+        try {
+            Actividad actividad = new Actividad(titulo, descripcion,fechaFin,duracion,fechaInicio);
+
+            ActividadDAODB.create(actividad);
+        } catch (Exception e) {
+            throw new CreateException("Error al crear la Actividad: " + e.getMessage());
+        }
+    }
+
+    @Override //probar
+    public void cargarInforme(String titulo, String descripcion, String contenido, LocalDate fecha)throws CreateException {
+        try {
+//            InformeDAODB.validarTituloUnico(titulo);
+            Informe informe = new Informe(titulo, descripcion, contenido);
+//            informe.setFecha(fecha); // Por defecto al crear el Informe se hace un LocalDate.now
+            InformeDAODB.create(informe);
+        } catch (Exception e) {
+            throw new CreateException("Error al crear el informe: " + e.getMessage());
+        }
     }
 
     @Override
-    public void cargarActividad()throws CreateException {
-
-    }
-
-    @Override
-    public void cargarInforme()throws CreateException {
-
+    public void cargarPropuestaPropia(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos) throws CreateException {
+        try {
+            ProyectoDAODB.validarTituloUnico(titulo);
+            Proyecto proyecto = new Proyecto(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos);
+            ProyectoDAODB.create(proyecto);
+        } catch (Exception e) {
+            throw new CreateException("Error al crear el proyecto: " + e.getMessage());
+        }
     }
 
     @Override
@@ -341,8 +378,13 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-    public List<Actividad> obtenerActividadesHabilitadas() throws EmptyException {
-        return null;
+    public List<ActividadDTO> obtenerActividadesHabilitadas() throws ReadException {
+        try {
+            List<ActividadDTO> actividadesDTO = convertirAListaActividadesDTO(ActividadDAODB.obtenerActividadesHabilitadas());
+            return actividadesDTO;
+        } catch (EmptyException e) {
+            throw new ReadException("Error al obtener los proyectos: "+e.getMessage());
+        }
     }
 
     @Override //probar
@@ -357,7 +399,7 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-    public List<Informe> obtenerInformesByConvenioTitulo(String tituloConvenio) throws EmptyException {
+    public List<Informe> obtenerInformeByConvenioTitulo(String titulo) throws EmptyException { // Convenio -> Actividades -> Informes
         return null;
     }
 
