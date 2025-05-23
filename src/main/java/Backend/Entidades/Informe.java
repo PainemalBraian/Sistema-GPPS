@@ -7,7 +7,8 @@ import java.time.LocalDate;
 import static java.util.Objects.isNull;
 
 public class Informe extends Item{
-    private String contenido;
+    private String contenido; // Se espera que tome un archivo PDF, cambiar de tipo
+    private int porcentajeAvance; // 0 - 100  Crear Validaciones
     private LocalDate fecha = LocalDate.now();
 
     public Informe(String contenido) {
