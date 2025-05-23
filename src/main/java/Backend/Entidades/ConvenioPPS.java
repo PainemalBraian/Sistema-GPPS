@@ -15,6 +15,7 @@ public class ConvenioPPS extends Item {
     private Docente docente;
     private Estudiante estudiante;
     private List <Actividad> actividades = new ArrayList<>();
+    private PlanDeTrabajo plan; // Conlleva docente, estudiante y actividades
 
     public ConvenioPPS() {
     }
@@ -68,7 +69,8 @@ public class ConvenioPPS extends Item {
         return horasTotales;
     }
 
-    //metodos
+//////////////////////////////METHODs///////////////////////////////////////////////////
+
     public void cargarInforme(Actividad actividad) {
         actividades.add(actividad);
     }
@@ -76,7 +78,14 @@ public class ConvenioPPS extends Item {
         actividades.add(actividad);
     }
     // Adaptar al uso de Director de carrera, con habilitación mediante DAO
-    public void habilitarProyecto() { proyecto.setHabilitado(habilitado); } // Si está habilitado este convenio, automaticamente se habilita el proyecto.
+    public void habilitarConvenio() throws EmptyException {
+        if (isNull(actividades)) {
+            throw new EmptyException("La lista de actividades deben existir."); }
+        if (calcularHorasActividades(actividades) != 100 ) {
+            throw new EmptyException("Las horas de todas las actividades deben sumar 100."); }
+        this.habilitado=true;
+        proyecto.setHabilitado(true);
+    } // Si está habilitado este convenio, automaticamente se habilita el proyecto.
 
 
 
