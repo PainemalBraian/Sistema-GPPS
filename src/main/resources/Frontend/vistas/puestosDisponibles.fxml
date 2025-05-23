@@ -46,7 +46,8 @@
                             </Label>
                             <Label fx:id="lblEmpresa" styleClass="detail-subtitle" text="Empresa: -" wrapText="true" />
                             <Label fx:id="lblArea" styleClass="detail-subtitle" text="Área: -" wrapText="true" />
-                            <Label fx:id="lblVacantes" styleClass="detail-subtitle" text="Vacantes: -" />
+                            <Label fx:id="lblUbicacion" styleClass="detail-subtitle" text="Ubicación: -" />
+                            <Label fx:id="lblTutor" styleClass="detail-subtitle" text="Tutor externo encargado: -" />
                             <Label fx:id="lblDescripcionLabel" styleClass="detail-label" text="Descripción:" />
                             <TextArea fx:id="taDescripcion" editable="false" prefHeight="150.0" prefWidth="200.0"
                                       styleClass="detail-description" wrapText="true" VBox.vgrow="ALWAYS" />

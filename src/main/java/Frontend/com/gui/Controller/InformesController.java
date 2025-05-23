@@ -217,7 +217,7 @@ public class InformesController  {
         }
     }
 
-    public void setPersistenceAPI(API persistenceAPI) {
+    public void setPersistenceAPI(API persistenceAPI) throws Exception {
         this.api = persistenceAPI;
     }
 
