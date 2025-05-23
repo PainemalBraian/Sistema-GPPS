@@ -60,12 +60,6 @@
 
                                 <Label prefHeight="96.0" prefWidth="241.0" styleClass="label-formulario" text="Requisitos:" GridPane.rowIndex="5" />
                                 <TextArea fx:id="requisitosArea" prefHeight="80.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-
-                                <Label prefHeight="50.0" prefWidth="262.0" styleClass="label-formulario" text="Nombre del Tutor:" GridPane.rowIndex="6" />
-                                <TextField fx:id="tutorNombreField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-
-                                <Label styleClass="label-formulario" text="Email del Tutor:" GridPane.rowIndex="7" />
-                                <TextField fx:id="tutorEmailField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                             </children>
                         </GridPane>
 

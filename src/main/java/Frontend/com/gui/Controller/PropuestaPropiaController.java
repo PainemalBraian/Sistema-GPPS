@@ -27,8 +27,6 @@ public class PropuestaPropiaController {
     @FXML private TextField ubicacionField;
     @FXML private TextArea objetivosArea;
     @FXML private TextArea requisitosArea;
-    @FXML private TextField tutorNombreField;
-    @FXML private TextField tutorEmailField;
     @FXML private Button btnRegistrarPropuesta;
 
     private API api;
@@ -54,13 +52,11 @@ public class PropuestaPropiaController {
             String ubicacion = ubicacionField.getText().trim();
             String objetivos = objetivosArea.getText().trim();
             String requisitos = requisitosArea.getText().trim();
-            String nombreTutor = tutorNombreField.getText().trim(); // Solo para validación o mostrar
-            String emailTutor = tutorEmailField.getText().trim();   // Este es el username del tutor
          // String entidadColaborativa = tutorEntidadColaborativaField.getText().trim(); // Puede quedar opcional
 
 
             // metodo de la persistencia que crea el proyecto
-            this.api.cargarProyecto(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos, nombreTutor);
+            this.api.cargarPropuestaPropia(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos);
 
             // Obtener el DTO para confirmar datos o mostrar información
             ProyectoDTO proyectoCreado = this.api.obtenerProyectoByTitulo(titulo);
@@ -86,8 +82,6 @@ public class PropuestaPropiaController {
         ubicacionField.clear();
         objetivosArea.clear();
         requisitosArea.clear();
-        tutorNombreField.clear();
-        tutorEmailField.clear();
         // if (tutorEntidadColaborativaField != null) tutorEntidadColaborativaField.clear();
     }
 
