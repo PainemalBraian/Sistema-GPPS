@@ -192,6 +192,7 @@ public class HomeController  {
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
         } catch (Exception e) {
+            e.printStackTrace();
             LOGGER.log(Level.SEVERE, "Error al navegar a inscripción PPS", e);
             mostrarAlerta("Error", "No se pudo abrir el listado de puestos");
         }
@@ -315,7 +316,7 @@ public class HomeController  {
 
 
     private void mostrarAlerta(String titulo, String mensaje) {
-        Alert.AlertType tipo = null;
+        Alert.AlertType tipo = Alert.AlertType.ERROR;
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
         alert.setHeaderText(null);

@@ -16,7 +16,7 @@ public class Item {
         if (isNull(titulo) || titulo.isEmpty()) {
             throw new EmptyException("El titulo no puede estar vacío.");
         }
-        if (isNull(descripcion) || titulo.isEmpty()) {
+        if (isNull(descripcion) || descripcion.isEmpty()) {
             throw new EmptyException("La descripcion no puede estar vacía.");
         }
         this.id = id;
@@ -29,7 +29,7 @@ public class Item {
         if (isNull(titulo) || titulo.isEmpty()) {
             throw new EmptyException("El titulo no puede estar vacío.");
         }
-        if (isNull(descripcion) || titulo.isEmpty()) {
+        if (isNull(descripcion) || descripcion.isEmpty()) {
             throw new EmptyException("La descripcion no puede estar vacía.");
         }
         this.titulo = titulo;
@@ -52,15 +52,15 @@ public class Item {
         return titulo;
     }
 
-//    public void setTitulo(String titulo) {
-//        this.titulo = titulo;
-//    }
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
 
     public String getDescripcion() {
         return descripcion;
     }
 
-//    public void setDescripcion(String descripcion) {
-//        this.descripcion = descripcion;
-//    }
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 }

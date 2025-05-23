@@ -92,7 +92,7 @@ public class PuestosDisponiblesController {
         if (oportunidadSeleccionada != null) {
             lblTituloOportunidad.setText(oportunidadSeleccionada.getTitulo());
 
-            lblEmpresa.setText("Empresa: " + (oportunidadSeleccionada.getUbicacion() ));
+            lblEmpresa.setText("Empresa: " + (oportunidadSeleccionada.getTutorEncargado().getNombreEntidadColaborativa() ));
 
             lblArea.setText("Área: " + (oportunidadSeleccionada.getAreaDeInteres()));
 
