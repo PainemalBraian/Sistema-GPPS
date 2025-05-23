@@ -10,19 +10,32 @@ import static java.util.Objects.isNull;
 
 public class Actividad extends Item{
     private List<Informe> informes = new ArrayList<>();
-    private float duracion;
+    private int duracion;
+    private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private Boolean calificacion; // null por defecto, indicando "no cargada".
 
     public Actividad() {
     }
 
-    public Actividad(int id, String titulo, String descripcion, LocalDate fechaFin, float duracion) throws EmptyException {
+    public Actividad(String titulo, String descripcion, LocalDate fechaFin, int duracion, LocalDate fechaInicio) throws EmptyException {
+        super(titulo, descripcion);
+        if (isNull(fechaFin)) {throw new EmptyException("Se debe establecer una fecha de fin.");}
+        if (isNull(duracion)) {throw new EmptyException("La actividad debe contener una duración estimada.");}
+        if (duracion < 0) {throw new EmptyException("La duración debe ser positiva.");}
+
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.duracion = duracion;
+    }
+
+    public Actividad(int id, String titulo, String descripcion, LocalDate fechaFin, int duracion, LocalDate fechaInicio) throws EmptyException {
         super(id, titulo, descripcion);
         if (isNull(fechaFin)) {throw new EmptyException("Se debe establecer una fecha de fin.");}
         if (isNull(duracion)) {throw new EmptyException("La actividad debe contener una duración estimada.");}
-        if (duracion < 0/*|| duracion > 100 */) {throw new EmptyException("La duración debe ser positiva.");}
+        if (duracion < 0) {throw new EmptyException("La duración debe ser positiva.");}
 
+        this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.duracion = duracion;
     }
@@ -53,13 +66,16 @@ public class Actividad extends Item{
         return this.informes;
     }
 
-
     public LocalDate getFechaFin() {
         return fechaFin;
     }
 
-    public float getDuracion() {
+    public int getDuracion() {
         return duracion;
+    }
+
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
     }
 
     //////////////// SETTERS //////////////////////////////////////////////////////
@@ -79,8 +95,13 @@ public class Actividad extends Item{
         this.calificacion = calificacion;
     }
 
-    public void setDuracion(float duracion) throws EmptyException {
+    public void setDuracion(int duracion) throws EmptyException {
         if (duracion < 0) {throw new EmptyException("La duración debe ser positiva.");}
         this.duracion = duracion;
     }
+
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
 }

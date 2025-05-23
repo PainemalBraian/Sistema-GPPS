@@ -9,8 +9,6 @@ public class EntidadColaborativaDTO extends UsuarioDTO{
     private String cuit;
     private String direccionEntidad;
 
-    public EntidadColaborativaDTO() {}
-
     public EntidadColaborativaDTO(UsuarioDTO user, String nombreEntidad, String cuit, String direccionEntidad){
         super(user.getIdUsuario(),user.getUsername(), user.getPassword(), user.getNombre(), user.getEmail(), user.getRol(), user.isActivo());
         this.nombreEntidad = nombreEntidad;

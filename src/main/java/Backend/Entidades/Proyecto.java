@@ -64,7 +64,27 @@ public class Proyecto extends Item{
         this.tutorEncargado = encargado;
     }
 
-////////////////////// GETTERS ///////////////////////////////////////////////////////////////////////
+    public Proyecto(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos) throws EmptyException {
+        super(titulo, descripcion);
+        if (isNull(areaDeInteres) || areaDeInteres.isEmpty()) {
+            throw new EmptyException("El área de interés no puede estar vacío.");
+        }
+        if (isNull(ubicacion) || ubicacion.isEmpty()) {
+            throw new EmptyException("La ubicación no puede estar vacía.");
+        }
+        if (isNull(objetivos) || objetivos.isEmpty()) {
+            throw new EmptyException("Los objetivos no pueden estar vacios.");
+        }
+        if (isNull(requisitos) || requisitos.isEmpty()) {
+            throw new EmptyException("Los requisitos no pueden estar vacios.");
+        }
+        this.areaDeInteres = areaDeInteres;
+        this.ubicacion = ubicacion;
+        this.objetivos = objetivos;
+        this.requisitos = requisitos;
+    }
+
+    ////////////////////// GETTERS ///////////////////////////////////////////////////////////////////////
     public String getAreaDeInteres() {
         return areaDeInteres;
     }

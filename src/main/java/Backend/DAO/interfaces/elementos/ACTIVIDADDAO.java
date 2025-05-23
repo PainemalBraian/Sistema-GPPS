@@ -1,22 +1,23 @@
 package Backend.DAO.interfaces.elementos;
 
-import Backend.Entidades.Informe;
+import Backend.Entidades.Actividad;
 import Backend.Exceptions.CreateException;
 import Backend.Exceptions.DeleteException;
 import Backend.Exceptions.ReadException;
 
 import java.util.List;
 
-public interface INFORMEDAO {
-    void create(Informe informe) throws CreateException;
+public interface ACTIVIDADDAO {
+    void create(Actividad actividad) throws CreateException;
 
     void delete(int id) throws DeleteException;
 
-    Informe buscarByID(int id) throws ReadException;
+    Actividad buscarByID(int id) throws ReadException;
 
-    List<Informe> obtenerInformes() throws ReadException;
+    List<Actividad> obtenerActividades() throws ReadException;
 
     boolean validarTituloUnico(String titulo) throws ReadException;
 
-    Informe buscarByTitulo(String titulo) throws ReadException;
+    Actividad buscarByTitulo(String titulo) throws ReadException;
+
 }

@@ -67,7 +67,7 @@ CREATE TABLE Proyectos(
     ubicacion VARCHAR(250) NOT NULL,
     objetivos VARCHAR(250) NOT NULL,
     requisitos VARCHAR(250) NOT NULL,
-    idTutor INT NOT NULL,
+    idTutor INT,
     FOREIGN KEY (idTutor) REFERENCES TutoresExternos(idTutor)
 );
 
@@ -76,7 +76,8 @@ CREATE TABLE Actividades (
     titulo VARCHAR(255) NOT NULL,
     duracion int not null,
     descripcion TEXT,
-    fecha_fin DATE NOT NULL,
+    fechaInicio DATE NOT NULL,
+    fechaFin DATE NOT NULL,
     calificacion BOOLEAN DEFAULT NULL -- NULL indica "calificación no cargada"
 );
 
@@ -85,7 +86,7 @@ CREATE TABLE Informes (
     idActividad INT,
     nombre VARCHAR(255) NOT NULL,
     archivo_pdf LONGBLOB, -- Contenido del PDF
-    fecha_subida TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha DATE NOT NULL,
     FOREIGN KEY (idActividad) REFERENCES Actividades(idActividad)
 );
 
@@ -155,12 +156,12 @@ INSERT INTO Roles (idRol, nombre, activo) VALUES
 
 -- Usuarios y Roles
 INSERT INTO Usuarios (username, password, nombreCompleto, email, idRol, activo) VALUES
-('estudiante1', 'pass123', 'Juan Perez', 'juan.perez@mail.com', 1, true),
-('docente1', 'pass123', 'Maria Gomez', 'maria.gomez@mail.com', 2, true),
-('entidad1', 'pass123', 'Entidad ABC', 'entidad.abc@mail.com', 3, true),
-('tutor1', 'pass123', 'Carlos Torres', 'carlos.torres@mail.com', 4, true),
-('director1', 'pass123', 'Ana Rodriguez', 'ana.rodriguez@mail.com', 5, true),
-('admin1', 'pass123', 'Administrador General', 'admin@mail.com', 6, true);
+('estudiante', 'contrasena123', 'Juan Perez', 'juan.perez@mail.com', 1, true),
+('docente', 'contrasena123', 'Maria Gomez', 'maria.gomez@mail.com', 2, true),
+('entidad', 'contrasena123', 'Entidad ABC', 'entidad.abc@mail.com', 3, true),
+('tutor', 'contrasena123', 'Carlos Torres', 'carlos.torres@mail.com', 4, true),
+('director', 'contrasena123', 'Ana Rodriguez', 'ana.rodriguez@mail.com', 5, true),
+('admin', 'contrasena123', 'Administrador General', 'admin@mail.com', 6, true);
 
 -- Estudiantes
 INSERT INTO Estudiantes (idUsuario, matricula, carrera) VALUES
@@ -172,7 +173,7 @@ INSERT INTO Docentes (idUsuario, legajo) VALUES
 
 -- Entidades Colaborativas
 INSERT INTO EntidadesColaborativas (idUsuario, nombreEntidad, cuit, direccionEntidad) VALUES
-(3, 'Entidad ABC', '30-12345678-9', 'Calle Falsa 123');
+(3, 'Entidad ABC', '30123456789', 'Calle Falsa 123');
 
 -- Tutores Externos
 INSERT INTO TutoresExternos (idUsuario, nombreEntidadColaborativa) VALUES
@@ -191,9 +192,9 @@ INSERT INTO Proyectos (titulo, habilitado, descripcion, areaDeInteres, ubicacion
 ('Proyecto IoT', true, 'Proyecto de dispositivos inteligentes', 'Tecnología', 'Edificio de Informática', 'Crear dispositivos inteligentes', 'Conocimientos en electrónica', 1);
 
 -- Actividades
-INSERT INTO Actividades (titulo, duracion, descripcion, fecha_fin, calificacion) VALUES
-('Actividad Inicial', 20, 'Introducción al proyecto', '2024-12-15', NULL),
-('Actividad Avanzada', 30, 'Desarrollo de funcionalidades', '2024-12-20', NULL);
+INSERT INTO Actividades (titulo, duracion, descripcion, fechaInicio, fechaFin, calificacion) VALUES
+('Actividad Inicial', 20, 'Introducción al proyecto', '2024-12-15', '2024-12-30', NULL),
+('Actividad Avanzada', 30, 'Desarrollo de funcionalidades', '2024-12-20', '2024-12-30', NULL);
 
 
 -- Convenios PPS

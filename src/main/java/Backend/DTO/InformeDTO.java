@@ -1,7 +1,5 @@
 package Backend.DTO;
 
-import Backend.Exceptions.EmptyException;
-
 import java.time.LocalDate;
 
 public class InformeDTO extends ItemDTO{
