@@ -314,7 +314,7 @@ public class PersistanceAPI implements API {
         try {
             ProyectoDAODB.validarTituloUnico(titulo);
             Proyecto proyecto = new Proyecto(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos);
-            ProyectoDAODB.create(proyecto);
+            ProyectoDAODB.createPropuesta(proyecto);
         } catch (Exception e) {
             throw new CreateException("Error al crear el proyecto: " + e.getMessage());
         }

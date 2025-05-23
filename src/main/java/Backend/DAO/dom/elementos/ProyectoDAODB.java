@@ -41,6 +41,29 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
         }
     }
 
+    public void createPropuesta(Proyecto proyecto) throws CreateException {
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement(
+                     "INSERT INTO Proyectos(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos, habilitado) VALUES (?, ?, ?, ?, ?, ?, ?)"
+             )) {
+
+            statement.setString(1, proyecto.getTitulo());
+            statement.setString(2, proyecto.getDescripcion());
+            statement.setString(3, proyecto.getAreaDeInteres());
+            statement.setString(4, proyecto.getUbicacion());
+            statement.setString(5, proyecto.getObjetivos());
+            statement.setString(6, proyecto.getRequisitos());
+            statement.setBoolean(7, proyecto.isHabilitado());
+
+            statement.executeUpdate();
+
+        }catch(ConnectionException e){
+            throw new CreateException("Error al conectar con la base de datos: " + e.getMessage());
+        }catch(SQLException e){
+            throw new CreateException("Error al crear el proyecto: " + e.getMessage());
+        }
+    }
+
     @Override   //chequear
     public List<Proyecto> obtenerProyectos() throws ReadException {
         List<Proyecto> proyectos = new ArrayList<>();
