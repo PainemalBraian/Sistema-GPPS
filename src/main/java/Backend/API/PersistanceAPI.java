@@ -6,6 +6,8 @@ import Backend.DAO.dom.usuarios.*;
 import Backend.DTO.*;
 import Backend.Entidades.*;
 import Backend.Exceptions.*;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -21,10 +23,13 @@ public class PersistanceAPI implements API {
     DocenteDAODB DocenteDAODB = new DocenteDAODB();
     TutorExternoDAODB TutorExternoDAODB = new TutorExternoDAODB();
     EntidadColaborativaDAODB EntidadColaborativaDAODB = new EntidadColaborativaDAODB();
+    DirectorCarreraDAODB DirectorCarreraDAODB = new DirectorCarreraDAODB();
 
-    ProyectoDAODB ProyectoDAODB = new ProyectoDAODB();
+    ActividadDAODB ActividadDAODB = new ActividadDAODB();
     InformeDAODB InformeDAODB = new InformeDAODB();
+    ProyectoDAODB ProyectoDAODB = new ProyectoDAODB();
     ConvenioPPSDAODB ConvenioPPSDAODB = new ConvenioPPSDAODB();
+    MensajeDAODB MensajeDAODB = new MensajeDAODB();
 
     @Override
     public ResourceBundle obtenerIdioma() {
@@ -160,6 +165,7 @@ public class PersistanceAPI implements API {
                 usuario.getEmail(), rol, usuario.isActivo());
         return usuarioDTO;
     }
+
     @Override
     public String obtenerNombreUsuario() throws UserException {
         try {
@@ -177,7 +183,7 @@ public class PersistanceAPI implements API {
     public List<UsuarioDTO> obtenerUsuarios() throws UserException {
         try {
             List<UsuarioDTO> usuariosDTO = new ArrayList<>();
-            List<Usuario> usuarios = UsuarioDAODB.read();
+            List<Usuario> usuarios = UsuarioDAODB.obtenerUsuarios();
 
             for (Usuario usuario : usuarios) {
                 RolDTO rol = convertirARolDTO(usuario.getRol());
@@ -262,71 +268,144 @@ public class PersistanceAPI implements API {
         }
     }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//    MÉTODOS DE ELEMENTOS
-///////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    //    MÉTODOS DE ELEMENTOS
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override //probar
+    public void cargarConvenio(String titulo, String descripcion, Proyecto proyecto, Docente docente, Estudiante estudiante,
+                               DirectorCarrera director, EntidadColaborativa entidad, List<Actividad> actividades)throws CreateException {
+        try {
+            ConvenioPPSDAODB.validarTituloUnico(titulo);
+            ConvenioPPS convenio = new ConvenioPPS(titulo, descripcion, proyecto, docente, estudiante, director, entidad, actividades);
+            convenio.setHabilitado(false); // false ?
+
+            ConvenioPPSDAODB.create(convenio);
+        } catch (Exception e) {
+            throw new CreateException("Error al crear el convenio: " + e.getMessage());
+        }
+    }
+
+    @Override //probar
+    public void cargarActividad(String titulo, String descripcion, LocalDate fechaFin, int duracion, LocalDate fechaInicio)throws CreateException {
+        try {
+            Actividad actividad = new Actividad(titulo, descripcion,fechaFin,duracion,fechaInicio);
+
+            ActividadDAODB.create(actividad);
+        } catch (Exception e) {
+            throw new CreateException("Error al crear la Actividad: " + e.getMessage());
+        }
+    }
+
+    @Override //probar
+    public void cargarInforme(String titulo, String descripcion, String contenido, LocalDate fecha)throws CreateException {
+        try {
+//            InformeDAODB.validarTituloUnico(titulo);
+            Informe informe = new Informe(titulo, descripcion, contenido);
+//            informe.setFecha(fecha); // Por defecto al crear el Informe se hace un LocalDate.now
+            InformeDAODB.create(informe);
+        } catch (Exception e) {
+            throw new CreateException("Error al crear el informe: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void cargarPropuestaPropia(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos) throws CreateException {
+        try {
+            ProyectoDAODB.validarTituloUnico(titulo);
+            Proyecto proyecto = new Proyecto(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos);
+            ProyectoDAODB.create(proyecto);
+        } catch (Exception e) {
+            throw new CreateException("Error al crear el proyecto: " + e.getMessage());
+        }
+    }
+
+    @Override
     public void cargarProyecto(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos, String tutorEncargado) throws CreateException {
         try {
-            // Validar que la matricula no esté en uso
             ProyectoDAODB.validarTituloUnico(titulo);
+            Proyecto proyecto = new Proyecto(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos);
             TutorExterno encargado = TutorExternoDAODB.buscarByUsername(tutorEncargado);
+            proyecto.setTutorEncargado(encargado);
             // Guardar en la base de datos
-            Proyecto proyecto = new Proyecto(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos, encargado);
+
 //            proyecto.setHabilitado(false);  Por defecto es false. pero para que se entienda que existe este campo. Solo el director debe poder habilitar o admin
             ProyectoDAODB.create(proyecto);
         } catch (Exception e) {
-            throw new CreateException(e.getMessage());
+            throw new CreateException("Error al crear el proyecto: " + e.getMessage());
         }
     }
-    @Override //probar
+
+    @Override
+    public Informe obtenerInformeByTitulo(String titulo) throws EmptyException {
+        return null;
+    }
+
+    @Override
+    public Actividad obtenerActividadByTitulo(String titulo) throws EmptyException {
+        return null;
+    }
+
+    @Override
     public ProyectoDTO obtenerProyectoByTitulo(String titulo) throws ReadException {
         try {
             Proyecto proyecto = ProyectoDAODB.buscarByTitulo(titulo);
-            System.out.println("1");
             TutorExternoDTO tutor = null;
             tutor = convertirATutorDTO(proyecto.getTutorEncargado());
-            System.out.println("2");
             ProyectoDTO proyectoDTO = new ProyectoDTO(proyecto.getId(), proyecto.getTitulo(),
                     proyecto.getDescripcion(), proyecto.getAreaDeInteres(),
                     proyecto.getUbicacion(), proyecto.getObjetivos(), proyecto.getRequisitos(),tutor);
-            System.out.println("3");
             return proyectoDTO;
         } catch (UserException e) {
             throw new ReadException("Error al obtener el proyecto: "+e.getMessage());
         }
     }
 
-    @Override
-    public List <ProyectoDTO> obtenerProyectosHabilitados() throws ReadException {
-        try {
-            List<Proyecto> proyectos = ProyectoDAODB.obtenerProyectosHabilitados();
-            List<ProyectoDTO> proyectosDTO = convertirProyectosDTO(proyectos);
-            return proyectosDTO;
-        } catch (UserException e) {
-            throw new ReadException("Error al obtener el proyecto: "+e.getMessage());
-        }
-    }
-
-    @Override
+    @Override //probar
     public ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException {
         try {
             ConvenioPPS convenio = ConvenioPPSDAODB.buscarByTitulo(titulo);
-            TutorExternoDTO tutor = null;
+            ConvenioPPSDTO convenioDTO = convertirAConvenioDTO(convenio);
 
-            tutor = convertirATutorDTO(convenio.getProyecto().getTutorEncargado());
-            ProyectoDTO proyectoDTO = new ProyectoDTO(convenio.getProyecto().getId(), convenio.getProyecto().getTitulo(),
-                    convenio.getProyecto().getDescripcion(), convenio.getProyecto().getAreaDeInteres(),
-                    convenio.getProyecto().getUbicacion(), convenio.getProyecto().getObjetivos(), convenio.getProyecto().getRequisitos(),tutor);
-            return null;//proyectoDTO;
+            return convenioDTO;
+        } catch (ReadException e) {
+            throw new ReadException("Error al obtener el convenio: " + e.getMessage());
         } catch (UserException e) {
-            throw new ReadException("Error al obtener el proyecto: "+e.getMessage());
+            throw new ReadException("Error al obtener el convenio: " + e.getMessage());
+        } catch (EmptyException e) {
+            throw new ReadException("Error al obtener el convenio: " + e.getMessage());
         }
     }
 
-/////////////////////////////// Conversiones de Tipos //////////////////////////////////////////////////////////////////////////
+    @Override
+    public List<ActividadDTO> obtenerActividadesHabilitadas() throws ReadException {
+        try {
+            List<ActividadDTO> actividadesDTO = convertirAListaActividadesDTO(ActividadDAODB.obtenerActividadesHabilitadas());
+            return actividadesDTO;
+        } catch (EmptyException e) {
+            throw new ReadException("Error al obtener los proyectos: "+e.getMessage());
+        }
+    }
 
+    @Override //probar
+    public List <ProyectoDTO> obtenerProyectosHabilitados() throws ReadException {
+        try {
+            List<Proyecto> proyectos = ProyectoDAODB.obtenerProyectosHabilitados();
+            List<ProyectoDTO> proyectosDTO = convertirAListaProyectosDTO(proyectos);
+            return proyectosDTO;
+        } catch (UserException e) {
+            throw new ReadException("Error al obtener los proyectos: "+e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Informe> obtenerInformeByConvenioTitulo(String titulo) throws EmptyException { // Convenio -> Actividades -> Informes
+        return null;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  CONVERSIONES DE TIPOS
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     private RolDTO convertirARolDTO(Rol rol) throws UserException {
         if (rol == null)
             throw new UserException("El rol que se intenta convertir no existe.");
@@ -364,7 +443,7 @@ public class PersistanceAPI implements API {
 //        RolDTO rolDTO = convertirARolDTO(entidad.getRol());
 //        UsuarioDTO usuarioDTO = new UsuarioDTO(entidad.getIdUsuario(), entidad.getUsername(), entidad.getContrasena(), entidad.getNombre(), entidad.getEmail(),rolDTO,entidad.isActivo());
         UsuarioDTO usuarioDTO = convertirAUsuarioDTO(entidad.getUsuario());
-        List <ProyectoDTO> proyectosDTO = convertirProyectosDTO(entidad.getProyectos());
+        List <ProyectoDTO> proyectosDTO = convertirAListaProyectosDTO(entidad.getProyectos());
         return new EntidadColaborativaDTO(usuarioDTO, entidad.getNombreEntidad(),entidad.getCuit(),entidad.getDireccionEntidad(),proyectosDTO);
     }
 
@@ -377,21 +456,21 @@ public class PersistanceAPI implements API {
         return new EstudianteDTO(usuarioDTO, estudiante.getMatricula(),estudiante.getCarrera());
     }
 
-    private List<ProyectoDTO> convertirProyectosDTO(List<Proyecto> proyectos) throws UserException {
+    private List<ProyectoDTO> convertirAListaProyectosDTO(List<Proyecto> proyectos) throws UserException {
 //        if (proyectos == null){
 //            List <ProyectoDTO> proyectosDTO = new ArrayList<>();
 //            return proyectosDTO;}
 //            //throw new UserException("La lista de proyectos que se intenta convertir no existe.");
         List <ProyectoDTO> proyectosDTO = new ArrayList<>();
         for (Proyecto proyecto: proyectos){
-            proyectosDTO.add(convertirProyectoDTO(proyecto));
+            proyectosDTO.add(convertirAProyectoDTO(proyecto));
         }
         return proyectosDTO;
     }
 
-    private ProyectoDTO convertirProyectoDTO(Proyecto proyecto) throws UserException {
+    private ProyectoDTO convertirAProyectoDTO(Proyecto proyecto) throws UserException {
         if (proyecto == null) { // Forzado a creación vacia para que se permitan cargas de "proyectos vacios en espera de asignación" en caso de estudiante, o decente o tutor
-            ProyectoDTO proyectoDTO = new ProyectoDTO();
+            return new ProyectoDTO();
             //throw new UserException("El proyecto que se intenta convertir no existe.");
         }
         TutorExternoDTO tutorDTO = convertirATutorDTO(proyecto.getTutorEncargado());
@@ -400,6 +479,52 @@ public class PersistanceAPI implements API {
         proyectoDTO.setHabilitado(proyecto.isHabilitado());
 
         return proyectoDTO;
+    }
+
+    private ConvenioPPSDTO convertirAConvenioDTO(ConvenioPPS convenio) throws UserException, EmptyException, ReadException {
+        if (convenio == null) {
+            throw new ReadException("El convenio que se intenta convertir no existe.");
+        }
+        ConvenioPPSDTO convenioDTO = null;
+        try {
+            ProyectoDTO proyectoDTO = convertirAProyectoDTO(ProyectoDAODB.buscarByID(convenio.getProyecto().getId()));
+            DocenteDTO docenteDTO = new DocenteDTO(convertirADocenteDTO(convenio.getDocente()),convenio.getDocente().getLegajo());
+            // Consultar por Estudiantes enlazados?
+            EstudianteDTO estudianteDTO = new EstudianteDTO(convertirAEstudianteDTO(convenio.getEstudiante()),convenio.getEstudiante().getMatricula(),convenio.getEstudiante().getCarrera());
+            DirectorCarreraDTO directorDTO = new DirectorCarreraDTO(convertirADirectorDTO(convenio.getDirector()));
+            EntidadColaborativaDTO entidadDTO = new EntidadColaborativaDTO(convertirAEntidadDTO(convenio.getEntidad()),convenio.getEntidad().getNombreEntidad(),convenio.getEntidad().getCuit(),convenio.getEntidad().getDireccionEntidad());
+            // consultar proyectos de entidad ?
+            List<ActividadDTO> actividadesDTO = new ArrayList<>(convertirAListaActividadesDTO(convenio.getActividades()));
+
+            convenioDTO = new ConvenioPPSDTO(convenio.getId(), convenio.getTitulo(), convenio.getDescripcion(),proyectoDTO,docenteDTO,estudianteDTO,directorDTO,entidadDTO,actividadesDTO);
+            proyectoDTO.setHabilitado(convenio.isHabilitado());
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new ReadException("Error al convertir el convenio: " + e.getMessage());
+        }
+        return convenioDTO;
+    }
+
+    private DirectorCarreraDTO convertirADirectorDTO(DirectorCarrera directorCarrera) throws UserException {
+        if (directorCarrera == null)
+            throw new UserException("El director que se intenta convertir no existe.");
+        return new DirectorCarreraDTO(convertirAUsuarioDTO(directorCarrera.getUsuario()));
+    }
+
+    private List<ActividadDTO> convertirAListaActividadesDTO(List<Actividad> actividades) throws EmptyException {
+        List <ActividadDTO> actividadesDTO = new ArrayList<>();
+        for (Actividad actividad: actividades){
+            actividadesDTO.add(convertirAActividadDTO(actividad));
+        }
+        return actividadesDTO;
+    }
+
+    private ActividadDTO convertirAActividadDTO(Actividad actividad) throws EmptyException {
+        if (actividad == null)
+            throw new EmptyException("La actividad que se intenta convertir no existe.");
+        return new ActividadDTO(actividad.getId(),actividad.getTitulo(),actividad.getDescripcion(),actividad.getFechaFin(),actividad.getDuracion());
     }
 
     private InformeDTO convertirAInformeDTO(Informe informe) throws UserException {

@@ -3,6 +3,7 @@ package Backend.DAO.dom.usuarios;
 import Backend.DAO.DBAcces;
 import Backend.DAO.UsuarioDAODB;
 import Backend.DAO.interfaces.usuarios.ENTIDADCOLABORATIVADAO;
+import Backend.Entidades.DirectorCarrera;
 import Backend.Entidades.EntidadColaborativa;
 import Backend.Entidades.Usuario;
 import Backend.Exceptions.ConnectionException;
@@ -13,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORATIVADAO {
@@ -43,18 +45,84 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
     }
 
     @Override
-    public List<Usuario> read() throws UserException {
-        return List.of();
+    public List<EntidadColaborativa> obtenerEntidades() throws UserException {
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM EntidadesColaborativas EC JOIN Usuarios U ON U.idUsuario = EC.idUsuario");
+             ResultSet result = statement.executeQuery()) {
+
+            List<EntidadColaborativa> entidades = new ArrayList<>();
+            UsuarioDAODB usuarioDAODB = new UsuarioDAODB();
+            while (result.next()) {
+                EntidadColaborativa entidad = new EntidadColaborativa(usuarioDAODB.buscarById(result.getInt("idUsuario")), result.getString("nombreEntidad"),result.getString("cuit"),result.getString("direccionEntidad"));
+                entidades.add(entidad);
+            }
+            disconnect();
+            return entidades;
+        } catch (SQLException e) {
+            throw new UserException("Error al leer en la base de datos: " + e);
+        } catch (UserException e) {
+            throw new UserException(e.getMessage());
+        }catch(ConnectionException e){
+            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+        }
     }
 
     @Override
-    public Usuario findByUsername(String username) throws UserException {
-        return null;
+    public EntidadColaborativa buscarByUsername(String username) throws UserException {
+        try {
+            Connection conn = connect();
+            PreparedStatement statement = conn.prepareStatement(
+                    "SELECT * FROM EntidadesColaborativas EC " +
+                            "JOIN Usuarios U ON EC.idUsuario = U.idUsuario " +
+                            "WHERE U.username = ?"
+            );
+            statement.setString(1, username);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
+                EntidadColaborativa entidad = new EntidadColaborativa(usuario, result.getString("nombreEntidad"),result.getString("cuit"),result.getString("direccionEntidad") );
+                return entidad;
+            } else {
+                throw new UserException("Entidad no encontrado.");
+            }
+        }
+        catch (SQLException e) {
+            throw new UserException("Error al buscar el entidad en la base de datos: " + e.getMessage());
+        }
+        catch(ConnectionException e){
+            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+        }
     }
 
     @Override
-    public Usuario findById(int id) throws UserException {
-        return null;
+    public EntidadColaborativa buscarById(int id) throws UserException {
+        try {
+            Connection conn = connect();
+            PreparedStatement statement = conn.prepareStatement(
+                    "SELECT * FROM EntidadesColaborativas EC " +
+                            "JOIN Usuarios U ON EC.idUsuario = U.idUsuario " +
+                            "WHERE EC.idEntidad = ?"
+            );
+            statement.setInt(1, id);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
+                EntidadColaborativa entidad = new EntidadColaborativa(usuario, result.getString("nombreEntidad"),result.getString("cuit"),result.getString("direccionEntidad") );
+                return entidad;
+            } else {
+                throw new UserException("Entidad no encontrado.");
+            }
+        }
+        catch (SQLException e) {
+            throw new UserException("Error al buscar el entidad en la base de datos: " + e.getMessage());
+        }
+        catch(ConnectionException e){
+            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+        }
     }
 
     @Override

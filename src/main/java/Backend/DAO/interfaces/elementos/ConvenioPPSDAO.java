@@ -17,7 +17,7 @@ public interface ConvenioPPSDAO {
 
     List<ConvenioPPS> obtenerConvenios() throws ReadException;
 
-    boolean validarTituloUnico(String titulo) throws ReadException;
+    boolean validarTituloUnico(String titulo) throws CreateException;
 
     ConvenioPPS buscarByTitulo(String titulo) throws ReadException;
 

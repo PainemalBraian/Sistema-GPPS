@@ -1,7 +1,6 @@
 package Backend.DAO.interfaces.usuarios;
 
 import Backend.Entidades.Docente;
-import Backend.Entidades.Usuario;
 import Backend.Exceptions.RegisterExceptions;
 import Backend.Exceptions.UserException;
 
@@ -12,10 +11,10 @@ public interface DOCENTEDAO {
 
     boolean validarLegajoUnico(String legajo) throws UserException;
 
-    List<Usuario> read() throws  UserException;
+    List<Docente> obtenerDocentes() throws  UserException;
 
-    Usuario findByUsername(String username) throws  UserException;
+    Docente buscarByUsername(String username) throws  UserException;
 
-    Usuario findById(int id) throws  UserException;
+    Docente buscarById(int id) throws  UserException;
 
 }

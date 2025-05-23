@@ -9,12 +9,12 @@ import static java.util.Objects.isNull;
 
 public class Docente extends Usuario{
     private String legajo;
-    private List <Estudiante> estudiantesAsignados = new ArrayList<>();
+    private List <Estudiante> estudiantesAsignados = new ArrayList<>();  // Extra, necesario?
 
     public Docente() {}
 
     public Docente(Usuario user, String legajo) throws UserException {
-        super(user.getUsername(), user.getContrasena(), user.getNombre(), user.getEmail(), user.getRol());
+        super(user.getIdUsuario(), user.getUsername(), user.getContrasena(), user.getNombre(), user.getEmail(), user.getRol());
         if (isNull(legajo)) {
             throw new UserException("El legajo debe existir.");
         }
