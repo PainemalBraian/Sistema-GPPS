@@ -131,12 +131,7 @@ public class IngresoController {
         } catch (LoginException e) {
             mostrarAlerta("Error", "" + e.getMessage());
 
-//            // Mostrar alerta si el login falla
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("Error de inicio de sesión");
-//            alert.setHeaderText("Credenciales inválidas");
-//            alert.setContentText(e.getMessage());
-//            alert.showAndWait();
+
         } catch (IOException e) {
             e.printStackTrace();
             mostrarAlerta("Error I/O", "" + e.getMessage());

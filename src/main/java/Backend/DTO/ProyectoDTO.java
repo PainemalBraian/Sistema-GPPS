@@ -9,9 +9,6 @@ public class ProyectoDTO extends ItemDTO {
     private boolean habilitado = false;
 
 
-    public ProyectoDTO(){
-    }
-
     public ProyectoDTO(int id, String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos, TutorExternoDTO tutorEncargado) {
         super(id, titulo, descripcion);
         this.areaDeInteres = areaDeInteres;
@@ -27,6 +24,10 @@ public class ProyectoDTO extends ItemDTO {
         this.objetivos = objetivos;
         this.requisitos = requisitos;
         this.tutorEncargado = tutorEncargado;
+    }
+
+    public ProyectoDTO() {
+
     }
 
     public String getAreaDeInteres() {

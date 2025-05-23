@@ -25,16 +25,14 @@ public class Main extends Application {
             // Crear y pasar la instancia de PersistenceAPI
             API api = new PersistanceAPI() {};
             controller.setPersistenceAPI(api);
-
             Scene login = new Scene(root);
             pantalla.setResizable(false);
             pantalla.setScene(login);
             pantalla.show();
 
         } catch (IOException e) {
-            System.err.println("Error al cargar la ventana: " + e.getMessage());
             e.printStackTrace();
-        }
+            }
     }
 
 

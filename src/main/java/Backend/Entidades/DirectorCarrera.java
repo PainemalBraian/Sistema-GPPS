@@ -8,7 +8,8 @@ public class DirectorCarrera extends Usuario{
     }
 
     public DirectorCarrera(Usuario user) throws UserException {
-        super(user.getUsername(), user.getContrasena(), user.getNombre(), user.getEmail(), user.getRol());
+        super(user.getIdUsuario(),user.getUsername(), user.getContrasena(), user.getNombre(), user.getEmail(), user.getRol());
+        super.setActivo(user.isActivo());
     }
 
     //metodos
@@ -19,5 +20,8 @@ public class DirectorCarrera extends Usuario{
 
     }
 
+//////////////////////// GETTERS ////////////////////////////////////////////////
+
+//////////////////////// SETTERS ////////////////////////////////////////////////
 
 }

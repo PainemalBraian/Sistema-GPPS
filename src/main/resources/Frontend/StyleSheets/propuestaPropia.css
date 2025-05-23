@@ -1,26 +1,29 @@
 /* General Styles */
 .root {
-    -fx-font-family: "Arial", sans-serif;
+    -fx-font-family: "Segoe UI", sans-serif;
     -fx-background-color: #f4f4f9;
 }
 
-.header-label {
-    -fx-font-size: 24px;
+/* Título principal */
+.label-titulo {
+    -fx-font-size: 28px;
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
     -fx-padding-bottom: 15px;
+    -fx-text-alignment: center;
+}
+
+/* Labels del formulario */
+.label-formulario {
+    -fx-font-size: 20px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #555555;
 }
 
 /* GridPane y Labels */
 .grid-pane {
     -fx-hgap: 10px;
     -fx-vgap: 15px;
-}
-
-.label {
-    -fx-font-size: 14px;
-    -fx-font-weight: normal;
-    -fx-text-fill: #555555;
 }
 
 /* TextField y TextArea */
@@ -38,7 +41,7 @@
 }
 
 .text-area {
-    -fx-pref-height: 100px; /* Altura por defecto para TextAreas */
+    -fx-pref-height: 100px;
     -fx-wrap-text: true;
 }
 
@@ -61,7 +64,7 @@
     -fx-background-color: #0056b3;
 }
 
-/* Estilos para validación (opcional, si implementas) */
+/* Validación */
 .text-field.error, .text-area.error {
     -fx-border-color: red;
 }

@@ -9,9 +9,9 @@ import java.util.List;
 public interface ESTUDIANTEDAO {
     void create(Estudiante estudiante) throws RegisterExceptions;
 
-    Estudiante buscarByID(int id) throws UserException;
+    Estudiante buscarById(int id) throws UserException;
 
-    List<Estudiante> read() throws  UserException;
+    List<Estudiante> obtenerEstudiantes() throws  UserException;
 
     Estudiante buscarByUsername(String username) throws  UserException;
 

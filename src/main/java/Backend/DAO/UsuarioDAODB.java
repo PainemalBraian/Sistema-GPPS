@@ -19,8 +19,7 @@ import Backend.Entidades.Usuario;
 public class UsuarioDAODB extends DBAcces implements USUARIODAO {
 
     @Override
-    public int create(Object usuario) throws RegisterExceptions {
-        Usuario user = (Usuario) usuario;
+    public int create(Usuario usuario) throws RegisterExceptions {
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(
@@ -29,22 +28,22 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
                     PreparedStatement.RETURN_GENERATED_KEYS //Retorna el id AA generado por la db
             );
 
-            statement.setString(1, user.getNombre());
-            statement.setString(2, user.getEmail());
-            statement.setString(3, user.getUsername());
-            statement.setString(4, user.getContrasena());
-            statement.setInt(5, user.getRol().getId());
-            statement.setBoolean(6, user.isActivo());
+            statement.setString(1, usuario.getNombre());
+            statement.setString(2, usuario.getEmail());
+            statement.setString(3, usuario.getUsername());
+            statement.setString(4, usuario.getContrasena());
+            statement.setInt(5, usuario.getRol().getId());
+            statement.setBoolean(6, usuario.isActivo());
 
             statement.executeUpdate();
 
             // Obtener el ID generado
-            ResultSet rs = statement.getGeneratedKeys();
+            ResultSet result = statement.getGeneratedKeys();
             int idGenerado = 0;
-            if (rs.next()) {
-                idGenerado = rs.getInt(1);
+            if (result.next()) {
+                idGenerado = result.getInt(1);
             }
-            rs.close();
+            result.close();
             statement.close();
             disconnect();
             return idGenerado;
@@ -56,7 +55,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
     }
 
     @Override
-    public List<Usuario> read() throws UserException {
+    public List<Usuario> obtenerUsuarios() throws UserException {
         List<Usuario> usuarios = new ArrayList<>();
         Usuario user = null;
         try (Connection conn = connect();

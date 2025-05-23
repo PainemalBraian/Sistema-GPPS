@@ -29,16 +29,14 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
             statement.setString(4, proyecto.getUbicacion());
             statement.setString(5, proyecto.getObjetivos());
             statement.setString(6, proyecto.getRequisitos());
-            statement.setInt(7, proyecto.getTutorEncargado().getIdTutor())/*,
-            statement.setBoolean(8, /*proyecto.getHabilitado())*/;
-            statement.setBoolean(8, true);
+            statement.setInt(7, proyecto.getTutorEncargado().getIdTutor());
+            statement.setBoolean(8, proyecto.isHabilitado());
 
             statement.executeUpdate();
 
         }catch(ConnectionException e){
             throw new CreateException("Error al conectar con la base de datos: " + e.getMessage());
         }catch(SQLException e){
-            System.out.println(e);
             throw new CreateException("Error al crear el proyecto: " + e.getMessage());
         }
     }
@@ -232,7 +230,6 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
             ResultSet result = statement.executeQuery();
             if (result.next()) {
                 int idTutor = result.getInt("idTutor");
-                System.out.println("Id Tutor : "+ idTutor);
                 TutorExterno tutor = new TutorExternoDAODB().buscarByID(idTutor);
                 proyecto = new Proyecto(
                         result.getInt("idProyecto"),
