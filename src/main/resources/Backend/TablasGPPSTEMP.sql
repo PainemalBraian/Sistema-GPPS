@@ -67,7 +67,7 @@ CREATE TABLE Proyectos(
     ubicacion VARCHAR(250) NOT NULL,
     objetivos VARCHAR(250) NOT NULL,
     requisitos VARCHAR(250) NOT NULL,
-    idTutor INT NOT NULL,
+    idTutor INT,
     FOREIGN KEY (idTutor) REFERENCES TutoresExternos(idTutor)
 );
 
@@ -76,7 +76,8 @@ CREATE TABLE Actividades (
     titulo VARCHAR(255) NOT NULL,
     duracion int not null,
     descripcion TEXT,
-    fecha_fin DATE NOT NULL,
+    fechaInicio DATE NOT NULL,
+    fechaFin DATE NOT NULL,
     calificacion BOOLEAN DEFAULT NULL -- NULL indica "calificación no cargada"
 );
 
@@ -191,9 +192,9 @@ INSERT INTO Proyectos (titulo, habilitado, descripcion, areaDeInteres, ubicacion
 ('Proyecto IoT', true, 'Proyecto de dispositivos inteligentes', 'Tecnología', 'Edificio de Informática', 'Crear dispositivos inteligentes', 'Conocimientos en electrónica', 1);
 
 -- Actividades
-INSERT INTO Actividades (titulo, duracion, descripcion, fecha_fin, calificacion) VALUES
-('Actividad Inicial', 20, 'Introducción al proyecto', '2024-12-15', NULL),
-('Actividad Avanzada', 30, 'Desarrollo de funcionalidades', '2024-12-20', NULL);
+INSERT INTO Actividades (titulo, duracion, descripcion, fechaInicio, fechaFin, calificacion) VALUES
+('Actividad Inicial', 20, 'Introducción al proyecto', '2024-12-15', '2024-12-30', NULL),
+('Actividad Avanzada', 30, 'Desarrollo de funcionalidades', '2024-12-20', '2024-12-30', NULL);
 
 
 -- Convenios PPS

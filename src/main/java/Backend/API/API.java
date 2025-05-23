@@ -1,9 +1,10 @@
 package Backend.API;
 
 import Backend.DTO.*;
-import Backend.Entidades.Actividad;
-import Backend.Entidades.Informe;
+import Backend.Entidades.*;
 import Backend.Exceptions.*;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -49,11 +50,15 @@ public interface API {
 
     RolDTO obtenerRolByUsuarioId(int id) throws Exception; // Obtiene el rol de un usuario mediante su ID
 
-    void cargarConvenio()throws CreateException;
+    //probar
+    void cargarConvenio(String titulo, String descripcion, Proyecto proyecto, Docente docente, Estudiante estudiante,
+                        DirectorCarrera director, EntidadColaborativa entidad, List<Actividad> actividades)throws CreateException;
 
-    void cargarActividad()throws CreateException;
+    void cargarActividad(String titulo, String descripcion, LocalDate fechaFin, int duracion, LocalDate fechaInicio)throws CreateException;
 
-    void cargarInforme()throws CreateException;
+    void cargarInforme(String titulo, String descripcion, String contenido, LocalDate fecha)throws CreateException;
+
+    void cargarPropuestaPropia(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos) throws CreateException;
 
     void cargarProyecto(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos, String tutorEncargado) throws CreateException; // Carga un proyecto, con los datos solicitados por parametro
 
@@ -64,7 +69,7 @@ public interface API {
     //probar
     ProyectoDTO obtenerProyectoByTitulo(String titulo) throws ReadException; // Devuelve un proyecto de la DB que es buscado dado un titulo
 
-    List<Actividad> obtenerActividadesHabilitadas() throws EmptyException;
+    List<ActividadDTO> obtenerActividadesHabilitadas() throws ReadException;
 
     //probar
     List <ProyectoDTO> obtenerProyectosHabilitados() throws ReadException; // Devuelve de la DB todos los proyectos que esten habilitados
@@ -72,5 +77,5 @@ public interface API {
     //probar
     ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException, EmptyException, UserException; // Devuelve Un convenio de PPs de la DB dado su titulo
 
-    List<Informe> obtenerInformesByConvenioTitulo(String tituloConvenio) throws EmptyException;
+    List<Informe> obtenerInformeByConvenioTitulo(String tituloConvenio) throws EmptyException;
 }

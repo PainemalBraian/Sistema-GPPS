@@ -1,17 +1,14 @@
 package Backend.DAO.dom.elementos;
 
 import Backend.DAO.DBAcces;
+import Backend.DAO.dom.usuarios.TutorExternoDAODB;
 import Backend.DAO.interfaces.elementos.INFORMEDAO;
 import Backend.Entidades.Informe;
-import Backend.Exceptions.ConnectionException;
-import Backend.Exceptions.CreateException;
-import Backend.Exceptions.DeleteException;
-import Backend.Exceptions.ReadException;
+import Backend.Entidades.Proyecto;
+import Backend.Exceptions.*;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InformeDAODB extends DBAcces implements INFORMEDAO {
@@ -43,7 +40,32 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
 
     @Override
     public List<Informe> obtenerInformes() throws ReadException {
-        return List.of();
+        List<Informe> informes = new ArrayList<>();
+
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM Informes");
+             ResultSet result = statement.executeQuery()) {
+
+            while (result.next()) {
+                Informe informe = new Informe(
+                        result.getInt("idInforme"),
+                        result.getString("titulo"),
+                        result.getString("descripcion"),
+                        result.getString("contenido")
+                );
+                informe.setFecha(result.getDate("fecha").toLocalDate());
+//                informe.setpdfresult.getDate("archivo_pdf")?
+                informes.add(informe);
+            }
+
+            return informes;
+        } catch (SQLException e) {
+            throw new ReadException("Error al obtener los datos de los informes.");
+        } catch (ConnectionException e) {
+            throw new ReadException(e.getMessage());
+        } catch (EmptyException e) {
+            throw new ReadException(e.getMessage());
+        }
     }
 
     @Override
