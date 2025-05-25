@@ -26,7 +26,6 @@ public class HomeController  {
     private ResourceBundle bundle;
     //Labels
     @FXML private Label lblBienvenida;
-    @FXML private Label lblNombreUsuario;
     @FXML private Label lblEstadoPPS;
     @FXML private Label lblFechaInicio;
     @FXML private Label lblFechaFin;
@@ -65,6 +64,7 @@ public class HomeController  {
             btnTareas.setText(bundle.getString("button.Tareas"));
             btnPresentarPropuesta.setText(bundle.getString("button.presentarPropuesta"));
             btnMensajes.setText(bundle.getString("button.mensajes"));
+            btnInformes.setText(bundle.getString(("button.Informes")));
             btnCerrarSesion.setText(bundle.getString("button.cerrarSesion"));
     }
 
