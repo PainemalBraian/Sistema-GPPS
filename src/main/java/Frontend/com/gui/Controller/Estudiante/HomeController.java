@@ -1,6 +1,8 @@
 package Frontend.com.gui.Controller.Estudiante;
 
 import Backend.API.API;
+import Frontend.com.gui.Controller.IngresoController;
+import Frontend.com.gui.Controller.MensajesController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -243,7 +245,7 @@ public class HomeController  {
     @FXML
     public void verMensajes(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/mensajes.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/mensajes.fxml"));
             Parent root = loader.load();
 
             MensajesController controller = loader.getController();

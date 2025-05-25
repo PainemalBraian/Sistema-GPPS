@@ -1,6 +1,7 @@
-package Frontend.com.gui.Controller.Estudiante;
+package Frontend.com.gui.Controller;
 
 import Backend.API.API;
+import Frontend.com.gui.Controller.Estudiante.HomeController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -337,7 +338,7 @@ public class MensajesController implements Initializable {
     @FXML
     void handleVolverHome(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/home.fxml"));
             Parent root = loader.load();
 
             HomeController controller = loader.getController();

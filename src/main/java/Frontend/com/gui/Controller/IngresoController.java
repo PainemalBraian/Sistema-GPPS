@@ -1,8 +1,10 @@
-package Frontend.com.gui.Controller.Estudiante;
+package Frontend.com.gui.Controller;
 
 import Backend.API.API;
 import Backend.DTO.UsuarioDTO;
 import Backend.Exceptions.LoginException;
+import Frontend.com.gui.Controller.Docente.HomeDocenteController;
+import Frontend.com.gui.Controller.Estudiante.HomeController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +34,8 @@ public class IngresoController {
     @FXML public MenuButton MenuIdiomas;
     @FXML public Label newUser;
     public ImageView IconLogin;
-    public Button ButtonIngresarEstudiante;
+    @FXML public Button ButtonIngresarEstudiante;
+    @FXML public Button ButtonIngresarDocente;
     public Label LabelGPPS;
 
     @FXML
@@ -74,6 +77,7 @@ public class IngresoController {
         newUser.setText(bundle.getString("field.newUser"));
         MenuIdiomas.setText(bundle.getString("button.idioma"));
         ButtonIngresarEstudiante.setText(bundle.getString("button.IngresarEstudiante"));
+        ButtonIngresarDocente.setText(bundle.getString("button.IngresarDocente"));
         LabelGPPS.setText(bundle.getString("label.GPPS"));
     }
 
@@ -113,7 +117,7 @@ public class IngresoController {
 
         try {
             UsuarioDTO usuario = api.login(username, password);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/home.fxml"));
             Parent root = loader.load();
 
             // Obtener el controlador de la vista principal
@@ -144,7 +148,7 @@ public class IngresoController {
 
     public void IngresarComoEstudiante(ActionEvent actionEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/home.fxml"));
             Parent root = loader.load();
 
             // Obtener el controlador de la vista principal
@@ -164,6 +168,29 @@ public class IngresoController {
             mostrarAlerta("Error", "" + e.getMessage());
         }
     }
+    public void IngresarComoDocente(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Docente/homeDocente.fxml"));
+            Parent root = loader.load();
+
+            // Obtener el controlador de la vista principal
+            HomeDocenteController controllerHome = loader.getController();
+            controllerHome.setPersistenceAPI(api);
+
+            Stage stage = new Stage();
+            stage.setTitle("Principal - GPPS");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Cerrar la ventana actual de ingreso
+            ((Stage)((Button)actionEvent.getSource()).getScene().getWindow()).close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "" + e.getMessage());
+        }
+    }
+
 
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
