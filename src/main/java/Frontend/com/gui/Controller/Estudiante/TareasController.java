@@ -1,7 +1,6 @@
-package Frontend.com.gui.Controller;
+package Frontend.com.gui.Controller.Estudiante;
 
 import Backend.API.API;
-import Backend.DTO.UsuarioDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -117,7 +116,7 @@ public class TareasController  {
     @FXML
     public void VolverHome(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/home.fxml"));
             Parent root = loader.load();
             // Obtener el controlador
             HomeController controller = loader.getController();

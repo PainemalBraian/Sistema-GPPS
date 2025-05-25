@@ -2,7 +2,7 @@ package Frontend.com.main;
 
 import Backend.API.API;
 import Backend.API.PersistanceAPI;
-import Frontend.com.gui.Controller.IngresoController;
+import Frontend.com.gui.Controller.Estudiante.IngresoController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,7 +16,7 @@ public class Main extends Application {
     @Override
     public void start(Stage pantalla) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/ingreso.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/Ingreso.fxml"));
             Parent root = loader.load();
 
             // Obtener el controlador
