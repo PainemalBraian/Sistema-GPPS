@@ -1,4 +1,4 @@
-package Frontend.com.gui.Controller.Estudiante;
+package Frontend.com.gui.Controller;
 
 import Backend.API.API;
 import Backend.DTO.RolDTO;
@@ -190,7 +190,6 @@ public class RegistroController {
                 if (empty || rol == null) {
                     setText(null);
                 } else {
-                    System.out.println("ROL SELECCIONADO: " + rol.getNombre());
                     setText(obtenerNombreRolTraducido(rol, bundle));
                 }
             }

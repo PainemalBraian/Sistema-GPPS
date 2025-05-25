@@ -1,0 +1,149 @@
+/* Estilos para home.fxml - Sistema GPPS */
+
+.root {
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+    -fx-background-color: transparent;
+}
+
+/* Estilos para el panel lateral */
+.sidebar {
+    -fx-background-color: rgba(44, 44, 44, 0.9);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0);
+    -fx-padding: 0 0 10 0;
+}
+
+.app-title {
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-background-color: rgba(30, 30, 30, 1.0);
+    -fx-padding: 15 0 15 0;
+}
+
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-alignment: center-left;
+    -fx-padding: 0 0 0 15px;
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: #3a3a3a;
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: #3a3a3a;
+}
+
+.menu-button:pressed {
+    -fx-background-color: #505050;
+}
+
+.logout-button {
+    -fx-background-color: #8a1212;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+    -fx-background-radius: 0;
+}
+
+.logout-button:hover {
+    -fx-background-color: #b01c1c;
+}
+
+.logout-button:pressed {
+    -fx-background-color: #6e0e0e;
+}
+
+/* Estilos para el área de contenido */
+.content-area {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+}
+
+.welcome-text {
+    -fx-text-fill: #2c2c2c;
+    -fx-font-size: 22px;
+    -fx-font-weight: normal;
+}
+
+.username-text {
+    -fx-text-fill: #0066cc;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+/* Paneles de información */
+.status-panel, .notification-panel {
+    -fx-background-color: white;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0);
+    -fx-border-radius: 5px;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px;
+}
+
+.panel-title {
+    -fx-text-fill: #2c2c2c;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.status-info, .notification-info {
+    -fx-text-fill: #505050;
+    -fx-font-size: 16px;
+}
+
+.status-detail {
+    -fx-text-fill: #707070;
+    -fx-font-size: 14px;
+}
+
+/* Estilos para estados específicos */
+.status-active {
+    -fx-text-fill: #008000;
+    -fx-font-weight: bold;
+}
+
+.status-pending {
+    -fx-text-fill: #cc7a00;
+    -fx-font-weight: bold;
+}
+
+.status-completed {
+    -fx-text-fill: #0066cc;
+    -fx-font-weight: bold;
+}
+
+.alert-text {
+    -fx-text-fill: #cc0000;
+    -fx-font-weight: bold;
+}
+
+/* Estilos para las notificaciones */
+.notification-item {
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 3px;
+    -fx-padding: 5px;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+}
+
+.notification-item:hover {
+    -fx-background-color: #e8e8e8;
+}
+
+.notification-date {
+    -fx-text-fill: #808080;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+}
+
+/* Para asegurar que la imagen de fondo esté atrás */
+.background-image {
+    -fx-opacity: 0.2;
+}
