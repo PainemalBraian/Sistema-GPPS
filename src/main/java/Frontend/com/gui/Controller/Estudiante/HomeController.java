@@ -1,4 +1,4 @@
-package Frontend.com.gui.Controller;
+package Frontend.com.gui.Controller.Estudiante;
 
 import Backend.API.API;
 import javafx.event.ActionEvent;
@@ -13,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -151,7 +150,7 @@ public class HomeController  {
     @FXML
     public void presentarPropuesta(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/propuestaPropia.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/propuestaPropia.fxml"));
             Parent root = loader.load();
 
             // Inyectás el persistenceAPI al nuevo controlador
@@ -178,7 +177,7 @@ public class HomeController  {
     @FXML
     public void PuestosDisponibles(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/puestosDisponibles.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/puestosDisponibles.fxml"));
             Parent root = loader.load();
 
             PuestosDisponiblesController controller = loader.getController();
@@ -201,7 +200,7 @@ public class HomeController  {
     @FXML
     public void Tareas(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/tareas.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/tareas.fxml"));
             Parent root = loader.load();
 
             TareasController controller = loader.getController();
@@ -222,7 +221,7 @@ public class HomeController  {
 
     public void Informes(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/informes.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/informes.fxml"));
             Parent root = loader.load();
 
             InformesController controller = loader.getController();
@@ -244,7 +243,7 @@ public class HomeController  {
     @FXML
     public void verMensajes(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/mensajes.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/mensajes.fxml"));
             Parent root = loader.load();
 
             MensajesController controller = loader.getController();
@@ -266,7 +265,7 @@ public class HomeController  {
     @FXML
     public void verInformes(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Informes.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/informes.fxml"));
             Parent root = loader.load();
 
             InformesController controller = loader.getController();
@@ -291,7 +290,7 @@ public class HomeController  {
     public void cerrarSesion(ActionEvent event) {
         try {
             // Volver a la pantalla de login
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Ingreso.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/Ingreso.fxml"));
             Parent root = loader.load();
 
             // Obtener el controlador y pasarle la API

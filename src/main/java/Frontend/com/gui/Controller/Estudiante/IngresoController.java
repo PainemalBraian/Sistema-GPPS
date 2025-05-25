@@ -1,4 +1,4 @@
-package Frontend.com.gui.Controller;
+package Frontend.com.gui.Controller.Estudiante;
 
 import Backend.API.API;
 import Backend.DTO.UsuarioDTO;
@@ -81,7 +81,7 @@ public class IngresoController {
     public void abrirRegistro(ActionEvent event) {
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/registro.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/registro.fxml"));
             Parent root = loader.load();
 
             // Obtener el controlador
@@ -113,7 +113,7 @@ public class IngresoController {
 
         try {
             UsuarioDTO usuario = api.login(username, password);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/home.fxml"));
             Parent root = loader.load();
 
             // Obtener el controlador de la vista principal
@@ -144,7 +144,7 @@ public class IngresoController {
 
     public void IngresarComoEstudiante(ActionEvent actionEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/home.fxml"));
             Parent root = loader.load();
 
             // Obtener el controlador de la vista principal

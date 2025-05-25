@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="560.0" prefWidth="941.0" styleClass="root-mensajes" stylesheets="@../StyleSheets/mensajes.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.gui.Controller.MensajesController">
+<BorderPane prefHeight="560.0" prefWidth="941.0" styleClass="root-mensajes" stylesheets="@../../StyleSheets/Estudiante/mensajes.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.gui.Controller.Estudiante.MensajesController">
     <left>
         <VBox prefWidth="250.0" spacing="10" styleClass="conversaciones-panel">
             <padding>

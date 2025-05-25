@@ -15,13 +15,13 @@
 
 <StackPane prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1"
            xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="Frontend.com.gui.Controller.RegistroController">
+           fx:controller="Frontend.com.gui.Controller.Estudiante.RegistroController">
 
     <AnchorPane fx:id="PaneBase" prefHeight="550.0" prefWidth="700.0">
         <children>
             <VBox alignment="CENTER" layoutX="-4.0" prefHeight="550.0" prefWidth="454.0" spacing="10.0"
                   styleClass="root"
-                  stylesheets="@../StyleSheets/registro.css">
+                  stylesheets="@../../StyleSheets/Estudiante/registro.css">
                 <Label fx:id="registroField" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Registro de Usuario - GPPS" />
 
                 <TextField fx:id="dni" prefHeight="31.0" prefWidth="150.0" promptText="Documento Nacional de Identidad (DNI) o Cédula de Identidad" />
@@ -45,7 +45,7 @@
                     <TextField fx:id="direccionEntidadField" promptText="Dirección de la Entidad" />
                 </VBox>
 
-                <ComboBox fx:id="rolComboBox" promptText="Seleccionar rol" styleClass="root" stylesheets="@../StyleSheets/registro.css">
+                <ComboBox fx:id="rolComboBox" promptText="Seleccionar rol" styleClass="root" stylesheets="@../../StyleSheets/Estudiante/registro.css">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="Estudiante" />
@@ -62,13 +62,13 @@
 
             <ImageView fitHeight="514.0" fitWidth="236.0" layoutX="457.0" layoutY="128.0" preserveRatio="true" smooth="false">
                 <image>
-                    <Image url="@../imagenes/fondo_Registro.jpg" />
+                    <Image url="@../../imagenes/Estudiante/fondo_Registro.jpg" />
                 </image>
             </ImageView>
             
             <ImageView fitHeight="106.0" fitWidth="250.0" layoutX="450.0" smooth="false"> <!-- Ajusta la posición según necesites -->
                 <image>
-                    <Image url="@../imagenes/Logo_AlgoLab.png" />
+                    <Image url="@../../imagenes/Estudiante/Logo_AlgoLab.png" />
                 </image>
             </ImageView>
             <Button fx:id="volver_login" layoutX="528.0" layoutY="489.0"

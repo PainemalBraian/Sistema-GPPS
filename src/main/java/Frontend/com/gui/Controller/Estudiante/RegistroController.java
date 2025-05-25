@@ -1,4 +1,4 @@
-package Frontend.com.gui.Controller;
+package Frontend.com.gui.Controller.Estudiante;
 
 import Backend.API.API;
 import Backend.DTO.RolDTO;
@@ -82,7 +82,7 @@ public class RegistroController {
     @FXML
     public void volverLogin(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Ingreso.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/Ingreso.fxml"));
             Parent root = loader.load();
             // Obtener el controlador
             IngresoController controller = loader.getController();
