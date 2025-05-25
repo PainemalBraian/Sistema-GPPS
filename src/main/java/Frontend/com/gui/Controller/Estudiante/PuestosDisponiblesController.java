@@ -146,7 +146,7 @@ public class PuestosDisponiblesController {
     @FXML
     public void VolverHome(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/home.fxml"));
             Parent root = loader.load();
             HomeController controller = loader.getController();
 

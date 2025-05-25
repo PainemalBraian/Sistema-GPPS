@@ -290,7 +290,7 @@ public class HomeController  {
     public void cerrarSesion(ActionEvent event) {
         try {
             // Volver a la pantalla de login
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/Ingreso.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Ingreso.fxml"));
             Parent root = loader.load();
 
             // Obtener el controlador y pasarle la API
