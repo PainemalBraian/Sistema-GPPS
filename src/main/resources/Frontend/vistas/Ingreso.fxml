@@ -20,17 +20,17 @@
 <StackPane prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1"
            xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="Frontend.com.gui.Controller.Estudiante.IngresoController">
-   <AnchorPane fx:id="PaneBase" prefHeight="518.0" prefWidth="700.0" styleClass="root" stylesheets="@../../StyleSheets/Estudiante/Ingreso.css">
+   <AnchorPane fx:id="PaneBase" prefHeight="518.0" prefWidth="700.0" styleClass="root" stylesheets="@../StyleSheets/Ingreso.css">
       <children>
          <ImageView fx:id="IMGIngreso" fitHeight="400.0" fitWidth="292.0" layoutY="1.0" nodeOrientation="INHERIT" pickOnBounds="true">
             <image>
-               <Image url="@../../imagenes/Estudiante/Ingreso.png" />
+               <Image url="@../imagenes/Ingreso.png" />
             </image>
          </ImageView>
 
          <ImageView fx:id="IconLogin" fitHeight="25.0" fitWidth="41.0" layoutX="243.0" layoutY="23.0" nodeOrientation="INHERIT" pickOnBounds="true">
             <image>
-               <Image url="@../../imagenes/Estudiante/icono_login.png" />
+               <Image url="@../imagenes/icono_login.png" />
             </image>
          </ImageView>
 
@@ -108,7 +108,7 @@
          </Label>
          <ImageView fx:id="IconLogin1" fitHeight="25.0" fitWidth="41.0" layoutX="396.0" layoutY="23.0" nodeOrientation="INHERIT" pickOnBounds="true">
             <image>
-               <Image url="@../../imagenes/Estudiante/icono_login.png" />
+               <Image url="@../imagenes/icono_login.png" />
             </image>
          </ImageView>
          <Label fx:id="LabelIngreso1" graphicTextGap="0.0"
