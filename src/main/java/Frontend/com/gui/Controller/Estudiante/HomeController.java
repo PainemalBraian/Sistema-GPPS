@@ -1,6 +1,8 @@
-package Frontend.com.gui.Controller;
+package Frontend.com.gui.Controller.Estudiante;
 
 import Backend.API.API;
+import Frontend.com.gui.Controller.IngresoController;
+import Frontend.com.gui.Controller.MensajesController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +28,6 @@ public class HomeController  {
     private ResourceBundle bundle;
     //Labels
     @FXML private Label lblBienvenida;
-    @FXML private Label lblNombreUsuario;
     @FXML private Label lblEstadoPPS;
     @FXML private Label lblFechaInicio;
     @FXML private Label lblFechaFin;
@@ -66,6 +66,7 @@ public class HomeController  {
             btnTareas.setText(bundle.getString("button.Tareas"));
             btnPresentarPropuesta.setText(bundle.getString("button.presentarPropuesta"));
             btnMensajes.setText(bundle.getString("button.mensajes"));
+            btnInformes.setText(bundle.getString(("button.Informes")));
             btnCerrarSesion.setText(bundle.getString("button.cerrarSesion"));
     }
 
@@ -151,7 +152,7 @@ public class HomeController  {
     @FXML
     public void presentarPropuesta(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/propuestaPropia.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/propuestaPropia.fxml"));
             Parent root = loader.load();
 
             // Inyectás el persistenceAPI al nuevo controlador
@@ -178,7 +179,7 @@ public class HomeController  {
     @FXML
     public void PuestosDisponibles(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/puestosDisponibles.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/puestosDisponibles.fxml"));
             Parent root = loader.load();
 
             PuestosDisponiblesController controller = loader.getController();
@@ -201,7 +202,7 @@ public class HomeController  {
     @FXML
     public void Tareas(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/tareas.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/tareas.fxml"));
             Parent root = loader.load();
 
             TareasController controller = loader.getController();
@@ -222,7 +223,7 @@ public class HomeController  {
 
     public void Informes(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/informes.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/informes.fxml"));
             Parent root = loader.load();
 
             InformesController controller = loader.getController();
@@ -266,7 +267,7 @@ public class HomeController  {
     @FXML
     public void verInformes(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Informes.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/informes.fxml"));
             Parent root = loader.load();
 
             InformesController controller = loader.getController();

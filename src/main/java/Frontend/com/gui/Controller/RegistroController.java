@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import static java.util.Objects.isNull;
@@ -110,6 +111,7 @@ public class RegistroController {
 
     private void actualizarIdioma() {
         ResourceBundle bundle = api.obtenerIdioma();
+
         // Labels
         registroField.setText(bundle.getString("label.registro"));
         dni.setPromptText(bundle.getString("label.dni"));
@@ -121,18 +123,89 @@ public class RegistroController {
         carreraField.setPromptText(bundle.getString("label.carrera"));
         legajoField.setPromptText(bundle.getString("label.legajo"));
         nombreEntidadField.setPromptText(bundle.getString("label.nombreEntidad"));
+        direccionEntidadField.setPromptText(bundle.getString("label.direccionEntidad"));
         cuitField.setPromptText(bundle.getString("label.cuit"));
-        // ComboBox
-        rolComboBox.setPromptText(bundle.getString("combo.rol"));
-        //Botones
+
+        // Botones
         BottonRegistrarse.setText(bundle.getString("button.registrarse"));
         volver_login.setText(bundle.getString("button.volver"));
+
+        rolComboBox.setPromptText(bundle.getString("combo.rol"));
+
+        rolComboBox.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(RolDTO rol, boolean empty) {
+                super.updateItem(rol, empty);
+                if (empty || rol == null) {
+                    setText(null);
+                } else {
+                    setText(obtenerNombreRolTraducido(rol, bundle));
+                }
+            }
+        });
+
+        rolComboBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(RolDTO rol, boolean empty) {
+                super.updateItem(rol, empty);
+                if (empty || rol == null) {
+                    setText(null);
+                } else {
+                    setText(obtenerNombreRolTraducido(rol, bundle));
+                }
+            }
+        });
     }
 
     private void inicializarRoles() throws Exception {
-        rolComboBox.getItems().clear();// Evita duplicados si se llama varias veces
+        rolComboBox.getItems().clear();
         List<RolDTO> roles = api.obtenerRoles();
-        rolComboBox.getItems().addAll(roles);
+
+        List<RolDTO> rolesElegibles = roles.stream()
+                .filter(rol -> !rol.getNombre().equalsIgnoreCase("Administrador"))
+                .filter(rol -> !rol.getNombre().equalsIgnoreCase("Director de carrera"))
+                .filter(rol -> !rol.getNombre().equalsIgnoreCase("Tutor externo"))
+                .toList();
+
+        rolComboBox.getItems().addAll(rolesElegibles);
+
+        ResourceBundle bundle = api.obtenerIdioma();
+
+        rolComboBox.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(RolDTO rol, boolean empty) {
+                super.updateItem(rol, empty);
+                if (empty || rol == null) {
+                    setText(null);
+                } else {
+                    setText(obtenerNombreRolTraducido(rol, bundle));
+                }
+            }
+        });
+
+        rolComboBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(RolDTO rol, boolean empty) {
+                super.updateItem(rol, empty);
+                if (empty || rol == null) {
+                    setText(null);
+                } else {
+                    setText(obtenerNombreRolTraducido(rol, bundle));
+                }
+            }
+        });
+    }
+
+
+    private String obtenerNombreRolTraducido(RolDTO rol, ResourceBundle bundle) {
+        try {
+            // Normalizar el nombre del rol para la clave
+            String nombreNormalizado = rol.getNombre().trim();
+            String clave = "rol." + nombreNormalizado;
+            return bundle.getString(clave);
+        } catch (MissingResourceException e) {
+            return rol.getNombre(); // fallback si no se encuentra la clave
+        }
     }
 
     @FXML

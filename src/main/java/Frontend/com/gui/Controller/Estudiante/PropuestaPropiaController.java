@@ -1,9 +1,7 @@
-package Frontend.com.gui.Controller;
+package Frontend.com.gui.Controller.Estudiante;
 
 import Backend.API.API;
-import Backend.DTO.ProyectoDTO;
 import Backend.Exceptions.CreateException;
-import Backend.Exceptions.ReadException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -88,7 +86,7 @@ public class PropuestaPropiaController {
     @FXML
     public void VolverHome(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/home.fxml"));
             Parent root = loader.load();
             HomeController controller = loader.getController();
 
