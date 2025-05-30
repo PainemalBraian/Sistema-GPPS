@@ -91,7 +91,6 @@ public class Actividad extends Item{
     }
 
     public void setCalificacion(Boolean calificacion) throws EmptyException {
-        if (calificacion == null) {throw new EmptyException("La calificación no se estableció correctamente.");}
         this.calificacion = calificacion;
     }
 

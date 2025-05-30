@@ -91,4 +91,7 @@ public class UsuarioDTO {
     public void setContrasena(String contrasena) {
 
     }
+    public UsuarioDTO getUsuario() {
+        return this;
+    }
 }
