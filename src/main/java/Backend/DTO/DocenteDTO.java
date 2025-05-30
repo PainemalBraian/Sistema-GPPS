@@ -19,4 +19,20 @@ public class DocenteDTO extends UsuarioDTO{
         this.legajo = legajo;
         this.estudiantesAsignados = estudiantesAsignados;
     }
+
+    public String getLegajo() {
+        return legajo;
+    }
+
+    public List<EstudianteDTO> getEstudiantesAsignados() {
+        return estudiantesAsignados;
+    }
+
+    public void setLegajo(String legajo) {
+        this.legajo = legajo;
+    }
+
+    public void setEstudiantesAsignados(List<EstudianteDTO> estudiantesAsignados) {
+        this.estudiantesAsignados = estudiantesAsignados;
+    }
 }

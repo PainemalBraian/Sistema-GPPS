@@ -51,8 +51,8 @@ public interface API {
     RolDTO obtenerRolByUsuarioId(int id) throws Exception; // Obtiene el rol de un usuario mediante su ID
 
     //probar
-    void cargarConvenio(String titulo, String descripcion, Proyecto proyecto, Docente docente, Estudiante estudiante,
-                        DirectorCarrera director, EntidadColaborativa entidad, List<Actividad> actividades)throws CreateException;
+    void cargarConvenio(String tituloConvenio, String descripcionConvenio, ProyectoDTO proyectoDTO, DocenteDTO docenteDTO, EstudianteDTO estudianteDTO,
+                        EntidadColaborativaDTO entidadDTO, List<ActividadDTO> actividades, String tituloPlan, String descripcionPlan)throws CreateException;
 
     void cargarActividad(String titulo, String descripcion, LocalDate fechaFin, int duracion, LocalDate fechaInicio)throws CreateException;
 

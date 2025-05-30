@@ -62,11 +62,13 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
                 Proyecto proyecto = new ProyectoDAODB().buscarByID(result.getInt("idProyecto"));
                 Docente docente = new DocenteDAODB().buscarById(result.getInt("idDocente"));
                 Estudiante estudiante = new EstudianteDAODB().buscarById(result.getInt("idEstudiante"));
-                DirectorCarrera director = new DirectorCarreraDAODB().buscarById(result.getInt("idDirector"));
+//                DirectorCarrera director = new DirectorCarreraDAODB().buscarById(result.getInt("idDirector"));
                 EntidadColaborativa entidad = new EntidadColaborativaDAODB().buscarById(result.getInt("idEntidad"));
 
                 // Si no hay actividades cargadas en la base, se envía una lista vacía por ahora
                 List<Actividad> actividades = new ArrayList<>();
+
+                PlanDeTrabajo plan = buscarByTitulo();
 
                 ConvenioPPS convenio = new ConvenioPPS(
                         idConvenio,
