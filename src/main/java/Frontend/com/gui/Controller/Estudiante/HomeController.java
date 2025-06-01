@@ -39,11 +39,10 @@ public class HomeController  {
 
     //Botones
     @FXML private Button btnPuestosDisponibles;
-    @FXML public Button btnTareas;
     @FXML private Button btnPresentarPropuesta;
     @FXML private Button btnMensajes;
     @FXML private Button btnCerrarSesion;
-    @FXML public Button btnInformes;
+    @FXML public Button btnInformeDeTareas;
 
     /**
      * Configura los textos de la interfaz según el idioma seleccionado.
@@ -63,10 +62,9 @@ public class HomeController  {
 
             // Botones
             btnPuestosDisponibles.setText(bundle.getString("button.puestos"));
-            btnTareas.setText(bundle.getString("button.Tareas"));
+            btnInformeDeTareas.setText(bundle.getString("button.InformeDeTareas"));
             btnPresentarPropuesta.setText(bundle.getString("button.presentarPropuesta"));
             btnMensajes.setText(bundle.getString("button.mensajes"));
-            btnInformes.setText(bundle.getString(("button.Informes")));
             btnCerrarSesion.setText(bundle.getString("button.cerrarSesion"));
     }
 
@@ -200,12 +198,12 @@ public class HomeController  {
     }
 
     @FXML
-    public void Tareas(ActionEvent event) {
+    public void InformeDeTareas(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/tareas.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/InformeDeTareas.fxml"));
             Parent root = loader.load();
 
-            TareasController controller = loader.getController();
+            InformeDeTareasController controller = loader.getController();
             controller.setPersistenceAPI(api);
 
             Stage stage = new Stage();
@@ -221,26 +219,7 @@ public class HomeController  {
         }
     }
 
-    public void Informes(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/informes.fxml"));
-            Parent root = loader.load();
 
-            InformesController controller = loader.getController();
-            controller.setPersistenceAPI(api);
-
-            Stage stage = new Stage();
-            stage.setTitle("Informes - GPPS");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            currentStage.close();
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error al navegar a informes", e);
-            mostrarAlerta("Error", "No se pudo abrir la pantalla de informes");
-        }
-    }
 
     @FXML
     public void verMensajes(ActionEvent event) {
@@ -263,29 +242,6 @@ public class HomeController  {
             mostrarAlerta("Error", "No se pudo abrir la bandeja de mensajes");
         }
     }
-
-    @FXML
-    public void verInformes(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/informes.fxml"));
-            Parent root = loader.load();
-
-            InformesController controller = loader.getController();
-            controller.setPersistenceAPI(api);
-
-            Stage stage = new Stage();
-            stage.setTitle("Informes - GPPS");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            currentStage.close();
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error al navegar a informes", e);
-            mostrarAlerta("Error", "No se pudo abrir la ventana de informes");
-        }
-    }
-
 
 
     @FXML

@@ -24,14 +24,11 @@
                         onAction="#PuestosDisponibles"
                         prefHeight="50.0" prefWidth="200.0"
                         styleClass="menu-button" text="Puestos Disponibles" />
-                <Button fx:id="btnTareas" maxWidth="200.0"
-                        onAction="#Tareas"
+                <Button fx:id="btnInformeDeTareas" maxWidth="200.0"
+                        onAction="#InformeDeTareas"
                         prefHeight="50.0" prefWidth="200.0"
-                        styleClass="menu-button" text="Tareas" />
-                <Button fx:id="btnInformes" maxWidth="200.0"
-                        onAction="#Informes"
-                        prefHeight="50.0" prefWidth="200.0"
-                        styleClass="menu-button" text="Informes" />
+                        styleClass="menu-button" text="InformeDeTareas" />
+
                 <Button fx:id="btnMensajes" maxWidth="200.0" onAction="#verMensajes"
                         prefHeight="50.0" prefWidth="200.0"
                         styleClass="menu-button" text="Mensajes" />
