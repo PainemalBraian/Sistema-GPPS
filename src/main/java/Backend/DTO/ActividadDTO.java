@@ -47,4 +47,8 @@ public class ActividadDTO extends ItemDTO{
     public void setCalificacion(Boolean calificacion) {
         this.calificacion = calificacion;
     }
+
+    public void addInforme(InformeDTO informe) {
+        informes.add(informe);
+    }
 }
