@@ -2,62 +2,72 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1"
+<StackPane prefHeight="550.0" prefWidth="800.0"
+           xmlns="http://javafx.com/javafx/23.0.1"
            xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="Frontend.com.gui.Controller.Docente.HomeDocenteController">
+           fx:controller="Frontend.com.gui.Controller.Tutor.HomeTutorController">
 
     <AnchorPane fx:id="PaneBase" prefHeight="550.0" prefWidth="800.0">
         <children>
             <VBox alignment="TOP_LEFT" layoutX="0.0" layoutY="0.0" prefHeight="550.0" prefWidth="200.0"
                   spacing="5.0" styleClass="sidebar" stylesheets="@../../StyleSheets/homeUsuarios.css">
                 <Label alignment="CENTER" prefHeight="60.0" prefWidth="200.0" styleClass="app-title" text="GPPS" />
-                <Button fx:id="btnEstudiantesAsignados" maxWidth="200.0"
-                        onAction="#verEstudiantesAsignados"
+                <Button fx:id="btnActualizarEmpresa" maxWidth="200.0"
+                        onAction="#actualizarEmpresa"
                         prefHeight="50.0" prefWidth="200.0"
-                        styleClass="menu-button" text="Estudiantes Asignados" />
-                <Button fx:id="btnEvaluarInformes" maxWidth="200.0"
-                        onAction="#evaluarInformes"
+                        styleClass="menu-button" text="Actualizar Empresa" />
+                <Button fx:id="btnRegistrarProyecto" maxWidth="200.0"
+                        onAction="#registrarProyecto"
+                        prefHeight="50.0" prefWidth="200.0"
+                        styleClass="menu-button" text="Registrar Proyecto" />
+                <Button fx:id="btnSeguimiento" maxWidth="200.0"
+                        onAction="#verSeguimiento"
+                        prefHeight="50.0" prefWidth="200.0"
+                        styleClass="menu-button" text="Seguimiento Estudiantes" />
+                <Button fx:id="btnEvaluarInformesEstudiante" maxWidth="200.0"
+                        onAction="#evaluarInformeEstudiante"
                         prefHeight="50.0" prefWidth="200.0"
                         styleClass="menu-button" text="Evaluar Informes" />
-                <Button fx:id="btnSeguimientoAvances" maxWidth="200.0"
-                        onAction="#seguimientoAvances"
-                        prefHeight="50.0" prefWidth="200.0"
-                        styleClass="menu-button" text="Seguimiento Avances" />
-                <Button fx:id="btnMensajes" maxWidth="200.0" onAction="#verMensajes"
+                <Button fx:id="btnMensajes" maxWidth="200.0"
+                        onAction="#verMensajes"
                         prefHeight="50.0" prefWidth="200.0"
                         styleClass="menu-button" text="Mensajes" />
 
                 <AnchorPane prefHeight="200" VBox.vgrow="ALWAYS" />
 
-                <Button fx:id="btnCerrarSesion" maxWidth="200.0" onAction="#cerrarSesion" prefHeight="50.0" prefWidth="200.0" styleClass="logout-button" text="Cerrar Sesión" />
+                <Button fx:id="btnCerrarSesion" maxWidth="200.0"
+                        onAction="#cerrarSesion"
+                        prefHeight="50.0" prefWidth="200.0"
+                        styleClass="logout-button" text="Cerrar Sesión" />
             </VBox>
 
-            <AnchorPane layoutX="200.0" layoutY="0.0" prefHeight="550.0" prefWidth="600.0" styleClass="content-area" stylesheets="@../../StyleSheets/homeUsuarios.css">
+            <AnchorPane layoutX="200.0" layoutY="0.0" prefHeight="550.0" prefWidth="600.0"
+                        styleClass="content-area" stylesheets="@../../StyleSheets/homeUsuarios.css">
                 <children>
-                    <Label fx:id="lblBienvenida" layoutX="30.0" layoutY="30.0" styleClass="welcome-text" text="Bienvenido a GPPS, Docente" />
+                    <Label fx:id="lblBienvenida" layoutX="30.0" layoutY="30.0"
+                           styleClass="welcome-text" text="Bienvenido a GPPS, Tutor" />
 
-                    <!-- Panel de resumen de estudiantes -->
+                    <!-- Panel de resumen de proyectos -->
                     <AnchorPane layoutX="30.0" layoutY="80.0" prefHeight="120.0" prefWidth="260.0" styleClass="summary-panel">
                         <children>
-                            <Label fx:id="lblTituloEstudiantes" layoutX="15.0" layoutY="15.0" styleClass="panel-title" text="Estudiantes Asignados" />
-                            <Label fx:id="lblTotalEstudiantes" layoutX="15.0" layoutY="45.0" styleClass="summary-number" text="0" />
-                            <Label fx:id="lblEnCurso" layoutX="15.0" layoutY="75.0" styleClass="status-detail" text="En curso: 0" />
-                            <Label fx:id="lblFinalizadas" layoutX="15.0" layoutY="95.0" styleClass="status-detail" text="Finalizadas: 0" />
+                            <Label fx:id="lblTituloProyectos" layoutX="15.0" layoutY="15.0" styleClass="panel-title" text="Proyectos Registrados" />
+                            <Label fx:id="lblTotalProyectos" layoutX="15.0" layoutY="45.0" styleClass="summary-number" text="0" />
+                            <Label fx:id="lblActivos" layoutX="15.0" layoutY="75.0" styleClass="status-detail" text="Activos: 0" />
+                            <Label fx:id="lblFinalizados" layoutX="15.0" layoutY="95.0" styleClass="status-detail" text="Finalizados: 0" />
                         </children>
                     </AnchorPane>
 
-                    <!-- Panel de informes pendientes -->
+                    <!-- Panel de seguimiento -->
                     <AnchorPane layoutX="310.0" layoutY="80.0" prefHeight="120.0" prefWidth="260.0" styleClass="summary-panel">
                         <children>
-                            <Label fx:id="lblTituloInformes" layoutX="15.0" layoutY="15.0" styleClass="panel-title" text="Informes Pendientes" />
-                            <Label fx:id="lblInformesPendientes" layoutX="15.0" layoutY="45.0" styleClass="summary-number alert-number" text="0" />
-                            <Label fx:id="lblParaEvaluar" layoutX="15.0" layoutY="75.0" styleClass="status-detail" text="Para evaluar: 0" />
-                            <Label fx:id="lblVencimientoProximo" layoutX="15.0" layoutY="95.0" styleClass="status-detail" text="Vencimiento próximo: 0" />
+                            <Label fx:id="lblTituloSeguimiento" layoutX="15.0" layoutY="15.0" styleClass="panel-title" text="Seguimiento" />
+                            <Label fx:id="lblSeguimientosPendientes" layoutX="15.0" layoutY="45.0" styleClass="summary-number alert-number" text="0" />
+                            <Label fx:id="lblEstudiantesPendientes" layoutX="15.0" layoutY="75.0" styleClass="status-detail" text="Estudiantes: 0" />
+                            <Label fx:id="lblProximoSeguimiento" layoutX="15.0" layoutY="95.0" styleClass="status-detail" text="Próximo: --" />
                         </children>
                     </AnchorPane>
 

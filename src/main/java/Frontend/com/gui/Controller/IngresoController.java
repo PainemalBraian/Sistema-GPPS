@@ -3,8 +3,12 @@ package Frontend.com.gui.Controller;
 import Backend.API.API;
 import Backend.DTO.UsuarioDTO;
 import Backend.Exceptions.LoginException;
+import Frontend.com.gui.Controller.Administrador.homeAdministradorController;
+import Frontend.com.gui.Controller.DirectorCarrera.homeDirectorCarreraController;
 import Frontend.com.gui.Controller.Docente.HomeDocenteController;
+import Frontend.com.gui.Controller.EntidadColaboradora.homeEmpresaController;
 import Frontend.com.gui.Controller.Estudiante.HomeController;
+import Frontend.com.gui.Controller.Tutor.HomeTutorController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,6 +40,8 @@ public class IngresoController {
     public ImageView IconLogin;
     @FXML public Button ButtonIngresarEstudiante;
     @FXML public Button ButtonIngresarDocente;
+    @FXML public Button ButtonIngresarEmpresa;
+
     public Label LabelGPPS;
 
     @FXML
@@ -201,4 +207,95 @@ public class IngresoController {
     }
 
 
+    public void IngresarComoDirector(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/DirectorCarrera/homeDirectorCarrera.fxml"));
+            Parent root = loader.load();
+
+            // Obtener el controlador de la vista principal
+            homeDirectorCarreraController controllerHome = loader.getController();
+            controllerHome.setPersistenceAPI(api);
+
+            Stage stage = new Stage();
+            stage.setTitle("Principal - GPPS");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Cerrar la ventana actual de ingreso
+            ((Stage)((Button)actionEvent.getSource()).getScene().getWindow()).close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "" + e.getMessage());
+        }
+    }
+
+    public void IngresarComoTutor(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Tutor/homeTutor.fxml"));
+            Parent root = loader.load();
+
+            // Obtener el controlador de la vista principal
+            HomeTutorController controllerHome = loader.getController();
+            controllerHome.setPersistenceAPI(api);
+
+            Stage stage = new Stage();
+            stage.setTitle("Home Tutor - GPPS");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Cerrar la ventana actual de ingreso
+            ((Stage)((Button)actionEvent.getSource()).getScene().getWindow()).close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "" + e.getMessage());
+        }
+    }
+
+    public void IngresarComoEmpresa(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/EntidadColaboradora/homeEmpresa.fxml"));
+            Parent root = loader.load();
+
+            // Obtener el controlador de la vista principal
+            homeEmpresaController controllerHome = loader.getController();
+            controllerHome.setPersistenceAPI(api);
+
+            Stage stage = new Stage();
+            stage.setTitle("Principal - GPPS");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Cerrar la ventana actual de ingreso
+            ((Stage)((Button)actionEvent.getSource()).getScene().getWindow()).close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "" + e.getMessage());
+        }
+    }
+
+    public void IngresarComoAdministrador(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Administrador/homeAdministrador.fxml"));
+            Parent root = loader.load();
+
+            // Obtener el controlador de la vista principal
+            homeAdministradorController controllerHome = loader.getController();
+            controllerHome.setPersistenceAPI(api);
+
+            Stage stage = new Stage();
+            stage.setTitle("Principal - GPPS");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Cerrar la ventana actual de ingreso
+            ((Stage)((Button)actionEvent.getSource()).getScene().getWindow()).close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "" + e.getMessage());
+        }
+    }
 }
