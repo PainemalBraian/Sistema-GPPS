@@ -18,9 +18,9 @@
 <?import javafx.scene.text.Font?>
 
 <StackPane prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.gui.Controller.IngresoController">
-   <AnchorPane fx:id="PaneBase" prefHeight="403.0" prefWidth="724.0" styleClass="root" stylesheets="@../StyleSheets/Ingreso.css">
+   <AnchorPane fx:id="PaneBase" prefHeight="403.0" prefWidth="789.0" styleClass="root" stylesheets="@../StyleSheets/Ingreso.css">
       <children>
-         <ImageView fx:id="IMGIngreso" fitHeight="400.0" fitWidth="292.0" layoutY="1.0" nodeOrientation="INHERIT" pickOnBounds="true">
+         <ImageView fx:id="IMGIngreso" fitHeight="389.0" fitWidth="270.0" layoutX="-2.0" layoutY="-3.0" nodeOrientation="INHERIT" pickOnBounds="true">
             <image>
                <Image url="@../imagenes/Ingreso.png" />
             </image>
@@ -73,7 +73,7 @@
                      <String fx:value="login-pane" />
                   </styleClass>
                </Button>
-               <Button fx:id="ButtonIngresarTutor" layoutX="63.0" layoutY="301.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#IngresarComoTutor" prefHeight="7.0" prefWidth="173.0" text="Ingresar como Tutor" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
+               <Button fx:id="ButtonIngresarTutor" layoutX="61.0" layoutY="296.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#IngresarComoTutor" prefHeight="7.0" prefWidth="173.0" text="Ingresar como Tutor" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
                   <font>
                      <Font name="Arial Black" size="10.0" />
                   </font>
@@ -87,7 +87,7 @@
                      <String fx:value="login-pane" />
                   </styleClass>
                </Button>
-               <Button fx:id="ButtonIngresarAdministrador" layoutX="62.0" layoutY="254.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#IngresarComoAdministrador" prefHeight="18.0" prefWidth="173.0" text="Ingresar como Admin" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
+               <Button fx:id="ButtonIngresarAdministrador" layoutX="62.0" layoutY="252.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#IngresarComoAdministrador" prefHeight="18.0" prefWidth="173.0" text="Ingresar como Admin" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
                   <font>
                      <Font name="Arial Black" size="10.0" />
                   </font>
