@@ -1,9 +1,9 @@
-package Frontend.com.gui.Controller.Estudiante; // Or a more specific sub-package like Frontend.com.gui.Controller.Informes
+package Frontend.com.gui.Controller.Estudiante;
 
 import Backend.API.API;
-import Backend.DTO.ActividadDTO; // Use your actual DTO
-import Backend.DTO.InformeDTO;   // Use your actual DTO
-import Backend.Exceptions.CreateException; // Use your actual exception
+import Backend.DTO.ActividadDTO;
+import Backend.DTO.InformeDTO;
+import Backend.Exceptions.CreateException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,44 +21,9 @@ import javafx.util.StringConverter;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ResourceBundle; // Included for consistency with example
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-// --- Minimal DTO Definitions (REMOVE THESE and use your actual DTOs from Backend.DTO) ---
-// These are here just to make this controller code snippet self-contained for demonstration.
-// Ensure your actual DTOs provide the necessary getters and methods.
-/*
-class ActividadDTO {
-    private String titulo;
-    private String descripcion;
-    private ObservableList<InformeDTO> informes = FXCollections.observableArrayList();
-    public ActividadDTO(String titulo, String descripcion) { this.titulo = titulo; this.descripcion = descripcion; }
-    public String getTitulo() { return titulo; }
-    public String getDescripcion() { return descripcion; }
-    public ObservableList<InformeDTO> getInformes() { return informes; }
-    public void addInforme(InformeDTO informe) { this.informes.add(informe); }
-    @Override public String toString() { return titulo; }
-}
-
-class InformeDTO {
-    private String titulo;
-    private String descripcion;
-    private String contenido;
-    private int porcentajeAvance;
-    private LocalDate fecha;
-    public InformeDTO(String titulo, String descripcion, String contenido, LocalDate fecha, int porcentajeAvance) {
-        this.titulo = titulo; this.descripcion = descripcion; this.contenido = contenido;
-        this.fecha = fecha; this.porcentajeAvance = porcentajeAvance;
-    }
-    public String getTitulo() { return titulo; }
-    public String getDescripcion() { return descripcion; }
-    public String getContenido() { return contenido; }
-    public int getPorcentajeAvance() { return porcentajeAvance; }
-    public LocalDate getFecha() { return fecha; }
-}
-*/
-// --- End of Minimal DTO Definitions ---
 
 
 public class InformeDeTareasController {
@@ -106,8 +71,8 @@ public class InformeDeTareasController {
 
     public void setPersistenceAPI(API persistenceAPI) throws Exception { // Added throws Exception
         this.api = persistenceAPI;
-        // this.bundle = api.obtenerIdioma(); // Uncomment if using internationalization
-        // actualizarIdioma(); // Uncomment if using internationalization
+        // this.bundle = api.obtenerIdioma();
+        // actualizarIdioma();
     //    cargarActividades();
     }
 
@@ -128,7 +93,7 @@ public class InformeDeTareasController {
             }
             @Override
             public ActividadDTO fromString(String string) {
-                return null; // No conversion from string needed for non-editable ComboBox
+                return null;
             }
         });
     }
@@ -162,17 +127,17 @@ public class InformeDeTareasController {
 /*
     private void mostrarActividades() {
         try {
-            Replace 'api.obtenerActividadesDTOs()' with your actual API method
+            Replace 'api.obtenerActividadesDTOs()'
             List<ActividadDTO> actividadesDesdeAPI = api.obtenerActividadesDTOs();
             listaActividades.setAll(actividadesDesdeAPI);
             if (api.mostrarActividades()) {
                 mostrarAlerta("Información", "No hay actividades disponibles actualmente.", Alert.AlertType.INFORMATION);
             }
-        } catch (ReadException e) { // Assuming your API throws this
+        } catch (ReadException e) {
             LOGGER.log(Level.SEVERE, "Error al cargar actividades desde la API", e);
             mostrarAlerta("Error de Carga", "No se pudieron cargar las actividades: " + e.getMessage(), Alert.AlertType.ERROR);
-            cargarActividadesDummy(); // Fallback to dummy data or empty list
-        } catch (Exception e) { // Catch any other unexpected exceptions
+            cargarActividadesDummy();
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error inesperado al cargar actividades", e);
             mostrarAlerta("Error Inesperado", "Ocurrió un error inesperado al cargar las actividades.", Alert.AlertType.ERROR);
             cargarActividadesDummy();
@@ -184,7 +149,7 @@ public class InformeDeTareasController {
         ActividadDTO act1 = new ActividadDTO("Proyecto Alpha (DTO)", "Desarrollo frontend con DTOs");
         InformeDTO inf1_1 = new InformeDTO("Avance UI Login (DTO)", "Login DTO completo", "path/dto/login.pdf", LocalDate.now().minusDays(5), 50);
         InformeDTO inf1_2 = new InformeDTO("Revisión Componentes (DTO)", "Componentes DTO definidos", "path/dto/comps.pdf", LocalDate.now().minusDays(2), 75);
-        act1.addInforme(inf1_1); // Assumes ActividadDTO has addInforme(InformeDTO)
+        act1.addInforme(inf1_1);
         act1.addInforme(inf1_2);
 
         ActividadDTO act2 = new ActividadDTO("Proyecto Beta (DTO)", "Backend API con DTOs");
@@ -216,26 +181,22 @@ public class InformeDeTareasController {
                 return;
             }
 
-            // API call to persist the informe using primitive types or a specific DTO for creation if available
             LocalDate fechaCreacion = LocalDate.now();
-            api.cargarInforme(titulo, descripcion, contenido, fechaCreacion); // Assumes this is the correct API signature
+            api.cargarInforme(titulo, descripcion, contenido, fechaCreacion);
 
 
 
             InformeDTO nuevoInformeDTO = new InformeDTO(titulo, descripcion, contenido, fechaCreacion);
-            actividadSeleccionada.addInforme(nuevoInformeDTO); // Add to the selected ActividadDTO's observable list
-
-            // TableView should update automatically if items list is observable and modified.
-            // informesTableView.refresh(); // Usually not needed if using ObservableList correctly.
+            actividadSeleccionada.addInforme(nuevoInformeDTO);
 
             limpiarFormularioInforme();
             mostrarAlerta("Éxito", "Informe guardado correctamente.", Alert.AlertType.INFORMATION);
             LOGGER.log(Level.INFO, "Informe guardado: " + titulo + " para actividad: " + actividadSeleccionada.getTitulo());
 
-        } catch (CreateException e) { // Assuming api.cargarInforme throws this
+        } catch (CreateException e) {
             LOGGER.log(Level.SEVERE, "Error al guardar el informe en la base de datos", e);
             mostrarAlerta("Error al Guardar", "No se pudo guardar el informe: " + e.getMessage(), Alert.AlertType.ERROR);
-        } catch (Exception e) { // Catch any other unexpected exceptions during the process
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error inesperado al guardar el informe", e);
             mostrarAlerta("Error Inesperado", "Ocurrió un error inesperado al intentar guardar el informe.", Alert.AlertType.ERROR);
         }
@@ -280,7 +241,7 @@ public class InformeDeTareasController {
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
-        alert.setHeaderText(null); // No header text
+        alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
