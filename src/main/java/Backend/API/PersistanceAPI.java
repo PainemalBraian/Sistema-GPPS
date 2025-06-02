@@ -436,7 +436,7 @@ public class PersistanceAPI implements API {
     @Override
     public List<ActividadDTO> obtenerActividadesHabilitadas() throws ReadException {
         try {
-            List<ActividadDTO> actividadesDTO = convertirAListaActividadesDTO(ActividadDAODB.obtenerActividadesHabilitadas());
+            List<ActividadDTO> actividadesDTO = convertirAListaActividadesDTO(ActividadDAODB.obtenerActividades());
             return actividadesDTO;
         } catch (EmptyException e) {
             throw new ReadException("Error al obtener los proyectos: "+e.getMessage());
