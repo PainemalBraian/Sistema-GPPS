@@ -84,7 +84,7 @@ CREATE TABLE Actividades (
 CREATE TABLE Informes (
     idInforme INT AUTO_INCREMENT PRIMARY KEY,
     idActividad INT,
-    nombre VARCHAR(255) NOT NULL,
+    titulo VARCHAR(255) NOT NULL,
     archivo_pdf LONGBLOB, -- Contenido del PDF
     fecha DATE NOT NULL,
     FOREIGN KEY (idActividad) REFERENCES Actividades(idActividad)
@@ -94,17 +94,29 @@ CREATE TABLE ConveniosPPS (
     idConvenio INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
     descripcion TEXT,
-    habilitado BOOLEAN DEFAULT FALSE,
+    habilitado BOOLEAN DEFAULT TRUE,
     idProyecto INT NOT NULL,
-    idDocente INT NOT NULL,
     idEstudiante INT NOT NULL,
-    idDirector INT NOT NULL,
     idEntidad INT NOT NULL,
+    idPlan INT NOT NULL,
     FOREIGN KEY (idProyecto) REFERENCES Proyectos(idProyecto) ON DELETE CASCADE,
-    FOREIGN KEY (idDocente) REFERENCES Docentes(idDocente) ON DELETE CASCADE,
+    FOREIGN KEY (idPlan) REFERENCES PlanesDeTrabajos(idPlanDeTrabajo) ON DELETE CASCADE,
     FOREIGN KEY (idEstudiante) REFERENCES Estudiantes(idEstudiante) ON DELETE CASCADE,
-    FOREIGN KEY (idDirector) REFERENCES DirectoresCarrera(idDirector) ON DELETE CASCADE,
     FOREIGN KEY (idEntidad) REFERENCES EntidadesColaborativas(idEntidad) ON DELETE CASCADE
+);
+
+CREATE TABLE PlanesDeTrabajos (
+    idPlanDeTrabajo INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    habilitado BOOLEAN DEFAULT TRUE,
+    idDocente INT NOT NULL,
+    idTutor INT NOT NULL,
+    idInformeFinal INT NOT NULL,
+--  relacion de Lista de Actividades - Plan
+    FOREIGN KEY (idDocente) REFERENCES Docentes(idDocente) ON DELETE CASCADE,
+    FOREIGN KEY (idTutor) REFERENCES TutoresExternos(idTutor) ON DELETE CASCADE,
+    FOREIGN KEY (idInformeFinal) REFERENCES Informes(idInforme) ON DELETE CASCADE
 );
 
 
@@ -134,12 +146,12 @@ CREATE TABLE Relacion_Entidad_Proyectos(
     PRIMARY KEY (idEntidad, idProyecto)  -- Evita duplicados
 );
 
--- Relación entre ConvenioPPS y Actividades
-CREATE TABLE Relacion_Convenio_Actividades (
-    idConvenio INT NOT NULL,
+-- Relación entre Planes de Trabajos y Actividades
+CREATE TABLE Relacion_PlanDeTrabajo_Actividades (
+    idPlan INT NOT NULL,
     idActividad INT NOT NULL,
-    PRIMARY KEY (idConvenio, idActividad),
-    FOREIGN KEY (idConvenio) REFERENCES ConveniosPPS(idConvenio) ON DELETE CASCADE,
+    PRIMARY KEY (idPlan, idActividad),
+    FOREIGN KEY (idPlan) REFERENCES PlanesDeTrabajos(idPlanDeTrabajo) ON DELETE CASCADE,
     FOREIGN KEY (idActividad) REFERENCES Actividades(idActividad) ON DELETE CASCADE
 );
 

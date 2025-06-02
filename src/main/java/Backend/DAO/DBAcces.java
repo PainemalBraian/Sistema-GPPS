@@ -9,34 +9,34 @@ import java.util.ResourceBundle;
 
 public class DBAcces {
     protected Connection conn = null;
-    protected static Properties prop = null;
-
-    private static Properties getProperties() throws RuntimeException {
+    private static Properties getProperties() throws ConnectionException {
         Properties prop = new Properties();
         try {
             ResourceBundle infoDataBase = ResourceBundle.getBundle("Backend.database");
             prop.setProperty("connection", infoDataBase.getString("db.url"));
             prop.setProperty("username", infoDataBase.getString("db.user"));
             prop.setProperty("password", infoDataBase.getString("db.password"));
-        } catch (Exception e1) {
-            e1.printStackTrace();
-            throw new RuntimeException("Ocurrio un error al leer la configuracion desde el archivo");
+        } catch (Exception e) {
+            throw new ConnectionException("Ocurrio un error al leer la configuracion desde el archivo");
         }
         return prop;
     }
 
+    protected static Properties prop = null;
+
     protected Connection connect() throws ConnectionException {
         try {
-            prop = getProperties();
-            conn = DriverManager.getConnection(prop.getProperty("connection"), prop.getProperty("username"),
-                    prop.getProperty("password"));
-            if (conn == null) {
-                throw new ConnectionException("Error al conectar con la base de datos");
-            }
-            conn.setAutoCommit(true); // Asegura que los cambios se guarden automáticamente
+            Properties prop = getProperties();
+            Connection conn = DriverManager.getConnection(
+                    prop.getProperty("connection"),
+                    prop.getProperty("username"),
+                    prop.getProperty("password")
+            );
+
+            conn.setAutoCommit(true);
+
             return conn;
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new ConnectionException("Error al conectar con base de datos");
         }
     }

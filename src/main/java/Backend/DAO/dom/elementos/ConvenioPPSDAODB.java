@@ -14,21 +14,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
+//    Docente docente= convertirADocente(docenteDTO);
+//    TutorExterno tutor = convertirATutor(proyectoDTO.getTutorEncargado());
+//    PlanDeTrabajo plan = new PlanDeTrabajo(tituloPlan,descripcionPlan,docente,tutor);
+//    Proyecto proyecto = convertirAProyecto(proyectoDTO);
+//    Estudiante estudiante = convertirAEstudiante(estudianteDTO);
+//    EntidadColaborativa entidad = convertirAEntidad(entidadDTO);
+//    ConvenioPPS convenio = new ConvenioPPS(tituloConvenio, descripcionConvenio, proyecto, estudiante, entidad,plan);
     @Override
     public void create(ConvenioPPS convenio) throws CreateException {
         try (Connection conn = connect();
              PreparedStatement statement = conn.prepareStatement(
-                     "INSERT INTO ConveniosPPS(titulo, descripcion, habilitado, idProyecto, idDocente, idEstudiante,idDirector, idEntidad) VALUES (?, ?, ?, ?, ?, ?, ?,?)"
+                     "INSERT INTO ConveniosPPS(titulo, descripcion, habilitado, idProyecto, idEstudiante, idEntidad, idPlanDeTrabajo) VALUES (?, ?, ?, ?, ?, ?, ?)"
              )) {
 
             statement.setString(1, convenio.getTitulo());
             statement.setString(2, convenio.getDescripcion());
             statement.setBoolean(3, convenio.isHabilitado());
             statement.setInt(4, convenio.getProyecto().getId());
-            statement.setInt(5, convenio.getDocente().getIdUsuario());
-            statement.setInt(6, convenio.getEstudiante().getIdUsuario());
-            statement.setInt(7, convenio.getDirector().getIdUsuario());
-            statement.setInt(8, convenio.getEntidad().getIdUsuario());
+            statement.setInt(5, convenio.getEstudiante().getIdUsuario());
+            statement.setInt(6, convenio.getEntidad().getIdUsuario());
+            statement.setInt(7, convenio.getPlan().getId());
 
             statement.executeUpdate();
 
@@ -60,27 +66,20 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
 
                 // Obtener objetos relacionados
                 Proyecto proyecto = new ProyectoDAODB().buscarByID(result.getInt("idProyecto"));
-                Docente docente = new DocenteDAODB().buscarById(result.getInt("idDocente"));
-                Estudiante estudiante = new EstudianteDAODB().buscarById(result.getInt("idEstudiante"));
-//                DirectorCarrera director = new DirectorCarreraDAODB().buscarById(result.getInt("idDirector"));
-                EntidadColaborativa entidad = new EntidadColaborativaDAODB().buscarById(result.getInt("idEntidad"));
-
-                // Si no hay actividades cargadas en la base, se envía una lista vacía por ahora
-                List<Actividad> actividades = new ArrayList<>();
-
-                PlanDeTrabajo plan = buscarByTitulo();
+                Estudiante estudiante = new EstudianteDAODB().buscarByID(result.getInt("idEstudiante"));
+                EntidadColaborativa entidad = new EntidadColaborativaDAODB().buscarByID(result.getInt("idEntidad"));
+                PlanDeTrabajo plan = new PlanDeTrabajoDAODB().buscarByID(result.getInt("idPlanDeTrabajo"));
 
                 ConvenioPPS convenio = new ConvenioPPS(
                         idConvenio,
                         titulo,
                         descripcion,
                         proyecto,
-                        docente,
                         estudiante,
-                        director,
                         entidad,
-                        actividades
+                        plan
                 );
+
                 convenio.setHabilitado(habilitado);
                 return convenio;
             } else {
@@ -112,25 +111,20 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
 
                 // Obtener objetos relacionados
                 Proyecto proyecto = new ProyectoDAODB().buscarByID(result.getInt("idProyecto"));
-                Docente docente = new DocenteDAODB().buscarById(result.getInt("idDocente"));
-                Estudiante estudiante = new EstudianteDAODB().buscarById(result.getInt("idEstudiante"));
-                DirectorCarrera director = new DirectorCarreraDAODB().buscarById(result.getInt("idDirector"));
-                EntidadColaborativa entidad = new EntidadColaborativaDAODB().buscarById(result.getInt("idEntidad"));
-
-                // Lista de actividades vacía por el momento
-                List<Actividad> actividades = new ArrayList<>();
+                Estudiante estudiante = new EstudianteDAODB().buscarByID(result.getInt("idEstudiante"));
+                EntidadColaborativa entidad = new EntidadColaborativaDAODB().buscarByID(result.getInt("idEntidad"));
+                PlanDeTrabajo plan = new PlanDeTrabajoDAODB().buscarByID(result.getInt("idPlanDeTrabajo"));
 
                 ConvenioPPS convenio = new ConvenioPPS(
                         idConvenio,
                         titulo,
                         descripcion,
                         proyecto,
-                        docente,
                         estudiante,
-                        director,
                         entidad,
-                        actividades
+                        plan
                 );
+
                 convenio.setHabilitado(habilitado);
 
                 convenios.add(convenio);
@@ -183,25 +177,20 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
 
                 // Obtener objetos relacionados
                 Proyecto proyecto = new ProyectoDAODB().buscarByID(result.getInt("idProyecto"));
-                Docente docente = new DocenteDAODB().buscarById(result.getInt("idDocente"));
-                Estudiante estudiante = new EstudianteDAODB().buscarById(result.getInt("idEstudiante"));
-                DirectorCarrera director = new DirectorCarreraDAODB().buscarById(result.getInt("idDirector"));
-                EntidadColaborativa entidad = new EntidadColaborativaDAODB().buscarById(result.getInt("idEntidad"));
-
-                // Si no hay actividades cargadas en la base, se envía una lista vacía por ahora
-                List<Actividad> actividades = new ArrayList<>();
+                Estudiante estudiante = new EstudianteDAODB().buscarByID(result.getInt("idEstudiante"));
+                EntidadColaborativa entidad = new EntidadColaborativaDAODB().buscarByID(result.getInt("idEntidad"));
+                PlanDeTrabajo plan = new PlanDeTrabajoDAODB().buscarByID(result.getInt("idPlanDeTrabajo"));
 
                 ConvenioPPS convenio = new ConvenioPPS(
                         idConvenio,
                         titulo,
                         descripcion,
                         proyecto,
-                        docente,
                         estudiante,
-                        director,
                         entidad,
-                        actividades
+                        plan
                 );
+
                 convenio.setHabilitado(habilitado);
                 return convenio;
             } else {

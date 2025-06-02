@@ -4,6 +4,7 @@ import Backend.DTO.*;
 import Backend.Entidades.*;
 import Backend.Exceptions.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -50,21 +51,24 @@ public interface API {
 
     RolDTO obtenerRolByUsuarioId(int id) throws Exception; // Obtiene el rol de un usuario mediante su ID
 
+    void descargarArchivoPDF(String tituloInforme) throws IOException, ReadException; // Descarga archivo pdf del informe seleccionado
+
     //probar
-    void cargarConvenio(String tituloConvenio, String descripcionConvenio, ProyectoDTO proyectoDTO, DocenteDTO docenteDTO, EstudianteDTO estudianteDTO,
-                        EntidadColaborativaDTO entidadDTO, List<ActividadDTO> actividades, String tituloPlan, String descripcionPlan)throws CreateException;
+    void cargarConvenio(String tituloConvenio, String descripcionConvenio, ProyectoDTO proyectoDTO, EstudianteDTO estudianteDTO,
+                        EntidadColaborativaDTO entidadDTO, String tituloPlan)throws CreateException;
 
     void cargarActividad(String titulo, String descripcion, LocalDate fechaFin, int duracion, LocalDate fechaInicio)throws CreateException;
 
-    void cargarInforme(String titulo, String descripcion, String contenido, LocalDate fecha)throws CreateException;
+    //probar
+    void cargarInforme(String titulo, String descripcion, byte[] archivo, LocalDate fecha)throws CreateException;
 
     void cargarPropuestaPropia(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos) throws CreateException;
 
     void cargarProyecto(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos, String tutorEncargado) throws CreateException; // Carga un proyecto, con los datos solicitados por parametro
 
-    Informe obtenerInformeByTitulo(String titulo) throws EmptyException;
+    InformeDTO obtenerInformeByTitulo(String titulo) throws ReadException;
 
-    Actividad obtenerActividadByTitulo(String titulo) throws EmptyException;
+    ActividadDTO obtenerActividadByTitulo(String titulo) throws ReadException;
 
     //probar
     ProyectoDTO obtenerProyectoByTitulo(String titulo) throws ReadException; // Devuelve un proyecto de la DB que es buscado dado un titulo
@@ -75,7 +79,12 @@ public interface API {
     List <ProyectoDTO> obtenerProyectosHabilitados() throws ReadException; // Devuelve de la DB todos los proyectos que esten habilitados
 
     //probar
-    ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException, EmptyException, UserException; // Devuelve Un convenio de PPs de la DB dado su titulo
+    ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException; // Devuelve Un convenio de PPs de la DB dado su titulo
 
-    List<Informe> obtenerInformeByConvenioTitulo(String tituloConvenio) throws EmptyException;
+    //Informes de una actividad
+    PlanDeTrabajoDTO obtenerPlanByConvenioTitulo(String titulo) throws ReadException;
+
+    List<ActividadDTO> obtenerActividadesByConvenioTitulo(String titulo) throws ReadException;
+
+    List<InformeDTO> obtenerInformesByConvenioTitulo(String tituloConvenio) throws ReadException;
 }

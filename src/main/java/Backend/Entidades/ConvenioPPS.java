@@ -33,18 +33,17 @@ public class ConvenioPPS extends Item {
     }
 
     // Busquedas
-    public ConvenioPPS(int id, String titulo, String descripcion, Proyecto proyecto, Docente docente, Estudiante estudiante,
-                       DirectorCarrera director, EntidadColaborativa entidad, List<Actividad> actividades) throws EmptyException {
+    public ConvenioPPS(int id, String titulo, String descripcion, Proyecto proyecto, Estudiante estudiante,
+                       EntidadColaborativa entidad, PlanDeTrabajo plan) throws EmptyException {
         super(id, titulo, descripcion);
         if (isNull(proyecto)) { throw new EmptyException("El proyecto debe existir."); }
-        if (isNull(docente)) { throw new EmptyException("El docente debe existir."); }
         if (isNull(estudiante)) { throw new EmptyException("El estudiante debe existir."); }
-        if (isNull(director)) { throw new EmptyException("El director debe existir."); }
         if (isNull(entidad)) { throw new EmptyException("La entidad debe existir."); }
 
         this.proyecto = proyecto;
         this.estudiante = estudiante;
         this.entidad = entidad;
+        this.plan = plan;
     }
 
 //////////////////////////////METHODs///////////////////////////////////////////////////

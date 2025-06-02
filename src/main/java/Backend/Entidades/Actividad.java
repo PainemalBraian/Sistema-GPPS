@@ -60,9 +60,8 @@ public class Actividad extends Item{
         return calificacion;
     }
 
-    public List<Informe> getInformes() throws EmptyException {
-        if (informes == null) {throw new EmptyException("No existen informes cargados.");}
-
+    public List<Informe> getInformes() {
+//        if (informes == null) {throw new EmptyException("No existen informes cargados para la actividad: " + this.getTitulo() );}
         return this.informes;
     }
 

@@ -45,7 +45,7 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
     }
 
     @Override
-    public Estudiante buscarById(int id) throws UserException {
+    public Estudiante buscarByID(int id) throws UserException {
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(

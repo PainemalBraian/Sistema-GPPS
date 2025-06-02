@@ -97,7 +97,7 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
     }
 
     @Override
-    public EntidadColaborativa buscarById(int id) throws UserException {
+    public EntidadColaborativa buscarByID(int id) throws UserException {
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(

@@ -11,9 +11,8 @@ public class PlanDeTrabajo extends Item{
     private Docente docente;
     private TutorExterno tutor;
     private List<Actividad> actividades = new ArrayList<>();
-    // Agregar Lista de informes acá  ?
     private Informe informeFinal;
-    private boolean habilitado = true; // Direccion y Entidad deben aprobarlo. Pero se preestablece true para evitar complejidad
+    private boolean habilitado = true; // Direccion y Entidad deben aprobarlo. Pero se preestablece true para probar funcionamiento
 
     public PlanDeTrabajo(String titulo, String descripcion,Docente docente, TutorExterno tutor) throws EmptyException {
         super(titulo,descripcion);
