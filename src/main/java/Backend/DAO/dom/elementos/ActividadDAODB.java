@@ -14,7 +14,7 @@ public class ActividadDAODB extends DBAcces implements ACTIVIDADDAO {
     public void create(Actividad actividad) throws CreateException {
         try (Connection conn = connect();
              PreparedStatement statement = conn.prepareStatement(
-                     "INSERT INTO Informes(titulo, descripcion, duracion, fechaFin, fechaInicio) VALUES (?, ?, ?, ?, ?)"
+                     "INSERT INTO actividades(titulo, descripcion, duracion, fechaFin, fechaInicio) VALUES (?, ?, ?, ?, ?)"
              )) {
 
             statement.setString(1, actividad.getTitulo());
@@ -57,7 +57,7 @@ public class ActividadDAODB extends DBAcces implements ACTIVIDADDAO {
                 result.close();
                 return actividad;
             } else {
-                throw new ReadException("No se encontró el informe en la base de datos");
+                throw new ReadException("No se encontró la actividad en la base de datos");
             }
         } catch (ConnectionException e) {
             throw new ReadException(e.getMessage());
@@ -73,7 +73,7 @@ public class ActividadDAODB extends DBAcces implements ACTIVIDADDAO {
         List<Actividad> actividades = new ArrayList<>();
 
         try (Connection conn = connect();
-             PreparedStatement statement = conn.prepareStatement("SELECT * FROM Informes");
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM actividades");
              ResultSet result = statement.executeQuery()) {
 
             while (result.next()) {
@@ -90,7 +90,7 @@ public class ActividadDAODB extends DBAcces implements ACTIVIDADDAO {
 
             return actividades;
         } catch (SQLException e) {
-            throw new ReadException("Error al obtener los datos de los informes." + e.getMessage());
+            throw new ReadException("Error al obtener los datos de las actividades." + e.getMessage());
         } catch (ConnectionException e) {
             throw new ReadException(e.getMessage());
         } catch (EmptyException e) {
@@ -151,33 +151,33 @@ public class ActividadDAODB extends DBAcces implements ACTIVIDADDAO {
             throw new ReadException(e.getMessage());
         }
     }
-
-    public List<Actividad> obtenerActividadesHabilitadas() throws ReadException {
-        List<Actividad> actividades = new ArrayList<>();
-
-        try (Connection conn = connect();
-             PreparedStatement statement = conn.prepareStatement("SELECT * FROM Informes WHERE habilitado = TRUE");
-             ResultSet result = statement.executeQuery()) {
-
-            while (result.next()) {
-                Actividad actividad = new Actividad(
-                        result.getInt("idActividad"),
-                        result.getString("titulo"),
-                        result.getString("descripcion"),
-                        result.getDate("fechaFin").toLocalDate(),
-                        result.getInt("duracion"),
-                        result.getDate("fechaInicio").toLocalDate());
-
-                actividades.add(actividad);
-            }
-
-            return actividades;
-        } catch (SQLException e) {
-            throw new ReadException("Error al obtener los datos de los informes." + e.getMessage());
-        } catch (ConnectionException e) {
-            throw new ReadException(e.getMessage());
-        } catch (EmptyException e) {
-            throw new ReadException(e.getMessage());
-        }
-    }
+    //No existe posibilidad de habilitar o no las actividades
+//    public List<Actividad> obtenerActividadesHabilitadas() throws ReadException {
+//        List<Actividad> actividades = new ArrayList<>();
+//
+//        try (Connection conn = connect();
+//             PreparedStatement statement = conn.prepareStatement("SELECT * FROM Informes WHERE habilitado = TRUE");
+//             ResultSet result = statement.executeQuery()) {
+//
+//            while (result.next()) {
+//                Actividad actividad = new Actividad(
+//                        result.getInt("idActividad"),
+//                        result.getString("titulo"),
+//                        result.getString("descripcion"),
+//                        result.getDate("fechaFin").toLocalDate(),
+//                        result.getInt("duracion"),
+//                        result.getDate("fechaInicio").toLocalDate());
+//
+//                actividades.add(actividad);
+//            }
+//
+//            return actividades;
+//        } catch (SQLException e) {
+//            throw new ReadException("Error al obtener los datos de los informes." + e.getMessage());
+//        } catch (ConnectionException e) {
+//            throw new ReadException(e.getMessage());
+//        } catch (EmptyException e) {
+//            throw new ReadException(e.getMessage());
+//        }
+//    }
 }
