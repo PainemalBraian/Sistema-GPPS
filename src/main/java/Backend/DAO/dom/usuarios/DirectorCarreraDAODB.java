@@ -40,14 +40,13 @@ public class DirectorCarreraDAODB extends DBAcces implements DirectorCarreraDAO 
                 DirectorCarrera director = new DirectorCarrera(usuarioDAODB.buscarById(result.getInt("idUsuario")));
                 directores.add(director);
             }
-            disconnect();
             return directores;
         } catch (SQLException e) {
             throw new UserException("Error al leer en la base de datos: " + e);
         } catch (UserException e) {
             throw new UserException(e.getMessage());
         }catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 
@@ -66,9 +65,14 @@ public class DirectorCarreraDAODB extends DBAcces implements DirectorCarreraDAO 
             if (result.next()) {
                 UsuarioDAODB userDAO = new UsuarioDAODB();
                 Usuario usuario = userDAO.buscarById(result.getInt("idUsuario"));
-
+                disconnect();
+                statement.close();
+                result.close();
                 return new DirectorCarrera(usuario);
             } else {
+                disconnect();
+                statement.close();
+                result.close();
                 throw new UserException("Director no encontrado.");
             }
         }
@@ -76,7 +80,7 @@ public class DirectorCarreraDAODB extends DBAcces implements DirectorCarreraDAO 
             throw new UserException("Error al buscar el director en la base de datos: " + e.getMessage());
         }
         catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 
@@ -95,9 +99,14 @@ public class DirectorCarreraDAODB extends DBAcces implements DirectorCarreraDAO 
             if (result.next()) {
                 UsuarioDAODB userDAO = new UsuarioDAODB();
                 Usuario usuario = userDAO.buscarById(result.getInt("idUsuario"));
-
+                disconnect();
+                statement.close();
+                result.close();
                 return new DirectorCarrera(usuario);
             } else {
+                disconnect();
+                statement.close();
+                result.close();
                 throw new UserException("Director no encontrado.");
             }
         }
@@ -105,7 +114,7 @@ public class DirectorCarreraDAODB extends DBAcces implements DirectorCarreraDAO 
             throw new UserException("Error al buscar el director en la base de datos: " + e.getMessage());
         }
         catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 }

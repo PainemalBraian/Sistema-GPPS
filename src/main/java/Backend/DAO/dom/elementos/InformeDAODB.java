@@ -26,7 +26,7 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
             statement.executeUpdate();
 
         }catch(ConnectionException e){
-            throw new CreateException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new CreateException(e.getMessage());
         }catch(SQLException e){
             throw new CreateException("Error al crear el informe: " + e.getMessage());
         }
@@ -61,7 +61,7 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
         } catch (SQLException e) {
             throw new ReadException("Error al obtener los datos de los informes." + e.getMessage());
         } catch (ConnectionException e) {
-            throw new ReadException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new ReadException(e.getMessage());
         } catch (EmptyException e) {
             throw new ReadException(e.getMessage());
         }
@@ -85,17 +85,18 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
                 Informe informe = new Informe(idInforme, titulo, descripcion, archivo);
                 informe.setFecha(fecha);
 
+                result.close();
                 return informe;
             } else {
                 throw new ReadException("No se encontró el informe en la base de datos");
             }
 
         } catch (ConnectionException e) {
-            throw new ReadException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new ReadException( e.getMessage());
         } catch (SQLException e) {
             throw new ReadException("Error al leer el informe: " + e.getMessage());
         } catch (EmptyException e) {
-            throw new RuntimeException(e);
+            throw new ReadException(e.getMessage());
         }
     }
 
@@ -116,17 +117,18 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
                 Informe informe = new Informe(idInforme, titulo, descripcion, archivo);
                 informe.setFecha(fecha);
 
+                result.close();
                 return informe;
             } else {
                 throw new ReadException("No se encontró el informe en la base de datos");
             }
 
         } catch (ConnectionException e) {
-            throw new ReadException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new ReadException(e.getMessage());
         } catch (SQLException e) {
             throw new ReadException("Error al leer el informe: " + e.getMessage());
         } catch (EmptyException e) {
-            throw new RuntimeException(e);
+            throw new ReadException(e.getMessage());
         }
     }
 
@@ -141,13 +143,15 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
             if (result.next() && result.getInt("total") != 0) {
                 throw new ReadException("Informe con titulo insertado existente en el sistema.");
             }
+            statement.close();
+            result.close();
             return true;
         }
         catch (SQLException e) {
             throw new ReadException("Error al validar: " + e.getMessage());
         }
         catch (ConnectionException e) {
-            throw new ReadException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new ReadException(e.getMessage());
         }
     }
 
