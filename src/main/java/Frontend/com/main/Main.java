@@ -16,7 +16,7 @@ public class Main extends Application {
     @Override
     public void start(Stage pantalla) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/ingreso.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Ingreso.fxml"));
             Parent root = loader.load();
 
             // Obtener el controlador

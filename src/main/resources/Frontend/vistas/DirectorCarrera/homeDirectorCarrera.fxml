@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane prefHeight="550.0" prefWidth="800.0"
+           xmlns="http://javafx.com/javafx/23.0.1"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="Frontend.com.gui.Controller.DirectorCarrera.homeDirectorCarreraController">
+
+    <AnchorPane fx:id="PaneBase" prefHeight="550.0" prefWidth="800.0">
+        <children>
+            <VBox alignment="TOP_LEFT" layoutX="0.0" layoutY="0.0" prefHeight="550.0" prefWidth="200.0"
+                  spacing="5.0" styleClass="sidebar" stylesheets="@../../StyleSheets/homeUsuarios.css">
+                <Label alignment="CENTER" prefHeight="60.0" prefWidth="200.0" styleClass="app-title" text="GPPS" />
+
+                <Button fx:id="btnGestionarConvenios" maxWidth="200.0"
+                        onAction="#gestionarConvenios"
+                        prefHeight="50.0" prefWidth="200.0"
+                        styleClass="menu-button" text="Gestionar Convenios" />
+
+                <Button fx:id="btnValidarPlanesTrabajo" maxWidth="200.0"
+                        onAction="#validarPlanesTrabajo"
+                        prefHeight="50.0" prefWidth="200.0"
+                        styleClass="menu-button" text="Validar Planes Trabajo" />
+
+                <Button fx:id="btnValidarInformesFinales" maxWidth="200.0"
+                        onAction="#validarInformesFinales"
+                        prefHeight="50.0" prefWidth="200.0"
+                        styleClass="menu-button" text="Validar Informes Finales" />
+
+                <Button fx:id="btnMensajes" maxWidth="200.0"
+                        onAction="#verMensajes"
+                        prefHeight="50.0" prefWidth="200.0"
+                        styleClass="menu-button" text="Mensajes" />
+
+                <AnchorPane prefHeight="200" VBox.vgrow="ALWAYS" />
+
+                <Button fx:id="btnCerrarSesion" maxWidth="200.0"
+                        onAction="#cerrarSesion"
+                        prefHeight="50.0" prefWidth="200.0"
+                        styleClass="logout-button" text="Cerrar Sesión" />
+            </VBox>
+
+            <AnchorPane layoutX="200.0" layoutY="0.0" prefHeight="550.0" prefWidth="600.0"
+                        styleClass="content-area" stylesheets="@../../StyleSheets/homeUsuarios.css">
+                <children>
+                    <Label fx:id="lblBienvenida" layoutX="30.0" layoutY="30.0"
+                           styleClass="welcome-text" text="Bienvenido a GPPS, Director de Carrera" />
+
+                    <AnchorPane layoutX="30.0" layoutY="80.0" prefHeight="120.0" prefWidth="260.0" styleClass="summary-panel">
+                        <children>
+                            <Label fx:id="lblTituloConveniosDashboard" layoutX="15.0" layoutY="15.0" styleClass="panel-title" text="Gestión de Convenios" />
+                            <Label fx:id="lblConveniosActivosDashboard" layoutX="15.0" layoutY="45.0" styleClass="summary-number" text="0" />
+                            <Label layoutX="15.0" layoutY="75.0" styleClass="status-detail" text="Convenios Activos" />
+                            <Label fx:id="lblConveniosPorRevisarDashboard" layoutX="15.0" layoutY="95.0" styleClass="status-detail" text="Por Revisar/Renovar: 0" />
+                        </children>
+                    </AnchorPane>
+
+                    <AnchorPane layoutX="310.0" layoutY="80.0" prefHeight="120.0" prefWidth="260.0" styleClass="summary-panel">
+                        <children>
+                            <Label fx:id="lblTituloValidacionesDashboard" layoutX="15.0" layoutY="15.0" styleClass="panel-title" text="Validaciones Pendientes" />
+                            <Label fx:id="lblPlanesPorValidarDashboard" layoutX="15.0" layoutY="45.0" styleClass="summary-number" text="0" />
+                            <Label layoutX="15.0" layoutY="75.0" styleClass="status-detail" text="Planes de Trabajo por Validar" />
+                            <Label fx:id="lblInformesPorValidarDashboard" layoutX="15.0" layoutY="95.0" styleClass="status-detail" text="Informes Finales por Validar: 0" />
+                        </children>
+                    </AnchorPane>
+
+                    <AnchorPane layoutX="30.0" layoutY="220.0" prefHeight="180.0" prefWidth="540.0" styleClass="activity-panel">
+                        <children>
+                            <Label fx:id="lblTituloActividades" layoutX="15.0" layoutY="15.0" styleClass="panel-title" text="Actividades Recientes" />
+                            <VBox fx:id="vboxActividades" layoutX="15.0" layoutY="45.0" prefHeight="120.0" prefWidth="510.0" spacing="8.0" />
+                            <Label fx:id="lblNoActividades" layoutX="15.0" layoutY="55.0" styleClass="notification-info" text="No hay actividades recientes" />
+                        </children>
+                    </AnchorPane>
+
+                    <AnchorPane layoutX="30.0" layoutY="420.0" prefHeight="100.0" prefWidth="540.0" styleClass="notification-panel">
+                        <children>
+                            <Label fx:id="lblTituloMensajes" layoutX="15.0" layoutY="15.0" styleClass="panel-title" text="Mensajes No Leídos" />
+                            <Label fx:id="lblMensajesNoLeidos" layoutX="15.0" layoutY="45.0" styleClass="summary-number" text="0" />
+                            <Label fx:id="lblUltimoMensaje" layoutX="150.0" layoutY="45.0" styleClass="status-detail" text="Último mensaje: --" />
+                            <Button fx:id="btnVerTodosMensajes" layoutX="430.0" layoutY="40.0"
+                                    onAction="#verMensajes" prefHeight="30.0" prefWidth="90.0"
+                                    styleClass="secondary-button" text="Ver todos" />
+                        </children>
+                    </AnchorPane>
+                </children>
+            </AnchorPane>
+
+        </children>
+    </AnchorPane>
+</StackPane>

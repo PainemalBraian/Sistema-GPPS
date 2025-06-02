@@ -45,16 +45,7 @@
                     <TextField fx:id="direccionEntidadField" promptText="Dirección de la Entidad" />
                 </VBox>
 
-                <ComboBox fx:id="rolComboBox" promptText="Seleccionar rol" styleClass="root" stylesheets="@../StyleSheets/registro.css">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Estudiante" />
-                            <String fx:value="Docente" />
-                            <String fx:value="Representante de Entidad Colaboradora" />
-                            <String fx:value="Tutor externo" />
-                        </FXCollections>
-                    </items>
-                </ComboBox>
+                <ComboBox fx:id="rolComboBox" promptText="Seleccionar rol" />
 
 
                 <Button fx:id="BottonRegistrarse" maxWidth="150.0" onAction="#registrarse" text="Registrarse" />
