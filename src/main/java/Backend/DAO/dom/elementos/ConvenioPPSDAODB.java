@@ -14,13 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
-//    Docente docente= convertirADocente(docenteDTO);
-//    TutorExterno tutor = convertirATutor(proyectoDTO.getTutorEncargado());
-//    PlanDeTrabajo plan = new PlanDeTrabajo(tituloPlan,descripcionPlan,docente,tutor);
-//    Proyecto proyecto = convertirAProyecto(proyectoDTO);
-//    Estudiante estudiante = convertirAEstudiante(estudianteDTO);
-//    EntidadColaborativa entidad = convertirAEntidad(entidadDTO);
-//    ConvenioPPS convenio = new ConvenioPPS(tituloConvenio, descripcionConvenio, proyecto, estudiante, entidad,plan);
+
     @Override
     public void create(ConvenioPPS convenio) throws CreateException {
         try (Connection conn = connect();
@@ -39,7 +33,7 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
             statement.executeUpdate();
 
         }catch(ConnectionException e){
-            throw new CreateException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new CreateException(e.getMessage());
         }catch(SQLException e){
             throw new CreateException("Error al crear el convenio: " + e.getMessage());
         }
@@ -81,6 +75,8 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
                 );
 
                 convenio.setHabilitado(habilitado);
+
+                result.close();
                 return convenio;
             } else {
                 throw new ReadException("No se encontró un convenio con el título proporcionado.");
@@ -88,7 +84,7 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
         } catch (SQLException e) {
             throw new ReadException("Error SQL al buscar el convenio: " + e.getMessage());
         } catch (ConnectionException e) {
-            throw new ReadException("Error de conexión: " + e.getMessage());
+            throw new ReadException(e.getMessage());
         } catch (UserException | EmptyException e) {
             throw new ReadException("Error al buscar el convenio: " + e.getMessage());
         }
@@ -135,7 +131,7 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
         } catch (SQLException e) {
             throw new ReadException("Error SQL al obtener los convenios: " + e.getMessage());
         } catch (ConnectionException e) {
-            throw new ReadException("Error de conexión: " + e.getMessage());
+            throw new ReadException(e.getMessage());
         } catch (UserException | EmptyException e) {
             throw new ReadException("Error al construir los convenios: " + e.getMessage());
         }
@@ -152,13 +148,15 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
             if (result.next() && result.getInt("total") != 0) {
                 throw new CreateException("Convenio con titulo insertado existente en el sistema.");
             }
+            statement.close();
+            result.close();
             return true;
         }
         catch (SQLException e) {
             throw new CreateException("Error al validar: " + e.getMessage());
         }
         catch (ConnectionException e) {
-            throw new CreateException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new CreateException( e.getMessage());
         }
     }
 
@@ -192,6 +190,7 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
                 );
 
                 convenio.setHabilitado(habilitado);
+                result.close();
                 return convenio;
             } else {
                 throw new ReadException("No se encontró un convenio con el título proporcionado.");
@@ -199,7 +198,7 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
         } catch (SQLException e) {
             throw new ReadException("Error SQL al buscar el convenio: " + e.getMessage());
         } catch (ConnectionException e) {
-            throw new ReadException("Error de conexión: " + e.getMessage());
+            throw new ReadException(e.getMessage());
         } catch (UserException | EmptyException e) {
             throw new ReadException("Error al buscar el convenio: " + e.getMessage());
         }

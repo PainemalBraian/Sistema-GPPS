@@ -9,6 +9,8 @@ import java.util.ResourceBundle;
 
 public class DBAcces {
     protected Connection conn = null;
+    protected static Properties prop = null;
+
     private static Properties getProperties() throws ConnectionException {
         Properties prop = new Properties();
         try {
@@ -21,8 +23,6 @@ public class DBAcces {
         }
         return prop;
     }
-
-    protected static Properties prop = null;
 
     protected Connection connect() throws ConnectionException {
         try {

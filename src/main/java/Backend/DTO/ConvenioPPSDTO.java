@@ -70,4 +70,8 @@ public class ConvenioPPSDTO extends ItemDTO{
     public List<ActividadDTO> getActividades(){
         return this.plan.getActividades();
     }
+
+    public void setPlan(PlanDeTrabajoDTO plan) {
+        this.plan = plan;
+    }
 }
