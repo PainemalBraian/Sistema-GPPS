@@ -1,0 +1,163 @@
+/* Estilo general para el panel raíz */
+.root {
+    -fx-font-family: "Arial", sans-serif; /* O la fuente que estés usando */
+    -fx-background-color: #f0f2f5; /* Un color de fondo suave */
+}
+
+/* Estilo para la cabecera */
+.header-box {
+    -fx-background-color: #2c3e50; /* Un azul oscuro/gris */
+    -fx-padding: 10px 20px;
+    -fx-alignment: center-left;
+}
+
+.header-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0.1, 2, 2);
+    -fx-padding: 0 0 0 20px; /* Espacio a la izquierda del título */
+    -fx-alignment: center; /* Centra el texto dentro del label */
+    -fx-pref-width: infinity; /* Para que ocupe el espacio disponible y se centre */
+}
+
+/* Estilo para la barra lateral izquierda (formulario y selección) */
+.sidebar {
+    -fx-background-color: #ffffff; /* Fondo blanco para la barra lateral */
+    -fx-padding: 20px;
+    -fx-border-color: #d0d0d0;
+    -fx-border-width: 0 1px 0 0; /* Borde derecho sutil */
+}
+
+/* Estilo para el área de contenido principal (tabla) */
+.content-area {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20px;
+}
+
+/* Estilos para etiquetas */
+.label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #333333;
+}
+
+.label-bright {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50; /* Mismo color que el header para consistencia */
+}
+
+.label-bright-header {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding-bottom: 10px;
+    -fx-border-color: #2c3e50;
+    -fx-border-width: 0 0 1px 0; /* Línea inferior */
+    -fx-margin-bottom: 10px;
+}
+
+.label-header { /* Para títulos de sección como "Informes de la Actividad" */
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a252f;
+    -fx-padding-bottom: 8px;
+}
+
+
+/* Estilos para campos de texto y área de texto */
+.text-field, .text-area, .date-picker, .spinner {
+    -fx-font-size: 13px;
+    -fx-pref-height: 35px;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.text-area {
+    -fx-pref-height: 80px; /* Altura específica para TextArea */
+}
+
+.date-picker .text-field { /* Para que el campo interno del DatePicker no tenga doble borde */
+    -fx-border-color: transparent;
+}
+
+
+/* Estilo para ComboBox */
+.combo-box {
+    -fx-pref-height: 35px;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4px;
+    -fx-background-color: white;
+    -fx-background-radius: 4px;
+}
+.combo-box .list-cell { /* Estilo de los items en el desplegable */
+    -fx-font-size: 13px;
+    -fx-background-color: white;
+    -fx-text-fill: #333333;
+}
+.combo-box .list-cell:hover {
+    -fx-background-color: #e0e0e0;
+}
+
+
+/* Estilo para botones */
+.button {
+    -fx-font-size: 13px;
+    -fx-pref-height: 35px;
+    -fx-background-color: #5dade2; /* Un azul claro agradable */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4px;
+    -fx-padding: 5px 15px;
+}
+
+.button:hover {
+    -fx-background-color: #4a90e2; /* Azul un poco más oscuro al pasar el mouse */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 1, 1);
+}
+
+.button-accion { /* Botón principal de acción, como "Guardar" */
+    -fx-background-color: #27ae60; /* Verde para acciones positivas */
+}
+
+.button-accion:hover {
+    -fx-background-color: #229954; /* Verde más oscuro */
+}
+
+/* Estilos para TableView */
+.table-view {
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #e9ecef; /* Fondo cabecera tabla */
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #2c3e50; /* Color texto cabecera */
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 8px;
+}
+
+.table-view .table-cell {
+    -fx-font-size: 12px;
+    -fx-padding: 6px;
+    -fx-border-color: transparent #e0e0e0 transparent transparent; /* Líneas verticales sutiles */
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #f9f9f9; /* Filas impares ligeramente coloreadas */
+}
+.table-view .table-row-cell:hover {
+    -fx-background-color: #e8f0fe; /* Color al pasar el mouse sobre una fila */
+}
+
+/* GridPane para el formulario */
+.form-grid {
+    -fx-vgap: 10px;
+    -fx-hgap: 10px;
+}
