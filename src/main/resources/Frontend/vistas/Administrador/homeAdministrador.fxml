@@ -37,10 +37,6 @@
                         prefHeight="50.0" prefWidth="200.0"
                         styleClass="menu-button" text="Configuración Sistema" />
 
-                <Button fx:id="btnVerLogsAuditoria" maxWidth="200.0"
-                        onAction="#verLogsAuditoria"
-                        prefHeight="50.0" prefWidth="200.0"
-                        styleClass="menu-button" text="Logs y Auditoría" />
 
                 <Button fx:id="btnMensajesAdmin" maxWidth="200.0"
                         onAction="#verMensajesAdmin"
