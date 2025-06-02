@@ -221,11 +221,11 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
 
     @Override
     public boolean validarTituloUnico(String titulo) throws CreateException{
-        try (Connection conn = connect()) {
-            String sql = "SELECT COUNT(*) AS total FROM Proyectos WHERE LOWER(titulo) = LOWER(?)"; //Lower para indistinto a Mayúsculas o minúsculas
-            PreparedStatement statement = conn.prepareStatement(sql);
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) AS total FROM Proyectos WHERE LOWER(titulo) = LOWER(?)");
+             ResultSet result = statement.executeQuery()) {
+
             statement.setString(1, titulo);
-            ResultSet result = statement.executeQuery();
 
             if (result.next() && result.getInt("total") != 0) {
                 throw new CreateException("Proyecto con titulo insertado existente en el sistema.");
@@ -246,11 +246,11 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
         Proyecto proyecto = null;
 
         try (Connection conn = connect();
-             PreparedStatement statement = conn.prepareStatement("SELECT * FROM Proyectos WHERE titulo = ?")) {
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM Proyectos WHERE titulo = ?");
+             ResultSet result = statement.executeQuery();) {
 
             statement.setString(1, titulo);
 
-            ResultSet result = statement.executeQuery();
             if (result.next()) {
                 int idTutor = result.getInt("idTutor");
                 TutorExterno tutor = new TutorExternoDAODB().buscarByID(idTutor);

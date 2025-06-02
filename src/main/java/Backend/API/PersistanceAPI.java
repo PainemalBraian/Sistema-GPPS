@@ -7,6 +7,12 @@ import Backend.DTO.*;
 import Backend.Entidades.*;
 import Backend.Exceptions.*;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +35,7 @@ public class PersistanceAPI implements API {
     InformeDAODB InformeDAODB = new InformeDAODB();
     ProyectoDAODB ProyectoDAODB = new ProyectoDAODB();
     ConvenioPPSDAODB ConvenioPPSDAODB = new ConvenioPPSDAODB();
+    PlanDeTrabajoDAODB PlanDeTrabajoDAODB = new PlanDeTrabajoDAODB();
     MensajeDAODB MensajeDAODB = new MensajeDAODB();
 
     @Override
@@ -271,15 +278,42 @@ public class PersistanceAPI implements API {
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     //    MÉTODOS DE ELEMENTOS
     ///////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
+    public void descargarArchivoPDF(String tituloInforme) throws IOException, ReadException {
+        // Se escribe el archivo en la carpeta de descargas default del sistema
+        Informe informe = InformeDAODB.buscarByTitulo(tituloInforme);
+        byte[] datosPDF = informe.getArchivoPDF();
+        Path downloadPath = Paths.get(System.getProperty("user.home"), "Downloads");
+        // Crear la carpeta si no existe
+        File carpeta = new File(String.valueOf(downloadPath) + "/.GPPS_Downloads");
+        if (!carpeta.exists()) {
+            boolean creada = carpeta.mkdirs();
+            if (!creada) {
+                throw new IOException("No se pudo crear la carpeta destino: " + String.valueOf(downloadPath));
+            }
+        }
+
+        // Crear archivo temporal dentro de la carpeta
+        Path archivoTemporal = Files.createTempFile(carpeta.toPath(), "informe_", ".pdf");
+
+        // Escribir el contenido del PDF
+        try (FileOutputStream fos = new FileOutputStream(archivoTemporal.toFile())) {
+            fos.write(datosPDF);
+        }
+    }
+
+/////////////////////////////////////////////////////
+//    MÉTODOS DE CARGAS
 
     @Override
-    public void cargarConvenio(String tituloConvenio, String descripcionConvenio, ProyectoDTO proyectoDTO, DocenteDTO docenteDTO, EstudianteDTO estudianteDTO,
-                               EntidadColaborativaDTO entidadDTO, List<ActividadDTO> actividades, String tituloPlan, String descripcionPlan)throws CreateException {
+    public void cargarConvenio(String tituloConvenio, String descripcionConvenio, ProyectoDTO proyectoDTO, EstudianteDTO estudianteDTO,
+                               EntidadColaborativaDTO entidadDTO, String tituloPlan)throws CreateException {
         try {
             ConvenioPPSDAODB.validarTituloUnico(tituloConvenio);
-            Docente docente= convertirADocente(docenteDTO);
+
+            PlanDeTrabajo plan = PlanDeTrabajoDAODB.buscarByTitulo(tituloPlan);
+
             TutorExterno tutor = convertirATutor(proyectoDTO.getTutorEncargado());
-            PlanDeTrabajo plan = new PlanDeTrabajo(tituloPlan,descripcionPlan,docente,tutor);
             Proyecto proyecto = convertirAProyecto(proyectoDTO);
             Estudiante estudiante = convertirAEstudiante(estudianteDTO);
             EntidadColaborativa entidad = convertirAEntidad(entidadDTO);
@@ -303,12 +337,13 @@ public class PersistanceAPI implements API {
         }
     }
 
-    @Override //probar
-    public void cargarInforme(String titulo, String descripcion, String contenido, LocalDate fecha)throws CreateException {
+    @Override
+    public void cargarInforme(String titulo, String descripcion, byte[] archivo, LocalDate fecha)throws CreateException {
         try {
-//            InformeDAODB.validarTituloUnico(titulo);
-            Informe informe = new Informe(titulo, descripcion, contenido);
+            InformeDAODB.validarTituloUnico(titulo);
+            Informe informe = new Informe(titulo, descripcion, archivo);
 //            informe.setFecha(fecha); // Por defecto al crear el Informe se hace un LocalDate.now
+
             InformeDAODB.create(informe);
         } catch (Exception e) {
             throw new CreateException("Error al crear el informe: " + e.getMessage());
@@ -342,14 +377,45 @@ public class PersistanceAPI implements API {
         }
     }
 
+
+/////////////////////////////////////////////////////
+//    MÉTODOS DE BUSQUEDA
+
     @Override
-    public Informe obtenerInformeByTitulo(String titulo) throws EmptyException {
-        return null;
+    public InformeDTO obtenerInformeByTitulo(String titulo) throws ReadException {
+        try {
+            Informe informe = InformeDAODB.buscarByTitulo(titulo);
+
+            InformeDTO informeDTO = new InformeDTO(informe.getId(), informe.getTitulo(),
+                    informe.getDescripcion(), informe.getArchivoPDF(), informe.getFecha());
+
+            return informeDTO;
+        } catch (ReadException e) {
+            throw new ReadException("Error al obtener la actividad: " + e.getMessage());
+        }
     }
 
     @Override
-    public Actividad obtenerActividadByTitulo(String titulo) throws EmptyException {
-        return null;
+    public ActividadDTO obtenerActividadByTitulo(String titulo) throws ReadException {
+
+        try {
+            Actividad actividad = ActividadDAODB.buscarByTitulo(titulo);
+
+            ActividadDTO actividadDTO = new ActividadDTO(actividad.getId(), actividad.getTitulo(),
+                    actividad.getDescripcion(), actividad.getFechaFin(), actividad.getDuracion(),
+                    actividad.getFechaInicio());
+
+            if (actividad.getInformes()!=null){
+                List<InformeDTO> informes = new ArrayList<>();
+                actividadDTO.setInformes(informes);}
+
+            return actividadDTO;
+        } catch (ReadException e) {
+            throw new ReadException("Error al obtener la actividad: " + e.getMessage());
+        }
+//        catch (EmptyException e) {
+//            throw new ReadException(e.getMessage());
+//        }
     }
 
     @Override
@@ -364,22 +430,6 @@ public class PersistanceAPI implements API {
             return proyectoDTO;
         } catch (UserException e) {
             throw new ReadException("Error al obtener el proyecto: "+e.getMessage());
-        }
-    }
-
-    @Override //probar
-    public ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException {
-        try {
-            ConvenioPPS convenio = ConvenioPPSDAODB.buscarByTitulo(titulo);
-            ConvenioPPSDTO convenioDTO = convertirAConvenioDTO(convenio);
-
-            return convenioDTO;
-        } catch (ReadException e) {
-            throw new ReadException("Error al obtener el convenio: " + e.getMessage());
-        } catch (UserException e) {
-            throw new ReadException("Error al obtener el convenio: " + e.getMessage());
-        } catch (EmptyException e) {
-            throw new ReadException("Error al obtener el convenio: " + e.getMessage());
         }
     }
 
@@ -404,9 +454,52 @@ public class PersistanceAPI implements API {
         }
     }
 
+    @Override //Convenio por nombre
+    public ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException {
+        try {
+            ConvenioPPS convenio = ConvenioPPSDAODB.buscarByTitulo(titulo);
+            ConvenioPPSDTO convenioDTO = convertirAConvenioDTO(convenio);
+
+            return convenioDTO;
+        } catch (ReadException | UserException | EmptyException e) {
+            throw new ReadException("Error al obtener el convenio: " + e.getMessage());
+        }
+    }
+
     @Override
-    public List<Informe> obtenerInformeByConvenioTitulo(String titulo) throws EmptyException { // Convenio -> Actividades -> Informes
-        return null;
+    public PlanDeTrabajoDTO obtenerPlanByConvenioTitulo(String titulo) throws ReadException {
+        try {
+            return obtenerConvenioPPSByTitulo(titulo).getPlan();
+        } catch (ReadException e) {
+            throw new ReadException("Error al obtener las actividades: "+ titulo + ". " + e.getMessage());
+        }
+    }
+
+    @Override //Informes de una actividad
+    public List<ActividadDTO> obtenerActividadesByConvenioTitulo(String titulo) throws ReadException {
+        try {
+            List <ActividadDTO> actividades = obtenerConvenioPPSByTitulo(titulo).getActividades();
+            return actividades;
+        } catch (ReadException e) {
+            throw new ReadException("Error al obtener las actividades: "+ titulo + ". " + e.getMessage());
+        }
+    }
+
+    @Override //Informes de un convenio
+    public List<InformeDTO> obtenerInformesByConvenioTitulo(String titulo) throws ReadException {
+        try {
+            List <InformeDTO> informes = new ArrayList<>();
+
+            for (ActividadDTO a : (obtenerConvenioPPSByTitulo(titulo).getActividades())){
+                for (InformeDTO i : a.getInformes()){
+                    informes.add(i);
+                }
+            }
+
+            return informes;
+        } catch (ReadException e) {
+            throw new ReadException("Error al obtener los informes del convenio: "+ titulo +". " + e.getMessage());
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -537,7 +630,7 @@ public class PersistanceAPI implements API {
     private InformeDTO convertirAInformeDTO(Informe informe) throws UserException {
         if (informe == null)
             throw new UserException("El informe que se intenta convertir no existe.");
-        return new InformeDTO(informe.getId(),informe.getTitulo(),informe.getDescripcion(),informe.getContenido(),informe.getFecha());
+        return new InformeDTO(informe.getId(),informe.getTitulo(),informe.getDescripcion(),informe.getArchivoPDF(),informe.getFecha());
     }
 
 
@@ -629,7 +722,7 @@ public class PersistanceAPI implements API {
     private Informe convertirAInforme(InformeDTO informeDTO) throws UserException, EmptyException {
         if (informeDTO == null)
             throw new UserException("El informeDTO que se intenta convertir no existe.");
-        Informe informe = new Informe(informeDTO.getTitulo(), informeDTO.getDescripcion(), informeDTO.getContenido());
+        Informe informe = new Informe(informeDTO.getTitulo(), informeDTO.getDescripcion(), informeDTO.getArchivo());
         informe.setFecha(informeDTO.getFecha());
         return informe;
     }
