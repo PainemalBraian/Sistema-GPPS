@@ -1,37 +1,26 @@
 package Backend.DTO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ConvenioPPSDTO extends ItemDTO{
-    private DirectorCarreraDTO director;
     private boolean habilitado;
     private EntidadColaborativaDTO entidad;
     private ProyectoDTO proyecto;
-    private DocenteDTO docente;
     private EstudianteDTO estudiante;
-    private List<ActividadDTO> actividades = new ArrayList<>();
+    private PlanDeTrabajoDTO plan;
 
     public ConvenioPPSDTO() {
     }
 
-    public ConvenioPPSDTO(int id, String titulo, String descripcion, ProyectoDTO proyecto, DocenteDTO docente, EstudianteDTO estudiante,
-                       DirectorCarreraDTO director, EntidadColaborativaDTO entidad, List<ActividadDTO> actividades) {
-        super(id, titulo, descripcion);
+    // Carga/Creacion
+    public ConvenioPPSDTO(int id,String titulo, String descripcion, ProyectoDTO proyecto, EstudianteDTO estudiante,
+                       EntidadColaborativaDTO entidad, PlanDeTrabajoDTO plan) {
+        super(id,titulo, descripcion);
+
         this.proyecto = proyecto;
-        this.docente = docente;
         this.estudiante = estudiante;
-        this.director = director;
         this.entidad = entidad;
-        this.actividades = actividades;
-    }
-
-    public DirectorCarreraDTO getDirector() {
-        return director;
-    }
-
-    public void setDirector(DirectorCarreraDTO director) {
-        this.director = director;
+        this.plan = plan;
     }
 
     public boolean isHabilitado() {
@@ -58,14 +47,6 @@ public class ConvenioPPSDTO extends ItemDTO{
         this.proyecto = proyecto;
     }
 
-    public DocenteDTO getDocente() {
-        return docente;
-    }
-
-    public void setDocente(DocenteDTO docente) {
-        this.docente = docente;
-    }
-
     public EstudianteDTO getEstudiante() {
         return estudiante;
     }
@@ -74,11 +55,23 @@ public class ConvenioPPSDTO extends ItemDTO{
         this.estudiante = estudiante;
     }
 
-    public List<ActividadDTO> getActividades() {
-        return actividades;
+    public DocenteDTO getDocente(){
+        return this.plan.getDocente();
     }
 
-    public void setActividades(List<ActividadDTO> actividades) {
-        this.actividades = actividades;
+    public TutorExternoDTO getTutor(){
+        return this.plan.getTutor();
+    }
+
+    public PlanDeTrabajoDTO getPlan() {
+        return plan;
+    }
+
+    public List<ActividadDTO> getActividades(){
+        return this.plan.getActividades();
+    }
+
+    public void setPlan(PlanDeTrabajoDTO plan) {
+        this.plan = plan;
     }
 }

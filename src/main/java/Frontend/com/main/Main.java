@@ -2,6 +2,11 @@ package Frontend.com.main;
 
 import Backend.API.API;
 import Backend.API.PersistanceAPI;
+import Backend.DAO.dom.elementos.InformeDAODB;
+import Backend.Entidades.Informe;
+import Backend.Exceptions.CreateException;
+import Backend.Exceptions.EmptyException;
+import Backend.Exceptions.ReadException;
 import Frontend.com.gui.Controller.IngresoController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +14,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
 
 public class Main extends Application {
 
@@ -29,11 +40,9 @@ public class Main extends Application {
             pantalla.setResizable(false);
             pantalla.setScene(login);
             pantalla.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            }
+        }
+        catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
-
-
 }

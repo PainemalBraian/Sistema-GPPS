@@ -39,7 +39,7 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
         } catch (SQLException e) {
             throw new RegisterExceptions("Error al crear y guardar el estudiante: " + e.getMessage());
         }catch(ConnectionException e){
-            throw new RegisterExceptions("Error al conectar con la base de datos: " + e.getMessage());
+            throw new RegisterExceptions(e.getMessage());
         } catch (UserException e) {
             throw new RegisterExceptions(e.getMessage());
         }
@@ -57,10 +57,11 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
             if (result.next() && result.getInt("total") > 0) {
                 throw new UserException("Legajo existente.");
             }
+            statement.close();
+            result.close();
             return true;
         } catch (ConnectionException e) {
-            e.printStackTrace();
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         } catch (SQLException e) {
             throw new UserException("Error al validar: " + e.getMessage());
         }
@@ -78,14 +79,14 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
                 Docente docente = new Docente(usuarioDAODB.buscarById(result.getInt("idUsuario")),result.getString("legajo"));
                 docentes.add(docente);
             }
-            disconnect();
+
             return docentes;
         } catch (SQLException e) {
             throw new UserException("Error al leer en la base de datos: " + e);
         } catch (UserException e) {
             throw new UserException(e.getMessage());
         }catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 
@@ -105,8 +106,14 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
             if (result.next()) {
                 Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
                 Docente docente = new Docente(usuario, result.getString("legajo"));
+                disconnect();
+                statement.close();
+                result.close();
                 return docente;
             } else {
+                disconnect();
+                statement.close();
+                result.close();
                 throw new UserException("Docente no encontrado.");
             }
         }
@@ -114,7 +121,7 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
             throw new UserException("Error al buscar el docente en la base de datos: " + e.getMessage());
         }
         catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 
@@ -133,8 +140,14 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
             if (result.next()) {
                 Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
                 Docente docente = new Docente(usuario, result.getString("legajo"));
+                disconnect();
+                statement.close();
+                result.close();
                 return docente;
             } else {
+                disconnect();
+                statement.close();
+                result.close();
                 throw new UserException("docente no encontrado.");
             }
         }
@@ -145,7 +158,7 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
             throw new UserException("Error al buscar el docente en la base de datos: " + e.getMessage());
         }
         catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 }
