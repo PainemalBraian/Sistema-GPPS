@@ -12,6 +12,7 @@ public class Item {
     public Item() {
     }
 
+    // Para busquedas de bd
     public Item(int id, String titulo, String descripcion) throws EmptyException {
         if (isNull(titulo) || titulo.isEmpty()) {
             throw new EmptyException("El titulo no puede estar vacío.");

@@ -7,6 +7,12 @@ import Backend.DTO.*;
 import Backend.Entidades.*;
 import Backend.Exceptions.*;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +35,7 @@ public class PersistanceAPI implements API {
     InformeDAODB InformeDAODB = new InformeDAODB();
     ProyectoDAODB ProyectoDAODB = new ProyectoDAODB();
     ConvenioPPSDAODB ConvenioPPSDAODB = new ConvenioPPSDAODB();
+    PlanDeTrabajoDAODB PlanDeTrabajoDAODB = new PlanDeTrabajoDAODB();
     MensajeDAODB MensajeDAODB = new MensajeDAODB();
 
     @Override
@@ -271,14 +278,47 @@ public class PersistanceAPI implements API {
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     //    MÉTODOS DE ELEMENTOS
     ///////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
+    public void descargarArchivoPDF(String tituloInforme) throws IOException, ReadException {
+        // Se escribe el archivo en la carpeta de descargas default del sistema
+        Informe informe = InformeDAODB.buscarByTitulo(tituloInforme);
+        byte[] datosPDF = informe.getArchivoPDF();
+        Path downloadPath = Paths.get(System.getProperty("user.home"), "Downloads");
+        // Crear la carpeta si no existe
+        File carpeta = new File(String.valueOf(downloadPath) + "/.GPPS_Downloads");
+        if (!carpeta.exists()) {
+            boolean creada = carpeta.mkdirs();
+            if (!creada) {
+                throw new IOException("No se pudo crear la carpeta destino: " + String.valueOf(downloadPath));
+            }
+        }
 
-    @Override //probar
-    public void cargarConvenio(String titulo, String descripcion, Proyecto proyecto, Docente docente, Estudiante estudiante,
-                               DirectorCarrera director, EntidadColaborativa entidad, List<Actividad> actividades)throws CreateException {
+        // Crear archivo temporal dentro de la carpeta
+        Path archivoTemporal = Files.createTempFile(carpeta.toPath(), "informe_", ".pdf");
+
+        // Escribir el contenido del PDF
+        try (FileOutputStream fos = new FileOutputStream(archivoTemporal.toFile())) {
+            fos.write(datosPDF);
+        }
+    }
+
+/////////////////////////////////////////////////////
+//    MÉTODOS DE CARGAS
+
+    @Override
+    public void cargarConvenio(String tituloConvenio, String descripcionConvenio, ProyectoDTO proyectoDTO, EstudianteDTO estudianteDTO,
+                               EntidadColaborativaDTO entidadDTO, String tituloPlan)throws CreateException {
         try {
-            ConvenioPPSDAODB.validarTituloUnico(titulo);
-            ConvenioPPS convenio = new ConvenioPPS(titulo, descripcion, proyecto, docente, estudiante, director, entidad, actividades);
-            convenio.setHabilitado(false); // false ?
+            ConvenioPPSDAODB.validarTituloUnico(tituloConvenio);
+
+            PlanDeTrabajo plan = PlanDeTrabajoDAODB.buscarByTitulo(tituloPlan);
+
+            TutorExterno tutor = convertirATutor(proyectoDTO.getTutorEncargado());
+            Proyecto proyecto = convertirAProyecto(proyectoDTO);
+            Estudiante estudiante = convertirAEstudiante(estudianteDTO);
+            EntidadColaborativa entidad = convertirAEntidad(entidadDTO);
+            ConvenioPPS convenio = new ConvenioPPS(tituloConvenio, descripcionConvenio, proyecto, estudiante, entidad,plan);
+            convenio.setHabilitado(true);
 
             ConvenioPPSDAODB.create(convenio);
         } catch (Exception e) {
@@ -297,12 +337,13 @@ public class PersistanceAPI implements API {
         }
     }
 
-    @Override //probar
-    public void cargarInforme(String titulo, String descripcion, String contenido, LocalDate fecha)throws CreateException {
+    @Override
+    public void cargarInforme(String titulo, String descripcion, byte[] archivo, LocalDate fecha)throws CreateException {
         try {
-//            InformeDAODB.validarTituloUnico(titulo);
-            Informe informe = new Informe(titulo, descripcion, contenido);
+            InformeDAODB.validarTituloUnico(titulo);
+            Informe informe = new Informe(titulo, descripcion, archivo);
 //            informe.setFecha(fecha); // Por defecto al crear el Informe se hace un LocalDate.now
+
             InformeDAODB.create(informe);
         } catch (Exception e) {
             throw new CreateException("Error al crear el informe: " + e.getMessage());
@@ -336,14 +377,45 @@ public class PersistanceAPI implements API {
         }
     }
 
+
+/////////////////////////////////////////////////////
+//    MÉTODOS DE BUSQUEDA
+
     @Override
-    public Informe obtenerInformeByTitulo(String titulo) throws EmptyException {
-        return null;
+    public InformeDTO obtenerInformeByTitulo(String titulo) throws ReadException {
+        try {
+            Informe informe = InformeDAODB.buscarByTitulo(titulo);
+
+            InformeDTO informeDTO = new InformeDTO(informe.getId(), informe.getTitulo(),
+                    informe.getDescripcion(), informe.getArchivoPDF(), informe.getFecha());
+
+            return informeDTO;
+        } catch (ReadException e) {
+            throw new ReadException("Error al obtener la actividad: " + e.getMessage());
+        }
     }
 
     @Override
-    public Actividad obtenerActividadByTitulo(String titulo) throws EmptyException {
-        return null;
+    public ActividadDTO obtenerActividadByTitulo(String titulo) throws ReadException {
+
+        try {
+            Actividad actividad = ActividadDAODB.buscarByTitulo(titulo);
+
+            ActividadDTO actividadDTO = new ActividadDTO(actividad.getId(), actividad.getTitulo(),
+                    actividad.getDescripcion(), actividad.getFechaFin(), actividad.getDuracion(),
+                    actividad.getFechaInicio());
+
+            if (actividad.getInformes()!=null){
+                List<InformeDTO> informes = new ArrayList<>();
+                actividadDTO.setInformes(informes);}
+
+            return actividadDTO;
+        } catch (ReadException e) {
+            throw new ReadException("Error al obtener la actividad: " + e.getMessage());
+        }
+//        catch (EmptyException e) {
+//            throw new ReadException(e.getMessage());
+//        }
     }
 
     @Override
@@ -358,22 +430,6 @@ public class PersistanceAPI implements API {
             return proyectoDTO;
         } catch (UserException e) {
             throw new ReadException("Error al obtener el proyecto: "+e.getMessage());
-        }
-    }
-
-    @Override //probar
-    public ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException {
-        try {
-            ConvenioPPS convenio = ConvenioPPSDAODB.buscarByTitulo(titulo);
-            ConvenioPPSDTO convenioDTO = convertirAConvenioDTO(convenio);
-
-            return convenioDTO;
-        } catch (ReadException e) {
-            throw new ReadException("Error al obtener el convenio: " + e.getMessage());
-        } catch (UserException e) {
-            throw new ReadException("Error al obtener el convenio: " + e.getMessage());
-        } catch (EmptyException e) {
-            throw new ReadException("Error al obtener el convenio: " + e.getMessage());
         }
     }
 
@@ -398,9 +454,52 @@ public class PersistanceAPI implements API {
         }
     }
 
+    @Override //Convenio por nombre
+    public ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException {
+        try {
+            ConvenioPPS convenio = ConvenioPPSDAODB.buscarByTitulo(titulo);
+            ConvenioPPSDTO convenioDTO = convertirAConvenioDTO(convenio);
+
+            return convenioDTO;
+        } catch (ReadException | UserException | EmptyException e) {
+            throw new ReadException("Error al obtener el convenio: " + e.getMessage());
+        }
+    }
+
     @Override
-    public List<Informe> obtenerInformeByConvenioTitulo(String titulo) throws EmptyException { // Convenio -> Actividades -> Informes
-        return null;
+    public PlanDeTrabajoDTO obtenerPlanByConvenioTitulo(String titulo) throws ReadException {
+        try {
+            return obtenerConvenioPPSByTitulo(titulo).getPlan();
+        } catch (ReadException e) {
+            throw new ReadException("Error al obtener las actividades: "+ titulo + ". " + e.getMessage());
+        }
+    }
+
+    @Override //Informes de una actividad
+    public List<ActividadDTO> obtenerActividadesByConvenioTitulo(String titulo) throws ReadException {
+        try {
+            List <ActividadDTO> actividades = obtenerConvenioPPSByTitulo(titulo).getActividades();
+            return actividades;
+        } catch (ReadException e) {
+            throw new ReadException("Error al obtener las actividades: "+ titulo + ". " + e.getMessage());
+        }
+    }
+
+    @Override //Informes de un convenio
+    public List<InformeDTO> obtenerInformesByConvenioTitulo(String titulo) throws ReadException {
+        try {
+            List <InformeDTO> informes = new ArrayList<>();
+
+            for (ActividadDTO a : (obtenerConvenioPPSByTitulo(titulo).getActividades())){
+                for (InformeDTO i : a.getInformes()){
+                    informes.add(i);
+                }
+            }
+
+            return informes;
+        } catch (ReadException e) {
+            throw new ReadException("Error al obtener los informes del convenio: "+ titulo +". " + e.getMessage());
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -491,12 +590,13 @@ public class PersistanceAPI implements API {
             DocenteDTO docenteDTO = new DocenteDTO(convertirADocenteDTO(convenio.getDocente()),convenio.getDocente().getLegajo());
             // Consultar por Estudiantes enlazados?
             EstudianteDTO estudianteDTO = new EstudianteDTO(convertirAEstudianteDTO(convenio.getEstudiante()),convenio.getEstudiante().getMatricula(),convenio.getEstudiante().getCarrera());
-            DirectorCarreraDTO directorDTO = new DirectorCarreraDTO(convertirADirectorDTO(convenio.getDirector()));
             EntidadColaborativaDTO entidadDTO = new EntidadColaborativaDTO(convertirAEntidadDTO(convenio.getEntidad()),convenio.getEntidad().getNombreEntidad(),convenio.getEntidad().getCuit(),convenio.getEntidad().getDireccionEntidad());
             // consultar proyectos de entidad ?
             List<ActividadDTO> actividadesDTO = new ArrayList<>(convertirAListaActividadesDTO(convenio.getActividades()));
+            InformeDTO informeDTO = convertirAInformeDTO(convenio.getPlan().getInformeFinal());
+            PlanDeTrabajoDTO planDTO = new PlanDeTrabajoDTO(convenio.getPlan().getId(),convenio.getPlan().getTitulo(),convenio.getPlan().getDescripcion(),docenteDTO,proyectoDTO.getTutorEncargado(),actividadesDTO,informeDTO,true);
 
-            convenioDTO = new ConvenioPPSDTO(convenio.getId(), convenio.getTitulo(), convenio.getDescripcion(),proyectoDTO,docenteDTO,estudianteDTO,directorDTO,entidadDTO,actividadesDTO);
+            convenioDTO = new ConvenioPPSDTO(convenio.getId(), convenio.getTitulo(), convenio.getDescripcion(),proyectoDTO,estudianteDTO,entidadDTO,planDTO);
             proyectoDTO.setHabilitado(convenio.isHabilitado());
 
         }
@@ -524,13 +624,125 @@ public class PersistanceAPI implements API {
     private ActividadDTO convertirAActividadDTO(Actividad actividad) throws EmptyException {
         if (actividad == null)
             throw new EmptyException("La actividad que se intenta convertir no existe.");
-        return new ActividadDTO(actividad.getId(),actividad.getTitulo(),actividad.getDescripcion(),actividad.getFechaFin(),actividad.getDuracion());
+        return new ActividadDTO(actividad.getId(),actividad.getTitulo(),actividad.getDescripcion(),actividad.getFechaFin(),actividad.getDuracion(),actividad.getFechaInicio());
     }
 
     private InformeDTO convertirAInformeDTO(Informe informe) throws UserException {
         if (informe == null)
             throw new UserException("El informe que se intenta convertir no existe.");
-        return new InformeDTO(informe.getId(),informe.getTitulo(),informe.getDescripcion(),informe.getContenido(),informe.getFecha());
+        return new InformeDTO(informe.getId(),informe.getTitulo(),informe.getDescripcion(),informe.getArchivoPDF(),informe.getFecha());
+    }
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private Rol convertirARol(RolDTO rolDTO) throws UserException {
+        if (rolDTO == null)
+            throw new UserException("El rolDTO que se intenta convertir no existe.");
+        return new Rol(rolDTO.getId(), rolDTO.getNombre());
+    }
+
+    private Usuario convertirAUsuario(UsuarioDTO usuarioDTO) throws UserException {
+        if (usuarioDTO == null)
+            throw new UserException("El usuarioDTO que se intenta convertir no existe.");
+        Rol rol = convertirARol(usuarioDTO.getRol());
+        return new Usuario(usuarioDTO.getUsername(), usuarioDTO.getPassword(), usuarioDTO.getNombre(), usuarioDTO.getEmail(), rol);
+    }
+
+    private TutorExterno convertirATutor(TutorExternoDTO tutorDTO) throws UserException {
+        if (tutorDTO == null)
+            throw new UserException("El tutorDTO que se intenta convertir no existe.");
+        Usuario usuario = convertirAUsuario(tutorDTO.getUsuario());
+        return new TutorExterno(usuario, tutorDTO.getNombreEntidadColaborativa());
+    }
+
+    private Docente convertirADocente(DocenteDTO docenteDTO) throws UserException {
+        if (docenteDTO == null)
+            throw new UserException("El docenteDTO que se intenta convertir no existe.");
+        Usuario usuario = convertirAUsuario(docenteDTO.getUsuario());
+        return new Docente(usuario, docenteDTO.getLegajo());
+    }
+
+    private EntidadColaborativa convertirAEntidad(EntidadColaborativaDTO entidadDTO) throws UserException, EmptyException {
+        if (entidadDTO == null)
+            throw new UserException("La entidadDTO que se intenta convertir no existe.");
+        Usuario usuario = convertirAUsuario(entidadDTO.getUsuario());
+        List<Proyecto> proyectos = convertirAListaProyectos(entidadDTO.getProyectos());
+        return new EntidadColaborativa(usuario, entidadDTO.getNombreEntidad(), entidadDTO.getCuit(), entidadDTO.getDireccionEntidad());
+    }
+
+    private Estudiante convertirAEstudiante(EstudianteDTO estudianteDTO) throws UserException {
+        if (estudianteDTO == null)
+            throw new UserException("El estudianteDTO que se intenta convertir no existe.");
+        Usuario usuario = convertirAUsuario(estudianteDTO.getUsuario());
+        return new Estudiante(usuario, estudianteDTO.getMatricula(), estudianteDTO.getCarrera());
+    }
+
+    private DirectorCarrera convertirADirector(DirectorCarreraDTO directorDTO) throws UserException {
+        if (directorDTO == null)
+            throw new UserException("El directorDTO que se intenta convertir no existe.");
+        Usuario usuario = convertirAUsuario(directorDTO.getUsuario());
+        return new DirectorCarrera(usuario);
+    }
+
+    private Proyecto convertirAProyecto(ProyectoDTO proyectoDTO) throws EmptyException, UserException {
+        if (proyectoDTO == null)
+            return null; // o new Proyecto() según lógica de negocio
+        TutorExterno tutor = convertirATutor(proyectoDTO.getTutorEncargado());
+        Proyecto proyecto = new Proyecto(proyectoDTO.getTitulo(), proyectoDTO.getDescripcion(), proyectoDTO.getAreaDeInteres(),
+                proyectoDTO.getUbicacion(), proyectoDTO.getObjetivos(), proyectoDTO.getRequisitos(), tutor);
+        proyecto.setHabilitado(proyectoDTO.isHabilitado());
+        return proyecto;
+    }
+
+    private List<Proyecto> convertirAListaProyectos(List<ProyectoDTO> proyectosDTO) throws UserException, EmptyException {
+        List<Proyecto> proyectos = new ArrayList<>();
+        for (ProyectoDTO proyectoDTO : proyectosDTO) {
+            proyectos.add(convertirAProyecto(proyectoDTO));
+        }
+        return proyectos;
+    }
+
+    private Actividad convertirAActividad(ActividadDTO actividadDTO) throws EmptyException {
+        if (actividadDTO == null)
+            throw new EmptyException("La actividadDTO que se intenta convertir no existe.");
+        Actividad actividad = new Actividad(actividadDTO.getTitulo(), actividadDTO.getDescripcion(), actividadDTO.getFechaFin(), actividadDTO.getDuracion(),actividadDTO.getFechaInicio());
+        actividad.setCalificacion(actividadDTO.getCalificacion());
+        return actividad;
+    }
+
+    private List<Actividad> convertirAListaActividades(List<ActividadDTO> actividadesDTO) throws EmptyException {
+        List<Actividad> actividades = new ArrayList<>();
+        for (ActividadDTO actividadDTO : actividadesDTO) {
+            actividades.add(convertirAActividad(actividadDTO));
+        }
+        return actividades;
+    }
+
+    private Informe convertirAInforme(InformeDTO informeDTO) throws UserException, EmptyException {
+        if (informeDTO == null)
+            throw new UserException("El informeDTO que se intenta convertir no existe.");
+        Informe informe = new Informe(informeDTO.getTitulo(), informeDTO.getDescripcion(), informeDTO.getArchivo());
+        informe.setFecha(informeDTO.getFecha());
+        return informe;
+    }
+
+    private ConvenioPPS convertirAConvenio(ConvenioPPSDTO convenioDTO) throws UserException, EmptyException, ReadException {
+        if (convenioDTO == null)
+            throw new ReadException("El convenioDTO que se intenta convertir no existe.");
+
+        Proyecto proyecto = convertirAProyecto(convenioDTO.getProyecto());
+        Docente docente = convertirADocente(convenioDTO.getDocente());
+        TutorExterno tutor = convertirATutor(convenioDTO.getTutor());
+        Estudiante estudiante = convertirAEstudiante(convenioDTO.getEstudiante());
+        EntidadColaborativa entidad = convertirAEntidad(convenioDTO.getEntidad());
+        List<Actividad> actividades = convertirAListaActividades(convenioDTO.getActividades());
+        PlanDeTrabajo plan = new PlanDeTrabajo(convenioDTO.getPlan().getTitulo(),convenioDTO.getDescripcion(),docente,tutor);
+
+        ConvenioPPS convenio = new ConvenioPPS(convenioDTO.getTitulo(), convenioDTO.getDescripcion(),
+                proyecto, estudiante, entidad, plan);
+        convenio.setHabilitado(convenioDTO.isHabilitado());
+        return convenio;
     }
 
 
