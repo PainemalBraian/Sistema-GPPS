@@ -113,10 +113,6 @@ public class homeAdministradorController {
         navegar("/Frontend/vistas/Admin/configuracionSistema.fxml", bundle.getString("title.configuracionSistema"), event);
     }
 
-    @FXML
-    public void verLogsAuditoria(ActionEvent event) {
-        navegar("/Frontend/vistas/Admin/verLogsAuditoria.fxml", bundle.getString("title.verLogsAuditoria"), event);
-    }
 
     @FXML
     public void verMensajesAdmin(ActionEvent event) { // Método para mensajes del admin
