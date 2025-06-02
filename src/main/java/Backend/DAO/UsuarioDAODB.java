@@ -50,7 +50,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
         } catch (SQLException e) {
             throw new RegisterExceptions("Error al crear y guardar el usuario: " + e.getMessage());
         }catch(ConnectionException e){
-            throw new RegisterExceptions("Error al conectar con la base de datos: " + e.getMessage());
+            throw new RegisterExceptions( e.getMessage());
         }
     }
 
@@ -81,13 +81,12 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
                 user.setActivo(result.getBoolean("activo"));
                 usuarios.add(user);
             }
-            disconnect();
         } catch (SQLException e) {
             throw new UserException("Error al leer en la base de datos: " + e);
         } catch (UserException e) {
             throw new UserException(e.getMessage());
         }catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
 
         return usuarios;
@@ -139,7 +138,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
                 throw new DeleteException("No se ha podido eliminar el usuario");
             }
         }catch(ConnectionException e){
-            throw new DeleteException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new DeleteException(e.getMessage());
         }catch(SQLException e){
             throw new DeleteException("Error al eliminar: "+e.getMessage());
         }
@@ -184,12 +183,18 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
                         result.getString("email"), rol);
 
                 usuario.setActivo(result.getBoolean("activo"));
+                disconnect();
+                statement.close();
+                result.close();
                 return usuario;
             } else {
+                disconnect();
+                statement.close();
+                result.close();
                 throw new UserException("Usuario no encontrado.");
             }
         } catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         } catch(SQLException e){
             throw new UserException("Error al buscar el usuario en la base de datos: " + e.getMessage());
         }
@@ -216,6 +221,10 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
                         result.getString("password"), result.getString("nombreCompleto"),
                         result.getString("email"), rol);
                 usuario.activar();
+
+                disconnect();
+                statement.close();
+                result.close();
                 return usuario;
             } else {
                 throw new UserException("Usuario no encontrado.");
@@ -225,7 +234,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
             throw new UserException("Error al buscar el usuario en la base de datos: " + e.getMessage());
         }
         catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 
@@ -241,13 +250,15 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
             if (result.next() && result.getInt("total") > 0) {
                 throw new UserException("El username o el email ya están registrados.");
             }
+            statement.close();
+            result.close();
             return true;
         }
         catch (SQLException e) {
-            throw new RuntimeException("Error al validar: " + e.getMessage());
+            throw new UserException("Error al validar: " + e.getMessage());
         }
         catch (ConnectionException e) {
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 }

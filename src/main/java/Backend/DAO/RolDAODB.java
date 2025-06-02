@@ -31,11 +31,10 @@ public class RolDAODB extends DBAcces implements ROLDAO {
             statement.close();
             disconnect();
         } catch (ConnectionException e) {
-            throw new CreateException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new CreateException(e.getMessage());
         } catch(SQLException e){
             throw new CreateException("Error al crear el rol: " + e.getMessage());
         }
-
     }
 
     @Override
@@ -62,20 +61,22 @@ public class RolDAODB extends DBAcces implements ROLDAO {
 
             PreparedStatement statement = conn.prepareStatement(sql);
 
-            ResultSet results = statement.executeQuery();
+            ResultSet result = statement.executeQuery();
 
-            while (results.next()) {
-                Rol rol = new Rol(results.getInt("idRol"),
-                        results.getString("nombre")
+            while (result.next()) {
+                Rol rol = new Rol(result.getInt("idRol"),
+                        result.getString("nombre")
                 );
-                rol.setActivo(results.getBoolean("activo"));
+                rol.setActivo(result.getBoolean("activo"));
                 roles.add(rol);
             }
 
             disconnect();
+            statement.close();
+            result.close();
             return roles;
         } catch(ConnectionException e){
-            throw new ReadException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new ReadException(e.getMessage());
         }catch(SQLException e){
             throw new ReadException("Error al buscar los roles: " + e.getMessage());
         }
@@ -131,17 +132,17 @@ public class RolDAODB extends DBAcces implements ROLDAO {
                 rol.setNombre(result.getString("nombre"));
                 rol.setActivo(result.getBoolean("activo"));
             }
-            disconnect();
 
+            disconnect();
+            statement.close();
+            result.close();
             return rol;
         } catch(ConnectionException e){
-            throw new ReadException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new ReadException( e.getMessage());
         } catch(SQLException e){
             e.printStackTrace();
             throw new ReadException("Error al obtener el rol: " + e.getMessage());
         }
-
-
     }
 }
 

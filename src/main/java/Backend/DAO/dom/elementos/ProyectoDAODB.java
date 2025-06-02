@@ -35,7 +35,7 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
             statement.executeUpdate();
 
         }catch(ConnectionException e){
-            throw new CreateException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new CreateException(e.getMessage());
         }catch(SQLException e){
             throw new CreateException("Error al crear el proyecto: " + e.getMessage());
         }
@@ -57,8 +57,10 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
 
             statement.executeUpdate();
 
+            statement.close();
+
         }catch(ConnectionException e){
-            throw new CreateException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new CreateException( e.getMessage());
         }catch(SQLException e){
             throw new CreateException("Error al crear el proyecto: " + e.getMessage());
         }
@@ -97,7 +99,7 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
         } catch (ConnectionException e) {
             throw new ReadException(e.getMessage());
         } catch (UserException e) {
-            throw new ReadException("Error al construir el proyecto: " + e.getMessage());
+            throw new ReadException("Error al obtener el proyecto: " + e.getMessage());
         } catch (EmptyException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -136,7 +138,7 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
         } catch (ConnectionException e) {
             throw new ReadException(e.getMessage());
         } catch (UserException e) {
-            throw new ReadException("Error al construir el proyecto: " + e.getMessage());
+            throw new ReadException("Error al obtener el proyecto: " + e.getMessage());
         } catch (EmptyException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -205,7 +207,7 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
                 );
                 proyecto.setHabilitado(result.getBoolean("habilitado"));
             }
-
+            result.close();
             return proyecto;
         }
         catch (EmptyException e) {
@@ -215,28 +217,30 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
         catch (SQLException e) {
             throw new ReadException("Error al obtener el Proyecto: " + e.getMessage());}
         catch (ConnectionException e) {
-            throw new ReadException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new ReadException(e.getMessage());
         }
     }
 
     @Override
     public boolean validarTituloUnico(String titulo) throws CreateException{
-        try (Connection conn = connect()) {
-            String sql = "SELECT COUNT(*) AS total FROM Proyectos WHERE LOWER(titulo) = LOWER(?)"; //Lower para indistinto a Mayúsculas o minúsculas
-            PreparedStatement statement = conn.prepareStatement(sql);
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) AS total FROM Proyectos WHERE LOWER(titulo) = LOWER(?)");
+             ) {
+
             statement.setString(1, titulo);
             ResultSet result = statement.executeQuery();
 
             if (result.next() && result.getInt("total") != 0) {
                 throw new CreateException("Proyecto con titulo insertado existente en el sistema.");
             }
+            result.close();
             return true;
         }
         catch (SQLException e) {
             throw new CreateException("Error al validar: " + e.getMessage());
         }
         catch (ConnectionException e) {
-            throw new CreateException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new CreateException(e.getMessage());
         }
     }
 
@@ -246,11 +250,11 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
         Proyecto proyecto = null;
 
         try (Connection conn = connect();
-             PreparedStatement statement = conn.prepareStatement("SELECT * FROM Proyectos WHERE titulo = ?")) {
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM Proyectos WHERE titulo = ?");
+             ResultSet result = statement.executeQuery();) {
 
             statement.setString(1, titulo);
 
-            ResultSet result = statement.executeQuery();
             if (result.next()) {
                 int idTutor = result.getInt("idTutor");
                 TutorExterno tutor = new TutorExternoDAODB().buscarByID(idTutor);
@@ -271,7 +275,7 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
     } catch (SQLException e) {
             throw new ReadException("Error al buscar el proyecto: " + e.getMessage());
         } catch (ConnectionException e) {
-            throw new ReadException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new ReadException(e.getMessage());
         } catch (EmptyException e) {
             throw new ReadException(e.getMessage());
         } catch (UserException e) {
