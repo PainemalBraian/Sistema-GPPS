@@ -13,7 +13,7 @@ public interface ENTIDADCOLABORATIVADAO {
 
     EntidadColaborativa buscarByUsername(String username) throws  UserException;
 
-    EntidadColaborativa buscarById(int id) throws  UserException;
+    EntidadColaborativa buscarByID(int id) throws  UserException;
 
     boolean validarDatosUnicos(String nombreEntidad,String cuit,String direccionEntidad) throws  UserException;
 }

@@ -3,7 +3,6 @@ package Backend.DAO.dom.usuarios;
 import Backend.DAO.DBAcces;
 import Backend.DAO.UsuarioDAODB;
 import Backend.DAO.interfaces.usuarios.ENTIDADCOLABORATIVADAO;
-import Backend.Entidades.DirectorCarrera;
 import Backend.Entidades.EntidadColaborativa;
 import Backend.Entidades.Usuario;
 import Backend.Exceptions.ConnectionException;
@@ -40,7 +39,7 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
         } catch (SQLException e) {
             throw new RegisterExceptions("Error al crear y guardar el estudiante: " + e.getMessage());
         }catch(ConnectionException e){
-            throw new RegisterExceptions("Error al conectar con la base de datos: " + e.getMessage());
+            throw new RegisterExceptions(e.getMessage());
         }
     }
 
@@ -56,14 +55,13 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
                 EntidadColaborativa entidad = new EntidadColaborativa(usuarioDAODB.buscarById(result.getInt("idUsuario")), result.getString("nombreEntidad"),result.getString("cuit"),result.getString("direccionEntidad"));
                 entidades.add(entidad);
             }
-            disconnect();
             return entidades;
         } catch (SQLException e) {
             throw new UserException("Error al leer en la base de datos: " + e);
         } catch (UserException e) {
             throw new UserException(e.getMessage());
         }catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 
@@ -83,8 +81,14 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
             if (result.next()) {
                 Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
                 EntidadColaborativa entidad = new EntidadColaborativa(usuario, result.getString("nombreEntidad"),result.getString("cuit"),result.getString("direccionEntidad") );
+                disconnect();
+                statement.close();
+                result.close();
                 return entidad;
             } else {
+                disconnect();
+                statement.close();
+                result.close();
                 throw new UserException("Entidad no encontrado.");
             }
         }
@@ -92,12 +96,12 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
             throw new UserException("Error al buscar el entidad en la base de datos: " + e.getMessage());
         }
         catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 
     @Override
-    public EntidadColaborativa buscarById(int id) throws UserException {
+    public EntidadColaborativa buscarByID(int id) throws UserException {
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(
@@ -112,8 +116,14 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
             if (result.next()) {
                 Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
                 EntidadColaborativa entidad = new EntidadColaborativa(usuario, result.getString("nombreEntidad"),result.getString("cuit"),result.getString("direccionEntidad") );
+                disconnect();
+                statement.close();
+                result.close();
                 return entidad;
             } else {
+                disconnect();
+                statement.close();
+                result.close();
                 throw new UserException("Entidad no encontrado.");
             }
         }
@@ -121,7 +131,7 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
             throw new UserException("Error al buscar el entidad en la base de datos: " + e.getMessage());
         }
         catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 
@@ -157,7 +167,7 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
 
             return true;
         } catch (ConnectionException e) {
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         } catch (SQLException e) {
             throw new UserException("Error al validar: " + e.getMessage());
         }
