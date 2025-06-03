@@ -90,6 +90,8 @@ CREATE TABLE Informes (
     idInforme INT AUTO_INCREMENT PRIMARY KEY,
     idActividad INT,
     titulo VARCHAR(255) NOT NULL,
+    descripcion VARCHAR(255),
+    porcentajeAvance INT,
     archivo_pdf LONGBLOB, -- Contenido del PDF
     fecha DATE NOT NULL,
     FOREIGN KEY (idActividad) REFERENCES Actividades(idActividad)
@@ -237,13 +239,13 @@ INSERT INTO Actividades (titulo, duracion, descripcion, fechaInicio, fechaFin, c
 ('Actividad Intermedia 2', 20, 'Definición de Casos de Usos', '2024-12-02', '2024-12-30', NULL),
 ('Actividad Intermedia 3', 25, 'Definición de Diagrama de Clases', '2024-12-03', '2024-12-30', NULL);
 
-INSERT INTO Informes (idActividad, titulo, archivo_pdf, fecha) VALUES
-(1, 'Informe Act Inicial', NULL, '2024-12-31'),
-(1, 'Informe Act Inicial 1', NULL, '2024-12-25'),
-(1, 'Informe Act Inicial 2', NULL, '2024-12-20'),
-(2, 'Informe Act Avanzada 1', NULL, '2024-12-23'),
-(2, 'Informe Act Avanzada 2', NULL, '2025-01-15'),
-(3, 'Informe Act Intermedia', NULL, '2024-12-15');
+INSERT INTO Informes (idActividad, titulo, descripcion, archivo_pdf, fecha) VALUES
+(1, 'Informe Act Inicial','Descripcion A', NULL, '2024-12-31'),
+(1, 'Informe Act Inicial 1','Descripcion B', NULL, '2024-12-25'),
+(1, 'Informe Act Inicial 2','Descripcion C', NULL, '2024-12-20'),
+(2, 'Informe Act Avanzada 1','Descripcion D', NULL, '2024-12-23'),
+(2, 'Informe Act Avanzada 2','Descripcion E', NULL, '2025-01-15'),
+(3, 'Informe Act Intermedia','Descripcion F', NULL, '2024-12-15');
 
 INSERT INTO Relacion_Entidad_Proyectos (idEntidad, idProyecto) VALUES
 (3, 1),
