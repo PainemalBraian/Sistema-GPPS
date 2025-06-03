@@ -185,11 +185,11 @@ public class InformeDeTareasController {
             byte[] archivo = new byte[0]; // se necesita cargar el archivo pdf seleccionado en este tipo y pasarlo en lugar de "contenido"
             // Carga de informe además se va a llevar el nombre de la actividad a la que corresponder la entrega del informe.
             //Usar algo como "getSelectedRows" de la lista de actividades que tenes para seleccionar y tomar su nombre
-            api.cargarInforme(titulo, descripcion, contenido, fechaCreacion);
+            api.cargarInforme(titulo, descripcion, archivo, fechaCreacion,"");
 
 
 
-            InformeDTO nuevoInformeDTO = new InformeDTO(titulo, descripcion, contenido, fechaCreacion);
+            InformeDTO nuevoInformeDTO = new InformeDTO(titulo, descripcion, archivo, fechaCreacion);
             actividadSeleccionada.addInforme(nuevoInformeDTO);
 
             limpiarFormularioInforme();
