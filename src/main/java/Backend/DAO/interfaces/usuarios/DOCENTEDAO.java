@@ -15,6 +15,6 @@ public interface DOCENTEDAO {
 
     Docente buscarByUsername(String username) throws  UserException;
 
-    Docente buscarById(int id) throws  UserException;
+    Docente buscarByID(int id) throws  UserException;
 
 }

@@ -3,7 +3,6 @@ package Backend.DAO.dom.usuarios;
 import Backend.DAO.DBAcces;
 import Backend.DAO.UsuarioDAODB;
 import Backend.DAO.interfaces.usuarios.TUTOREXTERNODAO;
-import Backend.Entidades.Proyecto;
 import Backend.Entidades.TutorExterno;
 import Backend.Entidades.Usuario;
 import Backend.Exceptions.*;
@@ -49,7 +48,7 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
 
             while (result.next()) {
                 TutorExterno tutor = new TutorExterno(
-                        UsuarioDAODB.buscarById(result.getInt("idUsuario")),
+                        UsuarioDAODB.buscarByID(result.getInt("idUsuario")),
                         result.getString("requisitos")
                 );
 //                tutor.setProyectosAsignados(buscarProyectosAsignados()); Implementar usando tabla de relacion_Tutores_Proyectos.
@@ -79,9 +78,9 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
+                Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
                 TutorExterno tutorExt = new TutorExterno(usuario, result.getString("nombreEntidadColaborativa") );
-                tutorExt.setIdTutor(result.getInt("idTutor"));
+                tutorExt.setIdUsuario(result.getInt("idTutor"));
                 disconnect();
                 statement.close();
                 result.close();
@@ -112,7 +111,7 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
+                Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
                 TutorExterno tutorExt = new TutorExterno(usuario, result.getString("nombreEntidadColaborativa") );
                 disconnect();
                 statement.close();

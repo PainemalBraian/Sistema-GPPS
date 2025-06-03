@@ -8,13 +8,11 @@ import java.util.List;
 import static java.util.Objects.isNull;
 
 public class TutorExterno extends Usuario{
-    private int idTutor;
     private String nombreEntidadColaborativa;
     private List<Proyecto> proyectosAsignados = new ArrayList<>();
 
     public TutorExterno() {
     }
-
 
     public TutorExterno(Usuario user, String nombreEntidadColaborativa) throws UserException {
         super(user.getIdUsuario(),user.getUsername(), user.getContrasena(), user.getNombre(), user.getEmail(), user.getRol());
@@ -49,11 +47,7 @@ public class TutorExterno extends Usuario{
     }
 
     public int getIdTutor() {
-        return idTutor;
-    }
-
-    public void setIdTutor(int idTutor) {
-        this.idTutor = idTutor;
+        return this.getIdUsuario();
     }
 
 }

@@ -201,7 +201,7 @@ public class UsuarioDAODB extends DBAcces implements USUARIODAO {
     }
 
     @Override
-    public Usuario buscarById(int id) throws UserException {
+    public Usuario buscarByID(int id) throws UserException {
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(
