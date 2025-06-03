@@ -98,10 +98,16 @@ public interface API {
     ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException; // Devuelve Un convenio de PPs de la DB dado su titulo
 
     //check
+    ConvenioPPSDTO obtenerConvenioPPSByEstudianteUsername(String username) throws ReadException;
+
+    //check
     PlanDeTrabajoDTO obtenerPlanByConvenioTitulo(String titulo) throws ReadException;
 
     //check
     List<ActividadDTO> obtenerActividadesByConvenioTitulo(String titulo) throws ReadException;
+
+    //Probar
+    List<ActividadDTO> obtenerActividadesByEstudianteUsername(String username) throws ReadException;
 
     //check
     List<InformeDTO> obtenerInformesByConvenioTitulo(String tituloConvenio) throws ReadException;

@@ -204,4 +204,48 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
         }
     }
 
+    public ConvenioPPS buscarByEstudianteUsername(String username) throws ReadException {
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM ConveniosPPS WHERE idEstudiante = ?")) {
+
+            int idEstudiante = new EstudianteDAODB().buscarByUsername(username).getIdUsuario();
+            statement.setInt(1, idEstudiante);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                int idConvenio = result.getInt("idConvenio");
+                String titulo = result.getString("titulo");
+                String descripcion = result.getString("descripcion");
+                boolean habilitado = result.getBoolean("habilitado");
+
+                // Obtener objetos relacionados
+                Proyecto proyecto = new ProyectoDAODB().buscarByID(result.getInt("idProyecto"));
+                Estudiante estudiante = new EstudianteDAODB().buscarByID(result.getInt("idEstudiante"));
+                EntidadColaborativa entidad = new EntidadColaborativaDAODB().buscarByID(result.getInt("idEntidad"));
+                PlanDeTrabajo plan = new PlanDeTrabajoDAODB().buscarByID(result.getInt("idPlan"));
+
+                ConvenioPPS convenio = new ConvenioPPS(
+                        idConvenio,
+                        titulo,
+                        descripcion,
+                        proyecto,
+                        estudiante,
+                        entidad,
+                        plan
+                );
+
+                convenio.setHabilitado(habilitado);
+                result.close();
+                return convenio;
+            } else {
+                throw new ReadException("No se encontró un convenio con el título proporcionado.");
+            }
+        } catch (SQLException e) {
+            throw new ReadException("Error SQL al buscar el convenio: " + e.getMessage());
+        } catch (ConnectionException e) {
+            throw new ReadException(e.getMessage());
+        } catch (UserException | EmptyException e) {
+            throw new ReadException("Error al buscar el convenio: " + e.getMessage());
+        }
+    }
 }
