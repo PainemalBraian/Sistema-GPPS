@@ -70,8 +70,6 @@ public class ConvenioPPS extends Item {
 
     public Estudiante getEstudiante() { return estudiante; }
 
-    public List<Actividad> getActividades() throws EmptyException { return plan.getActividades(); }
-
     public boolean isHabilitado() { return habilitado; }
 
     public EntidadColaborativa getEntidad() { return entidad; }
