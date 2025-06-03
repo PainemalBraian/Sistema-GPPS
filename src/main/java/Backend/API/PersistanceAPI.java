@@ -505,6 +505,18 @@ public class PersistanceAPI implements API {
     }
 
     @Override
+    public ConvenioPPSDTO obtenerConvenioPPSByEstudianteUsername(String username) throws ReadException {
+        try {
+            ConvenioPPS convenio = ConvenioPPSDAODB.buscarByEstudianteUsername(username);
+            ConvenioPPSDTO convenioDTO = convertirAConvenioDTO(convenio);
+
+            return convenioDTO;
+        } catch (ReadException | UserException | EmptyException e) {
+            throw new ReadException("Error al obtener el convenio: " + e.getMessage());
+        }
+    }
+
+    @Override
     public PlanDeTrabajoDTO obtenerPlanByConvenioTitulo(String titulo) throws ReadException {
         try {
             return obtenerConvenioPPSByTitulo(titulo).getPlan();
@@ -516,10 +528,21 @@ public class PersistanceAPI implements API {
     @Override
     public List<ActividadDTO> obtenerActividadesByConvenioTitulo(String titulo) throws ReadException {
         try {
-            List <ActividadDTO> actividades = obtenerConvenioPPSByTitulo(titulo).getActividades();
+            List <ActividadDTO> actividades = obtenerConvenioPPSByTitulo(titulo).getPlan().getActividades();
             return actividades;
         } catch (ReadException e) {
             throw new ReadException("Error al obtener las actividades: "+ titulo + ". " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<ActividadDTO> obtenerActividadesByEstudianteUsername(String username) throws ReadException {
+        try {
+            List<ActividadDTO> actividades = obtenerConvenioPPSByEstudianteUsername(username).getPlan().getActividades();
+
+            return actividades;
+        } catch (ReadException e) {
+            throw new ReadException("Error al obtener las actividades. " + e.getMessage());
         }
     }
 
@@ -528,7 +551,7 @@ public class PersistanceAPI implements API {
         try {
             List <InformeDTO> informes = new ArrayList<>();
 
-            for (ActividadDTO a : (obtenerConvenioPPSByTitulo(titulo).getActividades())){
+            for (ActividadDTO a : (obtenerConvenioPPSByTitulo(titulo).getPlan().getActividades())){
                 for (InformeDTO i : a.getInformes()){
                     informes.add(i);
                 }
@@ -644,7 +667,7 @@ public class PersistanceAPI implements API {
             EstudianteDTO estudianteDTO = new EstudianteDTO(convertirAEstudianteDTO(convenio.getEstudiante()),convenio.getEstudiante().getMatricula(),convenio.getEstudiante().getCarrera());
             EntidadColaborativaDTO entidadDTO = new EntidadColaborativaDTO(convertirAEntidadDTO(convenio.getEntidad()),convenio.getEntidad().getNombreEntidad(),convenio.getEntidad().getCuit(),convenio.getEntidad().getDireccionEntidad());
             // consultar proyectos de entidad ?
-            List<ActividadDTO> actividadesDTO = new ArrayList<>(convertirAListaActividadesDTO(convenio.getActividades()));
+            List<ActividadDTO> actividadesDTO = new ArrayList<>(convertirAListaActividadesDTO(convenio.getPlan().getActividades()));
             InformeDTO informeDTO = new InformeDTO();
             if (convenio.getPlan().getInformeFinal() != null){
                 informeDTO = convertirAInformeDTO(convenio.getPlan().getInformeFinal());}
@@ -803,7 +826,7 @@ public class PersistanceAPI implements API {
         TutorExterno tutor = convertirATutor(convenioDTO.getTutor());
         Estudiante estudiante = convertirAEstudiante(convenioDTO.getEstudiante());
         EntidadColaborativa entidad = convertirAEntidad(convenioDTO.getEntidad());
-        List<Actividad> actividades = convertirAListaActividades(convenioDTO.getActividades());
+        List<Actividad> actividades = convertirAListaActividades(convenioDTO.getPlan().getActividades());
         PlanDeTrabajo plan = new PlanDeTrabajo(convenioDTO.getPlan().getTitulo(),convenioDTO.getDescripcion(),docente,tutor);
 
         ConvenioPPS convenio = new ConvenioPPS(convenioDTO.getTitulo(), convenioDTO.getDescripcion(),
