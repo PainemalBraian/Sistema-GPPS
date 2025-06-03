@@ -11,7 +11,7 @@ public class TutorExternoDTO extends UsuarioDTO{
     }
 
     public TutorExternoDTO(UsuarioDTO user, String nombreEntidadColaborativa) {
-        super(user.getUsername(), user.getPassword(), user.getNombre(), user.getEmail(), user.getRol(), user.isActivo());
+        super(user.getIdUsuario(),user.getUsername(), user.getPassword(), user.getNombre(), user.getEmail(), user.getRol(), user.isActivo());
         this.nombreEntidadColaborativa = nombreEntidadColaborativa;
     }
 

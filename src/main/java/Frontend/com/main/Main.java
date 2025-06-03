@@ -3,7 +3,10 @@ package Frontend.com.main;
 import Backend.API.API;
 import Backend.API.PersistanceAPI;
 import Backend.DAO.dom.elementos.InformeDAODB;
+import Backend.DAO.dom.elementos.PlanDeTrabajoDAODB;
+import Backend.DTO.*;
 import Backend.Entidades.Informe;
+import Backend.Entidades.Rol;
 import Backend.Exceptions.CreateException;
 import Backend.Exceptions.EmptyException;
 import Backend.Exceptions.ReadException;
@@ -21,6 +24,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends Application {
 
@@ -34,14 +39,15 @@ public class Main extends Application {
             IngresoController controller = loader.getController();
 
             // Crear y pasar la instancia de PersistenceAPI
-            API api = new PersistanceAPI() {};
-            controller.setPersistenceAPI(api);
+            API controlador = new PersistanceAPI() {};
+
+            controller.setPersistenceAPI(controlador);
             Scene login = new Scene(root);
             pantalla.setResizable(false);
             pantalla.setScene(login);
             pantalla.show();
         }
-        catch (IOException e) {
+        catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }

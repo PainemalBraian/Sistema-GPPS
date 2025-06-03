@@ -3,9 +3,7 @@ package Backend.DAO.dom.usuarios;
 import Backend.DAO.DBAcces;
 import Backend.DAO.UsuarioDAODB;
 import Backend.DAO.interfaces.usuarios.DOCENTEDAO;
-import Backend.Entidades.DirectorCarrera;
 import Backend.Entidades.Docente;
-import Backend.Entidades.Estudiante;
 import Backend.Entidades.Usuario;
 import Backend.Exceptions.ConnectionException;
 import Backend.Exceptions.RegisterExceptions;
@@ -76,7 +74,7 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
             List<Docente> docentes = new ArrayList<>();
             UsuarioDAODB usuarioDAODB = new UsuarioDAODB();
             while (result.next()) {
-                Docente docente = new Docente(usuarioDAODB.buscarById(result.getInt("idUsuario")),result.getString("legajo"));
+                Docente docente = new Docente(usuarioDAODB.buscarByID(result.getInt("idUsuario")),result.getString("legajo"));
                 docentes.add(docente);
             }
 
@@ -104,7 +102,7 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
+                Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
                 Docente docente = new Docente(usuario, result.getString("legajo"));
                 disconnect();
                 statement.close();
@@ -126,7 +124,7 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
     }
 
     @Override
-    public Docente buscarById(int id) throws UserException {
+    public Docente buscarByID(int id) throws UserException {
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(
@@ -138,7 +136,7 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
 
             ResultSet result = statement.executeQuery();
             if (result.next()) {
-                Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
+                Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
                 Docente docente = new Docente(usuario, result.getString("legajo"));
                 disconnect();
                 statement.close();
