@@ -19,6 +19,10 @@ public class InformeDTO extends ItemDTO{
         this.fecha = fecha;
     }
 
+    public InformeDTO() {
+
+    }
+
     public void setArchivo(byte[] archivo) {
         this.archivo = archivo;
     }

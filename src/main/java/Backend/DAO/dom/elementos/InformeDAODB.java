@@ -15,17 +15,18 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
     public void create(Informe informe) throws CreateException {
         try (Connection conn = connect();
              PreparedStatement statement = conn.prepareStatement(
-                     "INSERT INTO Informes(titulo, descripcion, archivo_pdf, fecha) VALUES (?, ?, ?, ?)"
+                     "INSERT INTO Informes(titulo, descripcion, archivo_pdf, fecha, idActividad) VALUES (?, ?, ?, ?, ?)"
              )) {
 
             statement.setString(1, informe.getTitulo());
             statement.setString(2, informe.getDescripcion());
             statement.setBytes(3, informe.getArchivoPDF());
             statement.setDate(4, Date.valueOf(informe.getFecha()));
+            statement.setInt(5, new ActividadDAODB().buscarByTitulo(informe.getTituloActividad()).getID());
 
             statement.executeUpdate();
 
-        }catch(ConnectionException e){
+        }catch(ConnectionException | ReadException e){
             throw new CreateException(e.getMessage());
         }catch(SQLException e){
             throw new CreateException("Error al crear el informe: " + e.getMessage());

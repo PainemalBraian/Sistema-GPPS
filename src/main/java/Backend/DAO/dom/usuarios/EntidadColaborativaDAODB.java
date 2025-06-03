@@ -52,7 +52,7 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
             List<EntidadColaborativa> entidades = new ArrayList<>();
             UsuarioDAODB usuarioDAODB = new UsuarioDAODB();
             while (result.next()) {
-                EntidadColaborativa entidad = new EntidadColaborativa(usuarioDAODB.buscarById(result.getInt("idUsuario")), result.getString("nombreEntidad"),result.getString("cuit"),result.getString("direccionEntidad"));
+                EntidadColaborativa entidad = new EntidadColaborativa(usuarioDAODB.buscarByID(result.getInt("idUsuario")), result.getString("nombreEntidad"),result.getString("cuit"),result.getString("direccionEntidad"));
                 entidades.add(entidad);
             }
             return entidades;
@@ -79,7 +79,7 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
+                Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
                 EntidadColaborativa entidad = new EntidadColaborativa(usuario, result.getString("nombreEntidad"),result.getString("cuit"),result.getString("direccionEntidad") );
                 disconnect();
                 statement.close();
@@ -114,7 +114,7 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
+                Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
                 EntidadColaborativa entidad = new EntidadColaborativa(usuario, result.getString("nombreEntidad"),result.getString("cuit"),result.getString("direccionEntidad") );
                 disconnect();
                 statement.close();

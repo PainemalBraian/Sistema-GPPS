@@ -10,7 +10,7 @@ public class DocenteDTO extends UsuarioDTO{
     public DocenteDTO() {}
 
     public DocenteDTO(UsuarioDTO user, String legajo) {
-        super(user.getUsername(), user.getPassword(), user.getNombre(), user.getEmail(), user.getRol(),user.isActivo());
+        super(user.getIdUsuario(),user.getUsername(), user.getPassword(), user.getNombre(), user.getEmail(), user.getRol(),user.isActivo());
         this.legajo = legajo;
     }
 
