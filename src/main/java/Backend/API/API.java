@@ -39,8 +39,6 @@ public interface API {
 
     void desactivarUsuarioByUsername(String username) throws UserException, UpdateException; // Recuperar el objeto Usuario, implementar el comportamiento de estado.
 
-//    UsuarioDTO obtenerUsuarioByEmail(String email) throws UserException; // Devuelve el usuario si fue encontrado por email
-
     String obtenerNombreUsuario() throws UserException; //Devuelve el nombre del usuario logeado
 
     UsuarioDTO login(String username, String password) throws LoginException; // Loguea el usuario y si todo es correcto devuelve el Usuario, sino null
@@ -51,40 +49,69 @@ public interface API {
 
     RolDTO obtenerRolByUsuarioId(int id) throws Exception; // Obtiene el rol de un usuario mediante su ID
 
+    DocenteDTO obtenerDocenteByUsername(String username) throws UserException;
+
+    TutorExternoDTO obtenerTutorExternoByUsername(String username) throws UserException;
+    //check
+    EstudianteDTO obtenerEstudianteByUsername(String username) throws UserException;
+    //check
+    EntidadColaborativaDTO obtenerEntidadColaborativaByUsername(String username) throws UserException;
+
+    DirectorCarreraDTO obtenerDirectorCarreraByUsername(String username) throws UserException;
+
+    UsuarioDTO obtenerAdministradorByUsername(String username) throws UserException;
+
+    //check
     void descargarArchivoPDF(String tituloInforme) throws IOException, ReadException; // Descarga archivo pdf del informe seleccionado
 
-    //probar
+    //check
     void cargarConvenio(String tituloConvenio, String descripcionConvenio, ProyectoDTO proyectoDTO, EstudianteDTO estudianteDTO,
                         EntidadColaborativaDTO entidadDTO, String tituloPlan)throws CreateException;
-
+    //check
     void cargarActividad(String titulo, String descripcion, LocalDate fechaFin, int duracion, LocalDate fechaInicio)throws CreateException;
 
-    //probar
-    void cargarInforme(String titulo, String descripcion, byte[] archivo, LocalDate fecha)throws CreateException;
+    //check
+    void cargarInforme(String titulo, String descripcion, byte[] archivo, LocalDate fecha, String tituloActividad)throws CreateException;
 
+    //check
     void cargarPropuestaPropia(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos) throws CreateException;
 
+    //check
     void cargarProyecto(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos, String tutorEncargado) throws CreateException; // Carga un proyecto, con los datos solicitados por parametro
 
+    //check
+    void cargarPlanDeTrabajo(String titulo, String descripcion, TutorExternoDTO tutorDTO, DocenteDTO docenteDTO, InformeDTO informeFinal, List<ActividadDTO> actividadesDTO) throws CreateException;
+
+    //check
     InformeDTO obtenerInformeByTitulo(String titulo) throws ReadException;
 
+    //check
     ActividadDTO obtenerActividadByTitulo(String titulo) throws ReadException;
 
-    //probar
+    //check
     ProyectoDTO obtenerProyectoByTitulo(String titulo) throws ReadException; // Devuelve un proyecto de la DB que es buscado dado un titulo
 
-    List<ActividadDTO> obtenerActividadesHabilitadas() throws ReadException;
-
-    //probar
+    //check
     List <ProyectoDTO> obtenerProyectosHabilitados() throws ReadException; // Devuelve de la DB todos los proyectos que esten habilitados
 
-    //probar
+    //check
     ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException; // Devuelve Un convenio de PPs de la DB dado su titulo
 
-    //Informes de una actividad
+    //check
+    ConvenioPPSDTO obtenerConvenioPPSByEstudianteUsername(String username) throws ReadException;
+
+    //check
     PlanDeTrabajoDTO obtenerPlanByConvenioTitulo(String titulo) throws ReadException;
 
+    //check
     List<ActividadDTO> obtenerActividadesByConvenioTitulo(String titulo) throws ReadException;
 
+    //Probar
+    List<ActividadDTO> obtenerActividadesByEstudianteUsername(String username) throws ReadException;
+
+    //check
     List<InformeDTO> obtenerInformesByConvenioTitulo(String tituloConvenio) throws ReadException;
+
+    //check
+    List<InformeDTO> obtenerInformesByActividadTitulo(String titulo) throws ReadException;
 }

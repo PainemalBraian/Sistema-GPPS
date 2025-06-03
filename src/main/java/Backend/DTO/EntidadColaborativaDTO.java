@@ -23,6 +23,10 @@ public class EntidadColaborativaDTO extends UsuarioDTO{
         this.proyectos = proyectos;
     }
 
+    public EntidadColaborativaDTO() {
+
+    }
+
     public List<ProyectoDTO> getProyectos() {
         return proyectos;
     }

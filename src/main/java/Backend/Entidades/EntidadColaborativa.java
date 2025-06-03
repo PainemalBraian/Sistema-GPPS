@@ -16,7 +16,7 @@ public class EntidadColaborativa extends Usuario{
     public EntidadColaborativa() {}
 
     public EntidadColaborativa(Usuario user,String nombreEntidad,String cuit,String direccionEntidad) throws UserException {
-        super(user.getUsername(), user.getContrasena(), user.getNombre(), user.getEmail(), user.getRol());
+        super(user.getIdUsuario(),user.getUsername(), user.getContrasena(), user.getNombre(), user.getEmail(), user.getRol());
         if (isNull(nombreEntidad) || nombreEntidad.isEmpty()) {
             throw new UserException("El nombre de la Entidad Colabodora debe existir.");
         }

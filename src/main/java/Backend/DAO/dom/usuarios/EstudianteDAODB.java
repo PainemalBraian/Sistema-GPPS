@@ -3,9 +3,7 @@ package Backend.DAO.dom.usuarios;
 import Backend.DAO.DBAcces;
 import Backend.DAO.UsuarioDAODB;
 import Backend.DAO.interfaces.usuarios.ESTUDIANTEDAO;
-import Backend.Entidades.EntidadColaborativa;
 import Backend.Entidades.Estudiante;
-import Backend.Entidades.TutorExterno;
 import Backend.Entidades.Usuario;
 import Backend.Exceptions.ConnectionException;
 import Backend.Exceptions.RegisterExceptions;
@@ -57,7 +55,7 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
+                Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
                 Estudiante estudiante = new Estudiante(usuario, result.getString("matricula"),result.getString("carrera") );
                 disconnect();
                 statement.close();
@@ -88,7 +86,7 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
             List<Estudiante> estudiantes = new ArrayList<>();
             UsuarioDAODB usuarioDAODB = new UsuarioDAODB();
             while (result.next()) {
-                Estudiante estudiante = new Estudiante(usuarioDAODB.buscarById(result.getInt("idUsuario")), result.getString("matricula"),result.getString("carrera"));
+                Estudiante estudiante = new Estudiante(usuarioDAODB.buscarByID(result.getInt("idUsuario")), result.getString("matricula"),result.getString("carrera"));
                 estudiantes.add(estudiante);
             }
 
@@ -116,7 +114,7 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
+                Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
                 Estudiante estudiante = new Estudiante(usuario, result.getString("matricula"),result.getString("carrera") );
                 disconnect();
                 statement.close();

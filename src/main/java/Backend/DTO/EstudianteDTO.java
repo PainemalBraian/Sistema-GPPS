@@ -5,9 +5,13 @@ public class EstudianteDTO extends UsuarioDTO{
     private String carrera;
 
     public EstudianteDTO(UsuarioDTO user, String matricula, String carrera){
-        super(user.getUsername(), user.getPassword(), user.getNombre(), user.getEmail(), user.getRol(), user.isActivo());
+        super(user.getIdUsuario(),user.getUsername(), user.getPassword(), user.getNombre(), user.getEmail(), user.getRol(), user.isActivo());
         this.matricula = matricula;
         this.carrera = carrera;
+    }
+
+    public EstudianteDTO() {
+
     }
 
     public String getCarrera() {
