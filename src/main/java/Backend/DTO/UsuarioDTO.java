@@ -84,7 +84,7 @@ public class UsuarioDTO {
         return idUsuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
+    public void setID(int idUsuario) {
         this.idUsuario = idUsuario;
     }
 

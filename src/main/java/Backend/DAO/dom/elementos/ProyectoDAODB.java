@@ -246,15 +246,14 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
 
     @Override
     public Proyecto buscarByTitulo(String titulo) throws ReadException {
-        TutorExternoDAODB TutorExternoDAODB = new TutorExternoDAODB();
-        Proyecto proyecto = null;
-
         try (Connection conn = connect();
              PreparedStatement statement = conn.prepareStatement("SELECT * FROM Proyectos WHERE titulo = ?");
-             ResultSet result = statement.executeQuery();) {
+             ) {
 
             statement.setString(1, titulo);
+            ResultSet result = statement.executeQuery();
 
+            Proyecto proyecto = null;
             if (result.next()) {
                 int idTutor = result.getInt("idTutor");
                 TutorExterno tutor = new TutorExternoDAODB().buscarByID(idTutor);
@@ -269,10 +268,11 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
                         tutor
                 );
                 proyecto.setHabilitado(result.getBoolean("habilitado"));
+                result.close();
             }
 
             return proyecto;
-    } catch (SQLException e) {
+        } catch (SQLException e) {
             throw new ReadException("Error al buscar el proyecto: " + e.getMessage());
         } catch (ConnectionException e) {
             throw new ReadException(e.getMessage());

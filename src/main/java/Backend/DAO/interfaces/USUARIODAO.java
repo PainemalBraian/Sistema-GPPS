@@ -13,7 +13,7 @@ public interface USUARIODAO extends DAO {
 
     Usuario buscarByUsername(String username) throws  UserException;
 
-    Usuario buscarById(int id) throws  UserException;
+    Usuario buscarByID(int id) throws  UserException;
 
     boolean validarUsernameYEmailUnicos(String username, String email) throws  UserException;
 

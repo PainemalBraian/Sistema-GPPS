@@ -12,6 +12,10 @@ public class Item {
     public Item() {
     }
 
+    public void setID(int id) {
+        this.id = id;
+    }
+
     // Para busquedas de bd
     public Item(int id, String titulo, String descripcion) throws EmptyException {
         if (isNull(titulo) || titulo.isEmpty()) {
@@ -37,7 +41,7 @@ public class Item {
         this.descripcion = descripcion;
     }
 
-    public int getId() {
+    public int getID() {
         return id;
     }
 
