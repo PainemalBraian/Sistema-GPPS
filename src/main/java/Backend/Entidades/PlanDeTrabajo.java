@@ -22,6 +22,14 @@ public class PlanDeTrabajo extends Item{
         this.tutor = tutor;
     }
 
+    public PlanDeTrabajo(int id, String titulo, String descripcion,Docente docente, TutorExterno tutor) throws EmptyException {
+        super(id,titulo,descripcion);
+        if (isNull(docente)) { throw new EmptyException("El docente debe existir."); }
+        if (isNull(tutor)) { throw new EmptyException("El tutor debe existir."); }
+        this.docente = docente;
+        this.tutor = tutor;
+    }
+
 //////////////////////////////METHODs///////////////////////////////////////////////////
 
     private int calcularHorasActividades(List<Actividad> actividades) {
@@ -48,8 +56,8 @@ public class PlanDeTrabajo extends Item{
     }
 
     public Informe getInformeFinal() throws EmptyException {
-        if (isNull(informeFinal))
-            throw new EmptyException("El informe final aún no fué cargado.");
+//        if (isNull(informeFinal))
+//            throw new EmptyException("El informe final aún no fué cargado.");
         return informeFinal;
     }
 
@@ -62,8 +70,8 @@ public class PlanDeTrabajo extends Item{
     public void setActividades(List<Actividad> actividades) throws EmptyException {
         if (isNull(actividades))
             throw new EmptyException("La lista de actividades debe existir.");
-        if (calcularHorasActividades(actividades) != 100 )
-            throw new EmptyException("Las horas de todas las actividades deben sumar 100.");
+        if (calcularHorasActividades(actividades) > 100 )
+            throw new EmptyException("Las horas de todas las actividades deben ser como máximo 100.");
 
         this.actividades = actividades;
     }
@@ -76,5 +84,15 @@ public class PlanDeTrabajo extends Item{
 
     public void setHabilitado(boolean habilitado) {
         this.habilitado = habilitado;
+    }
+
+    public void setDocente(Docente docente) throws EmptyException {
+        if (isNull(docente)) { throw new EmptyException("El docente debe existir."); }
+        this.docente = docente;
+    }
+
+    public void setTutor(TutorExterno tutor) throws EmptyException {
+        if (isNull(tutor)) { throw new EmptyException("El tutor debe existir."); }
+        this.tutor = tutor;
     }
 }
