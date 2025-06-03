@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -17,8 +18,6 @@
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="700.0" prefWidth="900.0" styleClass="root" stylesheets="@../../StyleSheets/Estudiante/informeDeTareas.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.gui.Controller.Estudiante.InformeDeTareasController">
-
-
     <children>
         <BorderPane prefHeight="700.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <top>
@@ -45,29 +44,35 @@
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.0" minWidth="10.0" prefWidth="154.0" />
                         </columnConstraints>
 
+                        <!-- Título -->
                         <Label text="Título:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <TextField fx:id="tituloInformeField" promptText="Título del informe" GridPane.columnIndex="1" />
+                        <TextField fx:id="tituloInformeField" promptText="Título del informe" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                        <Label text="Descripción:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <TextArea fx:id="descripcionInformeArea" prefHeight="137.0" prefWidth="155.0" promptText="Descripción detallada" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <!-- Fecha -->
+                        <Label text="Fecha inicio:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <DatePicker fx:id="fechaInformePicker" promptText="Fecha del informe" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                        <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                            <Button fx:id="subirArchivoButton" onAction="#subirArchivoInforme" prefHeight="54.0" prefWidth="155.0" text="Seleccionar PDF" />
-                        </HBox>
+                        <!-- Descripción -->
+                        <Label text="Descripción:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextArea fx:id="descripcionInformeArea" prefHeight="137.0" prefWidth="155.0" promptText="Descripción detallada" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                        <Label prefHeight="108.0" prefWidth="155.0" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                  <Label prefHeight="44.0" prefWidth="72.0" text="Informe: " GridPane.rowIndex="2" />
-                  <rowConstraints>
-                     <RowConstraints />
-                     <RowConstraints />
-                     <RowConstraints maxHeight="71.0" minHeight="36.0" prefHeight="36.0" />
-                     <RowConstraints maxHeight="76.0" minHeight="0.0" prefHeight="76.0" />
-                     <RowConstraints maxHeight="72.0" minHeight="0.0" prefHeight="18.0" />
-                     <RowConstraints maxHeight="30.0" minHeight="0.0" prefHeight="12.0" />
-                  </rowConstraints>
+                        <!-- Botón subir archivo -->
+                        <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                        <!-- Texto adicional -->
+                        <Label text="Informe: " GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                         <Button fx:id="subirArchivoButton" onAction="#subirArchivoInforme" prefHeight="54.0" prefWidth="155.0" text="Seleccionar PDF" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
                     </GridPane>
 
-                        <Button fx:id="guardarInformeButton" onAction="#GuardarInforme" prefHeight="72.0" prefWidth="144.0" styleClass="button-accion" text="Guardar Informe" />
+                    <Button fx:id="guardarInformeButton" onAction="#GuardarInforme" prefHeight="72.0" prefWidth="144.0" styleClass="button-accion" text="Guardar Informe" />
                 </VBox>
             </left>
 
