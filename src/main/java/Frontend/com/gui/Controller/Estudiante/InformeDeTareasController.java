@@ -2,7 +2,6 @@ package Frontend.com.gui.Controller.Estudiante;
 
 import Backend.API.API;
 import Backend.DTO.ActividadDTO;
-import Backend.DTO.ConvenioPPSDTO;
 import Backend.DTO.InformeDTO;
 import Backend.Exceptions.CreateException;
 import Backend.Exceptions.ReadException;
@@ -18,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import javafx.util.Callback;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +27,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class InformeDeTareasController {
 
@@ -38,13 +37,13 @@ public class InformeDeTareasController {
     @FXML private TextField tituloInformeField;
     @FXML private TextArea descripcionInformeArea;
     @FXML private TextField contenidoInformeField;
-    @FXML private DatePicker fechaInformePicker;
     @FXML private Button guardarInformeButton;
     @FXML private Label tituloActividadSeleccionada;
     @FXML private TableView<InformeDTO> informesTableView;
     @FXML private TableColumn<InformeDTO, String> colTituloInforme;
     @FXML private TableColumn<InformeDTO, LocalDate> colFechaInforme;
-    @FXML private TableColumn<InformeDTO, String> colDescripcionInforme;
+    @FXML private TableColumn<InformeDTO, String> colPorcentajeInforme;
+    @FXML private TableColumn<InformeDTO, Void> colContenidoInforme;
 
     private API api;
     private ObservableList<ActividadDTO> listaActividades = FXCollections.observableArrayList();
@@ -54,7 +53,6 @@ public class InformeDeTareasController {
     public void initialize() {
         configurarComboBoxActividades();
         configurarTableViewInformes();
-        fechaInformePicker.setValue(LocalDate.now());
 
         actividadComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -70,7 +68,7 @@ public class InformeDeTareasController {
     public void setPersistenceAPI(API persistenceAPI) {
         this.api = persistenceAPI;
         if (this.api != null) {
-            cargarActividades(); // Load activities as soon as API is available
+            cargarActividades();
         } else {
             LOGGER.log(Level.WARNING, "Persistence API set to null.");
             listaActividades.clear();
@@ -99,89 +97,115 @@ public class InformeDeTareasController {
     private void configurarTableViewInformes() {
         colTituloInforme.setCellValueFactory(new PropertyValueFactory<>("titulo"));
         colFechaInforme.setCellValueFactory(new PropertyValueFactory<>("fecha"));
-        //colDescripcionInforme.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        colPorcentajeInforme.setCellValueFactory(new PropertyValueFactory<>("porcentajeAvance"));
+
+        // Configurar columna de descarga con botones
+        colContenidoInforme.setCellFactory(new Callback<TableColumn<InformeDTO, Void>, TableCell<InformeDTO, Void>>() {
+            @Override
+            public TableCell<InformeDTO, Void> call(TableColumn<InformeDTO, Void> param) {
+                return new TableCell<InformeDTO, Void>() {
+                    private final Button descargarButton = new Button("Descargar PDF");
+
+                    {
+                        descargarButton.setOnAction(event -> {
+                            InformeDTO informe = getTableView().getItems().get(getIndex());
+                            descargarInformePDF(informe);
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(descargarButton);
+                        }
+                    }
+                };
+            }
+        });
     }
 
     private void cargarActividades() {
         if (api == null) {
             LOGGER.log(Level.WARNING, "API no disponible para cargar actividades.");
             listaActividades.clear();
-            informesTableView.setItems(FXCollections.emptyObservableList());
-            tituloActividadSeleccionada.setText("Informes de la Actividad: (API no disponible)");
             return;
         }
 
         try {
-            // Convenios hardcodeados
-            List<String> convenios = List.of(
-                    "Convenio Energía Renovable",
-                    "Convenio IoT Inteligente"
-            );
+            // Obtener todas las actividades disponibles
+            System.out.println(api.obtenerUsername());
+            List<ActividadDTO> actividades = api.obtenerActividadesByEstudianteUsername(api.obtenerUsername());
 
-            for (String convenio : convenios) {
-                LOGGER.log(Level.INFO, "Cargando informes del convenio: " + convenio);
-
-                List<InformeDTO> informes = api.obtenerInformesByConvenioTitulo(convenio);
-
-                if (informes != null && !informes.isEmpty()) {
-                    LOGGER.log(Level.INFO, "Se encontraron " + informes.size() + " informes para " + convenio);
-
-                    // Podés mostrar uno por uno en consola o hacer algo con ellos
-                    for (InformeDTO informe : informes) {
-                        System.out.println("[" + convenio + "] Informe: " + informe);
-                    }
-
-                    // Opcional: mostrar los informes en la UI (por ejemplo, del primer convenio)
-                    // Esto se ejecuta solo para el primero y termina.
-                    informesTableView.setItems(FXCollections.observableArrayList(informes));
-                    tituloActividadSeleccionada.setText("Informes del Convenio: " + convenio);
-                    break; // mostramos solo el primero en UI
-                } else {
-                    LOGGER.log(Level.INFO, "No hay informes para el convenio: " + convenio);
-                }
+            if (actividades != null && !actividades.isEmpty()) {
+                listaActividades.clear();
+                listaActividades.addAll(actividades);
+                LOGGER.log(Level.INFO, "Se cargaron " + actividades.size() + " actividades.");
+            } else {
+                LOGGER.log(Level.INFO, "No se encontraron actividades disponibles.");
+                listaActividades.clear();
             }
 
         } catch (ReadException e) {
-            LOGGER.log(Level.SEVERE, "Error al cargar informes desde la API.", e);
-            mostrarAlerta("Error de Carga", "No se pudieron cargar los informes: " + e.getMessage(), Alert.AlertType.ERROR);
-            informesTableView.setItems(FXCollections.emptyObservableList());
-            tituloActividadSeleccionada.setText("Informes de la Actividad: (Error al cargar)");
+            LOGGER.log(Level.SEVERE, "Error al cargar actividades desde la API.", e);
+            mostrarAlerta("Error de Carga", "No se pudieron cargar las actividades: " + e.getMessage(), Alert.AlertType.ERROR);
+            listaActividades.clear();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error inesperado al cargar informes.", e);
-            mostrarAlerta("Error Inesperado", "Ocurrió un error inesperado al cargar los informes: " + e.getMessage(), Alert.AlertType.ERROR);
-            informesTableView.setItems(FXCollections.emptyObservableList());
-            tituloActividadSeleccionada.setText("Informes de la Actividad: (Error inesperado)");
+            LOGGER.log(Level.SEVERE, "Error inesperado al cargar actividades.", e);
+            mostrarAlerta("Error Inesperado", "Ocurrió un error inesperado al cargar las actividades: " + e.getMessage(), Alert.AlertType.ERROR);
+            listaActividades.clear();
         }
     }
 
-
-
-    private void cargarYMostrarInformesDeActividad(String convenioTitulo) {
-        if (api == null || convenioTitulo == null || convenioTitulo.isEmpty()) {
+    private void cargarYMostrarInformesDeActividad(String actividadTitulo) {
+        if (api == null || actividadTitulo == null || actividadTitulo.isEmpty()) {
             informesTableView.setItems(FXCollections.emptyObservableList());
             return;
         }
         try {
-            List<InformeDTO> informes = api.obtenerInformesByConvenioTitulo(convenioTitulo);
+            List<InformeDTO> informes = api.obtenerInformesByActividadTitulo(actividadTitulo);
 
             if (informes != null && !informes.isEmpty()) {
                 ObservableList<InformeDTO> informesObservable = FXCollections.observableArrayList(informes);
                 informesTableView.setItems(informesObservable);
             } else {
                 informesTableView.setItems(FXCollections.emptyObservableList());
-                LOGGER.log(Level.INFO, "No hay informes para el convenio: " + convenioTitulo);
+                LOGGER.log(Level.INFO, "No hay informes para la actividad: " + actividadTitulo);
             }
         } catch (ReadException e) {
-            LOGGER.log(Level.SEVERE, "Error al cargar informes del convenio: " + convenioTitulo, e);
-            mostrarAlerta("Error de Carga", "No se pudieron cargar los informes para el convenio: " + e.getMessage(), Alert.AlertType.ERROR);
+            LOGGER.log(Level.SEVERE, "Error al cargar informes de la actividad: " + actividadTitulo, e);
+            mostrarAlerta("Error de Carga", "No se pudieron cargar los informes para la actividad: " + e.getMessage(), Alert.AlertType.ERROR);
             informesTableView.setItems(FXCollections.emptyObservableList());
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error inesperado al cargar informes para el convenio: " + convenioTitulo, e);
+            LOGGER.log(Level.SEVERE, "Error inesperado al cargar informes para la actividad: " + actividadTitulo, e);
             mostrarAlerta("Error Inesperado", "Ocurrió un error inesperado al cargar los informes: " + e.getMessage(), Alert.AlertType.ERROR);
             informesTableView.setItems(FXCollections.emptyObservableList());
         }
     }
 
+    private void descargarInformePDF(InformeDTO informe) {
+        if (api == null || informe == null) {
+            mostrarAlerta("Error", "No se puede descargar el informe. Datos no disponibles.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        try {
+            api.descargarArchivoPDF(informe.getTitulo());
+            mostrarAlerta("Éxito", "El archivo PDF se ha descargado correctamente en la carpeta Downloads/.GPPS_Downloads", Alert.AlertType.INFORMATION);
+
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error al descargar el archivo PDF: " + informe.getTitulo(), e);
+            mostrarAlerta("Error de Descarga", "No se pudo descargar el archivo: " + e.getMessage(), Alert.AlertType.ERROR);
+        } catch (ReadException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer el informe desde la base de datos: " + informe.getTitulo(), e);
+            mostrarAlerta("Error de Lectura", "No se pudo leer el informe desde la base de datos: " + e.getMessage(), Alert.AlertType.ERROR);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error inesperado al descargar el informe: " + informe.getTitulo(), e);
+            mostrarAlerta("Error Inesperado", "Ocurrió un error inesperado al descargar el informe: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
 
     public byte[] leerArchivoPDF(String path) throws IOException {
         return Files.readAllBytes(Paths.get(path));
@@ -241,10 +265,9 @@ public class InformeDeTareasController {
 
         String titulo = tituloInformeField.getText();
         String descripcion = descripcionInformeArea.getText();
-        LocalDate fechaInforme = fechaInformePicker.getValue();
 
-        if (titulo.trim().isEmpty() || descripcion.trim().isEmpty() || archivoSeleccionado == null || fechaInforme == null) {
-            mostrarAlerta("Validación", "Todos los campos (Título, Descripción, Archivo PDF, Fecha) son obligatorios.", Alert.AlertType.WARNING);
+        if (titulo.trim().isEmpty() || descripcion.trim().isEmpty() || archivoSeleccionado == null) {
+            mostrarAlerta("Validación", "Todos los campos (Título, Descripción, Archivo PDF) son obligatorios.", Alert.AlertType.WARNING);
             return;
         }
 
@@ -254,15 +277,14 @@ public class InformeDeTareasController {
                 mostrarAlerta("Error de Sistema", "La conexión con el sistema (API) no está disponible.", Alert.AlertType.ERROR);
                 return;
             }
-            
-            LocalDate fechaCreacion = LocalDate.now();
-            byte[] archivo = new byte[0]; // se necesita cargar el archivo pdf seleccionado en este tipo y pasarlo en lugar de "contenido"
-            // Carga de informe además se va a llevar el nombre de la actividad a la que corresponder la entrega del informe.
-            //Usar algo como "getSelectedRows" de la lista de actividades que tenes para seleccionar y tomar su nombre
-            api.cargarInforme(titulo, descripcion, archivo, fechaCreacion,"");
 
-            InformeDTO nuevoInformeDTO = new InformeDTO(titulo, descripcion, archivo, fechaCreacion);
-            actividadSeleccionadaEnComboBox.addInforme(nuevoInformeDTO);
+            LocalDate fechaCreacion = LocalDate.now();
+            byte[] archivo = leerArchivoPDF(archivoSeleccionado.getAbsolutePath());
+
+            // Cargar informe con el título de la actividad seleccionada
+            api.cargarInforme(titulo, descripcion, archivo, fechaCreacion, actividadSeleccionadaEnComboBox.getTitulo());
+
+            // Refrescar la tabla de informes
             cargarYMostrarInformesDeActividad(actividadSeleccionadaEnComboBox.getTitulo());
             limpiarFormularioInforme();
             mostrarAlerta("Éxito", "Informe guardado correctamente.", Alert.AlertType.INFORMATION);
@@ -270,6 +292,9 @@ public class InformeDeTareasController {
         } catch (CreateException e) {
             LOGGER.log(Level.SEVERE, "Error al guardar el informe en la base de datos", e);
             mostrarAlerta("Error al Guardar", "No se pudo guardar el informe: " + e.getMessage(), Alert.AlertType.ERROR);
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer el archivo PDF", e);
+            mostrarAlerta("Error de Archivo", "No se pudo leer el archivo PDF seleccionado: " + e.getMessage(), Alert.AlertType.ERROR);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error inesperado al guardar el informe", e);
             mostrarAlerta("Error Inesperado", "Ocurrió un error inesperado al intentar guardar el informe: " + e.getMessage(), Alert.AlertType.ERROR);
@@ -280,7 +305,6 @@ public class InformeDeTareasController {
         tituloInformeField.clear();
         descripcionInformeArea.clear();
         contenidoInformeField.clear();
-        fechaInformePicker.setValue(LocalDate.now());
         archivoSeleccionado = null;
     }
 
@@ -293,7 +317,6 @@ public class InformeDeTareasController {
 
             if (this.api != null) {
                 controller.setPersistenceAPI(this.api);
-                // No more tituloConvenio to pass
             } else {
                 LOGGER.log(Level.WARNING, "API no inicializada al volver a Home.");
             }
