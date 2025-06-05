@@ -126,6 +126,8 @@ public class PuestosDisponiblesController {
 
             String empresaNombre = oportunidadSeleccionada.getUbicacion() != null ? oportunidadSeleccionada.getUbicacion() : "Empresa no especificada";
 
+            //api.inscribirEstudiante(api.obtenerSesionDeUsuario(), oportunidadSeleccionada);
+
             confirmation.setContentText("¿Estás seguro de que deseas postularte para el proyecto: \"" + oportunidadSeleccionada.getTitulo() + "\" en " + empresaNombre + "?");
 
             Optional<ButtonType> result = confirmation.showAndWait();

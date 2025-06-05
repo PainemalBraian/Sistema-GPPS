@@ -1,7 +1,6 @@
 package Backend.API;
 
 import Backend.DTO.*;
-import Backend.Entidades.*;
 import Backend.Exceptions.*;
 
 import java.io.IOException;
@@ -39,7 +38,7 @@ public interface API {
 
     void desactivarUsuarioByUsername(String username) throws UserException, UpdateException; // Recuperar el objeto Usuario, implementar el comportamiento de estado.
 
-    String obtenerNombreUsuario() throws UserException; //Devuelve el nombre del usuario logeado
+    String obtenerUsername() throws UserException; //Devuelve el nombre del usuario logeado
 
     UsuarioDTO login(String username, String password) throws LoginException; // Loguea el usuario y si todo es correcto devuelve el Usuario, sino null
 
