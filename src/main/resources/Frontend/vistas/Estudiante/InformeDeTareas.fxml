@@ -82,12 +82,12 @@
                         <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
                     <Label fx:id="tituloActividadSeleccionada" styleClass="label-header" text="Tu lista de actividades: " />
-                    <TableView fx:id="informesTableView" prefHeight="500.0">
+                    <TableView fx:id="informesTableView" prefHeight="529.0" prefWidth="607.0">
                         <columns>
-                            <TableColumn fx:id="colTituloInforme" prefWidth="150.0" text="Título" />
-                            <TableColumn fx:id="colFechaInforme" prefWidth="100.0" text="Fecha" />
-                            <TableColumn fx:id="colPorcentajeInforme" prefWidth="80.0" text="Avance" />
-                            <TableColumn fx:id="colContenidoInforme" prefWidth="200.0" text="Contenido (Archivo)" />
+                            <TableColumn fx:id="colTituloInforme" prefWidth="215.0" text="Título" />
+                            <TableColumn fx:id="colFechaInforme" prefWidth="66.0" text="Fecha" />
+                            <TableColumn fx:id="colPorcentajeInforme" prefWidth="201.0" text="Porcentaje de Avance" />
+                            <TableColumn fx:id="colContenidoInforme" prefWidth="94.0" text="Descargar " />
                         </columns>
                         <columnResizePolicy>
                             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

@@ -37,7 +37,7 @@ public class InformeDeTareasController {
     @FXML private ComboBox<ActividadDTO> actividadComboBox;
     @FXML private TextField tituloInformeField;
     @FXML private TextArea descripcionInformeArea;
-    @FXML private TextField contenidoInformeField; // Displays selected PDF filename
+    @FXML private TextField contenidoInformeField;
     @FXML private DatePicker fechaInformePicker;
     @FXML private Button guardarInformeButton;
     @FXML private Label tituloActividadSeleccionada;
