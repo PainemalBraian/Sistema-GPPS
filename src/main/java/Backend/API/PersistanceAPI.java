@@ -175,9 +175,9 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-    public String obtenerNombreUsuario() throws UserException {
+    public String obtenerUsername() throws UserException {
         try {
-            return userSession.getNombre();
+            return userSession.getUsername();
         }catch (Exception e){
             throw new UserException("No hay un usuario en la sesión");}
     }
@@ -361,7 +361,7 @@ public class PersistanceAPI implements API {
 
             ConvenioPPSDAODB.create(convenio);
         } catch (Exception e) {
-            throw new CreateException("Error al crear el convenio: " + e.getMessage());
+                   throw new CreateException("Error al crear el convenio: " + e.getMessage());
         }
     }
 
