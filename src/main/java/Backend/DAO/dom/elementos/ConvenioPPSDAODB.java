@@ -6,10 +6,7 @@ import Backend.DAO.interfaces.elementos.ConvenioPPSDAO;
 import Backend.Entidades.*;
 import Backend.Exceptions.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +25,8 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
             statement.setInt(4, convenio.getProyecto().getID());
             statement.setInt(5, convenio.getEstudiante().getIdUsuario());
             statement.setInt(6, convenio.getEntidad().getIdUsuario());
-            statement.setInt(7, convenio.getPlan().getID());
+            if ( convenio.getPlan()!= null)
+                statement.setInt(7, convenio.getPlan().getID());
 
             statement.executeUpdate();
 
@@ -43,6 +41,44 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
     public void delete(int id) throws DeleteException {
 
     }
+
+    @Override
+    public void update(ConvenioPPS convenio) throws CreateException {
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement(
+                     "UPDATE ConveniosPPS SET titulo = ?, descripcion = ?, habilitado = ?, idProyecto = ?, idEstudiante = ?, idEntidad = ?, idPlan = ? WHERE idConvenio = ?"
+             )) {
+
+            statement.setString(1, convenio.getTitulo());
+            statement.setString(2, convenio.getDescripcion());
+            statement.setBoolean(3, convenio.isHabilitado());
+            statement.setInt(4, convenio.getProyecto().getID());
+            statement.setInt(5, convenio.getEstudiante().getIdUsuario());
+            statement.setInt(6, convenio.getEntidad().getIdUsuario());
+
+            // Si el convenio tiene un plan, lo asignamos; de lo contrario, enviamos `null`
+            if (convenio.getPlan() != null) {
+                statement.setInt(7, convenio.getPlan().getID());
+            } else {
+                statement.setNull(7, Types.INTEGER);
+            }
+
+            statement.setInt(8, convenio.getID()); // Identificador del convenio a actualizar
+
+            int filasActualizadas = statement.executeUpdate();
+
+            // Verificar si se actualizó al menos una fila
+            if (filasActualizadas == 0) {
+                throw new CreateException("No se encontró el convenio con ID: " + convenio.getID());
+            }
+
+        } catch (ConnectionException e) {
+            throw new CreateException(e.getMessage());
+        } catch (SQLException e) {
+            throw new CreateException("Error al actualizar el convenio: " + e.getMessage());
+        }
+    }
+
 
     @Override
     public ConvenioPPS buscarByID(int id) throws ReadException {

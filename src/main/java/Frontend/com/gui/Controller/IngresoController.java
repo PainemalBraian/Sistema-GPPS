@@ -157,6 +157,8 @@ public class IngresoController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/home.fxml"));
             Parent root = loader.load();
 
+            api.login("estudiante","contrasena123");
+
             // Obtener el controlador de la vista principal
             HomeController controllerHome = loader.getController();
             controllerHome.setPersistenceAPI(api);
@@ -178,6 +180,8 @@ public class IngresoController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Docente/homeDocente.fxml"));
             Parent root = loader.load();
+
+            api.login("docente","contrasena123");
 
             // Obtener el controlador de la vista principal
             HomeDocenteController controllerHome = loader.getController();
@@ -212,6 +216,8 @@ public class IngresoController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/DirectorCarrera/homeDirectorCarrera.fxml"));
             Parent root = loader.load();
 
+            api.login("director","contrasena123");
+
             // Obtener el controlador de la vista principal
             homeDirectorCarreraController controllerHome = loader.getController();
             controllerHome.setPersistenceAPI(api);
@@ -234,6 +240,8 @@ public class IngresoController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Tutor/homeTutor.fxml"));
             Parent root = loader.load();
+
+            api.login("tutor","contrasena123");
 
             // Obtener el controlador de la vista principal
             HomeTutorController controllerHome = loader.getController();
@@ -258,6 +266,8 @@ public class IngresoController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/EntidadColaboradora/homeEmpresa.fxml"));
             Parent root = loader.load();
 
+            api.login("entidad","contrasena123");
+
             // Obtener el controlador de la vista principal
             homeEmpresaController controllerHome = loader.getController();
             controllerHome.setPersistenceAPI(api);
@@ -280,6 +290,8 @@ public class IngresoController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Administrador/homeAdministrador.fxml"));
             Parent root = loader.load();
+
+            api.login("admin","contrasena123");
 
             // Obtener el controlador de la vista principal
             homeAdministradorController controllerHome = loader.getController();

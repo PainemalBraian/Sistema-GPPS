@@ -30,7 +30,11 @@ public class PlanDeTrabajo extends Item{
         this.tutor = tutor;
     }
 
-//////////////////////////////METHODs///////////////////////////////////////////////////
+    public PlanDeTrabajo() {
+
+    }
+
+    //////////////////////////////METHODs///////////////////////////////////////////////////
 
     private int calcularHorasActividades(List<Actividad> actividades) {
         int horasTotales = 0;

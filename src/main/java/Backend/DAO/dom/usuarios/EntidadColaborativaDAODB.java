@@ -100,6 +100,40 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
         }
     }
 
+    public EntidadColaborativa buscarByNombreEntidad(String nombreEntidad) throws UserException {
+        try {
+            Connection conn = connect();
+            PreparedStatement statement = conn.prepareStatement(
+                    "SELECT * FROM EntidadesColaborativas EC " +
+                            "JOIN Usuarios U ON EC.idUsuario = U.idUsuario " +
+                            "WHERE EC.nombreEntidad = ?"
+            );
+            statement.setString(1, nombreEntidad);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
+                EntidadColaborativa entidad = new EntidadColaborativa(usuario, result.getString("nombreEntidad"),result.getString("cuit"),result.getString("direccionEntidad") );
+                disconnect();
+                statement.close();
+                result.close();
+                return entidad;
+            } else {
+                disconnect();
+                statement.close();
+                result.close();
+                throw new UserException("Entidad no encontrado.");
+            }
+        }
+        catch (SQLException e) {
+            throw new UserException("Error al buscar el entidad en la base de datos: " + e.getMessage());
+        }
+        catch(ConnectionException e){
+            throw new UserException(e.getMessage());
+        }
+    }
+
     @Override
     public EntidadColaborativa buscarByID(int id) throws UserException {
         try {

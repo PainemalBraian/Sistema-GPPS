@@ -1,6 +1,7 @@
 package Frontend.com.gui.Controller.Tutor;
 
 import Backend.API.API;
+import Backend.Exceptions.UserException;
 import Frontend.com.gui.Controller.IngresoController;
 import Frontend.com.gui.Controller.MensajesController;
 import javafx.event.ActionEvent;
@@ -42,13 +43,14 @@ public class HomeTutorController {
 
     public void setPersistenceAPI(API persistenceAPI) throws Exception {
         this.api = persistenceAPI;
+        lblBienvenida.setText(api.obtenerSesionDeUsuario().getNombre());
         //actualizarIdioma();
     }
 
-    private void actualizarIdioma() {
+    private void actualizarIdioma() throws UserException {
         bundle = api.obtenerIdioma();
 
-        lblBienvenida.setText(bundle.getString("label.bienvenida.tutor"));
+        lblBienvenida.setText(bundle.getString("label.bienvenida.tutor")+ api.obtenerSesionDeUsuario().getNombre());
         lblEmpresa.setText(bundle.getString("label.infoEmpresa"));
         lblProyectos.setText(bundle.getString("label.proyectosDisponibles"));
         lblSeguimiento.setText(bundle.getString("label.seguimientoEstudiantes"));
