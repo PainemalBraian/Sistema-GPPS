@@ -39,15 +39,16 @@ public class Main extends Application {
             IngresoController controller = loader.getController();
 
             // Crear y pasar la instancia de PersistenceAPI
-            API controlador = new PersistanceAPI() {};
+            API api = new PersistanceAPI() {};
 
-            controller.setPersistenceAPI(controlador);
+            controller.setPersistenceAPI(api);
             Scene login = new Scene(root);
             pantalla.setResizable(false);
             pantalla.setScene(login);
             pantalla.show();
         }
         catch (Exception e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
         }
     }

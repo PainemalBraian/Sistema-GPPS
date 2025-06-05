@@ -1,7 +1,5 @@
 package Backend.DTO;
 
-import java.util.List;
-
 public class ConvenioPPSDTO extends ItemDTO{
     private boolean habilitado;
     private EntidadColaborativaDTO entidad;

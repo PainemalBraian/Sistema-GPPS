@@ -46,6 +46,9 @@ public class homeDirectorCarreraController { // Nombre de clase cambiado
     @FXML private Label lblPlanesPorValidarDashboard;
     @FXML private Label lblInformesPorValidarDashboard;
 
+    @FXML
+    public void initialize() {
+    }
 
     public void setPersistenceAPI(API persistenceAPI) throws Exception {
         this.api = persistenceAPI;
@@ -92,10 +95,26 @@ public class homeDirectorCarreraController { // Nombre de clase cambiado
         LOGGER.info("Cargando datos de resumen para el Director de Carrera.");
     }
 
+
     @FXML
     public void gestionarConvenios(ActionEvent event) {
-        // US: Como miembro de la Dirección de Carrera, quiero dar de alta, actualizar o dar de baja convenios...
-        navegar("/Frontend/vistas/DirectorCarrera/gestionarConvenios.fxml", bundle.getString("title.gestionarConvenios"), event);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/DirectorCarrera/GestionDeConvenios.fxml"));
+            Parent root = loader.load();
+
+            GestionConveniosController controller = loader.getController();
+            controller.setPersistenceAPI(api);
+
+            Stage stage = new Stage();
+            stage.setTitle("Gestión de Convenios - GPPS");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            ((Stage) ((Button) event.getSource()).getScene().getWindow()).close();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al abrir la gestión de convenios", e);
+            mostrarAlerta("Error", "No se pudo abrir la gestión de convenios");
+        }
     }
 
     @FXML

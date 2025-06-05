@@ -119,7 +119,7 @@ CREATE TABLE ConveniosPPS (
     idProyecto INT NOT NULL,
     idEstudiante INT NOT NULL,
     idEntidad INT NOT NULL,
-    idPlan INT NOT NULL,
+    idPlan INT ,
     FOREIGN KEY (idProyecto) REFERENCES Proyectos(idProyecto) ON DELETE CASCADE,
     FOREIGN KEY (idPlan) REFERENCES PlanesDeTrabajos(idPlanDeTrabajo) ON DELETE CASCADE,
     FOREIGN KEY (idEstudiante) REFERENCES Estudiantes(idEstudiante) ON DELETE CASCADE,
@@ -173,6 +173,7 @@ CREATE TABLE Relacion_Actividad_Informes (
 -- ---------------- CARGAS -------------------------------------------------------------------
 
 INSERT INTO Roles (idRol, nombre, activo) VALUES
+(-10, 'TEMPORAL', false),
 (1, 'Estudiante', true),
 (2, 'Docente', true),
 (3, 'Representante de Entidad Colaboradora', true),
@@ -189,26 +190,33 @@ INSERT INTO Usuarios (username, password, nombreCompleto, email, idRol, activo) 
 ('director', 'contrasena123', 'Ana Rodriguez', 'ana.rodriguez@mail.com', 5, true),
 ('admin', 'contrasena123', 'Administrador General', 'admin@mail.com', 6, true);
 
+INSERT INTO Usuarios (idUsuario,username, password, nombreCompleto, email, idRol, activo) VALUES
+(-10,"TEMPORAL",123456789, 'XXXXXX','XXXXXX',-10,false);
+
 -- Estudiantes
 INSERT INTO Estudiantes (idEstudiante, idUsuario, matricula, carrera) VALUES
+(-10,-10, 'XXXXXX','XXXXXX'),
 (1,1, 'MAT123', 'Ingeniería de Software');
 
 -- Docentes
 INSERT INTO Docentes (idDocente, idUsuario, legajo) VALUES
+(-10,-10, 'XXXXXX'),
 (2,2, 'LEG456');
 
 -- Entidades Colaborativas
 INSERT INTO EntidadesColaborativas (idEntidad, idUsuario, nombreEntidad, cuit, direccionEntidad) VALUES
+(-10,-10, 'TEMPORAL','00000000000','TEMPORAL'),
 (3,3, 'Entidad ABC', '30123456789', 'Calle Falsa 123');
 
 -- Tutores Externos
 INSERT INTO TutoresExternos (idTutor,idUsuario, nombreEntidadColaborativa) VALUES
+(-10,-10, 'TEMPORAL'),
 (4,4, 'Entidad ABC');
 
 -- Directores de Carrera
 INSERT INTO DirectoresCarrera (idDirector,idUsuario, nombreCompleto) VALUES
+(-10,-10, 'XXXXXX'),
 (5,5, 'Ana Rodriguez');
-
 
 -- ----------Carga Elementos PPS--------------
 
@@ -216,6 +224,9 @@ INSERT INTO PlanesDeTrabajos (titulo, descripcion, habilitado, idDocente, idTuto
 ('Plan Energía Solar', 'Plan de trabajo para proyecto solar', true, 2, 4, null),
 ('Plan IoT', 'Plan de trabajo para proyecto IoT', true, 2, 4, null),
 ('Plan SiS', 'Plan de trabajo para proyecto SiS', true, 2, 4, null);
+
+INSERT INTO PlanesDeTrabajos (idPlanDeTrabajo,titulo, descripcion, habilitado, idDocente, idTutor, idInformeFinal) VALUES
+(-10,'TEMPORAL', 'TEMPORAL', false, -10, -10, null);
 
 -- Proyectos
 INSERT INTO Proyectos (titulo, habilitado, descripcion, areaDeInteres, ubicacion, objetivos, requisitos, idTutor) VALUES
