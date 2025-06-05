@@ -99,7 +99,6 @@ public class InformeDeTareasController {
         colFechaInforme.setCellValueFactory(new PropertyValueFactory<>("fecha"));
         colPorcentajeInforme.setCellValueFactory(new PropertyValueFactory<>("porcentajeAvance"));
 
-        // Configurar columna de descarga con botones
         colContenidoInforme.setCellFactory(new Callback<TableColumn<InformeDTO, Void>, TableCell<InformeDTO, Void>>() {
             @Override
             public TableCell<InformeDTO, Void> call(TableColumn<InformeDTO, Void> param) {
@@ -116,9 +115,16 @@ public class InformeDeTareasController {
                     @Override
                     protected void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
+
                         if (empty) {
                             setGraphic(null);
                         } else {
+                            InformeDTO informe = getTableView().getItems().get(getIndex());
+
+                            // Deshabilitar el botón si no hay archivo
+                            boolean tieneArchivo = informe.getArchivo() != null;
+                            descargarButton.setDisable(!tieneArchivo);
+
                             setGraphic(descargarButton);
                         }
                     }
@@ -126,6 +132,7 @@ public class InformeDeTareasController {
             }
         });
     }
+
 
     private void cargarActividades() {
         if (api == null) {
@@ -136,13 +143,12 @@ public class InformeDeTareasController {
 
         try {
             // Obtener todas las actividades disponibles
-            System.out.println(api.obtenerUsername());
             List<ActividadDTO> actividades = api.obtenerActividadesByEstudianteUsername(api.obtenerUsername());
 
             if (actividades != null && !actividades.isEmpty()) {
                 listaActividades.clear();
                 listaActividades.addAll(actividades);
-                LOGGER.log(Level.INFO, "Se cargaron " + actividades.size() + " actividades.");
+//                LOGGER.log(Level.INFO, "Se cargaron " + actividades.size() + " actividades.");
             } else {
                 LOGGER.log(Level.INFO, "No se encontraron actividades disponibles.");
                 listaActividades.clear();
@@ -186,7 +192,7 @@ public class InformeDeTareasController {
     }
 
     private void descargarInformePDF(InformeDTO informe) {
-        if (api == null || informe == null) {
+        if (api == null || informe.getArchivo() == null) {
             mostrarAlerta("Error", "No se puede descargar el informe. Datos no disponibles.", Alert.AlertType.ERROR);
             return;
         }

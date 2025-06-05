@@ -33,6 +33,19 @@ Configurar Run del compilador. Agregar (VM OPTION)
 --enable-native-access=ALL-UNNAMED
 --enable-native-access=javafx.graphics
 
+Configuración de Variable de entorno del sistema (Variables del sistema)
+DIRECTORIO DEL SDK 24.0.1/bin
+Agregar Path
+C:\Users\...\Sistema-GPPS\.idea\libraries\javafx-sdk-24.0.1\bin
+C:\Users\...\openjdk-24\bin
+C:\Users\...\Sistema-GPPS\.idea\libraries\javafx-sdk-24.0.1\lib
+%JAVA_HOME24%\bin
+
+Nueva Variable
+JAVA_HOME24
+C:\...\.jdks\openjdk-24.0.1
+
+
 Atento a notificación "Deprecated" ocasionado al ejecutar. (Solo es informativo)
 Provocado por advertencia de "deprecated method in sun.misc.Unsafe"
 IGNORAR

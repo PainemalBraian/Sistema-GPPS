@@ -2,6 +2,8 @@ package Frontend.com.gui.Controller.Estudiante;
 
 import Backend.API.API;
 import Backend.DTO.ProyectoDTO;
+import Backend.Exceptions.CreateException;
+import Backend.Exceptions.UserException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -126,7 +128,11 @@ public class PuestosDisponiblesController {
 
             String empresaNombre = oportunidadSeleccionada.getUbicacion() != null ? oportunidadSeleccionada.getUbicacion() : "Empresa no especificada";
 
-            //api.inscribirEstudiante(api.obtenerSesionDeUsuario(), oportunidadSeleccionada);
+            try {
+                api.inscribirEstudiante(api.obtenerSesionDeUsuario(), oportunidadSeleccionada);
+            } catch (CreateException | UserException e) {
+                mostrarAlerta("Error al inscribir", e.getMessage(), Alert.AlertType.ERROR);
+            }
 
             confirmation.setContentText("¿Estás seguro de que deseas postularte para el proyecto: \"" + oportunidadSeleccionada.getTitulo() + "\" en " + empresaNombre + "?");
 

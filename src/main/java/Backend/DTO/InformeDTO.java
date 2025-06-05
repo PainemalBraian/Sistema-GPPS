@@ -5,12 +5,14 @@ import java.time.LocalDate;
 public class InformeDTO extends ItemDTO{
     private byte[] archivo;
     private LocalDate fecha;
+    private int porcentajeAvance;
 
 
-    public InformeDTO(int id, String titulo, String descripcion, byte[] archivo,LocalDate fecha) {
+    public InformeDTO(int id, String titulo, String descripcion, byte[] archivo,LocalDate fecha, int porcentajeAvance) {
         super(id, titulo, descripcion);
         this.archivo = archivo;
         this.fecha = fecha;
+        this.porcentajeAvance = porcentajeAvance;
     }
 
     public InformeDTO(String titulo, String descripcion, byte[] archivo,LocalDate fecha) {
@@ -21,6 +23,14 @@ public class InformeDTO extends ItemDTO{
 
     public InformeDTO() {
 
+    }
+
+    public void setPorcentajeAvance(int porcentajeAvance) {
+        this.porcentajeAvance = porcentajeAvance;
+    }
+
+    public int getPorcentajeAvance() {
+        return porcentajeAvance;
     }
 
     public void setArchivo(byte[] archivo) {
