@@ -3,9 +3,7 @@ package Backend.DAO.dom.usuarios;
 import Backend.DAO.DBAcces;
 import Backend.DAO.UsuarioDAODB;
 import Backend.DAO.interfaces.usuarios.ESTUDIANTEDAO;
-import Backend.Entidades.EntidadColaborativa;
 import Backend.Entidades.Estudiante;
-import Backend.Entidades.TutorExterno;
 import Backend.Entidades.Usuario;
 import Backend.Exceptions.ConnectionException;
 import Backend.Exceptions.RegisterExceptions;
@@ -29,23 +27,22 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
                     "INSERT INTO Estudiantes(idUsuario, matricula, carrera) " +
                             "VALUES (?, ?, ?)"
             );
-            // Guardar en la base de datos
             statement.setInt(1, UsuarioDAODB.create(estudiante));
             statement.setString(2, estudiante.getMatricula());
             statement.setString(3, estudiante.getCarrera());
 
-            statement.executeUpdate();  // Cambié executeQuery() por executeUpdate()
+            statement.executeUpdate();
             statement.close();
             disconnect();
         } catch (SQLException e) {
             throw new RegisterExceptions("Error al crear y guardar el estudiante: " + e.getMessage());
         }catch(ConnectionException e){
-            throw new RegisterExceptions("Error al conectar con la base de datos: " + e.getMessage());
+            throw new RegisterExceptions(e.getMessage());
         }
     }
 
     @Override
-    public Estudiante buscarById(int id) throws UserException {
+    public Estudiante buscarByID(int id) throws UserException {
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(
@@ -58,10 +55,16 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
+                Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
                 Estudiante estudiante = new Estudiante(usuario, result.getString("matricula"),result.getString("carrera") );
+                disconnect();
+                statement.close();
+                result.close();
                 return estudiante;
             } else {
+                disconnect();
+                statement.close();
+                result.close();
                 throw new UserException("Estudiante no encontrado.");
             }
         }
@@ -69,7 +72,7 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
             throw new UserException("Error al buscar el estudiante en la base de datos: " + e.getMessage());
         }
         catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 
@@ -83,17 +86,17 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
             List<Estudiante> estudiantes = new ArrayList<>();
             UsuarioDAODB usuarioDAODB = new UsuarioDAODB();
             while (result.next()) {
-                Estudiante estudiante = new Estudiante(usuarioDAODB.buscarById(result.getInt("idUsuario")), result.getString("matricula"),result.getString("carrera"));
+                Estudiante estudiante = new Estudiante(usuarioDAODB.buscarByID(result.getInt("idUsuario")), result.getString("matricula"),result.getString("carrera"));
                 estudiantes.add(estudiante);
             }
-            disconnect();
+
             return estudiantes;
         } catch (SQLException e) {
             throw new UserException("Error al leer en la base de datos: " + e);
         } catch (UserException e) {
             throw new UserException(e.getMessage());
         }catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 
@@ -111,10 +114,16 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Usuario usuario = UsuarioDAODB.buscarById(result.getInt("idUsuario"));
+                Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
                 Estudiante estudiante = new Estudiante(usuario, result.getString("matricula"),result.getString("carrera") );
+                disconnect();
+                statement.close();
+                result.close();
                 return estudiante;
             } else {
+                disconnect();
+                statement.close();
+                result.close();
                 throw new UserException("Estudiante no encontrado.");
             }
         }
@@ -122,7 +131,7 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
             throw new UserException("Error al buscar el estudiante en la base de datos: " + e.getMessage());
         }
         catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 
@@ -138,13 +147,15 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
             if (result.next() && result.getInt("total") > 0) {
                 throw new UserException("Matricula existente.");
             }
+            statement.close();
+            result.close();
             return true;
         }
         catch (SQLException e) {
             throw new UserException("Error al validar: " + e.getMessage());
         }
         catch (ConnectionException e) {
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 }

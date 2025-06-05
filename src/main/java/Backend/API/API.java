@@ -4,6 +4,7 @@ import Backend.DTO.*;
 import Backend.Entidades.*;
 import Backend.Exceptions.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -38,8 +39,6 @@ public interface API {
 
     void desactivarUsuarioByUsername(String username) throws UserException, UpdateException; // Recuperar el objeto Usuario, implementar el comportamiento de estado.
 
-//    UsuarioDTO obtenerUsuarioByEmail(String email) throws UserException; // Devuelve el usuario si fue encontrado por email
-
     String obtenerNombreUsuario() throws UserException; //Devuelve el nombre del usuario logeado
 
     UsuarioDTO login(String username, String password) throws LoginException; // Loguea el usuario y si todo es correcto devuelve el Usuario, sino null
@@ -50,32 +49,84 @@ public interface API {
 
     RolDTO obtenerRolByUsuarioId(int id) throws Exception; // Obtiene el rol de un usuario mediante su ID
 
-    //probar
-    void cargarConvenio(String titulo, String descripcion, Proyecto proyecto, Docente docente, Estudiante estudiante,
-                        DirectorCarrera director, EntidadColaborativa entidad, List<Actividad> actividades)throws CreateException;
+    DocenteDTO obtenerDocenteByUsername(String username) throws UserException;
 
-    void cargarActividad(String titulo, String descripcion, LocalDate fechaFin, int duracion, LocalDate fechaInicio)throws CreateException;
+    TutorExternoDTO obtenerTutorExternoByUsername(String username) throws UserException;
 
-    void cargarInforme(String titulo, String descripcion, String contenido, LocalDate fecha)throws CreateException;
+    //check
+    EstudianteDTO obtenerEstudianteByUsername(String username) throws UserException;
 
+    //check
+    EntidadColaborativaDTO obtenerEntidadColaborativaByUsername(String username) throws UserException;
+
+    DirectorCarreraDTO obtenerDirectorCarreraByUsername(String username) throws UserException;
+
+    UsuarioDTO obtenerAdministradorByUsername(String username) throws UserException;
+
+    //check
+    void descargarArchivoPDF(String tituloInforme) throws IOException, ReadException; // Descarga archivo pdf del informe seleccionado
+
+    //check
+    void cargarConvenio(String tituloConvenio, String descripcionConvenio, ProyectoDTO proyectoDTO, EstudianteDTO estudianteDTO,
+                        EntidadColaborativaDTO entidadDTO, String tituloPlan) throws CreateException;
+
+    //check
+    void cargarActividad(String titulo, String descripcion, LocalDate fechaFin, int duracion, LocalDate fechaInicio) throws CreateException;
+
+    //check
+    void cargarInforme(String titulo, String descripcion, byte[] archivo, LocalDate fecha, String tituloActividad) throws CreateException;
+
+    //check
     void cargarPropuestaPropia(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos) throws CreateException;
 
+    //check
     void cargarProyecto(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos, String tutorEncargado) throws CreateException; // Carga un proyecto, con los datos solicitados por parametro
 
-    Informe obtenerInformeByTitulo(String titulo) throws EmptyException;
+    //check
+    void cargarPlanDeTrabajo(String titulo, String descripcion, TutorExternoDTO tutorDTO, DocenteDTO docenteDTO, InformeDTO informeFinal, List<ActividadDTO> actividadesDTO) throws CreateException;
 
-    Actividad obtenerActividadByTitulo(String titulo) throws EmptyException;
+    //check
+    InformeDTO obtenerInformeByTitulo(String titulo) throws ReadException;
 
-    //probar
+    //check
+    ActividadDTO obtenerActividadByTitulo(String titulo) throws ReadException;
+
+    //check
     ProyectoDTO obtenerProyectoByTitulo(String titulo) throws ReadException; // Devuelve un proyecto de la DB que es buscado dado un titulo
 
-    List<ActividadDTO> obtenerActividadesHabilitadas() throws ReadException;
+    //check
+    List<ProyectoDTO> obtenerProyectosHabilitados() throws ReadException; // Devuelve de la DB todos los proyectos que esten habilitados
 
-    //probar
-    List <ProyectoDTO> obtenerProyectosHabilitados() throws ReadException; // Devuelve de la DB todos los proyectos que esten habilitados
+    //check
+    List<ConvenioPPSDTO> obtenerConvenios() throws ReadException;
 
-    //probar
-    ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException, EmptyException, UserException; // Devuelve Un convenio de PPs de la DB dado su titulo
+    //check
+    ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException; // Devuelve Un convenio de PPs de la DB dado su titulo
 
-    List<Informe> obtenerInformeByConvenioTitulo(String tituloConvenio) throws EmptyException;
+    //check
+    ConvenioPPSDTO obtenerConvenioPPSByEstudianteUsername(String username) throws ReadException;
+
+    //check
+    PlanDeTrabajoDTO obtenerPlanByConvenioTitulo(String titulo) throws ReadException;
+
+    //check
+    List<ActividadDTO> obtenerActividadesByConvenioTitulo(String titulo) throws ReadException;
+
+    //Probar ?
+    List<ActividadDTO> obtenerActividadesByEstudianteUsername(String username) throws ReadException;
+
+    //check
+    List<InformeDTO> obtenerInformesByConvenioTitulo(String tituloConvenio) throws ReadException;
+
+    //check
+    List<InformeDTO> obtenerInformesByActividadTitulo(String titulo) throws ReadException;
+
+    //check
+    List<EstudianteDTO> obtenerEstudiantesByDocenteUsername(String username) throws ReadException;
+
+    //check
+    void inscribirEstudiante(UsuarioDTO estudiante, ProyectoDTO proyecto) throws CreateException;
+
+    //check
+    boolean habilitarConvenio(int id, boolean b) throws CreateException;
 }

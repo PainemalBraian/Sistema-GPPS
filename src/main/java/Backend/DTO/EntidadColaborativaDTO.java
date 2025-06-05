@@ -22,4 +22,40 @@ public class EntidadColaborativaDTO extends UsuarioDTO{
         this.direccionEntidad = direccionEntidad;
         this.proyectos = proyectos;
     }
+
+    public EntidadColaborativaDTO() {
+
+    }
+
+    public List<ProyectoDTO> getProyectos() {
+        return proyectos;
+    }
+
+    public String getNombreEntidad() {
+        return nombreEntidad;
+    }
+
+    public String getCuit() {
+        return cuit;
+    }
+
+    public String getDireccionEntidad() {
+        return direccionEntidad;
+    }
+
+    public void setProyectos(List<ProyectoDTO> proyectos) {
+        this.proyectos = proyectos;
+    }
+
+    public void setNombreEntidad(String nombreEntidad) {
+        this.nombreEntidad = nombreEntidad;
+    }
+
+    public void setCuit(String cuit) {
+        this.cuit = cuit;
+    }
+
+    public void setDireccionEntidad(String direccionEntidad) {
+        this.direccionEntidad = direccionEntidad;
+    }
 }

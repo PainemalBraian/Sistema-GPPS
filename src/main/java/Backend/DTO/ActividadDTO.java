@@ -6,14 +6,16 @@ import java.util.List;
 
 public class ActividadDTO extends ItemDTO{
     private List<InformeDTO> informes = new ArrayList<>();
-    private float duracion;
+    private int duracion;
+    private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private Boolean calificacion; // null por defecto, indicando "no cargada".
 
-    public ActividadDTO(int id, String titulo, String descripcion, LocalDate fechaFin, float duracion) {
+    public ActividadDTO(int id, String titulo, String descripcion, LocalDate fechaFin, int duracion,LocalDate fechaInicio) {
         super(id, titulo, descripcion);
         this.fechaFin = fechaFin;
         this.duracion = duracion;
+        this.fechaInicio=fechaInicio;
     }
 
     public List<InformeDTO> getInformes() {
@@ -24,11 +26,19 @@ public class ActividadDTO extends ItemDTO{
         this.informes = informes;
     }
 
-    public float getDuracion() {
+    public int getDuracion() {
         return duracion;
     }
 
-    public void setDuracion(float duracion) {
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setDuracion(int duracion) {
         this.duracion = duracion;
     }
 
@@ -46,5 +56,9 @@ public class ActividadDTO extends ItemDTO{
 
     public void setCalificacion(Boolean calificacion) {
         this.calificacion = calificacion;
+    }
+
+    public void addInforme(InformeDTO informe) {
+        informes.add(informe);
     }
 }

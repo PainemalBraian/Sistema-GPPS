@@ -3,7 +3,6 @@ package Backend.DAO.dom.usuarios;
 import Backend.DAO.DBAcces;
 import Backend.DAO.UsuarioDAODB;
 import Backend.DAO.interfaces.usuarios.TUTOREXTERNODAO;
-import Backend.Entidades.Proyecto;
 import Backend.Entidades.TutorExterno;
 import Backend.Entidades.Usuario;
 import Backend.Exceptions.*;
@@ -26,7 +25,6 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
                     "INSERT INTO TutoresExternos(idUsuario, nombreEntidadColaborativa) " +
                             "VALUES (?, ?)"
             );
-            // Guardar en la base de datos
             statement.setInt(1, UsuarioDAODB.create(tutor));
             statement.setString(2, tutor.getNombreEntidadColaborativa());
 
@@ -34,7 +32,7 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
             statement.close();
             disconnect();
         } catch (SQLException e) {
-            throw new RegisterExceptions("Error al crear y guardar el estudiante: " + e.getMessage());
+            throw new RegisterExceptions("Error al crear y guardar el tutor: " + e.getMessage());
         }catch(ConnectionException e){
             throw new RegisterExceptions(e.getMessage());
         }
@@ -50,7 +48,7 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
 
             while (result.next()) {
                 TutorExterno tutor = new TutorExterno(
-                        UsuarioDAODB.buscarById(result.getInt("idUsuario")), // Obtiene el usuario
+                        UsuarioDAODB.buscarByID(result.getInt("idUsuario")),
                         result.getString("requisitos")
                 );
 //                tutor.setProyectosAsignados(buscarProyectosAsignados()); Implementar usando tabla de relacion_Tutores_Proyectos.
@@ -59,11 +57,11 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
 
             return tutores;
         } catch (SQLException e) {
-            throw new ReadException("Error al obtener los datos de los proyectos.");
+            throw new ReadException("Error al obtener los datos de los tutores.");
         } catch (ConnectionException e) {
             throw new ReadException(e.getMessage());
         } catch (UserException e) {
-            throw new ReadException("Error al construir el proyecto: " + e.getMessage());
+            throw new ReadException("Error al obtener los tutores: " + e.getMessage());
         }
     }
 
@@ -77,12 +75,15 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
                             "WHERE U.username = ?");
             statement.setString(1, username);
 
-            ResultSet tutor = statement.executeQuery();
+            ResultSet result = statement.executeQuery();
 
-            if (tutor.next()) {
-                Usuario usuario = UsuarioDAODB.buscarById(tutor.getInt("idUsuario"));
-                TutorExterno tutorExt = new TutorExterno(usuario, tutor.getString("nombreEntidadColaborativa") );
-                tutorExt.setIdTutor(tutor.getInt("idTutor"));
+            if (result.next()) {
+                Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
+                TutorExterno tutorExt = new TutorExterno(usuario, result.getString("nombreEntidadColaborativa") );
+                tutorExt.setIdUsuario(result.getInt("idTutor"));
+                disconnect();
+                statement.close();
+                result.close();
                 return tutorExt;
             } else {
                 throw new UserException("Tutor no encontrado.");
@@ -92,38 +93,39 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
             throw new UserException("Error al buscar el usuario en la base de datos: " + e.getMessage());
         }
         catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 
     @Override
     public TutorExterno buscarByID(int id) throws UserException {
-        try {
-            Connection conn = connect();
-            PreparedStatement statement = conn.prepareStatement(
-                    "SELECT * FROM TutoresExternos TE " +
-                            "JOIN Usuarios U ON TE.idUsuario = U.idUsuario " +
-                            "WHERE TE.idTutor = ?"
-            );
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement(
+                     "SELECT * FROM TutoresExternos TE " +
+                             "JOIN Usuarios U ON TE.idUsuario = U.idUsuario " +
+                             "WHERE TE.idTutor = ?"
+             )) {
+
             statement.setInt(1, id);
-
-            ResultSet tutor = statement.executeQuery();
-
-            if (tutor.next()) {
-                Usuario usuario = UsuarioDAODB.buscarById(tutor.getInt("idUsuario"));
-                TutorExterno tutorExt = new TutorExterno(usuario, tutor.getString("nombreEntidadColaborativa") );
-                return tutorExt;
-            } else {
-                throw new UserException("Tutor no encontrado.");
+            try (ResultSet result = statement.executeQuery()) {
+                if (result.next()) {
+                    Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
+                    if (usuario == null) {
+                        throw new UserException("Usuario asociado no encontrado.");
+                    }
+                    return new TutorExterno(usuario, result.getString("nombreEntidadColaborativa"));
+                } else {
+                    throw new UserException("Tutor no encontrado.");
+                }
             }
-        }
-        catch (SQLException e) {
+
+        } catch (SQLException e) {
             throw new UserException("Error al buscar el usuario en la base de datos: " + e.getMessage());
-        }
-        catch(ConnectionException e){
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+        } catch (ConnectionException e) {
+            throw new UserException(e.getMessage());
         }
     }
+
 
     @Override
     public boolean validarExistenciaEntidad(String nombreEntidad) throws UserException {
@@ -137,13 +139,15 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
             if (result.next() && result.getInt("total") == 0) {
                 throw new UserException("La entidad insertada no existe en el sistema.");
             }
+            statement.close();
+            result.close();
             return true;
         }
         catch (SQLException e) {
             throw new UserException("Error al validar: " + e.getMessage());
         }
         catch (ConnectionException e) {
-            throw new UserException("Error al conectar con la base de datos: " + e.getMessage());
+            throw new UserException(e.getMessage());
         }
     }
 }

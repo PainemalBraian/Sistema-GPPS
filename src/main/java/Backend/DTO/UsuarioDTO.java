@@ -84,11 +84,14 @@ public class UsuarioDTO {
         return idUsuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
+    public void setID(int idUsuario) {
         this.idUsuario = idUsuario;
     }
 
     public void setContrasena(String contrasena) {
 
+    }
+    public UsuarioDTO getUsuario() {
+        return this;
     }
 }

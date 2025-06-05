@@ -1,4 +1,4 @@
-package Frontend.com.gui.Controller;
+package Frontend.com.gui.Controller.Estudiante;
 
 import Backend.API.API;
 import Backend.DTO.ProyectoDTO;
@@ -92,7 +92,7 @@ public class PuestosDisponiblesController {
         if (oportunidadSeleccionada != null) {
             lblTituloOportunidad.setText(oportunidadSeleccionada.getTitulo());
 
-            lblEmpresa.setText("Empresa: " + (oportunidadSeleccionada.getUbicacion() ));
+            lblEmpresa.setText("Empresa: " + (oportunidadSeleccionada.getTutorEncargado().getNombreEntidadColaborativa() ));
 
             lblArea.setText("Área: " + (oportunidadSeleccionada.getAreaDeInteres()));
 
@@ -146,7 +146,7 @@ public class PuestosDisponiblesController {
     @FXML
     public void VolverHome(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/home.fxml"));
             Parent root = loader.load();
             HomeController controller = loader.getController();
 

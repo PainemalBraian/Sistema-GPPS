@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane prefHeight="550.0" prefWidth="800.0"
+           xmlns="http://javafx.com/javafx/23.0.1"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="Frontend.com.gui.Controller.Administrador.homeAdministradorController">
+
+    <AnchorPane fx:id="PaneBase" prefHeight="550.0" prefWidth="800.0">
+        <children>
+            <VBox alignment="TOP_LEFT" layoutX="0.0" layoutY="0.0" prefHeight="550.0" prefWidth="200.0"
+                  spacing="5.0" styleClass="sidebar" stylesheets="@../../StyleSheets/homeUsuarios.css">
+                <Label alignment="CENTER" prefHeight="60.0" prefWidth="200.0" styleClass="app-title" text="GPPS Admin" />
+
+                <Button fx:id="btnGestionarUsuarios" maxWidth="200.0"
+                        onAction="#gestionarUsuarios"
+                        prefHeight="50.0" prefWidth="200.0"
+                        styleClass="menu-button" text="Gestionar Usuarios" />
+
+                <Button fx:id="btnGestionarPeriodos" maxWidth="200.0"
+                        onAction="#gestionarPeriodosAcademicos"
+                        prefHeight="50.0" prefWidth="200.0"
+                        styleClass="menu-button" text="Períodos Académicos" />
+
+                <Button fx:id="btnGestionarCarreras" maxWidth="200.0"
+                        onAction="#gestionarCarreras"
+                        prefHeight="50.0" prefWidth="200.0"
+                        styleClass="menu-button" text="Gestionar Carreras" />
+
+                <Button fx:id="btnConfiguracionSistema" maxWidth="200.0"
+                        onAction="#configuracionSistema"
+                        prefHeight="50.0" prefWidth="200.0"
+                        styleClass="menu-button" text="Configuración Sistema" />
+
+
+                <Button fx:id="btnMensajesAdmin" maxWidth="200.0"
+                        onAction="#verMensajesAdmin"
+                        prefHeight="50.0" prefWidth="200.0"
+                        styleClass="menu-button" text="Mensajes/Notificaciones" />
+
+                <AnchorPane prefHeight="200" VBox.vgrow="ALWAYS" />
+
+                <Button fx:id="btnCerrarSesion" maxWidth="200.0"
+                        onAction="#cerrarSesion"
+                        prefHeight="50.0" prefWidth="200.0"
+                        styleClass="logout-button" text="Cerrar Sesión" />
+            </VBox>
+
+            <AnchorPane layoutX="200.0" layoutY="0.0" prefHeight="550.0" prefWidth="600.0"
+                        styleClass="content-area" stylesheets="@../../StyleSheets/homeUsuarios.css">
+                <children>
+                    <Label fx:id="lblBienvenida" layoutX="30.0" layoutY="30.0"
+                           styleClass="welcome-text" text="Bienvenido, Administrador" />
+
+                    <AnchorPane layoutX="30.0" layoutY="80.0" prefHeight="120.0" prefWidth="260.0" styleClass="summary-panel">
+                        <children>
+                            <Label fx:id="lblTituloUsuariosDashboard" layoutX="15.0" layoutY="15.0" styleClass="panel-title" text="Resumen de Usuarios" />
+                            <Label fx:id="lblTotalUsuariosDashboard" layoutX="15.0" layoutY="45.0" styleClass="summary-number" text="0" />
+                            <Label layoutX="15.0" layoutY="75.0" styleClass="status-detail" text="Total Usuarios Registrados" />
+                            <Label fx:id="lblUsuariosActivosDashboard" layoutX="15.0" layoutY="95.0" styleClass="status-detail" text="Usuarios Activos: 0" />
+                        </children>
+                    </AnchorPane>
+
+                    <AnchorPane layoutX="310.0" layoutY="80.0" prefHeight="120.0" prefWidth="260.0" styleClass="summary-panel">
+                        <children>
+                            <Label fx:id="lblTituloSistemaDashboard" layoutX="15.0" layoutY="15.0" styleClass="panel-title" text="Estado del Sistema" />
+                            <Label fx:id="lblPeriodoActualDashboard" layoutX="15.0" layoutY="45.0" styleClass="status-detail" text="Período Actual: -" />
+                            <Label fx:id="lblUltimoBackupDashboard" layoutX="15.0" layoutY="70.0" styleClass="status-detail" text="Último Backup: -" />
+                        </children>
+                    </AnchorPane>
+
+                    <AnchorPane layoutX="30.0" layoutY="220.0" prefHeight="180.0" prefWidth="540.0" styleClass="activity-panel">
+                        <children>
+                            <Label fx:id="lblTituloActividades" layoutX="15.0" layoutY="15.0" styleClass="panel-title" text="Actividad Reciente del Sistema" />
+                            <VBox fx:id="vboxActividades" layoutX="15.0" layoutY="45.0" prefHeight="120.0" prefWidth="510.0" spacing="8.0" />
+                            <Label fx:id="lblNoActividades" layoutX="15.0" layoutY="55.0" styleClass="notification-info" text="No hay actividad reciente para mostrar." />
+                        </children>
+                    </AnchorPane>
+
+                    <AnchorPane layoutX="30.0" layoutY="420.0" prefHeight="100.0" prefWidth="540.0" styleClass="notification-panel">
+                        <children>
+                            <Label fx:id="lblTituloMensajes" layoutX="15.0" layoutY="15.0" styleClass="panel-title" text="Notificaciones del Sistema" />
+                            <Label fx:id="lblMensajesNoLeidos" layoutX="15.0" layoutY="45.0" styleClass="summary-number" text="0" />
+                            <Label fx:id="lblUltimoMensaje" layoutX="150.0" layoutY="45.0" styleClass="status-detail" text="Última notificación: --" />
+                            <Button fx:id="btnVerTodosMensajes" layoutX="430.0" layoutY="40.0"
+                                    onAction="#verMensajesAdmin" prefHeight="30.0" prefWidth="90.0"
+                                    styleClass="secondary-button" text="Ver todas" />
+                        </children>
+                    </AnchorPane>
+                </children>
+            </AnchorPane>
+
+        </children>
+    </AnchorPane>
+</StackPane>

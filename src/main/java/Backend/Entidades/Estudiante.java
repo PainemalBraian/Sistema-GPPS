@@ -12,7 +12,7 @@ public class Estudiante extends Usuario{
     }
 
     public Estudiante(Usuario user, String matricula, String carrera) throws UserException {
-        super(user.getUsername(), user.getContrasena(), user.getNombre(), user.getEmail(), user.getRol());
+        super(user.getIdUsuario(),user.getUsername(), user.getContrasena(), user.getNombre(), user.getEmail(), user.getRol());
         // Verificar la cantidad de dígitos
 
         if ( isNull(matricula)) {

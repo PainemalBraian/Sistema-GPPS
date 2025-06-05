@@ -12,11 +12,16 @@ public class Item {
     public Item() {
     }
 
+    public void setID(int id) {
+        this.id = id;
+    }
+
+    // Para busquedas de bd
     public Item(int id, String titulo, String descripcion) throws EmptyException {
         if (isNull(titulo) || titulo.isEmpty()) {
             throw new EmptyException("El titulo no puede estar vacío.");
         }
-        if (isNull(descripcion) || titulo.isEmpty()) {
+        if (isNull(descripcion) || descripcion.isEmpty()) {
             throw new EmptyException("La descripcion no puede estar vacía.");
         }
         this.id = id;
@@ -29,14 +34,14 @@ public class Item {
         if (isNull(titulo) || titulo.isEmpty()) {
             throw new EmptyException("El titulo no puede estar vacío.");
         }
-        if (isNull(descripcion) || titulo.isEmpty()) {
+        if (isNull(descripcion) || descripcion.isEmpty()) {
             throw new EmptyException("La descripcion no puede estar vacía.");
         }
         this.titulo = titulo;
         this.descripcion = descripcion;
     }
 
-    public int getId() {
+    public int getID() {
         return id;
     }
 
@@ -52,15 +57,15 @@ public class Item {
         return titulo;
     }
 
-//    public void setTitulo(String titulo) {
-//        this.titulo = titulo;
-//    }
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
 
     public String getDescripcion() {
         return descripcion;
     }
 
-//    public void setDescripcion(String descripcion) {
-//        this.descripcion = descripcion;
-//    }
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 }

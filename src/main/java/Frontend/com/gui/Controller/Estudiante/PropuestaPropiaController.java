@@ -1,9 +1,7 @@
-package Frontend.com.gui.Controller;
+package Frontend.com.gui.Controller.Estudiante;
 
 import Backend.API.API;
-import Backend.DTO.ProyectoDTO;
 import Backend.Exceptions.CreateException;
-import Backend.Exceptions.ReadException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,25 +50,17 @@ public class PropuestaPropiaController {
             String ubicacion = ubicacionField.getText().trim();
             String objetivos = objetivosArea.getText().trim();
             String requisitos = requisitosArea.getText().trim();
-         // String entidadColaborativa = tutorEntidadColaborativaField.getText().trim(); // Puede quedar opcional
-
 
             // metodo de la persistencia que crea el proyecto
             this.api.cargarPropuestaPropia(titulo, descripcion, areaDeInteres, ubicacion, objetivos, requisitos);
 
-            // Obtener el DTO para confirmar datos o mostrar información
-            ProyectoDTO proyectoCreado = this.api.obtenerProyectoByTitulo(titulo);
-
             // Mostrar éxito
-            mostrarAlerta("Registro Exitoso", "La propuesta fue registrada correctamente para el tutor: " + proyectoCreado.getTutorEncargado().getNombre(), Alert.AlertType.INFORMATION);
+            mostrarAlerta("Registro Exitoso", "La propuesta fue registrada correctamente.", Alert.AlertType.INFORMATION);
             limpiarCampos();
 
         } catch (CreateException e) {
             mostrarAlerta("Error al Registrar", "No se pudo registrar el proyecto: " + e.getMessage(), Alert.AlertType.ERROR);
-        } catch (ReadException e) {
-            mostrarAlerta("Error al Obtener Proyecto", "La propuesta se guardó pero no se pudo recuperar: " + e.getMessage(), Alert.AlertType.WARNING);
         } catch (Exception e) {
-            e.printStackTrace();
             mostrarAlerta("Error Inesperado", "Ocurrió un error inesperado: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
@@ -96,7 +86,7 @@ public class PropuestaPropiaController {
     @FXML
     public void VolverHome(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/home.fxml"));
             Parent root = loader.load();
             HomeController controller = loader.getController();
 

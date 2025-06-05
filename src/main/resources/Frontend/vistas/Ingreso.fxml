@@ -17,171 +17,153 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<StackPane prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1"
-           xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="Frontend.com.gui.Controller.IngresoController">
-   <AnchorPane fx:id="PaneBase" prefHeight="518.0" prefWidth="700.0" styleClass="root" stylesheets="@../StyleSheets/Ingreso.css">
+<StackPane fx:id="root" prefHeight="450.0" prefWidth="750.0" styleClass="root" stylesheets="@../StyleSheets/Ingreso.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.gui.Controller.IngresoController">
+   <AnchorPane fx:id="PaneBase" prefHeight="450.0" prefWidth="750.0">
       <children>
-         <ImageView fx:id="IMGIngreso" fitHeight="400.0" fitWidth="292.0" layoutY="1.0" nodeOrientation="INHERIT" pickOnBounds="true">
-            <image>
-               <Image url="@../imagenes/Ingreso.png" />
-            </image>
+
+         <!-- Imagen de fondo izquierda -->
+         <ImageView fx:id="IMGIngreso" fitHeight="450.0" fitWidth="283.0" layoutX="-2.0" layoutY="-3.0">
+            <image><Image url="@../imagenes/Ingreso.png" /></image>
          </ImageView>
 
-         <ImageView fx:id="IconLogin" fitHeight="25.0" fitWidth="41.0" layoutX="243.0" layoutY="23.0" nodeOrientation="INHERIT" pickOnBounds="true">
-            <image>
-               <Image url="@../imagenes/icono_login.png" />
-            </image>
-         </ImageView>
-
-         <Pane fx:id="PaneIMG" layoutX="455.0" nodeOrientation="RIGHT_TO_LEFT"
-               prefHeight="400.0" prefWidth="282.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="-37.0">
+         <!-- Panel derecho con botones para probar cada rol -->
+         <Pane fx:id="PaneIMG" layoutX="505.0" prefHeight="400.0" prefWidth="245.0">
             <children>
-               <MenuButton fx:id="MenuIdiomas" contentDisplay="RIGHT" layoutX="38.0" mnemonicParsing="false" prefHeight="42.0"
-                           prefWidth="132.0" text="Idioma" textAlignment="JUSTIFY">
-                 <items>
-                   <MenuItem fx:id="MenuItemES" mnemonicParsing="false" onAction="#idiomaES" text="ES" />
-                   <MenuItem fx:id="MenuItemEN" mnemonicParsing="false" onAction="#idiomaEN" text="EN" />
-                     <MenuItem fx:id="MenuItemPT" mnemonicParsing="false" onAction="#idiomaPT" text="PT" visible="false" />
-                     <MenuItem fx:id="MenuItemIT" mnemonicParsing="false" onAction="#idiomaIT" text="IT" visible="false" />
-                 </items>
-                  <font>
-                     <Font name="Javanese Text" size="12.0" />
-                  </font>
+               <MenuButton fx:id="MenuIdiomas" layoutX="113.0" prefHeight="42.0" prefWidth="132.0" text="Idioma">
+                  <items>
+                     <MenuItem fx:id="MenuItemES" onAction="#idiomaES" text="ES" />
+                     <MenuItem fx:id="MenuItemEN" onAction="#idiomaEN" text="EN" />
+                     <MenuItem fx:id="MenuItemPT" onAction="#idiomaPT" text="PT" visible="false" />
+                     <MenuItem fx:id="MenuItemIT" onAction="#idiomaIT" text="IT" visible="false" />
+                  </items>
+                  <font><Font name="Javanese Text" size="12.0" /></font>
                </MenuButton>
-               <Button fx:id="ButtonIngresarEstudiante" layoutX="61.0" layoutY="114.0" minWidth="-Infinity" mnemonicParsing="false"
-                       onAction="#IngresarComoEstudiante" prefHeight="25.0" prefWidth="173.0"
-                       text="Ingresar como Estudiante" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
-                  <font>
-                     <Font name="Arial Black" size="10.0" />
-                  </font>
+
+               <Button fx:id="ButtonIngresarEstudiante" layoutX="62.0" layoutY="120.0" onAction="#IngresarComoEstudiante" prefHeight="25.0" prefWidth="173.0" text="Ingresar como Estudiante" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
+                  <font><Font name="Arial Black" size="10.0" /></font>
                   <styleClass>
                      <String fx:value="login-label" />
                      <String fx:value="login-button" />
-                     <String fx:value="login-button" />
+                     <String fx:value="login-title" />
+                     <String fx:value="login-pane" />
+                  </styleClass>
+               </Button>
+
+               <Button fx:id="ButtonIngresarDocente" layoutX="62.0" layoutY="163.0" onAction="#IngresarComoDocente" prefHeight="25.0" prefWidth="173.0" text="Ingresar como Docente" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
+                  <font><Font name="Arial Black" size="10.0" /></font>
+                  <styleClass>
+                     <String fx:value="login-label" />
                      <String fx:value="login-button" />
                      <String fx:value="login-title" />
+                     <String fx:value="login-pane" />
+                  </styleClass>
+               </Button>
+
+               <Button fx:id="ButtonIngresarDirector" layoutX="62.0" layoutY="208.0" onAction="#IngresarComoDirector" prefHeight="25.0" prefWidth="173.0" text="Ingresar como Director" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
+                  <font><Font name="Arial Black" size="10.0" /></font>
+                  <styleClass>
+                     <String fx:value="login-label" />
                      <String fx:value="login-button" />
+                     <String fx:value="login-title" />
+                     <String fx:value="login-pane" />
+                  </styleClass>
+               </Button>
+
+               <Button fx:id="ButtonIngresarAdministrador" layoutX="62.0" layoutY="252.0" onAction="#IngresarComoAdministrador" prefHeight="25.0" prefWidth="173.0" text="Ingresar como Admin" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
+                  <font><Font name="Arial Black" size="10.0" /></font>
+                  <styleClass>
+                     <String fx:value="login-label" />
+                     <String fx:value="login-button" />
+                     <String fx:value="login-title" />
+                     <String fx:value="login-pane" />
+                  </styleClass>
+               </Button>
+
+               <Button fx:id="ButtonIngresarTutor" layoutX="62.0" layoutY="296.0" onAction="#IngresarComoTutor" prefHeight="25.0" prefWidth="173.0" text="Ingresar como Tutor" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
+                  <font><Font name="Arial Black" size="10.0" /></font>
+                  <styleClass>
+                     <String fx:value="login-label" />
+                     <String fx:value="login-button" />
+                     <String fx:value="login-title" />
+                     <String fx:value="login-pane" />
+                  </styleClass>
+               </Button>
+
+               <Button fx:id="ButtonIngresarEmpresa" layoutX="62.0" layoutY="340.0" onAction="#IngresarComoEmpresa" prefHeight="25.0" prefWidth="173.0" text="Ingresar como Empresa" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
+                  <font><Font name="Arial Black" size="10.0" /></font>
+                  <styleClass>
+                     <String fx:value="login-label" />
+                     <String fx:value="login-button" />
+                     <String fx:value="login-title" />
                      <String fx:value="login-pane" />
                   </styleClass>
                </Button>
 
             </children>
          </Pane>
-          <Label fx:id="LabelIngreso" graphicTextGap="0.0" layoutX="133.0" layoutY="48.0"
-                 lineSpacing="5.0" prefHeight="56.0" prefWidth="434.0"
-                 text="Gestion de Practicas Profesionales Supervisadas">
-            <font>
-               <Font name="Javanese Text" size="20.0" />
-            </font>
-         </Label>
-         <Label fx:id="LabelGPPS" graphicTextGap="0.0" layoutX="301.0" layoutY="-13.0" lineSpacing="5.0" prefHeight="97.0" prefWidth="231.0" text="GPPS">
-            <font>
-               <Font name="Arial Black" size="26.0" />
-            </font>
+
+         <!-- Íconos y etiquetas -->
+         <ImageView fx:id="IconLogin" fitHeight="25.0" fitWidth="41.0" layoutX="243.0" layoutY="23.0">
+            <image><Image url="@../imagenes/icono_login.png" /></image>
+         </ImageView>
+
+         <ImageView fx:id="IconLogin1" fitHeight="25.0" fitWidth="41.0" layoutX="396.0" layoutY="23.0">
+            <image><Image url="@../imagenes/icono_login.png" /></image>
+         </ImageView>
+
+         <Label fx:id="LabelGPPS" layoutX="301.0" layoutY="-13.0" prefHeight="97.0" prefWidth="231.0" text="GPPS">
+            <font><Font name="Arial Black" size="26.0" /></font>
             <textFill>
-               <LinearGradient endX="0.7440758293838863" endY="1.0" proportional="false" startX="0.6350710900473934" startY="0.5355450236966824">
+               <LinearGradient endX="0.744" endY="1.0" proportional="false" startX="0.635" startY="0.535">
                   <stops>
-                     <Stop>
-                        <color>
-                           <Color red="1.0" opacity="0.6899999976158142" />
-                        </color>
-                     </Stop>
-                     <Stop offset="0.006711409395973154">
-                        <color>
-                           <Color red="1.0" opacity="0.6899999976158142" />
-                        </color>
-                     </Stop>
-                     <Stop offset="0.03353658536585366">
-                        <color>
-                           <Color red="0.010999999940395355" green="0.07535000145435333" blue="0.10999999940395355" opacity="0.9427480697631836" />
-                        </color>
-                     </Stop>
-                     <Stop offset="1.0">
-                        <color>
-                           <Color />
-                        </color>
-                     </Stop>
+                     <Stop><color><Color red="1.0" opacity="0.69" /></color></Stop>
+                     <Stop offset="0.006"><color><Color red="1.0" opacity="0.69" /></color></Stop>
+                     <Stop offset="0.033"><color><Color red="0.011" green="0.075" blue="0.11" opacity="0.94" /></color></Stop>
+                     <Stop offset="1.0"><color><Color /></color></Stop>
                   </stops>
                </LinearGradient>
             </textFill>
          </Label>
-         <ImageView fx:id="IconLogin1" fitHeight="25.0" fitWidth="41.0" layoutX="396.0" layoutY="23.0" nodeOrientation="INHERIT" pickOnBounds="true">
-            <image>
-               <Image url="@../imagenes/icono_login.png" />
-            </image>
-         </ImageView>
-         <Label fx:id="LabelIngreso1" graphicTextGap="0.0"
-                layoutX="14.0" layoutY="-16.0" lineSpacing="5.0" prefHeight="103.0" prefWidth="231.0"
-                text="AlgoLab - UNRN">
-            <font>
-               <Font name="Arial Black" size="20.0" />
-            </font>
+
+         <Label fx:id="LabelAlgoLab" layoutX="14.0" layoutY="-16.0" prefHeight="103.0" prefWidth="231.0" text="AlgoLab - UNRN">
+            <font><Font name="Arial Black" size="20.0" /></font>
             <textFill>
                <LinearGradient endX="1.0" endY="1.0" startX="1.0">
                   <stops>
-                     <Stop>
-                        <color>
-                           <Color red="1.0" opacity="0.6899999976158142" />
-                        </color>
-                     </Stop>
-                     <Stop offset="0.006711409395973154">
-                        <color>
-                           <Color red="1.0" opacity="0.6899999976158142" />
-                        </color>
-                     </Stop>
-                     <Stop offset="0.03353658536585366">
-                        <color>
-                           <Color red="0.22630000114440918" green="0.22909000515937805" blue="0.3100000023841858" />
-                        </color>
-                     </Stop>
-                     <Stop offset="1.0">
-                        <color>
-                           <Color green="0.8166666626930237" blue="1.0" />
-                        </color>
-                     </Stop>
+                     <Stop><color><Color red="1.0" opacity="0.69" /></color></Stop>
+                     <Stop offset="0.006"><color><Color red="1.0" opacity="0.69" /></color></Stop>
+                     <Stop offset="0.033"><color><Color red="0.226" green="0.229" blue="0.31" /></color></Stop>
+                     <Stop offset="1.0"><color><Color green="0.816" blue="1.0" /></color></Stop>
                   </stops>
                </LinearGradient>
             </textFill>
          </Label>
 
-         <Label fx:id="newUser" graphicTextGap="0.0" layoutX="233.0" layoutY="330.0"
-                lineSpacing="5.0" prefHeight="49.0" prefWidth="173.0" text="¿Usuario Nuevo? ">
-            <font>
-               <Font name="Javanese Text" size="20.0" />
-            </font>
+         <!-- Formulario de ingreso -->
+         <Label fx:id="LabelUsuario" layoutX="275.0" layoutY="104.0" prefHeight="51.0" prefWidth="200.0" text="Nombre de Usuario">
+            <font><Font name="Javanese Text" size="20.0" /></font>
          </Label>
+         <TextField fx:id="TextFieldUsuario" layoutX="275.0" layoutY="146.0" prefHeight="38.0" prefWidth="200.0" promptText="Ingrese su usuario" />
 
-         <Button fx:id="ButtonRegistro" layoutX="387.0" layoutY="358.0" mnemonicParsing="false"
-                 onAction="#abrirRegistro" prefHeight="33.0" prefWidth="155.0" text="Crear cuenta" />
-         <Button fx:id="ButtonIngresar" layoutX="234.0" layoutY="267.0" minWidth="-Infinity" mnemonicParsing="false"
-                 onAction="#loginUsuario" prefHeight="42.0" prefWidth="208.0" text="Ingresar" textFill="#061014" textOverrun="CENTER_ELLIPSIS">
-            <font>
-               <Font name="Arial Black" size="20.0" />
-            </font>
-            <styleClass>
-               <String fx:value="login-label" />
-               <String fx:value="login-button" />
-               <String fx:value="login-button" />
-               <String fx:value="login-button" />
-               <String fx:value="login-title" />
-               <String fx:value="login-button" />
-               <String fx:value="login-pane" />
-            </styleClass>
+         <Label fx:id="LabelContrasena" layoutX="275.0" layoutY="184.0" prefHeight="42.0" prefWidth="200.0" text="Contraseña">
+            <font><Font name="Javanese Text" size="20.0" /></font>
+         </Label>
+         <PasswordField fx:id="PasswordFieldClave" layoutX="275.0" layoutY="233.0" prefHeight="38.0" prefWidth="200.0" promptText="Ingrese su clave" />
+
+         <Button fx:id="ButtonIngresar" layoutX="275.0" layoutY="297.0" onAction="#loginUsuario" prefHeight="42.0" prefWidth="200.0" text="Ingresar">
+            <font><Font name="Arial Black" size="18.0" /></font>
          </Button>
 
-         <PasswordField fx:id="PasswordFieldClave" layoutX="222.0" layoutY="215.0" prefHeight="25.0" prefWidth="231.0" promptText="Ingrese su clave" />
-         <Label fx:id="LabelContrasena" layoutX="221.0" layoutY="166.0" prefHeight="42.0" prefWidth="260.0" text="Contraseña">
-            <font>
-               <Font name="Javanese Text" size="20.0" />
-            </font>
+         <!-- Sección "nuevo usuario" -->
+         <Label fx:id="newUser" layoutX="229.0" layoutY="339.0" prefHeight="30.0" prefWidth="200.0" text="¿Usuario Nuevo? ">
+            <font><Font name="Javanese Text" size="18.0" /></font>
          </Label>
-         <Label fx:id="LabelUsuario" layoutX="222.0" layoutY="86.0" prefHeight="42.0" prefWidth="260.0" text="Nombre de Usuario">
-            <font>
-               <Font name="Javanese Text" size="20.0" />
-            </font>
+         <Button fx:id="ButtonRegistro" layoutX="317.0" layoutY="390.0" onAction="#abrirRegistro" prefHeight="33.0" prefWidth="150.0" text="Crear cuenta" />
+
+         <Label fx:id="LabelIngreso" layoutX="180.0" layoutY="48.0" prefHeight="56.0" prefWidth="434.0" text="Gestion de Practicas Profesionales Supervisadas">
+            <font><Font name="Javanese Text" size="20.0" /></font>
          </Label>
-         <TextField fx:id="TextFieldUsuario" layoutX="222.0" layoutY="128.0" prefHeight="25.0" prefWidth="231.0" promptText="Ingrese su usuario" />
+
       </children>
    </AnchorPane>
 </StackPane>
