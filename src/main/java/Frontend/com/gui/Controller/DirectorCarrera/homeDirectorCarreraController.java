@@ -120,7 +120,7 @@ public class homeDirectorCarreraController { // Nombre de clase cambiado
     @FXML
     public void validarPlanesTrabajo(ActionEvent event) {
         // US: Como miembro de la Dirección de Carrera, quiero verificar la coherencia y viabilidad de las propuestas de planes de trabajo...
-        navegar("/Frontend/vistas/DirectorCarrera/validarPlanesTrabajo.fxml", bundle.getString("title.validarPlanesTrabajo"), event);
+//        navegar("/Frontend/vistas/DirectorCarrera/validarPlanesTrabajo.fxml", bundle.getString("title.validarPlanesTrabajo"), event);
     }
 
     @FXML

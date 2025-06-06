@@ -442,7 +442,7 @@ public class PersistanceAPI implements API {
             Informe informe = InformeDAODB.buscarByTitulo(titulo);
 
             InformeDTO informeDTO = new InformeDTO(informe.getID(), informe.getTitulo(),
-                    informe.getDescripcion(), informe.getArchivoPDF(), informe.getFecha());
+                    informe.getDescripcion(), informe.getArchivoPDF(), informe.getFecha(),informe.getPorcentajeAvance());
 
             return informeDTO;
         } catch (ReadException e) {
@@ -795,7 +795,7 @@ public class PersistanceAPI implements API {
     private InformeDTO convertirAInformeDTO(Informe informe) throws EmptyException {
         if (informe == null)
             throw new EmptyException("El informe que se intenta convertir no existe.");
-        return new InformeDTO(informe.getID(),informe.getTitulo(),informe.getDescripcion(),informe.getArchivoPDF(),informe.getFecha());
+        return new InformeDTO(informe.getID(),informe.getTitulo(),informe.getDescripcion(),informe.getArchivoPDF(),informe.getFecha(),informe.getPorcentajeAvance());
     }
 
 
