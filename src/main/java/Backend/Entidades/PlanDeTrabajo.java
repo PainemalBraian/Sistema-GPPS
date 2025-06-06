@@ -31,7 +31,6 @@ public class PlanDeTrabajo extends Item{
     }
 
     public PlanDeTrabajo() {
-
     }
 
     //////////////////////////////METHODs///////////////////////////////////////////////////

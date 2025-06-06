@@ -2,11 +2,10 @@ package Backend.DAO.dom.usuarios;
 
 import Backend.DAO.DBAcces;
 import Backend.DAO.UsuarioDAODB;
-import Backend.DAO.dom.elementos.InformeDAODB;
+
 import Backend.DAO.interfaces.usuarios.DOCENTEDAO;
 import Backend.Entidades.Docente;
 import Backend.Entidades.Estudiante;
-import Backend.Entidades.Informe;
 import Backend.Entidades.Usuario;
 import Backend.Exceptions.ConnectionException;
 import Backend.Exceptions.ReadException;
@@ -82,7 +81,6 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
                 // Cargar informes relacionados
                 List<Estudiante> estudiantes = buscarEstudiantes(result.getInt("idUsuario"));
                 docente.setEstudiantesAsignados(estudiantes);
-
                 docentes.add(docente);
             }
 
@@ -110,7 +108,6 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
             if (result.next()) {
                 Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
                 Docente docente = new Docente(usuario, result.getString("legajo"));
-
                 // Cargar informes relacionados
                 List<Estudiante> estudiantes = buscarEstudiantes(result.getInt("idUsuario"));
                 docente.setEstudiantesAsignados(estudiantes);

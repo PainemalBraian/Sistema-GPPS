@@ -126,7 +126,6 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
         }
     }
 
-
     @Override
     public boolean validarExistenciaEntidad(String nombreEntidad) throws UserException {
         try (Connection conn = connect()) {
