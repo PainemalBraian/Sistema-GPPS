@@ -15,21 +15,47 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
     public void create(Informe informe) throws CreateException {
         try (Connection conn = connect();
              PreparedStatement statement = conn.prepareStatement(
-                     "INSERT INTO Informes(titulo, descripcion, archivo_pdf, fecha, idActividad) VALUES (?, ?, ?, ?, ?)"
+                     "INSERT INTO Informes(titulo, descripcion, archivo_pdf, fecha, idActividad, porcentajeAvance) VALUES (?, ?, ?, ?, ?, ?)",
+                     Statement.RETURN_GENERATED_KEYS
              )) {
 
             statement.setString(1, informe.getTitulo());
             statement.setString(2, informe.getDescripcion());
             statement.setBytes(3, informe.getArchivoPDF());
             statement.setDate(4, Date.valueOf(informe.getFecha()));
-            statement.setInt(5, new ActividadDAODB().buscarByTitulo(informe.getTituloActividad()).getID());
+            int idActividad = new ActividadDAODB().buscarByTitulo(informe.getTituloActividad()).getID();
+            statement.setInt(5, idActividad);
+            statement.setInt(6, informe.getPorcentajeAvance());
 
+            // Ejecutar el INSERT
             statement.executeUpdate();
 
-        }catch(ConnectionException | ReadException e){
+            // Obtener ID generado
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int idGenerado = generatedKeys.getInt(1);
+                    informe.setID(idGenerado);
+
+                    // Insertar actividad relacionada si hay
+                    agregarRelacionInforme(conn, idActividad, idGenerado);
+                } else {
+                    throw new CreateException("No se pudo obtener el ID generado del informe");
+                }
+            }
+
+        } catch (ConnectionException | ReadException e) {
             throw new CreateException(e.getMessage());
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new CreateException("Error al crear el informe: " + e.getMessage());
+        }
+    }
+
+    private void agregarRelacionInforme(Connection conn, int idActividad, int idInforme) throws SQLException {
+        String sql = "INSERT INTO Relacion_Actividad_Informes (idActividad, idInforme) VALUES (?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idActividad);
+            stmt.setInt(2, idInforme);
+            stmt.executeUpdate();
         }
     }
 
@@ -54,7 +80,7 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
                         result.getBytes("archivo_pdf")
                 );
                 informe.setFecha(result.getDate("fecha").toLocalDate());
-
+                informe.setPorcentajeAvance(result.getInt("porcentajeAvance"));
                 informes.add(informe);
             }
 
@@ -85,7 +111,7 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
 
                 Informe informe = new Informe(idInforme, titulo, descripcion, archivo);
                 informe.setFecha(fecha);
-
+                informe.setPorcentajeAvance(result.getInt("porcentajeAvance"));
                 result.close();
                 return informe;
             } else {
@@ -117,7 +143,7 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
 
                 Informe informe = new Informe(idInforme, titulo, descripcion, archivo);
                 informe.setFecha(fecha);
-
+                informe.setPorcentajeAvance(result.getInt("porcentajeAvance"));
                 result.close();
                 return informe;
             } else {

@@ -215,6 +215,7 @@ public class HomeController  {
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
         } catch (Exception e) {
+            e.printStackTrace();
             LOGGER.log(Level.SEVERE, "Error al navegar a listado de tareas", e);
             mostrarAlerta("Error", "No se pudo abrir el listado de tareas");
         }

@@ -175,9 +175,9 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-    public String obtenerNombreUsuario() throws UserException {
+    public String obtenerUsername() throws UserException {
         try {
-            return userSession.getNombre();
+            return userSession.getUsername();
         }catch (Exception e){
             throw new UserException("No hay un usuario en la sesión");}
     }
@@ -356,12 +356,13 @@ public class PersistanceAPI implements API {
             Proyecto proyecto = convertirAProyecto(proyectoDTO);
             Estudiante estudiante = convertirAEstudiante(estudianteDTO);
             EntidadColaborativa entidad = convertirAEntidad(entidadDTO);
+
             ConvenioPPS convenio = new ConvenioPPS(tituloConvenio, descripcionConvenio, proyecto, estudiante, entidad,plan);
             convenio.setHabilitado(true);
 
             ConvenioPPSDAODB.create(convenio);
         } catch (Exception e) {
-            throw new CreateException("Error al crear el convenio: " + e.getMessage());
+                   throw new CreateException("Error al crear el convenio: " + e.getMessage());
         }
     }
 
@@ -442,7 +443,8 @@ public class PersistanceAPI implements API {
             Informe informe = InformeDAODB.buscarByTitulo(titulo);
 
             InformeDTO informeDTO = new InformeDTO(informe.getID(), informe.getTitulo(),
-                    informe.getDescripcion(), informe.getArchivoPDF(), informe.getFecha());
+                    informe.getDescripcion(), informe.getArchivoPDF(), informe.getFecha(),informe.getPorcentajeAvance());
+
 
             return informeDTO;
         } catch (ReadException e) {
@@ -748,7 +750,6 @@ public class PersistanceAPI implements API {
 
             convenioDTO = new ConvenioPPSDTO(convenio.getID(), convenio.getTitulo(), convenio.getDescripcion(),proyectoDTO,estudianteDTO,entidadDTO,planDTO);
             convenioDTO.setHabilitado(convenio.isHabilitado());
-
             proyectoDTO.setHabilitado(convenio.isHabilitado());
 
         }
@@ -795,7 +796,8 @@ public class PersistanceAPI implements API {
     private InformeDTO convertirAInformeDTO(Informe informe) throws EmptyException {
         if (informe == null)
             throw new EmptyException("El informe que se intenta convertir no existe.");
-        return new InformeDTO(informe.getID(),informe.getTitulo(),informe.getDescripcion(),informe.getArchivoPDF(),informe.getFecha());
+        return new InformeDTO(informe.getID(),informe.getTitulo(),informe.getDescripcion(),informe.getArchivoPDF(),informe.getFecha(),informe.getPorcentajeAvance());
+
     }
 
 
@@ -917,6 +919,5 @@ public class PersistanceAPI implements API {
         }
         return conveniosDTO;
     }
-
 
 }
