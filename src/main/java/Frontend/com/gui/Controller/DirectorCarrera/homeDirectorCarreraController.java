@@ -46,14 +46,11 @@ public class homeDirectorCarreraController { // Nombre de clase cambiado
     @FXML private Label lblPlanesPorValidarDashboard;
     @FXML private Label lblInformesPorValidarDashboard;
 
-    @FXML
-    public void initialize() {
-    }
 
     public void setPersistenceAPI(API persistenceAPI) throws Exception {
         this.api = persistenceAPI;
         //actualizarIdioma();
-        //cargarDatosResumen();
+        cargarDatosResumen();
     }
 
     private void actualizarIdioma() {
@@ -88,13 +85,15 @@ public class homeDirectorCarreraController { // Nombre de clase cambiado
     private void cargarDatosResumen() {
         // Lógica para cargar datos desde la API y actualizar los Labels del dashboard
         // Ejemplo:
-        // if (lblConveniosActivosDashboard != null) lblConveniosActivosDashboard.setText(bundle.getString("panel.convenios.activos") + api.director_getConveniosActivosCount());
-        // if (lblConveniosPorRevisarDashboard != null) lblConveniosPorRevisarDashboard.setText(bundle.getString("panel.convenios.porRevisar") + api.director_getConveniosPorRevisarCount());
-        // if (lblPlanesPorValidarDashboard != null) lblPlanesPorValidarDashboard.setText(bundle.getString("panel.planes.porValidar") + api.director_getPlanesPorValidarCount());
-        // if (lblInformesPorValidarDashboard != null) lblInformesPorValidarDashboard.setText(bundle.getString("panel.informes.porValidar") + api.director_getInformesPorValidarCount());
-        LOGGER.info("Cargando datos de resumen para el Director de Carrera.");
+         if (lblConveniosActivosDashboard != null)
+             lblConveniosActivosDashboard.setText(/*bundle.getString("panel.convenios.activos") + */ api.director_getConveniosActivosCount());
+        if (lblConveniosPorRevisarDashboard != null)
+            lblConveniosPorRevisarDashboard.setText(/*bundle.getString("panel.convenios.porRevisar") +*/ "Por Revisar/Renovar: "+api.director_getConveniosPorRevisarCount());
+//         if (lblPlanesPorValidarDashboard != null)
+////             lblPlanesPorValidarDashboard.setText(/*bundle.getString("panel.planes.porValidar") +*/ api.director_getPlanesPorValidarCount());
+//         if (lblInformesPorValidarDashboard != null)
+////             lblInformesPorValidarDashboard.setText(/*bundle.getString("panel.informes.porValidar"*/) + api.director_getInformesPorValidarCount());
     }
-
 
     @FXML
     public void gestionarConvenios(ActionEvent event) {

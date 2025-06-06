@@ -22,7 +22,7 @@ public class ItemDTO {
         this.setId(id);
     }
 
-    public int getId() {
+    public int getID() {
         return id;
     }
 

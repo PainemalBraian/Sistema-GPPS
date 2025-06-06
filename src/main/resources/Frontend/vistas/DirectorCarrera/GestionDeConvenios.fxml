@@ -27,8 +27,8 @@
                     <Button fx:id="habilitarButton" text="Habilitar" onAction="#habilitarConvenio" />
                     <Button fx:id="deshabilitarButton" text="Deshabilitar" onAction="#deshabilitarConvenio" />
                     <Button fx:id="verDetallesButton" text="Ver Detalles" onAction="#verDetallesConvenio" />
-<!--                    <Button fx:id="btnExportarDetalles" onAction="#exportarDetallesConvenio" text="Exportar Detalles" />-->
-
+                    <Button fx:id="btnAsignarDocente" text="Asignar Docente" onAction="#asignarDocente" />
+                    <Button fx:id="btnAsignarTituloYDescripcion" text="Asignar Titulo y Descripción" onAction="#asignarTituloyDescripción" />
                 </VBox>
             </left>
 

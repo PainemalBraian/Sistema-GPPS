@@ -119,11 +119,7 @@ CREATE TABLE ConveniosPPS (
     idProyecto INT NOT NULL,
     idEstudiante INT NOT NULL,
     idEntidad INT NOT NULL,
-<<<<<<< HEAD
-    idPlan INT NOT NULL,
-=======
     idPlan INT ,
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
     FOREIGN KEY (idProyecto) REFERENCES Proyectos(idProyecto) ON DELETE CASCADE,
     FOREIGN KEY (idPlan) REFERENCES PlanesDeTrabajos(idPlanDeTrabajo) ON DELETE CASCADE,
     FOREIGN KEY (idEstudiante) REFERENCES Estudiantes(idEstudiante) ON DELETE CASCADE,
@@ -177,10 +173,7 @@ CREATE TABLE Relacion_Actividad_Informes (
 -- ---------------- CARGAS -------------------------------------------------------------------
 
 INSERT INTO Roles (idRol, nombre, activo) VALUES
-<<<<<<< HEAD
-=======
-(-10, 'TEMPORAL', false),
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
+(-10, 'A Definir', false),
 (1, 'Estudiante', true),
 (2, 'Docente', true),
 (3, 'Representante de Entidad Colaboradora', true),
@@ -197,54 +190,34 @@ INSERT INTO Usuarios (username, password, nombreCompleto, email, idRol, activo) 
 ('director', 'contrasena123', 'Ana Rodriguez', 'ana.rodriguez@mail.com', 5, true),
 ('admin', 'contrasena123', 'Administrador General', 'admin@mail.com', 6, true);
 
-<<<<<<< HEAD
--- Estudiantes
-INSERT INTO Estudiantes (idEstudiante, idUsuario, matricula, carrera) VALUES
-=======
 INSERT INTO Usuarios (idUsuario,username, password, nombreCompleto, email, idRol, activo) VALUES
-(-10,"TEMPORAL",123456789, 'XXXXXX','XXXXXX',-10,false);
+(-10,"A Definir",123456789, 'XXXXXX','XXXXXX',-10,false);
 
 -- Estudiantes
 INSERT INTO Estudiantes (idEstudiante, idUsuario, matricula, carrera) VALUES
-(-10,-10, 'XXXXXX','XXXXXX'),
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
+(-10,-10, 'A Definir','A Definir'),
 (1,1, 'MAT123', 'Ingeniería de Software');
 
 -- Docentes
 INSERT INTO Docentes (idDocente, idUsuario, legajo) VALUES
-<<<<<<< HEAD
-=======
-(-10,-10, 'XXXXXX'),
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
+(-10,-10, 'A Definir'),
 (2,2, 'LEG456');
 
 -- Entidades Colaborativas
 INSERT INTO EntidadesColaborativas (idEntidad, idUsuario, nombreEntidad, cuit, direccionEntidad) VALUES
-<<<<<<< HEAD
-=======
-(-10,-10, 'TEMPORAL','00000000000','TEMPORAL'),
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
+(-10,-10, 'A Definir','00000000000','A Definir'),
 (3,3, 'Entidad ABC', '30123456789', 'Calle Falsa 123');
 
 -- Tutores Externos
 INSERT INTO TutoresExternos (idTutor,idUsuario, nombreEntidadColaborativa) VALUES
-<<<<<<< HEAD
-=======
-(-10,-10, 'TEMPORAL'),
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
+(-10,-10, 'A Definir'),
 (4,4, 'Entidad ABC');
 
 -- Directores de Carrera
 INSERT INTO DirectoresCarrera (idDirector,idUsuario, nombreCompleto) VALUES
-<<<<<<< HEAD
+(-10,-10, 'A Definir'),
 (5,5, 'Ana Rodriguez');
 
-
-=======
-(-10,-10, 'XXXXXX'),
-(5,5, 'Ana Rodriguez');
-
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
 -- ----------Carga Elementos PPS--------------
 
 INSERT INTO PlanesDeTrabajos (titulo, descripcion, habilitado, idDocente, idTutor, idInformeFinal) VALUES
@@ -252,18 +225,14 @@ INSERT INTO PlanesDeTrabajos (titulo, descripcion, habilitado, idDocente, idTuto
 ('Plan IoT', 'Plan de trabajo para proyecto IoT', true, 2, 4, null),
 ('Plan SiS', 'Plan de trabajo para proyecto SiS', true, 2, 4, null);
 
-<<<<<<< HEAD
-=======
 INSERT INTO PlanesDeTrabajos (idPlanDeTrabajo,titulo, descripcion, habilitado, idDocente, idTutor, idInformeFinal) VALUES
-(-10,'TEMPORAL', 'TEMPORAL', false, -10, -10, null);
+(-10,'A Definir', 'A Definir', false, -10, -10, null);
 
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
 -- Proyectos
 INSERT INTO Proyectos (titulo, habilitado, descripcion, areaDeInteres, ubicacion, objetivos, requisitos, idTutor) VALUES
 ('Proyecto Solar', true, 'Proyecto de energías renovables', 'Energía', 'Campus Universitario', 'Desarrollar paneles solares', 'Conocimientos en energías renovables', 4),
 ('Proyecto IoT', true, 'Proyecto de dispositivos inteligentes', 'Tecnología', 'Edificio de Informática', 'Crear dispositivos inteligentes', 'Conocimientos en electrónica', 4),
 ('Proyecto SiS', true, 'Proyecto de Afinidad de conomientos Teóricos', 'Sistemas', 'Salón de informatica', 'Planificación organizada de técnicas de la carrera', 'Conocimientos teoricos de Licenciatura en Sistemas', 4);
-
 
 -- Convenios PPS
 INSERT INTO ConveniosPPS (titulo, descripcion, habilitado, idProyecto, idEstudiante, idEntidad, idPlan) VALUES
