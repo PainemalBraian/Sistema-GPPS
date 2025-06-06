@@ -13,6 +13,8 @@ public interface ConvenioPPSDAO {
 
     void delete(int id) throws DeleteException;
 
+    void update(ConvenioPPS convenio) throws CreateException;
+
     ConvenioPPS buscarByID(int id) throws ReadException;
 
     List<ConvenioPPS> obtenerConvenios() throws ReadException;
