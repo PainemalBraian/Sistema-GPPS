@@ -1,6 +1,7 @@
 package Frontend.com.gui.Controller.Estudiante;
 
 import Backend.API.API;
+import Backend.Exceptions.UserException;
 import Frontend.com.gui.Controller.IngresoController;
 import Frontend.com.gui.Controller.MensajesController;
 import javafx.event.ActionEvent;
@@ -48,11 +49,11 @@ public class HomeController  {
      * Configura los textos de la interfaz según el idioma seleccionado.
      */
 
-    private void actualizarIdioma() {
+    private void actualizarIdioma() throws UserException {
         ResourceBundle bundle = api.obtenerIdioma();
         // Labels
             // Labels
-            lblBienvenida.setText(bundle.getString("label.bienvenida"));
+            lblBienvenida.setText(bundle.getString("label.bienvenida") + api.obtenerSesionDeUsuario().getNombre());
             lblEstadoPPS.setText(bundle.getString("label.EstadoPPS"));
             lblFechaInicio.setText(bundle.getString("label.FechaInicio"));
             lblFechaFin.setText(bundle.getString("label.FechaFin"));

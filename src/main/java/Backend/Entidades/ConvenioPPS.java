@@ -8,7 +8,7 @@ import java.util.List;
 import static java.util.Objects.isNull;
 
 public class ConvenioPPS extends Item {
-    private boolean habilitado = false;
+    private boolean habilitado;
     private Proyecto proyecto;
     private Estudiante estudiante;
     private EntidadColaborativa entidad;
@@ -24,7 +24,7 @@ public class ConvenioPPS extends Item {
         if (isNull(proyecto)) { throw new EmptyException("El proyecto debe existir."); }
         if (isNull(estudiante)) { throw new EmptyException("El estudiante debe existir."); }
         if (isNull(entidad)) { throw new EmptyException("La entidad debe existir."); }
-        if (isNull(plan)) { throw new EmptyException("El plan de trabajo debe existir."); }
+//        if (isNull(plan)) { throw new EmptyException("El plan de trabajo debe existir."); }
 
         this.proyecto = proyecto;
         this.estudiante = estudiante;
@@ -95,12 +95,14 @@ public class ConvenioPPS extends Item {
         this.entidad = entidad;
     }
 
+    public void setPlan(PlanDeTrabajo plan) throws EmptyException {
+        if (isNull(plan)) { throw new EmptyException("El plan de trabajo debe existir."); }
+        this.plan = plan;
+    }
+
     public void setHabilitado(boolean habilitado) {
         this.habilitado = habilitado;
         this.plan.setHabilitado(habilitado);
     }
 
-    public void setPlan(PlanDeTrabajo plan) {
-        this.plan = plan;
-    }
 }
