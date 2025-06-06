@@ -39,7 +39,11 @@ public interface API {
 
     void desactivarUsuarioByUsername(String username) throws UserException, UpdateException; // Recuperar el objeto Usuario, implementar el comportamiento de estado.
 
+<<<<<<< HEAD
     String obtenerNombreUsuario() throws UserException; //Devuelve el nombre del usuario logeado
+=======
+    String obtenerUsername() throws UserException; //Devuelve el nombre del usuario logeado
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
 
     UsuarioDTO login(String username, String password) throws LoginException; // Loguea el usuario y si todo es correcto devuelve el Usuario, sino null
 
@@ -52,8 +56,15 @@ public interface API {
     DocenteDTO obtenerDocenteByUsername(String username) throws UserException;
 
     TutorExternoDTO obtenerTutorExternoByUsername(String username) throws UserException;
+<<<<<<< HEAD
     //check
     EstudianteDTO obtenerEstudianteByUsername(String username) throws UserException;
+=======
+
+    //check
+    EstudianteDTO obtenerEstudianteByUsername(String username) throws UserException;
+
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
     //check
     EntidadColaborativaDTO obtenerEntidadColaborativaByUsername(String username) throws UserException;
 
@@ -66,12 +77,22 @@ public interface API {
 
     //check
     void cargarConvenio(String tituloConvenio, String descripcionConvenio, ProyectoDTO proyectoDTO, EstudianteDTO estudianteDTO,
+<<<<<<< HEAD
                         EntidadColaborativaDTO entidadDTO, String tituloPlan)throws CreateException;
     //check
     void cargarActividad(String titulo, String descripcion, LocalDate fechaFin, int duracion, LocalDate fechaInicio)throws CreateException;
 
     //check
     void cargarInforme(String titulo, String descripcion, byte[] archivo, LocalDate fecha, String tituloActividad)throws CreateException;
+=======
+                        EntidadColaborativaDTO entidadDTO, String tituloPlan) throws CreateException;
+
+    //check
+    void cargarActividad(String titulo, String descripcion, LocalDate fechaFin, int duracion, LocalDate fechaInicio) throws CreateException;
+
+    //check
+    void cargarInforme(String titulo, String descripcion, byte[] archivo, LocalDate fecha, String tituloActividad) throws CreateException;
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
 
     //check
     void cargarPropuestaPropia(String titulo, String descripcion, String areaDeInteres, String ubicacion, String objetivos, String requisitos) throws CreateException;
@@ -92,7 +113,14 @@ public interface API {
     ProyectoDTO obtenerProyectoByTitulo(String titulo) throws ReadException; // Devuelve un proyecto de la DB que es buscado dado un titulo
 
     //check
+<<<<<<< HEAD
     List <ProyectoDTO> obtenerProyectosHabilitados() throws ReadException; // Devuelve de la DB todos los proyectos que esten habilitados
+=======
+    List<ProyectoDTO> obtenerProyectosHabilitados() throws ReadException; // Devuelve de la DB todos los proyectos que esten habilitados
+
+    //check
+    List<ConvenioPPSDTO> obtenerConvenios() throws ReadException;
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
 
     //check
     ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException; // Devuelve Un convenio de PPs de la DB dado su titulo
@@ -106,7 +134,11 @@ public interface API {
     //check
     List<ActividadDTO> obtenerActividadesByConvenioTitulo(String titulo) throws ReadException;
 
+<<<<<<< HEAD
     //Probar
+=======
+    //Probar ?
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
     List<ActividadDTO> obtenerActividadesByEstudianteUsername(String username) throws ReadException;
 
     //check
@@ -114,4 +146,16 @@ public interface API {
 
     //check
     List<InformeDTO> obtenerInformesByActividadTitulo(String titulo) throws ReadException;
+<<<<<<< HEAD
+=======
+
+    //check
+    List<EstudianteDTO> obtenerEstudiantesByDocenteUsername(String username) throws ReadException;
+
+    //check
+    void inscribirEstudiante(UsuarioDTO estudiante, ProyectoDTO proyecto) throws CreateException;
+
+    //check
+    boolean habilitarConvenio(int id, boolean b) throws CreateException;
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
 }

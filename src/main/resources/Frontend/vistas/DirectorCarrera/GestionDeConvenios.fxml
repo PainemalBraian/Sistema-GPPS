@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Frontend.com.gui.Controller.DirectorCarrera.GestionConveniosController">
+    <children>
+        <BorderPane AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+            <top>
+                <HBox spacing="10" alignment="CENTER_LEFT" styleClass="header-box">
+                    <padding>
+                        <Insets top="20" bottom="20" left="20" right="20" />
+                    </padding>
+                    <Label text="Gestión de Convenios" styleClass="header-title" />
+                </HBox>
+            </top>
+
+            <left>
+                <VBox spacing="15" prefWidth="200" styleClass="sidebar">
+                    <padding>
+                        <Insets top="20" bottom="20" left="20" right="20" />
+                    </padding>
+                    <Label text="Acciones" styleClass="label-bright-header" />
+                    <Button fx:id="habilitarButton" text="Habilitar" onAction="#habilitarConvenio" />
+                    <Button fx:id="deshabilitarButton" text="Deshabilitar" onAction="#deshabilitarConvenio" />
+                    <Button fx:id="verDetallesButton" text="Ver Detalles" onAction="#verDetallesConvenio" />
+<!--                    <Button fx:id="btnExportarDetalles" onAction="#exportarDetallesConvenio" text="Exportar Detalles" />-->
+
+                </VBox>
+            </left>
+
+            <center>
+                <VBox spacing="10" styleClass="content-area">
+                    <padding>
+                        <Insets top="20" bottom="20" left="20" right="20" />
+                    </padding>
+                    <Label text="Lista de Convenios" styleClass="label-header" />
+                    <TableView fx:id="conveniosTableView" prefHeight="550.0">
+                        <columns>
+                            <TableColumn fx:id="colConvenio" text="Convenio" prefWidth="150" />
+                            <TableColumn fx:id="colHabilitado" text="Habilitado" prefWidth="80" />
+                            <TableColumn fx:id="colEntidad" text="Entidad" prefWidth="100" />
+                            <TableColumn fx:id="colEstudiante" text="Estudiante" prefWidth="100" />
+                            <TableColumn fx:id="colProyecto" text="Proyecto" prefWidth="150" />
+                            <TableColumn fx:id="colTutor" text="Tutor" prefWidth="100" />
+                            <TableColumn fx:id="colPlanTrabajo" text="Plan de Trabajo" prefWidth="200" />
+                        </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
+                    </TableView>
+                    <Button fx:id="btnVolver" text="Volver" onAction="#volverHome" />
+                </VBox>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>
+

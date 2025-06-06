@@ -41,6 +41,9 @@ public class IngresoController {
     @FXML public Button ButtonIngresarEstudiante;
     @FXML public Button ButtonIngresarDocente;
     @FXML public Button ButtonIngresarEmpresa;
+    @FXML public Button ButtonIngresarDirector;
+    @FXML public Button ButtonIngresarTutor;
+    @FXML public Button ButtonIngresarAdministrador;
 
     public Label LabelGPPS;
 
@@ -84,6 +87,10 @@ public class IngresoController {
         MenuIdiomas.setText(bundle.getString("button.idioma"));
         ButtonIngresarEstudiante.setText(bundle.getString("button.IngresarEstudiante"));
         ButtonIngresarDocente.setText(bundle.getString("button.IngresarDocente"));
+        ButtonIngresarDirector.setText(bundle.getString("button.IngresarDirector"));
+        ButtonIngresarEmpresa.setText(bundle.getString("button.IngresarEmpresa"));
+        ButtonIngresarTutor.setText(bundle.getString("button.IngresarTutor"));
+        ButtonIngresarAdministrador.setText(bundle.getString("button.IngresarAdministrador"));
         LabelGPPS.setText(bundle.getString("label.GPPS"));
     }
 
@@ -154,8 +161,11 @@ public class IngresoController {
 
     public void IngresarComoEstudiante(ActionEvent actionEvent) {
         try {
+            UsuarioDTO usuario = api.login("estudiante","contrasena123");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Estudiante/home.fxml"));
             Parent root = loader.load();
+
+            api.login("estudiante","contrasena123");
 
             // Obtener el controlador de la vista principal
             HomeController controllerHome = loader.getController();
@@ -176,8 +186,11 @@ public class IngresoController {
     }
     public void IngresarComoDocente(ActionEvent actionEvent) {
         try {
+            UsuarioDTO usuario = api.login("docente","contrasena123");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Docente/homeDocente.fxml"));
             Parent root = loader.load();
+
+            api.login("docente","contrasena123");
 
             // Obtener el controlador de la vista principal
             HomeDocenteController controllerHome = loader.getController();
@@ -209,8 +222,11 @@ public class IngresoController {
 
     public void IngresarComoDirector(ActionEvent actionEvent) {
         try {
+            UsuarioDTO usuario = api.login("director","contrasena123");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/DirectorCarrera/homeDirectorCarrera.fxml"));
             Parent root = loader.load();
+
+            api.login("director","contrasena123");
 
             // Obtener el controlador de la vista principal
             homeDirectorCarreraController controllerHome = loader.getController();
@@ -232,8 +248,11 @@ public class IngresoController {
 
     public void IngresarComoTutor(ActionEvent actionEvent) {
         try {
+            UsuarioDTO usuario = api.login("tutor","contrasena123");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Tutor/homeTutor.fxml"));
             Parent root = loader.load();
+
+            api.login("tutor","contrasena123");
 
             // Obtener el controlador de la vista principal
             HomeTutorController controllerHome = loader.getController();
@@ -255,8 +274,11 @@ public class IngresoController {
 
     public void IngresarComoEmpresa(ActionEvent actionEvent) {
         try {
+            UsuarioDTO usuario = api.login("entidad","contrasena123");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/EntidadColaboradora/homeEmpresa.fxml"));
             Parent root = loader.load();
+
+            api.login("entidad","contrasena123");
 
             // Obtener el controlador de la vista principal
             homeEmpresaController controllerHome = loader.getController();
@@ -278,8 +300,11 @@ public class IngresoController {
 
     public void IngresarComoAdministrador(ActionEvent actionEvent) {
         try {
+            UsuarioDTO usuario = api.login("admin","contrasena123");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Administrador/homeAdministrador.fxml"));
             Parent root = loader.load();
+
+            api.login("admin","contrasena123");
 
             // Obtener el controlador de la vista principal
             homeAdministradorController controllerHome = loader.getController();

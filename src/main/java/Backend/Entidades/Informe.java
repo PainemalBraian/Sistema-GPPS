@@ -62,8 +62,15 @@ public class Informe extends Item{
     }
 
     public void setPorcentajeAvance(int porcentajeAvance) throws EmptyException {
+<<<<<<< HEAD
         if (isNull(porcentajeAvance) || porcentajeAvance < 0 || porcentajeAvance > 10)
             throw new EmptyException("El porcentaje debe ser valido y estar entre 0 - 10.");
+=======
+        if (porcentajeAvance < 0 || porcentajeAvance > 100)
+            throw new EmptyException("El porcentaje debe ser valido y estar entre 0 - 100.");
+        if (isNull(porcentajeAvance))
+            porcentajeAvance = 0;
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
         this.porcentajeAvance = porcentajeAvance;
     }
 

@@ -2,10 +2,21 @@ package Backend.DAO.dom.usuarios;
 
 import Backend.DAO.DBAcces;
 import Backend.DAO.UsuarioDAODB;
+<<<<<<< HEAD
 import Backend.DAO.interfaces.usuarios.DOCENTEDAO;
 import Backend.Entidades.Docente;
 import Backend.Entidades.Usuario;
 import Backend.Exceptions.ConnectionException;
+=======
+import Backend.DAO.dom.elementos.InformeDAODB;
+import Backend.DAO.interfaces.usuarios.DOCENTEDAO;
+import Backend.Entidades.Docente;
+import Backend.Entidades.Estudiante;
+import Backend.Entidades.Informe;
+import Backend.Entidades.Usuario;
+import Backend.Exceptions.ConnectionException;
+import Backend.Exceptions.ReadException;
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
 import Backend.Exceptions.RegisterExceptions;
 import Backend.Exceptions.UserException;
 
@@ -75,15 +86,26 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
             UsuarioDAODB usuarioDAODB = new UsuarioDAODB();
             while (result.next()) {
                 Docente docente = new Docente(usuarioDAODB.buscarByID(result.getInt("idUsuario")),result.getString("legajo"));
+<<<<<<< HEAD
+=======
+                // Cargar informes relacionados
+                List<Estudiante> estudiantes = buscarEstudiantes(result.getInt("idUsuario"));
+                docente.setEstudiantesAsignados(estudiantes);
+
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
                 docentes.add(docente);
             }
 
             return docentes;
         } catch (SQLException e) {
             throw new UserException("Error al leer en la base de datos: " + e);
+<<<<<<< HEAD
         } catch (UserException e) {
             throw new UserException(e.getMessage());
         }catch(ConnectionException e){
+=======
+        } catch (UserException | ReadException | ConnectionException e) {
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
             throw new UserException(e.getMessage());
         }
     }
@@ -104,6 +126,7 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
             if (result.next()) {
                 Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
                 Docente docente = new Docente(usuario, result.getString("legajo"));
+<<<<<<< HEAD
                 disconnect();
                 statement.close();
                 result.close();
@@ -112,13 +135,32 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
                 disconnect();
                 statement.close();
                 result.close();
+=======
+
+                // Cargar informes relacionados
+                List<Estudiante> estudiantes = buscarEstudiantes(result.getInt("idUsuario"));
+                docente.setEstudiantesAsignados(estudiantes);
+
+                statement.close();
+                result.close();
+                disconnect();
+                return docente;
+            } else {
+                statement.close();
+                result.close();
+                disconnect();
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
                 throw new UserException("Docente no encontrado.");
             }
         }
         catch (SQLException e) {
             throw new UserException("Error al buscar el docente en la base de datos: " + e.getMessage());
         }
+<<<<<<< HEAD
         catch(ConnectionException e){
+=======
+        catch(ConnectionException | ReadException e){
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
             throw new UserException(e.getMessage());
         }
     }
@@ -138,6 +180,7 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
             if (result.next()) {
                 Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
                 Docente docente = new Docente(usuario, result.getString("legajo"));
+<<<<<<< HEAD
                 disconnect();
                 statement.close();
                 result.close();
@@ -146,6 +189,22 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
                 disconnect();
                 statement.close();
                 result.close();
+=======
+
+                // Cargar informes relacionados
+                List<Estudiante> estudiantes = buscarEstudiantes(id);
+                docente.setEstudiantesAsignados(estudiantes);
+
+
+                statement.close();
+                result.close();
+                disconnect();
+                return docente;
+            } else {
+                statement.close();
+                result.close();
+                disconnect();
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
                 throw new UserException("docente no encontrado.");
             }
         }
@@ -155,9 +214,47 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
         catch (SQLException e) {
             throw new UserException("Error al buscar el docente en la base de datos: " + e.getMessage());
         }
+<<<<<<< HEAD
         catch(ConnectionException e){
             throw new UserException(e.getMessage());
         }
     }
+=======
+        catch(ConnectionException|ReadException e){
+            throw new UserException(e.getMessage());
+        }
+    }
+
+    public List<Estudiante> buscarEstudiantes(int idDocente) throws ReadException {
+        List<Estudiante> estudiantes = new ArrayList<>();
+
+        String sql = "SELECT idEstudiante FROM Relacion_Docente_Estudiantes WHERE idDocente = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
+
+            statement.setInt(1, idDocente);
+
+            try (ResultSet result = statement.executeQuery()) {
+                EstudianteDAODB estudianteDAO = new EstudianteDAODB();
+
+                while (result.next()) {
+                    int idEstudiante = result.getInt("idEstudiante");
+                    Estudiante estudiante = estudianteDAO.buscarByID(idEstudiante);
+                    estudiantes.add(estudiante);
+                }
+            } catch (UserException e) {
+                throw new ReadException(e.getMessage());
+            }
+
+            return estudiantes;
+
+        } catch (SQLException e) {
+            throw new ReadException("Error SQL al obtener los estudiantes del Docente." + e.getMessage());
+        } catch (ConnectionException e) {
+            throw new ReadException(e.getMessage());
+        }
+    }
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
 }
 

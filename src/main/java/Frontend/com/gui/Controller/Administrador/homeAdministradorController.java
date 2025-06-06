@@ -1,6 +1,10 @@
 package Frontend.com.gui.Controller.Administrador; // Paquete ajustado
 
 import Backend.API.API;
+<<<<<<< HEAD
+=======
+import Backend.Exceptions.UserException;
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
 import Frontend.com.gui.Controller.IngresoController;
 import Frontend.com.gui.Controller.MensajesController; // Asumiendo que el admin también puede tener mensajes o notificaciones
 import javafx.event.ActionEvent;
@@ -54,7 +58,11 @@ public class homeAdministradorController {
         //cargarDatosResumen();
     }
 
+<<<<<<< HEAD
     private void actualizarIdioma() {
+=======
+    private void actualizarIdioma() throws UserException {
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
         if (api == null) {
             LOGGER.log(Level.WARNING, "API no inicializada al intentar actualizar idioma.");
             // Considerar cargar un bundle por defecto
@@ -67,7 +75,11 @@ public class homeAdministradorController {
             return;
         }
 
+<<<<<<< HEAD
         lblBienvenida.setText(bundle.getString("label.bienvenida.admin"));
+=======
+        lblBienvenida.setText(bundle.getString("label.bienvenida.admin") + api.obtenerSesionDeUsuario().getNombre());
+>>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
         if(lblMensajes != null) lblMensajes.setText(bundle.getString("label.mensajes.admin")); // Si es una etiqueta general
 
         btnGestionarUsuarios.setText(bundle.getString("button.gestionarUsuarios"));
