@@ -6,14 +6,8 @@ import Backend.DAO.interfaces.elementos.ConvenioPPSDAO;
 import Backend.Entidades.*;
 import Backend.Exceptions.*;
 
-<<<<<<< HEAD
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-=======
 import java.sql.*;
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,12 +26,8 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
             statement.setInt(4, convenio.getProyecto().getID());
             statement.setInt(5, convenio.getEstudiante().getIdUsuario());
             statement.setInt(6, convenio.getEntidad().getIdUsuario());
-<<<<<<< HEAD
-            statement.setInt(7, convenio.getPlan().getID());
-=======
             if ( convenio.getPlan()!= null)
                 statement.setInt(7, convenio.getPlan().getID());
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
 
             statement.executeUpdate();
 
@@ -54,8 +44,6 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
     }
 
     @Override
-<<<<<<< HEAD
-=======
     public void update(ConvenioPPS convenio) throws CreateException {
         try (Connection conn = connect();
              PreparedStatement statement = conn.prepareStatement(
@@ -94,7 +82,6 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
 
 
     @Override
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
     public ConvenioPPS buscarByID(int id) throws ReadException {
         try (Connection conn = connect();
              PreparedStatement statement = conn.prepareStatement("SELECT * FROM ConveniosPPS WHERE idConvenio = ?")) {

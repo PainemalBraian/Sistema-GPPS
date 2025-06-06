@@ -1,10 +1,7 @@
 package Frontend.com.gui.Controller.Tutor;
 
 import Backend.API.API;
-<<<<<<< HEAD
-=======
 import Backend.Exceptions.UserException;
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
 import Frontend.com.gui.Controller.IngresoController;
 import Frontend.com.gui.Controller.MensajesController;
 import javafx.event.ActionEvent;
@@ -46,15 +43,6 @@ public class HomeTutorController {
 
     public void setPersistenceAPI(API persistenceAPI) throws Exception {
         this.api = persistenceAPI;
-<<<<<<< HEAD
-        //actualizarIdioma();
-    }
-
-    private void actualizarIdioma() {
-        bundle = api.obtenerIdioma();
-
-        lblBienvenida.setText(bundle.getString("label.bienvenida.tutor"));
-=======
         lblBienvenida.setText(api.obtenerSesionDeUsuario().getNombre());
         //actualizarIdioma();
     }
@@ -63,7 +51,6 @@ public class HomeTutorController {
         bundle = api.obtenerIdioma();
 
         lblBienvenida.setText(bundle.getString("label.bienvenida.tutor")+ api.obtenerSesionDeUsuario().getNombre());
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
         lblEmpresa.setText(bundle.getString("label.infoEmpresa"));
         lblProyectos.setText(bundle.getString("label.proyectosDisponibles"));
         lblSeguimiento.setText(bundle.getString("label.seguimientoEstudiantes"));

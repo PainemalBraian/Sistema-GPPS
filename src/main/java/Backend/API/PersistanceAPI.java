@@ -7,10 +7,7 @@ import Backend.DTO.*;
 import Backend.Entidades.*;
 import Backend.Exceptions.*;
 
-<<<<<<< HEAD
-=======
 import java.awt.*;
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -178,15 +175,9 @@ public class PersistanceAPI implements API {
     }
 
     @Override
-<<<<<<< HEAD
-    public String obtenerNombreUsuario() throws UserException {
-        try {
-            return userSession.getNombre();
-=======
     public String obtenerUsername() throws UserException {
         try {
             return userSession.getUsername();
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
         }catch (Exception e){
             throw new UserException("No hay un usuario en la sesión");}
     }
@@ -343,15 +334,12 @@ public class PersistanceAPI implements API {
         try (FileOutputStream fos = new FileOutputStream(archivoTemporal.toFile())) {
             fos.write(datosPDF);
         }
-<<<<<<< HEAD
-=======
         // **Abrir el archivo automáticamente**  UPDATE PROBAR
         if (Desktop.isDesktopSupported()) {
             Desktop.getDesktop().open(archivoTemporal.toFile());
         } else {
             throw new IOException("No se pudo abrir el archivo automáticamente.");
         }
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
     }
 
 /////////////////////////////////////////////////////
@@ -365,27 +353,16 @@ public class PersistanceAPI implements API {
 
             PlanDeTrabajo plan = PlanDeTrabajoDAODB.buscarByTitulo(tituloPlan);
 
-<<<<<<< HEAD
-            TutorExterno tutor = convertirATutor(proyectoDTO.getTutorEncargado());
             Proyecto proyecto = convertirAProyecto(proyectoDTO);
             Estudiante estudiante = convertirAEstudiante(estudianteDTO);
             EntidadColaborativa entidad = convertirAEntidad(entidadDTO);
-            System.out.println(entidadDTO.getIdUsuario());
-=======
-            Proyecto proyecto = convertirAProyecto(proyectoDTO);
-            Estudiante estudiante = convertirAEstudiante(estudianteDTO);
-            EntidadColaborativa entidad = convertirAEntidad(entidadDTO);
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
+
             ConvenioPPS convenio = new ConvenioPPS(tituloConvenio, descripcionConvenio, proyecto, estudiante, entidad,plan);
             convenio.setHabilitado(true);
 
             ConvenioPPSDAODB.create(convenio);
         } catch (Exception e) {
-<<<<<<< HEAD
-            throw new CreateException("Error al crear el convenio: " + e.getMessage());
-=======
                    throw new CreateException("Error al crear el convenio: " + e.getMessage());
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
         }
     }
 
@@ -466,11 +443,8 @@ public class PersistanceAPI implements API {
             Informe informe = InformeDAODB.buscarByTitulo(titulo);
 
             InformeDTO informeDTO = new InformeDTO(informe.getID(), informe.getTitulo(),
-<<<<<<< HEAD
-                    informe.getDescripcion(), informe.getArchivoPDF(), informe.getFecha());
-=======
                     informe.getDescripcion(), informe.getArchivoPDF(), informe.getFecha(),informe.getPorcentajeAvance());
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
+
 
             return informeDTO;
         } catch (ReadException e) {
@@ -525,8 +499,6 @@ public class PersistanceAPI implements API {
         }
     }
 
-<<<<<<< HEAD
-=======
     @Override
     public List <ConvenioPPSDTO> obtenerConvenios() throws ReadException {
         try {
@@ -537,7 +509,6 @@ public class PersistanceAPI implements API {
         }
     }
 
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
     @Override //Convenio por nombre
     public ConvenioPPSDTO obtenerConvenioPPSByTitulo(String titulo) throws ReadException {
         try {
@@ -615,10 +586,6 @@ public class PersistanceAPI implements API {
             List <InformeDTO> informes = new ArrayList<>();
 
             for (InformeDTO informe : obtenerActividadByTitulo(titulo).getInformes()){
-<<<<<<< HEAD
-                System.out.println(informe);
-=======
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
                 informes.add(informe);
             }
 
@@ -628,8 +595,6 @@ public class PersistanceAPI implements API {
         }
     }
 
-<<<<<<< HEAD
-=======
     @Override
     public List<EstudianteDTO> obtenerEstudiantesByDocenteUsername(String username) throws ReadException {
         try {
@@ -689,7 +654,6 @@ public class PersistanceAPI implements API {
         }
     }
 
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  CONVERSIONES DE TIPOS
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -785,11 +749,7 @@ public class PersistanceAPI implements API {
             PlanDeTrabajoDTO planDTO = new PlanDeTrabajoDTO(convenio.getPlan().getID(),convenio.getPlan().getTitulo(),convenio.getPlan().getDescripcion(),docenteDTO,proyectoDTO.getTutorEncargado(),actividadesDTO,informeDTO,true);
 
             convenioDTO = new ConvenioPPSDTO(convenio.getID(), convenio.getTitulo(), convenio.getDescripcion(),proyectoDTO,estudianteDTO,entidadDTO,planDTO);
-<<<<<<< HEAD
-=======
             convenioDTO.setHabilitado(convenio.isHabilitado());
-
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
             proyectoDTO.setHabilitado(convenio.isHabilitado());
 
         }
@@ -836,11 +796,8 @@ public class PersistanceAPI implements API {
     private InformeDTO convertirAInformeDTO(Informe informe) throws EmptyException {
         if (informe == null)
             throw new EmptyException("El informe que se intenta convertir no existe.");
-<<<<<<< HEAD
-        return new InformeDTO(informe.getID(),informe.getTitulo(),informe.getDescripcion(),informe.getArchivoPDF(),informe.getFecha());
-=======
         return new InformeDTO(informe.getID(),informe.getTitulo(),informe.getDescripcion(),informe.getArchivoPDF(),informe.getFecha(),informe.getPorcentajeAvance());
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
+
     }
 
 
@@ -955,8 +912,6 @@ public class PersistanceAPI implements API {
         return convenio;
     }
 
-<<<<<<< HEAD
-=======
     private List<ConvenioPPSDTO> convertirAListaConveniosDTO(List<ConvenioPPS> conveniosPPS) throws EmptyException, ReadException, UserException {
         List <ConvenioPPSDTO> conveniosDTO = new ArrayList<>();
         for (ConvenioPPS convenio: conveniosPPS){
@@ -964,7 +919,5 @@ public class PersistanceAPI implements API {
         }
         return conveniosDTO;
     }
-
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
 
 }

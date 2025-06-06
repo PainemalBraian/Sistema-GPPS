@@ -100,8 +100,6 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
         }
     }
 
-<<<<<<< HEAD
-=======
     public EntidadColaborativa buscarByNombreEntidad(String nombreEntidad) throws UserException {
         try {
             Connection conn = connect();
@@ -136,7 +134,6 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
         }
     }
 
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
     @Override
     public EntidadColaborativa buscarByID(int id) throws UserException {
         try {

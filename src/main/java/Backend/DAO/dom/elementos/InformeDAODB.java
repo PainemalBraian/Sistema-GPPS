@@ -15,27 +15,14 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
     public void create(Informe informe) throws CreateException {
         try (Connection conn = connect();
              PreparedStatement statement = conn.prepareStatement(
-<<<<<<< HEAD
-                     "INSERT INTO Informes(titulo, descripcion, archivo_pdf, fecha, idActividad) VALUES (?, ?, ?, ?, ?)"
-=======
                      "INSERT INTO Informes(titulo, descripcion, archivo_pdf, fecha, idActividad, porcentajeAvance) VALUES (?, ?, ?, ?, ?, ?)",
                      Statement.RETURN_GENERATED_KEYS
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
              )) {
 
             statement.setString(1, informe.getTitulo());
             statement.setString(2, informe.getDescripcion());
             statement.setBytes(3, informe.getArchivoPDF());
             statement.setDate(4, Date.valueOf(informe.getFecha()));
-<<<<<<< HEAD
-            statement.setInt(5, new ActividadDAODB().buscarByTitulo(informe.getTituloActividad()).getID());
-
-            statement.executeUpdate();
-
-        }catch(ConnectionException | ReadException e){
-            throw new CreateException(e.getMessage());
-        }catch(SQLException e){
-=======
             int idActividad = new ActividadDAODB().buscarByTitulo(informe.getTituloActividad()).getID();
             statement.setInt(5, idActividad);
             statement.setInt(6, informe.getPorcentajeAvance());
@@ -59,13 +46,9 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
         } catch (ConnectionException | ReadException e) {
             throw new CreateException(e.getMessage());
         } catch (SQLException e) {
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
             throw new CreateException("Error al crear el informe: " + e.getMessage());
         }
     }
-
-<<<<<<< HEAD
-=======
 
     private void agregarRelacionInforme(Connection conn, int idActividad, int idInforme) throws SQLException {
         String sql = "INSERT INTO Relacion_Actividad_Informes (idActividad, idInforme) VALUES (?, ?)";
@@ -76,8 +59,6 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
         }
     }
 
-
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
     @Override
     public void delete(int id) throws DeleteException {
 
@@ -99,11 +80,7 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
                         result.getBytes("archivo_pdf")
                 );
                 informe.setFecha(result.getDate("fecha").toLocalDate());
-<<<<<<< HEAD
-
-=======
                 informe.setPorcentajeAvance(result.getInt("porcentajeAvance"));
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
                 informes.add(informe);
             }
 
@@ -134,11 +111,7 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
 
                 Informe informe = new Informe(idInforme, titulo, descripcion, archivo);
                 informe.setFecha(fecha);
-<<<<<<< HEAD
-
-=======
                 informe.setPorcentajeAvance(result.getInt("porcentajeAvance"));
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
                 result.close();
                 return informe;
             } else {
@@ -170,11 +143,7 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
 
                 Informe informe = new Informe(idInforme, titulo, descripcion, archivo);
                 informe.setFecha(fecha);
-
-<<<<<<< HEAD
-=======
                 informe.setPorcentajeAvance(result.getInt("porcentajeAvance"));
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
                 result.close();
                 return informe;
             } else {

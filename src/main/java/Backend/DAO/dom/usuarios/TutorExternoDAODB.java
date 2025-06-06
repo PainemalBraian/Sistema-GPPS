@@ -99,38 +99,6 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
 
     @Override
     public TutorExterno buscarByID(int id) throws UserException {
-<<<<<<< HEAD
-        try {
-            Connection conn = connect();
-            PreparedStatement statement = conn.prepareStatement(
-                    "SELECT * FROM TutoresExternos TE " +
-                            "JOIN Usuarios U ON TE.idUsuario = U.idUsuario " +
-                            "WHERE TE.idTutor = ?"
-            );
-            statement.setInt(1, id);
-
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
-                TutorExterno tutorExt = new TutorExterno(usuario, result.getString("nombreEntidadColaborativa") );
-                disconnect();
-                statement.close();
-                result.close();
-                return tutorExt;
-            } else {
-                disconnect();
-                statement.close();
-                result.close();
-                throw new UserException("Tutor no encontrado.");
-            }
-
-        }
-        catch (SQLException e) {
-            throw new UserException("Error al buscar el usuario en la base de datos: " + e.getMessage());
-        }
-        catch(ConnectionException e){
-=======
         try (Connection conn = connect();
              PreparedStatement statement = conn.prepareStatement(
                      "SELECT * FROM TutoresExternos TE " +
@@ -154,15 +122,10 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
         } catch (SQLException e) {
             throw new UserException("Error al buscar el usuario en la base de datos: " + e.getMessage());
         } catch (ConnectionException e) {
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
             throw new UserException(e.getMessage());
         }
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 6c4b88f60d8f438e5a20427d61cee662601a4be7
     @Override
     public boolean validarExistenciaEntidad(String nombreEntidad) throws UserException {
         try (Connection conn = connect()) {
