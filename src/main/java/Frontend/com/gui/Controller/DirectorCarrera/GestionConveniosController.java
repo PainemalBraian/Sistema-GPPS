@@ -2,6 +2,9 @@ package Frontend.com.gui.Controller.DirectorCarrera;
 
 import Backend.API.API;
 import Backend.DTO.ConvenioPPSDTO;
+import Backend.DTO.DocenteDTO;
+import Backend.DTO.PlanDeTrabajoDTO;
+import Backend.Entidades.PlanDeTrabajo;
 import Backend.Exceptions.CreateException;
 import Backend.Exceptions.ReadException;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,10 +16,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import javafx.geometry.Insets;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +38,6 @@ import javafx.stage.FileChooser;
 import java.io.File;
 
 import java.io.FileOutputStream;
-import java.awt.Desktop;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -45,22 +57,17 @@ public class GestionConveniosController {
     @FXML private TableColumn<ConvenioPPSDTO, String> colProyecto;
     @FXML private TableColumn<ConvenioPPSDTO, String> colTutor;
     @FXML private TableColumn<ConvenioPPSDTO, String> colPlanTrabajo;
-    @FXML private Label gestionConvenios;
     @FXML private Button habilitarButton;
     @FXML private Button deshabilitarButton;
     @FXML private Button verDetallesButton;
-    @FXML private Button btnExportarDetalles;
+    @FXML private Button btnAsignarDocente;
+    @FXML private Button btnAsignarTituloYDescripcion;
     @FXML private Button btnVolver;
 
     private final ObservableList<ConvenioPPSDTO> listaConvenios = FXCollections.observableArrayList();
 
     private API api;
     private ResourceBundle bundle;
-
-    @FXML
-    public void initialize() {
-
-    }
 
     private void cargarTabla() {
         colConvenio.setCellValueFactory(new PropertyValueFactory<>("titulo"));  // título del convenio (heredado de ItemDTO)
@@ -73,7 +80,6 @@ public class GestionConveniosController {
     }
 
     private void actualizarIdioma() {
-        gestionConvenios.setText(bundle.getString("label.gestionConvenios"));
         habilitarButton.setText(bundle.getString("button.habilitarConvenio"));
         deshabilitarButton.setText(bundle.getString("button.deshabilitarConvenio"));
         verDetallesButton.setText(bundle.getString("button.verDetallesConvenio"));
@@ -92,7 +98,6 @@ public class GestionConveniosController {
         try {
             listaConvenios.addAll(api.obtenerConvenios());
         } catch (ReadException e) {
-            e.printStackTrace();
             mostrarAlerta("Error al Cargar convenios",e.getMessage());
         }
         conveniosTableView.setItems(listaConvenios);
@@ -104,7 +109,7 @@ public class GestionConveniosController {
         if (selected != null && !selected.isHabilitado()) {
             boolean exito = false;
             try {
-                exito = api.habilitarConvenio(selected.getId(), true);
+                exito = api.habilitarConvenio(selected.getID(), true);
             } catch (CreateException e) {
                 mostrarAlerta("Error al habilitar: ",e.getMessage());
             }
@@ -123,7 +128,7 @@ public class GestionConveniosController {
         if (selected != null && selected.isHabilitado()) {
             boolean exito = false;
             try {
-                exito = api.habilitarConvenio(selected.getId(), false);
+                exito = api.habilitarConvenio(selected.getID(), false);
             } catch (CreateException e) {
                 mostrarAlerta("Error al deshabilitar", e.getMessage());
             }
@@ -324,4 +329,165 @@ public class GestionConveniosController {
             mostrarAlerta("Error de Configuración", "No se pudo configurar la pantalla principal: " + e.getMessage());
         }
     }
+
+    @FXML
+    public void asignarDocente(ActionEvent actionEvent) {
+        ConvenioPPSDTO selected = conveniosTableView.getSelectionModel().getSelectedItem();
+        selected.getID();
+        if (selected != null) {
+            insertarDocente(selected);
+        } else {
+            mostrarAlerta("Sin selección", "Por favor, selecciona un convenio de la lista.");
+        }
+    }
+
+    private void insertarDocente(ConvenioPPSDTO convenio) {
+        Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
+        dialogStage.setTitle("Asignar Docente y Plan");
+
+        // Label informativo
+        Label infoLabel = new Label("Para asignar un docente se debe inicializar un Plan de Trabajo");
+
+
+        // Crear la lista de selección
+        ListView<DocenteDTO> listView = new ListView<>();
+        try {
+            listView.getItems().addAll(api.obtenerDocentes());
+        } catch (ReadException e) {
+            mostrarAlerta("Error al buscar los docentes", e.getMessage());
+        }
+        listView.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(DocenteDTO docente, boolean empty) {
+                super.updateItem(docente, empty);
+                if (empty || docente == null) {
+                    setText(null);
+                } else {
+                    setText(docente.getNombre());
+                }
+            }
+        });
+
+        // Campos para Título y Descripción
+        TextField txtTitulo = new TextField();
+        txtTitulo.setPromptText("Título del Plan");
+
+        TextArea txtDescripcion = new TextArea();
+        txtDescripcion.setPromptText("Descripción del Plan");
+        txtDescripcion.setWrapText(true);
+        txtDescripcion.setPrefRowCount(4);
+
+        // Mostrar estado actual del plan
+        PlanDeTrabajoDTO plan = convenio.getPlan();
+        String actividadesStr = (plan.getActividades() == null || plan.getActividades().isEmpty()) ? "Sin definir" : "Actividades existentes para el plan: " + plan.getTitulo();
+        String informeStr = (plan.getInformeFinal() == null) ? "Sin definir" : plan.getInformeFinal().getTitulo();
+
+        Label lblPlanActual = new Label("Datos actuales del Plan");
+        Label lblActividades = new Label("Actividades: " + actividadesStr);
+        Label lblTutor = new Label("Tutor Externo: " + (plan.getTutor() != null ? plan.getTutor().getNombre() : "Sin definir"));
+
+        // Botón para asignar
+        Button btnAsignar = new Button("Asignar Docente y Plan");
+        btnAsignar.setOnAction(e -> {
+            DocenteDTO seleccionado = listView.getSelectionModel().getSelectedItem();
+            if (seleccionado != null && !txtTitulo.getText().isEmpty() && !txtDescripcion.getText().isEmpty()) {
+                plan.setId(-9);
+                plan.setTitulo(txtTitulo.getText());
+                plan.setDescripcion(txtDescripcion.getText());
+                plan.setDocente(seleccionado);
+                plan.setHabilitado(true);
+                convenio.setPlan(plan);
+
+                try {
+                    api.actualizarConvenio(convenio);
+                    cargarConvenios();
+                } catch (CreateException ex) {
+                    mostrarAlerta("Error al Actualizar: ",ex.getMessage());
+                }
+                mostrarAlerta("Éxito", "Docente y Plan asignados correctamente.");
+                dialogStage.close();
+            } else {
+                mostrarAlerta("Campos incompletos", "Debes seleccionar un docente y completar el título y descripción.");
+            }
+        });
+
+        VBox vbox = new VBox(10,
+                infoLabel,
+                new Label("Selecciona un docente:"), listView,
+                new Label("Título del Plan:"), txtTitulo,
+                new Label("Descripción del Plan:"), txtDescripcion,
+                lblPlanActual, lblActividades, lblTutor,
+                btnAsignar
+        );
+
+        vbox.setPadding(new Insets(10));
+        dialogStage.setScene(new Scene(vbox));
+        dialogStage.showAndWait();
+    }
+
+    @FXML
+    public void asignarTituloyDescripción(ActionEvent actionEvent) {
+        ConvenioPPSDTO selected = conveniosTableView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            insertarTituloYDescripcion(selected);
+        } else {
+            mostrarAlerta("Sin selección", "Por favor, selecciona un convenio de la lista.");
+        }
+    }
+    private void insertarTituloYDescripcion(ConvenioPPSDTO convenio) {
+        Stage ventana = new Stage();
+        ventana.initModality(Modality.APPLICATION_MODAL);
+        ventana.setTitle("Editar Título y Descripción del convenio");
+
+        if (convenio == null) {
+            mostrarAlerta("Error", "Este convenio no existe.");
+            return;
+        }
+
+        // Campos de texto con datos actuales
+        TextField txtTitulo = new TextField(convenio.getTitulo() != null ? convenio.getTitulo() : "");
+        txtTitulo.setPromptText("Título del Convenio");
+
+        TextArea txtDescripcion = new TextArea(convenio.getDescripcion() != null ? convenio.getDescripcion() : "");
+        txtDescripcion.setPromptText("Descripción del Convenio");
+        txtDescripcion.setPrefRowCount(4);
+
+        Button btnGuardar = new Button("Guardar");
+        btnGuardar.setOnAction(e -> {
+            String titulo = txtTitulo.getText().trim();
+            String descripcion = txtDescripcion.getText().trim();
+
+            if (titulo.isEmpty() || descripcion.isEmpty()) {
+                mostrarAlerta("Campos obligatorios", "Debes completar el título y la descripción.");
+                return;
+            }
+
+            // Actualizar los datos del plan
+            convenio.setTitulo(titulo);
+            convenio.setDescripcion(descripcion);
+
+            try {
+                api.actualizarConvenio(convenio);
+                cargarConvenios();
+            } catch (Exception ex) {
+                mostrarAlerta("Error",  ex.getMessage());
+                return;
+            }
+
+            ventana.close();
+        });
+
+        VBox layout = new VBox(10,
+                new Label("Título del Convenio:"), txtTitulo,
+                new Label("Descripción del Convenio:"), txtDescripcion,
+                btnGuardar
+        );
+        layout.setPadding(new Insets(15));
+
+        Scene scene = new Scene(layout, 400, 300);
+        ventana.setScene(scene);
+        ventana.showAndWait();
+    }
+
 }

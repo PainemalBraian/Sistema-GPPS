@@ -137,6 +137,8 @@ public class PuestosDisponiblesController {
             confirmation.setContentText("¿Estás seguro de que deseas postularte para el proyecto: \"" + oportunidadSeleccionada.getTitulo() + "\" en " + empresaNombre + "?");
 
             Optional<ButtonType> result = confirmation.showAndWait();
+            mostrarAlerta("Registro Exitoso", "La inscripción al PPS fue registrado correctamente.", Alert.AlertType.INFORMATION);
+
 
         } else {
             mostrarAlerta("Selección Requerida", "Por favor, selecciona un proyecto de la lista para postularte.", Alert.AlertType.WARNING);

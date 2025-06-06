@@ -1,6 +1,7 @@
 package Frontend.com.gui.Controller.Estudiante;
 
 import Backend.API.API;
+import Backend.DTO.ConvenioPPSDTO;
 import Backend.Exceptions.UserException;
 import Frontend.com.gui.Controller.IngresoController;
 import Frontend.com.gui.Controller.MensajesController;
@@ -72,7 +73,7 @@ public class HomeController  {
     public void setPersistenceAPI(API persistenceAPI) throws Exception {
         this.api = persistenceAPI;
         actualizarIdioma();
-        //verificarEstadoPPS();
+        verificarEstadoPPS();
         //cargarAvisosRecientes();
     }
 
@@ -86,21 +87,24 @@ public class HomeController  {
             String estadoPPS = "Sin PPS activa"; // Por defecto
 
             // Ejemplo de código que se podría usar cuando la API esté disponible:
-            // EstadoPPS estado = api.obtenerEstadoPPS(api.obtenerNombreUsuario());
-            // if (estado != null) {
-            //     estadoPPS = estado.getDescripcion();
-            //     lblFechaInicio.setText("Fecha de inicio: " + estado.getFechaInicio());
-            //     lblFechaFin.setText("Fecha de finalización estimada: " + estado.getFechaFin());
-            //
-            //     // Aplicar estilo según el estado
-            //     if ("En curso".equals(estadoPPS)) {
-            //         lblEstadoPPS.getStyleClass().add("status-active");
-            //     } else if ("Pendiente de aprobación".equals(estadoPPS)) {
-            //         lblEstadoPPS.getStyleClass().add("status-pending");
-            //     } else if ("Completada".equals(estadoPPS)) {
-            //         lblEstadoPPS.getStyleClass().add("status-completed");
-            //     }
-            // }
+             ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(api.obtenerUsername());
+
+             if (convenio != null) {
+                 estadoPPS = (convenio.isHabilitado() ? "En curso" : "Pendiente de aprobación");
+                 lblFechaInicio.setText("Fecha de inicio: ---" /*+ convenio.getFechaInicio()*/);
+                 lblFechaFin.setText("Fecha de finalización estimada: ---" /*+ convenio.getFechaFin()*/);
+
+                 // Aplicar estilo según el estado
+                 if ("En curso".equals(estadoPPS)) {
+                     lblStatus.setText("PPS Iniciado: " + convenio.getTitulo());
+                     lblEstadoPPS.getStyleClass().add("status-active");
+                 } else if ("Pendiente de aprobación".equals(estadoPPS)) {
+                     lblEstadoPPS.getStyleClass().add("status-pending");
+                 } else if ("Completada".equals(estadoPPS)) {
+                     lblStatus.setText("PPS Finalizado: " + convenio.getTitulo());
+                     lblEstadoPPS.getStyleClass().add("status-completed");
+                 }
+             }
 
             lblEstadoPPS.setText(estadoPPS);
 

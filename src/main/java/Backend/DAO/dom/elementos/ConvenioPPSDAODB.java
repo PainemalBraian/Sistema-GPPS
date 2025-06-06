@@ -60,8 +60,13 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
             // Si el convenio tiene un plan, lo asignamos; de lo contrario, enviamos `null`
             if (convenio.getPlan() != null) {
                 statement.setInt(7, convenio.getPlan().getID());
-            } else {
-                statement.setNull(7, Types.INTEGER);
+            }
+            if (convenio.getPlan().getID() == -9) {
+                new PlanDeTrabajoDAODB().create(convenio.getPlan());
+                statement.setInt(7, convenio.getPlan().getID());
+            }
+            else {
+                statement.setInt(7, -10);
             }
 
             statement.setInt(8, convenio.getID()); // Identificador del convenio a actualizar

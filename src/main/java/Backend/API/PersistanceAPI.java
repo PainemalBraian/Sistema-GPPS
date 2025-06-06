@@ -636,6 +636,65 @@ public class PersistanceAPI implements API {
         }
     }
 
+    @Override
+    public List<DocenteDTO> obtenerDocentes() throws ReadException {
+        try {
+            List <DocenteDTO> docentes = new ArrayList<>();
+            List<Docente> docentesBD = DocenteDAODB.obtenerDocentes();
+            for (Docente docente : docentesBD){
+                docentes.add(convertirADocenteDTO(docente));
+            }
+
+            return docentes;
+        } catch (UserException e) {
+            throw new ReadException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void actualizarConvenio(ConvenioPPSDTO convenio) throws CreateException {
+        try {
+            ConvenioPPSDAODB.update(convertirAConvenio(convenio));
+
+        } catch (CreateException | UserException | EmptyException | ReadException e) {
+            throw new CreateException(e.getMessage());
+        }
+    }
+
+    @Override
+    public String director_getConveniosActivosCount() {
+        String total = "0";
+        try {
+            int count = 0;
+            for (ConvenioPPSDTO convenio : obtenerConvenios()){
+                if (convenio.isHabilitado())
+                    count++;
+            }
+            total = String.valueOf(count);
+            return total;
+        } catch (ReadException e) {
+
+        }
+        return "-";
+    }
+
+    @Override
+    public String director_getConveniosPorRevisarCount() {
+        String total = "0";
+        try {
+            int count = 0;
+            for (ConvenioPPSDTO convenio : obtenerConvenios()){
+                if (!convenio.isHabilitado())
+                    count++;
+            }
+            total = String.valueOf(count);
+            return total;
+        } catch (ReadException e) {
+
+        }
+        return "-";
+    }
+
     private void cargarPropuestaDeConvenio(ProyectoDTO proyectoDTO, EstudianteDTO estudianteDTO, EntidadColaborativaDTO entidadDTO) throws CreateException {
         try {
             PlanDeTrabajo plan = new PlanDeTrabajo();
@@ -856,7 +915,7 @@ public class PersistanceAPI implements API {
         if (proyectoDTO == null)
             return null; // o new Proyecto() según lógica de negocio
         TutorExterno tutor = convertirATutor(proyectoDTO.getTutorEncargado());
-        Proyecto proyecto = new Proyecto(proyectoDTO.getId(),proyectoDTO.getTitulo(), proyectoDTO.getDescripcion(), proyectoDTO.getAreaDeInteres(),
+        Proyecto proyecto = new Proyecto(proyectoDTO.getID(),proyectoDTO.getTitulo(), proyectoDTO.getDescripcion(), proyectoDTO.getAreaDeInteres(),
                 proyectoDTO.getUbicacion(), proyectoDTO.getObjetivos(), proyectoDTO.getRequisitos(), tutor);
         proyecto.setHabilitado(proyectoDTO.isHabilitado());
         return proyecto;
@@ -873,7 +932,7 @@ public class PersistanceAPI implements API {
     private Actividad convertirAActividad(ActividadDTO actividadDTO) throws EmptyException {
         if (actividadDTO == null)
             throw new EmptyException("La actividadDTO que se intenta convertir no existe.");
-        Actividad actividad = new Actividad(actividadDTO.getId(),actividadDTO.getTitulo(), actividadDTO.getDescripcion(), actividadDTO.getFechaFin(), actividadDTO.getDuracion(),actividadDTO.getFechaInicio());
+        Actividad actividad = new Actividad(actividadDTO.getID(),actividadDTO.getTitulo(), actividadDTO.getDescripcion(), actividadDTO.getFechaFin(), actividadDTO.getDuracion(),actividadDTO.getFechaInicio());
         actividad.setCalificacion(actividadDTO.getCalificacion());
         return actividad;
     }
@@ -899,14 +958,14 @@ public class PersistanceAPI implements API {
             throw new ReadException("El convenioDTO que se intenta convertir no existe.");
 
         Proyecto proyecto = convertirAProyecto(convenioDTO.getProyecto());
-        Docente docente = convertirADocente(convenioDTO.getDocente());
-        TutorExterno tutor = convertirATutor(convenioDTO.getTutor());
+        Docente docente = convertirADocente(convenioDTO.getPlan().getDocente());
+        TutorExterno tutor = convertirATutor(convenioDTO.getPlan().getTutor());
         Estudiante estudiante = convertirAEstudiante(convenioDTO.getEstudiante());
         EntidadColaborativa entidad = convertirAEntidad(convenioDTO.getEntidad());
         List<Actividad> actividades = convertirAListaActividades(convenioDTO.getPlan().getActividades());
-        PlanDeTrabajo plan = new PlanDeTrabajo(convenioDTO.getPlan().getTitulo(),convenioDTO.getDescripcion(),docente,tutor);
+        PlanDeTrabajo plan = new PlanDeTrabajo(convenioDTO.getPlan().getID(),convenioDTO.getPlan().getTitulo(),convenioDTO.getPlan().getDescripcion(),docente,tutor);
 
-        ConvenioPPS convenio = new ConvenioPPS(convenioDTO.getTitulo(), convenioDTO.getDescripcion(),
+        ConvenioPPS convenio = new ConvenioPPS(convenioDTO.getID(),convenioDTO.getTitulo(), convenioDTO.getDescripcion(),
                 proyecto, estudiante, entidad, plan);
         convenio.setHabilitado(convenioDTO.isHabilitado());
         return convenio;

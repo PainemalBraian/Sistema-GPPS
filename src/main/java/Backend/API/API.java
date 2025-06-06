@@ -112,7 +112,7 @@ public interface API {
     //check
     List<ActividadDTO> obtenerActividadesByConvenioTitulo(String titulo) throws ReadException;
 
-    //Probar ?
+    //check
     List<ActividadDTO> obtenerActividadesByEstudianteUsername(String username) throws ReadException;
 
     //check
@@ -130,4 +130,12 @@ public interface API {
     //check
     boolean habilitarConvenio(int id, boolean b) throws CreateException;
 
+    List<DocenteDTO> obtenerDocentes() throws ReadException;
+
+    //check
+    void actualizarConvenio(ConvenioPPSDTO convenio) throws CreateException;
+
+    String director_getConveniosActivosCount();
+
+    String director_getConveniosPorRevisarCount();
 }
