@@ -215,14 +215,14 @@ public class HomeDocenteController {
     @FXML
     public void verEstudiantesAsignados(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Docente/estudiantesAsignados.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Docente/ListadoDeEstudiantes.fxml"));
             Parent root = loader.load();
 
-            ListadoEstudiantesController controller = loader.getController();
+            ListadoDeEstudiantesController controller = loader.getController();
             controller.setPersistenceAPI(api);
 
             Stage stage = new Stage();
-            stage.setTitle("Estudiantes Asignados - GPPS");
+            stage.setTitle("Listado de estudiantes - GPPS");
             stage.setScene(new Scene(root));
             stage.show();
 
