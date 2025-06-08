@@ -6,7 +6,7 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="Frontend.com.gui.Controller.DirectorCarrera.GestionConveniosController">
+            fx:controller="Frontend.com.gui.Controller.Administrador.GestionDeConveniosController">
     <children>
         <BorderPane AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
             <top>
@@ -27,6 +27,11 @@
                     <Button fx:id="verDetallesButton" text="Ver Detalles" onAction="#verDetallesConvenio" />
                     <Button fx:id="habilitarButton" text="Habilitar" onAction="#habilitarConvenio" />
                     <Button fx:id="deshabilitarButton" text="Deshabilitar" onAction="#deshabilitarConvenio" />
+                    <Button fx:id="btnAsignarTituloYDescripcion" text="Asignar Titulo y Descripción" onAction="#asignarTituloyDescripción" />
+                    <Button fx:id="btnAsignarPlan" text="Asignar Responsables Plan" onAction="#asignarPlan" />
+                    <Button fx:id="btnAsignarEstudiante" text="Asignar Estudiante" onAction="#asignarEstudiante" />
+                    <Button fx:id="btnNuevoConvenio" text="Iniciar nuevo Convenio" onAction="#iniciarNuevoConvenio" />
+
                 </VBox>
             </left>
 

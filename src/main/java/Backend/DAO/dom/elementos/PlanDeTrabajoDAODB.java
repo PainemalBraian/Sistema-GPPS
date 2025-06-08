@@ -229,7 +229,7 @@ public class PlanDeTrabajoDAODB extends DBAcces implements PLANDETRABAJODAO{
                 }
 
                 // Cargar actividades relacionadas
-                List<Actividad> actividades = buscarActividades(idPlan); // Método que ya tienes
+                List<Actividad> actividades = buscarActividades(idPlan);
                 plan.setActividades(actividades);
 
                 plan.setHabilitado(result.getBoolean("habilitado"));
@@ -277,6 +277,50 @@ public class PlanDeTrabajoDAODB extends DBAcces implements PLANDETRABAJODAO{
             throw new ReadException("Error SQL al obtener las actividades del plan." + e.getMessage());
         } catch (ConnectionException e) {
             throw new ReadException(e.getMessage());
+        }
+    }
+
+    public void update(PlanDeTrabajo plan) throws CreateException {
+        String sql = "UPDATE PlanesDeTrabajos SET titulo = ?, descripcion = ?, idDocente = ?, idTutor = ?, " +
+                "idInformeFinal = ?, habilitado = ? WHERE idPlanDeTrabajo = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
+
+            statement.setString(1, plan.getTitulo());
+            statement.setString(2, plan.getDescripcion());
+            statement.setInt(3, plan.getDocente().getIdUsuario());
+            statement.setInt(4, plan.getTutor().getIdUsuario());
+
+            if (plan.getInformeFinal().getID() == 0) {
+                statement.setNull(5, Types.INTEGER);
+            }
+            else if (plan.getInformeFinal() != null) {
+                statement.setInt(5, plan.getInformeFinal().getID());
+            }
+            else {
+                statement.setNull(5, Types.INTEGER);
+            }
+
+            statement.setBoolean(6, plan.isHabilitado());
+            statement.setInt(7, plan.getID());
+
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated == 0) {
+                throw new CreateException("No se encontró el plan de trabajo con ID: " + plan.getID());
+            }
+
+            // Actualizar actividades si las hubiera
+            if (plan.getActividades() != null) {
+                for (Actividad act : plan.getActividades()) {
+                    agregarRelacionActividad(conn, plan.getID(), act.getID());
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new CreateException("Error SQL al actualizar el plan de trabajo: " + e.getMessage());
+        } catch (ConnectionException | EmptyException e) {
+            throw new CreateException(e.getMessage());
         }
     }
 

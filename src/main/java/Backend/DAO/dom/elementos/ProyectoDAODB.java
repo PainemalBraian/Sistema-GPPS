@@ -77,7 +77,8 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
             while (result.next()) {
                 TutorExternoDAODB tutorExternoDAO = new TutorExternoDAODB();
                 int idTutor = result.getInt("idTutor");
-
+                if (idTutor == 0)
+                    idTutor =-10;
                 Proyecto proyecto = new Proyecto(
                         result.getInt("idProyecto"),
                         result.getString("titulo"),
@@ -284,4 +285,41 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
     }
 
 
+    public void update(Proyecto proyecto) throws CreateException {
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement(
+                     "UPDATE Proyectos SET titulo = ?, descripcion = ?, habilitado = ?, areaDeInteres = ?, ubicacion = ?, objetivos = ?, requisitos = ?, idTutor = ? WHERE idProyecto = ?"
+             )) {
+
+            statement.setString(1, proyecto.getTitulo());
+            statement.setString(2, proyecto.getDescripcion());
+            statement.setBoolean(3, proyecto.isHabilitado());
+            statement.setString(4, proyecto.getAreaDeInteres());
+            statement.setString(5, proyecto.getUbicacion());
+            statement.setString(6, proyecto.getObjetivos());
+            statement.setString(7, proyecto.getRequisitos());
+
+            if (proyecto.getTutorEncargado() != null) {
+                statement.setInt(8, proyecto.getTutorEncargado().getIdUsuario());
+            }
+            else {
+                statement.setNull(8,java.sql.Types.INTEGER);
+            }
+
+
+            statement.setInt(9, proyecto.getID()); // Identificador del proyecto a actualizar
+
+            int filasActualizadas = statement.executeUpdate();
+
+            // Verificar si se actualizó al menos una fila
+            if (filasActualizadas == 0) {
+                throw new CreateException("No se encontró el proyecto con ID: " + proyecto.getID());
+            }
+
+        } catch (ConnectionException e) {
+            throw new CreateException(e.getMessage());
+        } catch (SQLException e) {
+            throw new CreateException("Error al actualizar el proyecto: " + e.getMessage());
+        }
+    }
 }

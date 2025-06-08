@@ -3,6 +3,7 @@ package Frontend.com.gui.Controller.Administrador; // Paquete ajustado
 import Backend.API.API;
 
 import Backend.Exceptions.UserException;
+import Frontend.com.gui.Controller.DirectorCarrera.GestionConveniosController;
 import Frontend.com.gui.Controller.IngresoController;
 import Frontend.com.gui.Controller.MensajesController; // Asumiendo que el admin también puede tener mensajes o notificaciones
 import javafx.event.ActionEvent;
@@ -47,6 +48,7 @@ public class homeAdministradorController {
     @FXML private Label lblTituloSistemaDashboard;
     @FXML private Label lblPeriodoActualDashboard;
     @FXML private Label lblUltimoBackupDashboard; // Ejemplo de info relevante
+    @FXML private Button btnGestionarConvenios;     // Nuevo
 
 
     public void setPersistenceAPI(API persistenceAPI) throws Exception {
@@ -96,22 +98,35 @@ public class homeAdministradorController {
 
     @FXML
     public void gestionarUsuarios(ActionEvent event) {
-        navegar("/Frontend/vistas/Admin/gestionarUsuarios.fxml", bundle.getString("title.gestionarUsuarios"), event);
     }
 
     @FXML
-    public void gestionarPeriodosAcademicos(ActionEvent event) {
-        navegar("/Frontend/vistas/Admin/gestionarPeriodos.fxml", bundle.getString("title.gestionarPeriodos"), event);
+    public void gestionarConvenios(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Administrador/GestionDeConveniosAdmin.fxml"));
+            Parent root = loader.load();
+
+            GestionDeConveniosController controller = loader.getController();
+            controller.setPersistenceAPI(api);
+
+            Stage stage = new Stage();
+            stage.setTitle("Gestión de Convenios - GPPS");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            ((Stage) ((Button) event.getSource()).getScene().getWindow()).close();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al abrir la gestión de convenios", e);
+            mostrarAlerta("Error", "No se pudo abrir la gestión de convenios");
+        }
     }
 
     @FXML
     public void gestionarCarreras(ActionEvent event) {
-        navegar("/Frontend/vistas/Admin/gestionarCarreras.fxml", bundle.getString("title.gestionarCarreras"), event);
     }
 
     @FXML
     public void configuracionSistema(ActionEvent event) {
-        navegar("/Frontend/vistas/Admin/configuracionSistema.fxml", bundle.getString("title.configuracionSistema"), event);
     }
 
 

@@ -32,6 +32,11 @@
                         prefHeight="50.0" prefWidth="200.0"
                         styleClass="menu-button" text="Validar Informes Finales" />
 
+                <Button fx:id="btnValidarPropuestasProyectos" maxWidth="200.0"
+                        onAction="#validarPropuestasProyectos"
+                        prefHeight="50.0" prefWidth="200.0"
+                        styleClass="menu-button" text="Validar Propuestas de Proyecto" />
+
                 <Button fx:id="btnMensajes" maxWidth="200.0"
                         onAction="#verMensajes"
                         prefHeight="50.0" prefWidth="200.0"
