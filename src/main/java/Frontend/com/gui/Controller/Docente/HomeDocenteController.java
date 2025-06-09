@@ -48,7 +48,7 @@ public class HomeDocenteController {
     @FXML private VBox vboxActividades;
 
     // Botones del menú
-    @FXML private Button btnEstudiantesAsignados;
+    @FXML private Button btnListadoEstudiantes;
     @FXML private Button btnEvaluarInformes;
     @FXML private Button btnSeguimientoAvances;
     @FXML private Button btnMensajes;
@@ -70,7 +70,7 @@ public class HomeDocenteController {
         lblNoActividades.setText(bundle.getString("label.noActividades"));
 
         // Botones del menú
-        btnEstudiantesAsignados.setText(bundle.getString("button.estudiantesAsignados"));
+        btnListadoEstudiantes.setText(bundle.getString("button.estudiantesAsignados"));
         btnEvaluarInformes.setText(bundle.getString("button.evaluarInformes"));
         btnSeguimientoAvances.setText(bundle.getString("button.seguimientoAvances"));
         btnMensajes.setText(bundle.getString("button.mensajes"));
@@ -213,7 +213,7 @@ public class HomeDocenteController {
     }
 
     @FXML
-    public void verEstudiantesAsignados(ActionEvent event) {
+    public void verListadoEstudiantes(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Docente/ListadoDeEstudiantes.fxml"));
             Parent root = loader.load();

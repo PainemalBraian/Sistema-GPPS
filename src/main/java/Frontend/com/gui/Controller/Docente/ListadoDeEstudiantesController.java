@@ -4,232 +4,385 @@ import Backend.API.API;
 import Backend.DTO.ActividadDTO;
 import Backend.DTO.ConvenioPPSDTO;
 import Backend.DTO.EstudianteDTO;
-import Backend.DTO.InformeDTO;
-import Backend.DTO.UsuarioDTO;
 import Backend.Exceptions.ReadException;
-import Backend.Exceptions.UserException;
-
+import Frontend.com.gui.Controller.Estudiante.HomeController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
-import java.net.URL;
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
-import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class ListadoDeEstudiantesController implements Initializable {
+public class ListadoDeEstudiantesController {
 
     private static final Logger LOGGER = Logger.getLogger(ListadoDeEstudiantesController.class.getName());
 
-    // Tabla de estudiantes actualizada según la historia de usuario
-    @FXML private TableView<EstudianteConPracticaDTO> tablaEstudiantes;
-    @FXML private TableColumn<EstudianteConPracticaDTO, String> colNombre;
-    @FXML private TableColumn<EstudianteConPracticaDTO, String> colCarrera;
-    @FXML private TableColumn<EstudianteConPracticaDTO, String> colCorreo;
-    @FXML private TableColumn<EstudianteConPracticaDTO, String> colProyecto;
-    @FXML private TableColumn<EstudianteConPracticaDTO, String> colTutor;
-    @FXML private TableColumn<EstudianteConPracticaDTO, String> colEmpresa;
-    @FXML private TableColumn<EstudianteConPracticaDTO, String> colDuracion;
+    @FXML private TableView<EstudianteDTO> tablaEstudiantes;
 
-    // ComboBox para filtrar por estado
-    @FXML private ComboBox<String> filtroEstadoPractica;
+    @FXML private TableColumn<EstudianteDTO, String> colNombre;
+    @FXML private TableColumn<EstudianteDTO, String> colCarrera;
+    @FXML private TableColumn<EstudianteDTO, String> colCorreo;
+    @FXML private TableColumn<EstudianteDTO, String> colProyecto;
+    @FXML private TableColumn<EstudianteDTO, String> colTutor;
+    @FXML private TableColumn<EstudianteDTO, String> colEmpresa;
+    @FXML private TableColumn<EstudianteDTO, String> colDuracion;
+    @FXML private TableColumn<EstudianteDTO, String> colEstado;
 
-    // Botones de acción
-    @FXML private Button btnVerCronograma;
-    @FXML private Button btnVerAvances;
-    @FXML private Button btnVerInformes;
-    @FXML private Button btnComunicaciones;
+    // Botones de acciones
+    @FXML private Button verCronogramaButton;
+    @FXML private Button verAvancesButton;
+    @FXML private Button verDetallesButton;
     @FXML private Button btnVolver;
 
-    private final ObservableList<EstudianteConPracticaDTO> listaEstudiantes = FXCollections.observableArrayList();
-    private final ObservableList<EstudianteConPracticaDTO> listaEstudiantesFiltrada = FXCollections.observableArrayList();
+    // Filtros
+    @FXML private ComboBox<String> filtroEstado;
+    @FXML private Button btnFiltrar;
+    @FXML private Button btnLimpiarFiltro;
+
+    // Labels informativos
+    @FXML private Label lblTotalEstudiantes;
+    @FXML private Label lblEstudiantesSeleccionados;
+
+    private final ObservableList<EstudianteDTO> listaEstudiantes = FXCollections.observableArrayList();
+    private final ObservableList<EstudianteDTO> listaEstudiantesFiltrada = FXCollections.observableArrayList();
+
     private API api;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        inicializarComboBoxFiltro();
-        configurarEventosFiltro();
+    public void setPersistenceAPI(API api) {
+        this.api = api;
+        inicializarComponentes();
+        cargarTabla();
+        cargarEstudiantes();
     }
 
-    public void setPersistenceAPI(API persistenceAPI) {
-        this.api = persistenceAPI;
-        inicializarTabla();
-        cargarEstudiantesDelDocente();
-    }
+    private void inicializarComponentes() {
+        // Configurar ComboBox de filtros
+        filtroEstado.setItems(FXCollections.observableArrayList(
+                "Todos", "En Curso", "Finalizada", "Pendiente"
+        ));
+        filtroEstado.setValue("Todos");
 
-    private void inicializarComboBoxFiltro() {
-        filtroEstadoPractica.getItems().addAll("Todos", "En curso", "Finalizada", "Pendiente");
-        filtroEstadoPractica.setValue("Todos");
-    }
-
-    private void configurarEventosFiltro() {
-        filtroEstadoPractica.setOnAction(e -> aplicarFiltro());
-    }
-
-    private void inicializarTabla() {
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombreEstudiante"));
-        colCarrera.setCellValueFactory(new PropertyValueFactory<>("carrera"));
-        colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
-        colProyecto.setCellValueFactory(new PropertyValueFactory<>("tituloProyecto"));
-        colTutor.setCellValueFactory(new PropertyValueFactory<>("nombreTutor"));
-        colEmpresa.setCellValueFactory(new PropertyValueFactory<>("nombreEmpresa"));
-        colDuracion.setCellValueFactory(new PropertyValueFactory<>("duracion"));
-
-        tablaEstudiantes.setItems(listaEstudiantesFiltrada);
-
-        // Configurar selección de fila para habilitar/deshabilitar botones
+        // Configurar listeners para la selección de la tabla
         tablaEstudiantes.getSelectionModel().selectedItemProperty().addListener(
-                (obs, oldSelection, newSelection) -> actualizarEstadoBotones(newSelection != null)
+                (observable, oldValue, newValue) -> actualizarBotonesAccion(newValue != null)
         );
+
+        // Inicialmente deshabilitar botones de acción
+        actualizarBotonesAccion(false);
     }
 
-    private void cargarEstudiantesDelDocente() {
-        listaEstudiantes.clear();
-        try {
-            String username = api.obtenerUsername();
-            List<EstudianteDTO> estudiantes = api.obtenerEstudiantesByDocenteUsername(username);
+    private void cargarTabla() {
+        // Configurar columnas básicas
+        colNombre.setCellValueFactory(data -> new SimpleStringProperty(
+                data.getValue().getNombre() != null ? data.getValue().getNombre() : "N/A"
+        ));
 
-            for (EstudianteDTO estudiante : estudiantes) {
-                ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(estudiante.getUsername());
+        colCarrera.setCellValueFactory(data -> new SimpleStringProperty(
+                data.getValue().getCarrera() != null ? data.getValue().getCarrera() : "N/A"
+        ));
 
-                EstudianteConPracticaDTO estudianteConPractica = new EstudianteConPracticaDTO();
-                estudianteConPractica.setUsernameEstudiante(estudiante.getUsername());
-                estudianteConPractica.setNombreEstudiante(estudiante.getNombre());
-                estudianteConPractica.setCarrera(estudiante.getCarrera() != null ? estudiante.getCarrera() : "No especificada");
-                estudianteConPractica.setCorreo(estudiante.getEmail() != null ? estudiante.getEmail() : "No especificado");
+        colCorreo.setCellValueFactory(data -> new SimpleStringProperty(
+                data.getValue().getEmail() != null ? data.getValue().getEmail() : "N/A"
+        ));
 
-                if (convenio != null) {
-                    estudianteConPractica.setTituloProyecto(convenio.getProyecto() != null ?
-                            convenio.getProyecto().getTitulo() : "Sin proyecto asignado");
-                    estudianteConPractica.setNombreTutor(convenio.getTutor() != null ?
-                            convenio.getTutor().getNombre() : "Sin tutor asignado");
-                    estudianteConPractica.setNombreEmpresa(convenio.getEntidad() != null ?
-                            convenio.getEntidad().getNombre() : "Sin empresa asignada");
-                    estudianteConPractica.setDuracion(calcularDuracionPractica(convenio));
-                    estudianteConPractica.setEstadoPractica(determinarEstadoPractica(convenio));
-                    estudianteConPractica.setConvenio(convenio);
-                } else {
-                    estudianteConPractica.setTituloProyecto("Sin práctica asignada");
-                    estudianteConPractica.setNombreTutor("N/A");
-                    estudianteConPractica.setNombreEmpresa("N/A");
-                    estudianteConPractica.setDuracion("N/A");
-                    estudianteConPractica.setEstadoPractica("Pendiente");
-                }
-
-                listaEstudiantes.add(estudianteConPractica);
+        // Configurar columnas de práctica profesional
+        colProyecto.setCellValueFactory(data -> {
+            try {
+                ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(data.getValue().getUsername());
+                return new SimpleStringProperty(
+                        convenio != null && convenio.getProyecto() != null
+                                ? convenio.getProyecto().getTitulo()
+                                : "Sin proyecto asignado"
+                );
+            } catch (Exception e) {
+                LOGGER.warning("Error al obtener proyecto para estudiante: " + e.getMessage());
+                return new SimpleStringProperty("Sin proyecto");
             }
+        });
 
-            aplicarFiltro();
+        colTutor.setCellValueFactory(data -> {
+            try {
+                ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(data.getValue().getUsername());
+                return new SimpleStringProperty(
+                        convenio != null && convenio.getPlan() != null && convenio.getPlan().getTutor() != null
+                                ? convenio.getPlan().getTutor().getNombre()
+                                : "Sin tutor asignado"
+                );
+            } catch (Exception e) {
+                LOGGER.warning("Error al obtener tutor para estudiante: " + e.getMessage());
+                return new SimpleStringProperty("Sin tutor");
+            }
+        });
 
-        } catch (ReadException | UserException e) {
-            mostrarAlerta("Error al cargar datos", e.getMessage());
-            LOGGER.log(Level.SEVERE, "Error al cargar estudiantes del docente", e);
-        }
-    }
+        colEmpresa.setCellValueFactory(data -> {
+            try {
+                ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(data.getValue().getUsername());
+                return new SimpleStringProperty(
+                        convenio != null && convenio.getEntidad() != null
+                                ? convenio.getEntidad().getNombre()
+                                : "Sin empresa asignada"
+                );
+            } catch (Exception e) {
+                LOGGER.warning("Error al obtener empresa para estudiante: " + e.getMessage());
+                return new SimpleStringProperty("Sin empresa");
+            }
+        });
 
-    private String calcularDuracionPractica(ConvenioPPSDTO convenio) {
-        // Implementar lógica para calcular duración basada en fechas del convenio
-        // Por ahora retornamos un valor por defecto
-        return "6 meses";
+        colDuracion.setCellValueFactory(data -> {
+            try {
+                ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(data.getValue().getUsername());
+                if (convenio != null && convenio.getPlan() != null && convenio.getPlan().getActividades() != null) {
+                    int totalHoras = calcularDuracionTotalActividades(convenio.getPlan().getActividades());
+                    return new SimpleStringProperty(totalHoras + " horas");
+                } else {
+                    return new SimpleStringProperty("No definida");
+                }
+            } catch (Exception e) {
+                LOGGER.warning("Error al obtener duración para estudiante: " + e.getMessage());
+                return new SimpleStringProperty("No definida");
+            }
+        });
+
+        colEstado.setCellValueFactory(data -> {
+            try {
+                ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(data.getValue().getUsername());
+                String estado = determinarEstadoPractica(convenio);
+                return new SimpleStringProperty(estado);
+            } catch (Exception e) {
+                LOGGER.warning("Error al obtener estado para estudiante: " + e.getMessage());
+                return new SimpleStringProperty("Pendiente");
+            }
+        });
     }
 
     private String determinarEstadoPractica(ConvenioPPSDTO convenio) {
-        if (convenio.isHabilitado()) {
-            // Aquí se podría implementar lógica más compleja basada en fechas
-            return "En curso";
+        if (convenio == null) {
+            return "Pendiente";
+        }
+
+        // Falta la logica
+        if (convenio.getPlan() != null && convenio.getProyecto() != null) {
+            // Si tiene plan y proyecto, está en curso
+            return "En Curso";
+        } else if (convenio.getProyecto() != null) {
+            // Si solo tiene proyecto pero no plan, está pendiente
+            return "Pendiente";
         } else {
             return "Pendiente";
         }
     }
 
+    private void cargarEstudiantes() {
+        listaEstudiantes.clear();
+        try {
+            List<ConvenioPPSDTO> convenios = api.obtenerConvenios();
+
+            Set<String> usuariosVistos = new HashSet<>();
+
+            for (ConvenioPPSDTO convenio : convenios) {
+                EstudianteDTO estudiante = convenio.getEstudiante();
+                if (estudiante != null && estudiante.getUsername() != null) {
+                    // Solo agregar si no hemos visto este usuario antes
+                    if (!usuariosVistos.contains(estudiante.getUsername())) {
+                        listaEstudiantes.add(estudiante);
+                        usuariosVistos.add(estudiante.getUsername());
+                    }
+                }
+            }
+
+            LOGGER.info("Cargados " + listaEstudiantes.size() + " estudiantes únicos de " + convenios.size() + " convenios");
+
+            // Aplicar filtro actual
+            aplicarFiltro();
+            actualizarLabelsInformativos();
+
+        } catch (ReadException e) {
+            LOGGER.severe("Error al cargar estudiantes: " + e.getMessage());
+            mostrarAlerta("Error al cargar estudiantes", e.getMessage());
+        }
+    }
+
+    @FXML
+    private void filtrarEstudiantes() {
+        aplicarFiltro();
+    }
+
+    @FXML
+    private void limpiarFiltro() {
+        filtroEstado.setValue("Todos");
+        aplicarFiltro();
+    }
+
     private void aplicarFiltro() {
-        String filtroSeleccionado = filtroEstadoPractica.getValue();
-        listaEstudiantesFiltrada.clear();
+        String estadoSeleccionado = filtroEstado.getValue();
 
-        if ("Todos".equals(filtroSeleccionado)) {
-            listaEstudiantesFiltrada.addAll(listaEstudiantes);
+        if ("Todos".equals(estadoSeleccionado)) {
+            listaEstudiantesFiltrada.setAll(listaEstudiantes);
         } else {
-            List<EstudianteConPracticaDTO> estudiantesFiltrados = listaEstudiantes.stream()
-                    .filter(estudiante -> filtroSeleccionado.equals(estudiante.getEstadoPractica()))
+            List<EstudianteDTO> estudiantesFiltrados = listaEstudiantes.stream()
+                    .filter(estudiante -> {
+                        try {
+                            ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(estudiante.getUsername());
+                            String estado = determinarEstadoPractica(convenio);
+                            return estadoSeleccionado.equals(estado);
+                        } catch (Exception e) {
+                            return false;
+                        }
+                    })
                     .collect(Collectors.toList());
-            listaEstudiantesFiltrada.addAll(estudiantesFiltrados);
-        }
-    }
 
-    private void actualizarEstadoBotones(boolean tieneSeleccion) {
-        btnVerCronograma.setDisable(!tieneSeleccion);
-        btnVerAvances.setDisable(!tieneSeleccion);
-        btnVerInformes.setDisable(!tieneSeleccion);
-        btnComunicaciones.setDisable(!tieneSeleccion);
+            listaEstudiantesFiltrada.setAll(estudiantesFiltrados);
+        }
+
+        tablaEstudiantes.setItems(listaEstudiantesFiltrada);
+        actualizarLabelsInformativos();
     }
 
     @FXML
-    public void verCronograma() {
-        EstudianteConPracticaDTO selected = tablaEstudiantes.getSelectionModel().getSelectedItem();
-        if (selected != null) {
+    private void verCronograma() {
+        EstudianteDTO estudiante = tablaEstudiantes.getSelectionModel().getSelectedItem();
+        if (estudiante != null) {
             try {
-                // Lógica para mostrar cronograma del estudiante seleccionado
-                System.out.println("Mostrando cronograma para: " + selected.getNombreEstudiante());
-                // Aquí se abriría la ventana del cronograma
+                // Aquí implementarías la navegación a la vista de cronograma
+                LOGGER.info("Abriendo cronograma para estudiante: " + estudiante.getNombre());
+                mostrarInfo("Cronograma", "Abriendo cronograma para: " + estudiante.getNombre());
+                // Ejemplo: navegarACronograma(estudiante);
             } catch (Exception e) {
-                mostrarAlerta("Error", "No se pudo cargar el cronograma: " + e.getMessage());
+                mostrarAlerta("Error", "Error al abrir cronograma: " + e.getMessage());
             }
         }
     }
 
     @FXML
-    public void verAvances() {
-        EstudianteConPracticaDTO selected = tablaEstudiantes.getSelectionModel().getSelectedItem();
-        if (selected != null) {
+    private void verAvances() {
+        EstudianteDTO estudiante = tablaEstudiantes.getSelectionModel().getSelectedItem();
+        if (estudiante != null) {
             try {
-                List<ActividadDTO> actividades = api.obtenerActividadesByEstudianteUsername(selected.getUsernameEstudiante());
-                System.out.println("Mostrando " + actividades.size() + " avances para: " + selected.getNombreEstudiante());
-                // Aquí se abriría la ventana de avances
-            } catch (ReadException e) {
-                mostrarAlerta("Error", "No se pudieron cargar los avances: " + e.getMessage());
-            }
-        }
-    }
-
-    @FXML
-    public void verInformes() {
-        EstudianteConPracticaDTO selected = tablaEstudiantes.getSelectionModel().getSelectedItem();
-        if (selected != null && selected.getConvenio() != null) {
-            try {
-                List<InformeDTO> informes = api.obtenerInformesByConvenioTitulo(selected.getConvenio().getTitulo());
-                System.out.println("Mostrando " + informes.size() + " informes para: " + selected.getNombreEstudiante());
-                // Aquí se abriría la ventana de informes
-            } catch (ReadException e) {
-                mostrarAlerta("Error", "No se pudieron cargar los informes: " + e.getMessage());
-            }
-        }
-    }
-
-    @FXML
-    public void verComunicaciones() {
-        EstudianteConPracticaDTO selected = tablaEstudiantes.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            try {
-                System.out.println("Mostrando comunicaciones para: " + selected.getNombreEstudiante());
-                // Aquí se abriría la ventana de comunicaciones
+                // Aquí implementarías la navegación a la vista de avances
+                LOGGER.info("Abriendo avances para estudiante: " + estudiante.getNombre());
+                mostrarInfo("Avances", "Abriendo avances para: " + estudiante.getNombre());
+                // Ejemplo: navegarAAvances(estudiante);
             } catch (Exception e) {
-                mostrarAlerta("Error", "No se pudieron cargar las comunicaciones: " + e.getMessage());
+                mostrarAlerta("Error", "Error al abrir avances: " + e.getMessage());
             }
         }
     }
 
     @FXML
-    public void volverHome() {
-        // Lógica para volver a la pantalla principal del docente
-        System.out.println("Volviendo al menú principal");
+    private void verDetalles() {
+        EstudianteDTO estudiante = tablaEstudiantes.getSelectionModel().getSelectedItem();
+        if (estudiante != null) {
+            try {
+                ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(estudiante.getUsername());
+                mostrarDetallesEstudiante(estudiante, convenio);
+            } catch (Exception e) {
+                mostrarAlerta("Error", "Error al obtener detalles: " + e.getMessage());
+            }
+        }
+    }
+
+    private void mostrarDetallesEstudiante(EstudianteDTO estudiante, ConvenioPPSDTO convenio) {
+        StringBuilder detalles = new StringBuilder();
+        detalles.append("=== INFORMACIÓN DEL ESTUDIANTE ===\n");
+        detalles.append("Nombre: ").append(estudiante.getNombre()).append("\n");
+        detalles.append("Carrera: ").append(estudiante.getCarrera()).append("\n");
+        detalles.append("Correo: ").append(estudiante.getEmail()).append("\n\n");
+
+        detalles.append("=== INFORMACIÓN DE LA PRÁCTICA ===\n");
+        if (convenio != null) {
+            if (convenio.getProyecto() != null) {
+                detalles.append("Proyecto: ").append(convenio.getProyecto().getTitulo()).append("\n");
+            }
+            if (convenio.getEntidad() != null) {
+                detalles.append("Empresa: ").append(convenio.getEntidad().getNombre()).append("\n");
+            }
+            if (convenio.getPlan() != null) {
+                if (convenio.getPlan().getTutor() != null) {
+                    detalles.append("Tutor: ").append(convenio.getPlan().getTutor().getNombre()).append("\n");
+                }
+                detalles.append("Horas totales trabajadas: ").append(calcularDuracionTotalActividades(convenio.getPlan().getActividades()) + " Horas\n");
+            }
+            detalles.append("Estado: ").append(determinarEstadoPractica(convenio)).append("\n");
+        } else {
+            detalles.append("No hay información de práctica disponible\n");
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Detalles del Estudiante");
+        alert.setHeaderText("Información completa");
+        alert.setContentText(detalles.toString());
+        alert.getDialogPane().setPrefSize(400, 300);
+        alert.showAndWait();
+    }
+
+    @FXML
+    public void volverHome(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Docente/homeDocente.fxml"));
+            Parent root = loader.load();
+            HomeDocenteController controller = loader.getController();
+
+            if (this.api != null) {
+                controller.setPersistenceAPI(this.api);
+            } else {
+                LOGGER.log(Level.WARNING, "API no inicializada al volver a Home.");
+            }
+
+            Stage stage = (Stage) btnVolver.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Home - GPPS");
+
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error al cargar home.fxml", e);
+            mostrarAlerta("Error de Navegación", "No se pudo volver a la pantalla principal.");
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al configurar la pantalla Home", e);
+            mostrarAlerta("Error de Configuración", "No se pudo configurar la pantalla principal: " + e.getMessage());
+        }
+    }
+
+    private void actualizarBotonesAccion(boolean habilitado) {
+        verCronogramaButton.setDisable(!habilitado);
+        verAvancesButton.setDisable(!habilitado);
+        verDetallesButton.setDisable(!habilitado);
+    }
+
+    private void actualizarLabelsInformativos() {
+        lblTotalEstudiantes.setText("Total de estudiantes: " + listaEstudiantes.size());
+        lblEstudiantesSeleccionados.setText("Mostrando: " + listaEstudiantesFiltrada.size());
+    }
+
+    private int calcularDuracionTotalActividades(List<ActividadDTO> actividades) {
+        if (actividades == null || actividades.isEmpty()) {
+            return 0;
+        }
+
+        return actividades.stream()
+                .mapToInt(ActividadDTO::getDuracion)
+                .sum();
+    }
+
+    private String obtenerDetalleActividades(List<ActividadDTO> actividades) {
+        if (actividades == null || actividades.isEmpty()) {
+            return "Sin actividades definidas";
+        }
+
+        int totalHoras = calcularDuracionTotalActividades(actividades);
+        int cantidadActividades = actividades.size();
+
+        return String.format("%d horas (%d actividades)", totalHoras, cantidadActividades);
     }
 
     private void mostrarAlerta(String titulo, String mensaje) {
@@ -240,48 +393,11 @@ public class ListadoDeEstudiantesController implements Initializable {
         alert.showAndWait();
     }
 
-    // Clase interna para representar un estudiante con su práctica
-    public static class EstudianteConPracticaDTO {
-        private String usernameEstudiante;
-        private String nombreEstudiante;
-        private String carrera;
-        private String correo;
-        private String tituloProyecto;
-        private String nombreTutor;
-        private String nombreEmpresa;
-        private String duracion;
-        private String estadoPractica;
-        private ConvenioPPSDTO convenio;
-
-        // Getters y Setters
-        public String getUsernameEstudiante() { return usernameEstudiante; }
-        public void setUsernameEstudiante(String usernameEstudiante) { this.usernameEstudiante = usernameEstudiante; }
-
-        public String getNombreEstudiante() { return nombreEstudiante; }
-        public void setNombreEstudiante(String nombreEstudiante) { this.nombreEstudiante = nombreEstudiante; }
-
-        public String getCarrera() { return carrera; }
-        public void setCarrera(String carrera) { this.carrera = carrera; }
-
-        public String getCorreo() { return correo; }
-        public void setCorreo(String correo) { this.correo = correo; }
-
-        public String getTituloProyecto() { return tituloProyecto; }
-        public void setTituloProyecto(String tituloProyecto) { this.tituloProyecto = tituloProyecto; }
-
-        public String getNombreTutor() { return nombreTutor; }
-        public void setNombreTutor(String nombreTutor) { this.nombreTutor = nombreTutor; }
-
-        public String getNombreEmpresa() { return nombreEmpresa; }
-        public void setNombreEmpresa(String nombreEmpresa) { this.nombreEmpresa = nombreEmpresa; }
-
-        public String getDuracion() { return duracion; }
-        public void setDuracion(String duracion) { this.duracion = duracion; }
-
-        public String getEstadoPractica() { return estadoPractica; }
-        public void setEstadoPractica(String estadoPractica) { this.estadoPractica = estadoPractica; }
-
-        public ConvenioPPSDTO getConvenio() { return convenio; }
-        public void setConvenio(ConvenioPPSDTO convenio) { this.convenio = convenio; }
+    private void mostrarInfo(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }
