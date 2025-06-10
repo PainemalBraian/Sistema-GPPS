@@ -100,7 +100,7 @@ public class GestionDeConveniosController {
         colEstudiante.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEstudiante().getNombre()));
         colProyecto.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getProyecto().getTitulo()));
         colTutor.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTutor().getNombre()));
-        colPlanTrabajo.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getPlan() != null ? data.getValue().getPlan().getDescripcion() : ""));
+        colPlanTrabajo.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getPlan() != null ? data.getValue().getPlan().getTitulo() : ""));
     }
 
     public void setPersistenceAPI(API persistenceAPI) {
@@ -351,6 +351,21 @@ public class GestionDeConveniosController {
         txtDescripcion.setWrapText(true);
         txtDescripcion.setPrefRowCount(4);
 
+// Verificar si se puede editar o no
+        boolean esEditable = selected.getPlan() == null ||
+                selected.getPlan().getTitulo() == null ||
+                selected.getPlan().getTitulo().equalsIgnoreCase("A Definir");
+
+        txtTitulo.setDisable(!esEditable);
+        txtDescripcion.setDisable(!esEditable);
+
+// Si el plan ya existe y no está "A Definir", mostrar los datos actuales
+        if (selected.getPlan() != null) {
+            txtTitulo.setText(selected.getPlan().getTitulo());
+            txtDescripcion.setText(selected.getPlan().getDescripcion());
+        }
+
+
 // Lista de docentes
         ListView<DocenteDTO> docenteList = new ListView<>();
         try {
@@ -407,7 +422,7 @@ public class GestionDeConveniosController {
                 selected.setPlan(api.obtenerPlanByTitulo(titulo));
                 selected.setEntidad(api.obtenerEntidadColaborativaByNombreEntidad(tutor.getNombreEntidadColaborativa()));
                 selected.getProyecto().setTutorEncargado(tutor);
-
+                api.actualizarProyecto(selected.getProyecto());
                 api.actualizarConvenio(selected);
                 cargarConvenios();
 

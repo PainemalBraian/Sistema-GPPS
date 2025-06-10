@@ -31,8 +31,8 @@
                     <Button fx:id="habilitarButton" onAction="#habilitarConvenio" prefHeight="60.0" prefWidth="160.0" text="Habilitar" />
                     <Button fx:id="deshabilitarButton" layoutX="160.0" layoutY="60.0" onAction="#deshabilitarConvenio" prefHeight="60.0" prefWidth="160.0" text="Deshabilitar" />
                     <Button fx:id="verDetallesButton" onAction="#verDetallesConvenio" prefHeight="60.0" prefWidth="160.0" text="Ver Detalles" />
-                    <Button fx:id="btnAsignarDocente" onAction="#asignarDocente" prefHeight="60.0" prefWidth="160.0" text="Asignar Docente" />
-                    <Button fx:id="btnAsignarTituloYDescripcion" onAction="#asignarTituloyDescripción" prefHeight="60.0" prefWidth="160.0" text="Asignar Titulo " />
+<!--                    <Button fx:id="btnAsignarDocente"  prefHeight="60.0" prefWidth="160.0" text="Asignar Docente" />-->
+<!--                    <Button fx:id="btnAsignarTituloYDescripcion"  prefHeight="60.0" prefWidth="160.0" text="Asignar Titulo " />-->
                 </VBox>
             </left>
 

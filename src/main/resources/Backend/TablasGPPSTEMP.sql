@@ -245,9 +245,9 @@ INSERT INTO Usuarios (username, password, nombreCompleto, email, idRol, activo) 
 ('tutor4', 'contrasena123', 'Natalia Sosa', 'natalia.sosa@mail.com', 4, true);
 
 INSERT INTO Estudiantes (idEstudiante, idUsuario, matricula, carrera) VALUES
-(5, 5, 'MAT124', 'Ingeniería de Sistemas'),
-(6, 6, 'MAT125', 'Licenciatura en Informática'),
-(7, 7, 'MAT126', 'Ingeniería Electrónica');
+(7, 7, 'MAT124', 'Ingeniería de Sistemas'),
+(8, 8, 'MAT125', 'Licenciatura en Informática'),
+(9, 9, 'MAT126', 'Ingeniería Electrónica');
 
 INSERT INTO Docentes (idDocente, idUsuario, legajo) VALUES
 (10, 10, 'LEG457'),

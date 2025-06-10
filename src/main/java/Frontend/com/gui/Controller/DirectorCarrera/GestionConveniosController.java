@@ -24,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -51,7 +52,7 @@ public class GestionConveniosController {
 
     @FXML private TableView<ConvenioPPSDTO> conveniosTableView;
     @FXML private TableColumn<ConvenioPPSDTO, String> colConvenio;
-    @FXML private TableColumn<ConvenioPPSDTO, Boolean> colHabilitado;
+    @FXML private TableColumn<ConvenioPPSDTO, String> colHabilitado;
     @FXML private TableColumn<ConvenioPPSDTO, String> colEntidad;
     @FXML private TableColumn<ConvenioPPSDTO, String> colEstudiante;
     @FXML private TableColumn<ConvenioPPSDTO, String> colProyecto;
@@ -69,7 +70,29 @@ public class GestionConveniosController {
 
     private void cargarTabla() {
         colConvenio.setCellValueFactory(new PropertyValueFactory<>("titulo"));  // título del convenio (heredado de ItemDTO)
-        colHabilitado.setCellValueFactory(new PropertyValueFactory<>("habilitado"));
+        colHabilitado.setCellValueFactory(data -> {
+            boolean habilitado = data.getValue().isHabilitado();
+            return new SimpleStringProperty(habilitado ? "Habilitado" : "Inhabilitado");
+        });
+        colHabilitado.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item);
+                    if ("Habilitado".equals(item)) {
+                        setTextFill(javafx.scene.paint.Color.GREEN);
+                        setStyle("-fx-font-weight: bold;");
+                    } else {
+                        setTextFill(Color.RED);
+                        setStyle("-fx-font-weight: bold;");
+                    }
+                }
+            }
+        });
         colEntidad.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEntidad().getNombre()));
         colEstudiante.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEstudiante().getNombre()));
         colProyecto.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getProyecto().getTitulo()));

@@ -683,8 +683,6 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
     @Override
     public void actualizarConvenio(ConvenioPPSDTO convenio) throws CreateException {
         try {
-            actualizarProyecto(convenio.getProyecto());
-            actualizarPlanDeTrabajo(convenio.getPlan());
             ConvenioPPSDAODB.update(convertirAConvenio(convenio));
         } catch (CreateException | UserException | EmptyException | ReadException e) {
             throw new CreateException(e.getMessage());
@@ -707,6 +705,7 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
             PlanDeTrabajoDAODB.update(convertirAPlanDeTrabajo(plan));
 
         } catch (CreateException | EmptyException | UserException e) {
+            e.printStackTrace();
             throw new CreateException(e.getMessage());
         }
     }

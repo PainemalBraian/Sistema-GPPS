@@ -310,12 +310,14 @@ public class PlanDeTrabajoDAODB extends DBAcces implements PLANDETRABAJODAO{
                 throw new CreateException("No se encontró el plan de trabajo con ID: " + plan.getID());
             }
 
-            // Actualizar actividades si las hubiera
-            if (plan.getActividades() != null) {
-                for (Actividad act : plan.getActividades()) {
-                    agregarRelacionActividad(conn, plan.getID(), act.getID());
-                }
+            // Antes del bucle de inserción
+            eliminarRelacionesDelPlan(conn, plan.getID());
+
+            // Luego insertás nuevamente todas las actividades como hacías
+            for (Actividad act : plan.getActividades()) {
+                actualizarRelacionActividad(conn, plan.getID(), act.getID());
             }
+
 
         } catch (SQLException e) {
             throw new CreateException("Error SQL al actualizar el plan de trabajo: " + e.getMessage());
@@ -323,5 +325,25 @@ public class PlanDeTrabajoDAODB extends DBAcces implements PLANDETRABAJODAO{
             throw new CreateException(e.getMessage());
         }
     }
+
+    private void eliminarRelacionesDelPlan(Connection conn, int idPlan) throws SQLException {
+        String sql = "DELETE FROM relacion_plandetrabajo_actividades WHERE idPlan = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idPlan);
+            stmt.executeUpdate();
+        }
+    }
+
+
+    private void actualizarRelacionActividad(Connection conn, int idPlan, int idActividad) throws SQLException {
+        String sql = "INSERT INTO relacion_plandetrabajo_actividades (idPlan, idActividad) VALUES (?, ?) " +
+                "ON DUPLICATE KEY UPDATE idActividad = idActividad"; // no hace nada si ya existe
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idPlan);
+            stmt.setInt(2, idActividad);
+            stmt.executeUpdate();
+        }
+    }
+
 
 }

@@ -27,10 +27,10 @@
                         prefHeight="50.0" prefWidth="200.0"
                         styleClass="menu-button" text="Gestionar Convenios" />
 
-                <Button fx:id="btnGestionarCarreras" maxWidth="200.0"
-                        onAction="#gestionarCarreras"
-                        prefHeight="50.0" prefWidth="200.0"
-                        styleClass="menu-button" text="Gestionar Carreras" />
+<!--                <Button fx:id="btnGestionarCarreras" maxWidth="200.0"-->
+<!--                        onAction="#gestionarCarreras"-->
+<!--                        prefHeight="50.0" prefWidth="200.0"-->
+<!--                        styleClass="menu-button" text="Gestionar Carreras" />-->
 
                 <Button fx:id="btnConfiguracionSistema" maxWidth="200.0"
                         onAction="#configuracionSistema"
