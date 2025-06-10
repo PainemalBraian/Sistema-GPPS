@@ -1,59 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="Frontend.com.gui.Controller.DirectorCarrera.GestionConveniosController">
+<AnchorPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.com.gui.Controller.DirectorCarrera.GestionConveniosController">
     <children>
-        <BorderPane AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <BorderPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
             <top>
-                <HBox spacing="10" alignment="CENTER_LEFT" styleClass="header-box">
+                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="header-box" stylesheets="@../../StyleSheets/DirectorCarrera/GestionDeConvenios.css">
                     <padding>
-                        <Insets top="20" bottom="20" left="20" right="20" />
+                        <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
-                    <Label text="Gestión de Convenios" styleClass="header-title" />
+                    <Label styleClass="header-title" text="Gestión de Convenios" />
                 </HBox>
             </top>
 
             <left>
-                <VBox spacing="15" prefWidth="200" styleClass="sidebar">
+                <VBox prefWidth="200" spacing="15" styleClass="sidebar" stylesheets="@../../StyleSheets/DirectorCarrera/GestionDeConvenios.css">
                     <padding>
-                        <Insets top="20" bottom="20" left="20" right="20" />
+                        <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
-                    <Label text="Acciones" styleClass="label-bright-header" />
-                    <Button fx:id="verDetallesButton" text="Ver Detalles" onAction="#verDetallesConvenio" />
-                    <Button fx:id="habilitarButton" text="Habilitar" onAction="#habilitarConvenio" />
-                    <Button fx:id="deshabilitarButton" text="Deshabilitar" onAction="#deshabilitarConvenio" />
+                    <Label styleClass="label-bright-header" text="Acciones" />
+                    <Button fx:id="habilitarButton" onAction="#habilitarConvenio" prefHeight="60.0" prefWidth="160.0" text="Habilitar" />
+                    <Button fx:id="deshabilitarButton" layoutX="160.0" layoutY="60.0" onAction="#deshabilitarConvenio" prefHeight="60.0" prefWidth="160.0" text="Deshabilitar" />
+                    <Button fx:id="verDetallesButton" onAction="#verDetallesConvenio" prefHeight="60.0" prefWidth="160.0" text="Ver Detalles" />
+                    <Button fx:id="btnAsignarDocente" onAction="#asignarDocente" prefHeight="60.0" prefWidth="160.0" text="Asignar Docente" />
+                    <Button fx:id="btnAsignarTituloYDescripcion" onAction="#asignarTituloyDescripción" prefHeight="60.0" prefWidth="160.0" text="Asignar Titulo " />
                 </VBox>
             </left>
 
             <center>
-                <VBox spacing="10" styleClass="content-area">
+                <VBox spacing="10" styleClass="content-area" stylesheets="@../../StyleSheets/Estudiante/puestosDisponibles.css">
                     <padding>
-                        <Insets top="20" bottom="20" left="20" right="20" />
+                        <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
-                    <Label text="Lista de Convenios" styleClass="label-header" />
-                    <TableView fx:id="conveniosTableView" prefHeight="550.0">
+                    <Label styleClass="label-header" stylesheets="@../../StyleSheets/DirectorCarrera/GestionDeConvenios.css" text="Lista de Convenios" />
+                    <TableView fx:id="conveniosTableView" prefHeight="557.0" prefWidth="699.0" stylesheets="@../../StyleSheets/DirectorCarrera/GestionDeConvenios.css">
                         <columns>
-                            <TableColumn fx:id="colConvenio" text="Convenio" prefWidth="150" />
-                            <TableColumn fx:id="colHabilitado" text="Habilitado" prefWidth="80" />
-                            <TableColumn fx:id="colEntidad" text="Entidad" prefWidth="100" />
-                            <TableColumn fx:id="colEstudiante" text="Estudiante" prefWidth="100" />
-                            <TableColumn fx:id="colProyecto" text="Proyecto" prefWidth="150" />
-                            <TableColumn fx:id="colTutor" text="Tutor" prefWidth="100" />
-                            <TableColumn fx:id="colPlanTrabajo" text="Plan de Trabajo" prefWidth="200" />
+                            <TableColumn fx:id="colConvenio" prefWidth="64.0" text="Convenio" />
+                            <TableColumn fx:id="colHabilitado" prefWidth="79.0" text="Habilitado" />
+                            <TableColumn fx:id="colEntidad" prefWidth="68.0" text="Entidad" />
+                            <TableColumn fx:id="colEstudiante" prefWidth="87.0" text="Estudiante" />
+                            <TableColumn fx:id="colProyecto" prefWidth="115.0" text="Proyecto" />
+                            <TableColumn fx:id="colTutor" prefWidth="72.0" text="Tutor" />
+                            <TableColumn fx:id="colPlanTrabajo" prefWidth="200" text="Plan de Trabajo" />
                         </columns>
                         <columnResizePolicy>
-                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                         </columnResizePolicy>
                     </TableView>
-                    <Button fx:id="btnVolver" text="Volver" onAction="#volverHome" />
+                    <Button fx:id="btnVolver" onAction="#volverHome" prefHeight="58.0" prefWidth="124.0" stylesheets="@../../StyleSheets/DirectorCarrera/GestionDeConvenios.css" text="Volver" />
                 </VBox>
             </center>
         </BorderPane>
     </children>
 </AnchorPane>
-

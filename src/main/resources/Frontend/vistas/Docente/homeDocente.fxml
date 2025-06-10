@@ -16,10 +16,10 @@
             <VBox alignment="TOP_LEFT" layoutX="0.0" layoutY="0.0" prefHeight="550.0" prefWidth="200.0"
                   spacing="5.0" styleClass="sidebar" stylesheets="@../../StyleSheets/homeUsuarios.css">
                 <Label alignment="CENTER" prefHeight="60.0" prefWidth="200.0" styleClass="app-title" text="GPPS" />
-                <Button fx:id="btnEstudiantesAsignados" maxWidth="200.0"
-                        onAction="#verEstudiantesAsignados"
+                <Button fx:id="btnListadoEstudiantes" maxWidth="200.0"
+                        onAction="#verListadoEstudiantes"
                         prefHeight="50.0" prefWidth="200.0"
-                        styleClass="menu-button" text="Estudiantes Asignados" />
+                        styleClass="menu-button" text="Listado De Estudiantes" />
                 <Button fx:id="btnEvaluarInformes" maxWidth="200.0"
                         onAction="#evaluarInformes"
                         prefHeight="50.0" prefWidth="200.0"
