@@ -1,12 +1,12 @@
 package Frontend.com.gui.Controller.DirectorCarrera;
 
 import Backend.API.API;
-import Backend.DTO.ConvenioPPSDTO;
-import Backend.DTO.DocenteDTO;
-import Backend.DTO.PlanDeTrabajoDTO;
+import Backend.DTO.*;
 import Backend.Entidades.PlanDeTrabajo;
+import Backend.Entidades.TutorExterno;
 import Backend.Exceptions.CreateException;
 import Backend.Exceptions.ReadException;
+import Backend.Exceptions.UserException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -51,7 +52,7 @@ public class GestionConveniosController {
 
     @FXML private TableView<ConvenioPPSDTO> conveniosTableView;
     @FXML private TableColumn<ConvenioPPSDTO, String> colConvenio;
-    @FXML private TableColumn<ConvenioPPSDTO, Boolean> colHabilitado;
+    @FXML private TableColumn<ConvenioPPSDTO, String> colHabilitado;
     @FXML private TableColumn<ConvenioPPSDTO, String> colEntidad;
     @FXML private TableColumn<ConvenioPPSDTO, String> colEstudiante;
     @FXML private TableColumn<ConvenioPPSDTO, String> colProyecto;
@@ -60,8 +61,6 @@ public class GestionConveniosController {
     @FXML private Button habilitarButton;
     @FXML private Button deshabilitarButton;
     @FXML private Button verDetallesButton;
-    @FXML private Button btnAsignarDocente;
-    @FXML private Button btnAsignarTituloYDescripcion;
     @FXML private Button btnVolver;
 
     private final ObservableList<ConvenioPPSDTO> listaConvenios = FXCollections.observableArrayList();
@@ -71,7 +70,29 @@ public class GestionConveniosController {
 
     private void cargarTabla() {
         colConvenio.setCellValueFactory(new PropertyValueFactory<>("titulo"));  // título del convenio (heredado de ItemDTO)
-        colHabilitado.setCellValueFactory(new PropertyValueFactory<>("habilitado"));
+        colHabilitado.setCellValueFactory(data -> {
+            boolean habilitado = data.getValue().isHabilitado();
+            return new SimpleStringProperty(habilitado ? "Habilitado" : "Inhabilitado");
+        });
+        colHabilitado.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item);
+                    if ("Habilitado".equals(item)) {
+                        setTextFill(javafx.scene.paint.Color.GREEN);
+                        setStyle("-fx-font-weight: bold;");
+                    } else {
+                        setTextFill(Color.RED);
+                        setStyle("-fx-font-weight: bold;");
+                    }
+                }
+            }
+        });
         colEntidad.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEntidad().getNombre()));
         colEstudiante.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEstudiante().getNombre()));
         colProyecto.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getProyecto().getTitulo()));
@@ -150,7 +171,6 @@ public class GestionConveniosController {
             mostrarAlerta("Sin selección", "Por favor, selecciona un convenio de la lista.");
         }
     }
-
     private void mostrarDetallesConvenio(ConvenioPPSDTO convenio) {
         StringBuilder detalles = new StringBuilder();
 
@@ -328,166 +348,6 @@ public class GestionConveniosController {
             LOGGER.log(Level.SEVERE, "Error al configurar la pantalla Home", e);
             mostrarAlerta("Error de Configuración", "No se pudo configurar la pantalla principal: " + e.getMessage());
         }
-    }
-
-    @FXML
-    public void asignarDocente(ActionEvent actionEvent) {
-        ConvenioPPSDTO selected = conveniosTableView.getSelectionModel().getSelectedItem();
-        selected.getID();
-        if (selected != null) {
-            insertarDocente(selected);
-        } else {
-            mostrarAlerta("Sin selección", "Por favor, selecciona un convenio de la lista.");
-        }
-    }
-
-    private void insertarDocente(ConvenioPPSDTO convenio) {
-        Stage dialogStage = new Stage();
-        dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.setTitle("Asignar Docente y Plan");
-
-        // Label informativo
-        Label infoLabel = new Label("Para asignar un docente se debe inicializar un Plan de Trabajo");
-
-
-        // Crear la lista de selección
-        ListView<DocenteDTO> listView = new ListView<>();
-        try {
-            listView.getItems().addAll(api.obtenerDocentes());
-        } catch (ReadException e) {
-            mostrarAlerta("Error al buscar los docentes", e.getMessage());
-        }
-        listView.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(DocenteDTO docente, boolean empty) {
-                super.updateItem(docente, empty);
-                if (empty || docente == null) {
-                    setText(null);
-                } else {
-                    setText(docente.getNombre());
-                }
-            }
-        });
-
-        // Campos para Título y Descripción
-        TextField txtTitulo = new TextField();
-        txtTitulo.setPromptText("Título del Plan");
-
-        TextArea txtDescripcion = new TextArea();
-        txtDescripcion.setPromptText("Descripción del Plan");
-        txtDescripcion.setWrapText(true);
-        txtDescripcion.setPrefRowCount(4);
-
-        // Mostrar estado actual del plan
-        PlanDeTrabajoDTO plan = convenio.getPlan();
-        String actividadesStr = (plan.getActividades() == null || plan.getActividades().isEmpty()) ? "Sin definir" : "Actividades existentes para el plan: " + plan.getTitulo();
-        String informeStr = (plan.getInformeFinal() == null) ? "Sin definir" : plan.getInformeFinal().getTitulo();
-
-        Label lblPlanActual = new Label("Datos actuales del Plan");
-        Label lblActividades = new Label("Actividades: " + actividadesStr);
-        Label lblTutor = new Label("Tutor Externo: " + (plan.getTutor() != null ? plan.getTutor().getNombre() : "Sin definir"));
-
-        // Botón para asignar
-        Button btnAsignar = new Button("Asignar Docente y Plan");
-        btnAsignar.setOnAction(e -> {
-            DocenteDTO seleccionado = listView.getSelectionModel().getSelectedItem();
-            if (seleccionado != null && !txtTitulo.getText().isEmpty() && !txtDescripcion.getText().isEmpty()) {
-                plan.setId(-9);
-                plan.setTitulo(txtTitulo.getText());
-                plan.setDescripcion(txtDescripcion.getText());
-                plan.setDocente(seleccionado);
-                plan.setHabilitado(true);
-                convenio.setPlan(plan);
-
-                try {
-                    api.actualizarConvenio(convenio);
-                    cargarConvenios();
-                } catch (CreateException ex) {
-                    mostrarAlerta("Error al Actualizar: ",ex.getMessage());
-                }
-                mostrarAlerta("Éxito", "Docente y Plan asignados correctamente.");
-                dialogStage.close();
-            } else {
-                mostrarAlerta("Campos incompletos", "Debes seleccionar un docente y completar el título y descripción.");
-            }
-        });
-
-        VBox vbox = new VBox(10,
-                infoLabel,
-                new Label("Selecciona un docente:"), listView,
-                new Label("Título del Plan:"), txtTitulo,
-                new Label("Descripción del Plan:"), txtDescripcion,
-                lblPlanActual, lblActividades, lblTutor,
-                btnAsignar
-        );
-
-        vbox.setPadding(new Insets(10));
-        dialogStage.setScene(new Scene(vbox));
-        dialogStage.showAndWait();
-    }
-
-    @FXML
-    public void asignarTituloyDescripción(ActionEvent actionEvent) {
-        ConvenioPPSDTO selected = conveniosTableView.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            insertarTituloYDescripcion(selected);
-        } else {
-            mostrarAlerta("Sin selección", "Por favor, selecciona un convenio de la lista.");
-        }
-    }
-    private void insertarTituloYDescripcion(ConvenioPPSDTO convenio) {
-        Stage ventana = new Stage();
-        ventana.initModality(Modality.APPLICATION_MODAL);
-        ventana.setTitle("Editar Título y Descripción del convenio");
-
-        if (convenio == null) {
-            mostrarAlerta("Error", "Este convenio no existe.");
-            return;
-        }
-
-        // Campos de texto con datos actuales
-        TextField txtTitulo = new TextField(convenio.getTitulo() != null ? convenio.getTitulo() : "");
-        txtTitulo.setPromptText("Título del Convenio");
-
-        TextArea txtDescripcion = new TextArea(convenio.getDescripcion() != null ? convenio.getDescripcion() : "");
-        txtDescripcion.setPromptText("Descripción del Convenio");
-        txtDescripcion.setPrefRowCount(4);
-
-        Button btnGuardar = new Button("Guardar");
-        btnGuardar.setOnAction(e -> {
-            String titulo = txtTitulo.getText().trim();
-            String descripcion = txtDescripcion.getText().trim();
-
-            if (titulo.isEmpty() || descripcion.isEmpty()) {
-                mostrarAlerta("Campos obligatorios", "Debes completar el título y la descripción.");
-                return;
-            }
-
-            // Actualizar los datos del plan
-            convenio.setTitulo(titulo);
-            convenio.setDescripcion(descripcion);
-
-            try {
-                api.actualizarConvenio(convenio);
-                cargarConvenios();
-            } catch (Exception ex) {
-                mostrarAlerta("Error",  ex.getMessage());
-                return;
-            }
-
-            ventana.close();
-        });
-
-        VBox layout = new VBox(10,
-                new Label("Título del Convenio:"), txtTitulo,
-                new Label("Descripción del Convenio:"), txtDescripcion,
-                btnGuardar
-        );
-        layout.setPadding(new Insets(15));
-
-        Scene scene = new Scene(layout, 400, 300);
-        ventana.setScene(scene);
-        ventana.showAndWait();
     }
 
 }

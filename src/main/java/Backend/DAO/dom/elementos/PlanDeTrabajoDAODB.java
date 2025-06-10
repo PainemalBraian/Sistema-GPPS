@@ -229,7 +229,7 @@ public class PlanDeTrabajoDAODB extends DBAcces implements PLANDETRABAJODAO{
                 }
 
                 // Cargar actividades relacionadas
-                List<Actividad> actividades = buscarActividades(idPlan); // Método que ya tienes
+                List<Actividad> actividades = buscarActividades(idPlan);
                 plan.setActividades(actividades);
 
                 plan.setHabilitado(result.getBoolean("habilitado"));
@@ -279,5 +279,71 @@ public class PlanDeTrabajoDAODB extends DBAcces implements PLANDETRABAJODAO{
             throw new ReadException(e.getMessage());
         }
     }
+
+    public void update(PlanDeTrabajo plan) throws CreateException {
+        String sql = "UPDATE PlanesDeTrabajos SET titulo = ?, descripcion = ?, idDocente = ?, idTutor = ?, " +
+                "idInformeFinal = ?, habilitado = ? WHERE idPlanDeTrabajo = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
+
+            statement.setString(1, plan.getTitulo());
+            statement.setString(2, plan.getDescripcion());
+            statement.setInt(3, plan.getDocente().getIdUsuario());
+            statement.setInt(4, plan.getTutor().getIdUsuario());
+
+            if (plan.getInformeFinal().getID() == 0) {
+                statement.setNull(5, Types.INTEGER);
+            }
+            else if (plan.getInformeFinal() != null) {
+                statement.setInt(5, plan.getInformeFinal().getID());
+            }
+            else {
+                statement.setNull(5, Types.INTEGER);
+            }
+
+            statement.setBoolean(6, plan.isHabilitado());
+            statement.setInt(7, plan.getID());
+
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated == 0) {
+                throw new CreateException("No se encontró el plan de trabajo con ID: " + plan.getID());
+            }
+
+            // Antes del bucle de inserción
+            eliminarRelacionesDelPlan(conn, plan.getID());
+
+            // Luego insertás nuevamente todas las actividades como hacías
+            for (Actividad act : plan.getActividades()) {
+                actualizarRelacionActividad(conn, plan.getID(), act.getID());
+            }
+
+
+        } catch (SQLException e) {
+            throw new CreateException("Error SQL al actualizar el plan de trabajo: " + e.getMessage());
+        } catch (ConnectionException | EmptyException e) {
+            throw new CreateException(e.getMessage());
+        }
+    }
+
+    private void eliminarRelacionesDelPlan(Connection conn, int idPlan) throws SQLException {
+        String sql = "DELETE FROM relacion_plandetrabajo_actividades WHERE idPlan = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idPlan);
+            stmt.executeUpdate();
+        }
+    }
+
+
+    private void actualizarRelacionActividad(Connection conn, int idPlan, int idActividad) throws SQLException {
+        String sql = "INSERT INTO relacion_plandetrabajo_actividades (idPlan, idActividad) VALUES (?, ?) " +
+                "ON DUPLICATE KEY UPDATE idActividad = idActividad"; // no hace nada si ya existe
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idPlan);
+            stmt.setInt(2, idActividad);
+            stmt.executeUpdate();
+        }
+    }
+
 
 }

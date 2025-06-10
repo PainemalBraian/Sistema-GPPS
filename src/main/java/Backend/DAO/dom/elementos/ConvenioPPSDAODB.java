@@ -57,18 +57,20 @@ public class ConvenioPPSDAODB extends DBAcces implements ConvenioPPSDAO {
             statement.setInt(5, convenio.getEstudiante().getIdUsuario());
             statement.setInt(6, convenio.getEntidad().getIdUsuario());
 
-            // Si el convenio tiene un plan, lo asignamos; de lo contrario, enviamos `null`
-            if (convenio.getPlan() != null) {
-                statement.setInt(7, convenio.getPlan().getID());
-            }
+            // Usar -9 para creación de plan inserto en un convenio (Borrar a futuro, usado en director gestion convenio al cargar docente)
+            // o lo usa inscribirEstudiante
             if (convenio.getPlan().getID() == -9) {
                 new PlanDeTrabajoDAODB().create(convenio.getPlan());
                 statement.setInt(7, convenio.getPlan().getID());
             }
-            else {
+            // Si tiene plan, lo asigna
+            if (convenio.getPlan() != null) {
+                statement.setInt(7, convenio.getPlan().getID());
+            }
+            // Iniciar un plan por defecto "A definir"
+            else if (convenio.getPlan() == null){
                 statement.setInt(7, -10);
             }
-
             statement.setInt(8, convenio.getID()); // Identificador del convenio a actualizar
 
             int filasActualizadas = statement.executeUpdate();

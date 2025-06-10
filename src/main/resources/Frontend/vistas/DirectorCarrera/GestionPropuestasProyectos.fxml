@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="Frontend.com.gui.Controller.DirectorCarrera.GestionProyectosController">
+    <top>
+        <Label text="Gestión de Proyectos" style="-fx-font-size: 24px; -fx-padding: 10px;" BorderPane.alignment="CENTER" />
+    </top>
+
+    <center>
+        <VBox spacing="10">
+            <TableView fx:id="tablaProyectos">
+                <columns>
+                    <TableColumn fx:id="colTitulo" text="Título" />
+                    <TableColumn fx:id="colDescripcion" text="Descripción" />
+                    <TableColumn fx:id="colArea" text="Área de Interés" />
+                    <TableColumn fx:id="colUbicacion" text="Ubicación" />
+                    <TableColumn fx:id="colObjetivos" text="Objetivos" />
+                    <TableColumn fx:id="colRequisitos" text="Requisitos" />
+                    <TableColumn fx:id="colTutor" text="Tutor" />
+                    <TableColumn fx:id="colHabilitado" text="Estado" />
+                </columns>
+            </TableView>
+
+            <HBox spacing="10">
+                <Button text="Ver Detalles" onAction="#verDetallesProyecto" />
+                <Button text="Habilitar" onAction="#habilitarProyecto" />
+                <Button text="Inhabilitar" onAction="#inhabilitarProyecto" />
+                <Button fx:id="btnVolver" text="Volver" onAction="#volverHome" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

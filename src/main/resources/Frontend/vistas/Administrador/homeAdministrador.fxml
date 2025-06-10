@@ -22,15 +22,15 @@
                         prefHeight="50.0" prefWidth="200.0"
                         styleClass="menu-button" text="Gestionar Usuarios" />
 
-                <Button fx:id="btnGestionarPeriodos" maxWidth="200.0"
-                        onAction="#gestionarPeriodosAcademicos"
+                <Button fx:id="btnGestionarConvenios" maxWidth="200.0"
+                        onAction="#gestionarConvenios"
                         prefHeight="50.0" prefWidth="200.0"
-                        styleClass="menu-button" text="Períodos Académicos" />
+                        styleClass="menu-button" text="Gestionar Convenios" />
 
-                <Button fx:id="btnGestionarCarreras" maxWidth="200.0"
-                        onAction="#gestionarCarreras"
-                        prefHeight="50.0" prefWidth="200.0"
-                        styleClass="menu-button" text="Gestionar Carreras" />
+<!--                <Button fx:id="btnGestionarCarreras" maxWidth="200.0"-->
+<!--                        onAction="#gestionarCarreras"-->
+<!--                        prefHeight="50.0" prefWidth="200.0"-->
+<!--                        styleClass="menu-button" text="Gestionar Carreras" />-->
 
                 <Button fx:id="btnConfiguracionSistema" maxWidth="200.0"
                         onAction="#configuracionSistema"

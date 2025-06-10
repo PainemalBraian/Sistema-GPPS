@@ -27,6 +27,10 @@ public class Informe extends Item{
         this.archivoPDF = archivo;
         fecha = LocalDate.now();
     }
+
+    public Informe() {
+
+    }
 ///////////////////////// METHODS ///////////////////////////////
 
 //////////////////////// GETTERS ///////////////////////////////////////////////

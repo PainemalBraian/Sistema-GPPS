@@ -6,6 +6,7 @@ import Backend.Exceptions.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -68,7 +69,7 @@ public interface API {
 
     //check
     void cargarConvenio(String tituloConvenio, String descripcionConvenio, ProyectoDTO proyectoDTO, EstudianteDTO estudianteDTO,
-                        EntidadColaborativaDTO entidadDTO, String tituloPlan) throws CreateException;
+                        EntidadColaborativaDTO entidadDTO, String tituloPlan, String descripcionPlan, TutorExternoDTO tutor, DocenteDTO docente) throws CreateException;
 
     //check
     void cargarActividad(String titulo, String descripcion, LocalDate fechaFin, int duracion, LocalDate fechaInicio) throws CreateException;
@@ -96,6 +97,9 @@ public interface API {
 
     //check
     List<ProyectoDTO> obtenerProyectosHabilitados() throws ReadException; // Devuelve de la DB todos los proyectos que esten habilitados
+
+    //check
+    List <ProyectoDTO> obtenerProyectos() throws ReadException;
 
     //check
     List<ConvenioPPSDTO> obtenerConvenios() throws ReadException;
@@ -130,12 +134,35 @@ public interface API {
     //check
     boolean habilitarConvenio(int id, boolean b) throws CreateException;
 
+    //check
     List<DocenteDTO> obtenerDocentes() throws ReadException;
 
     //check
     void actualizarConvenio(ConvenioPPSDTO convenio) throws CreateException;
 
+    //check
+    void actualizarProyecto(ProyectoDTO proyecto) throws CreateException;
+
+    //check
+    void actualizarPlanDeTrabajo(PlanDeTrabajoDTO plan) throws CreateException;
+
+    //check
     String director_getConveniosActivosCount();
 
+    //check
     String director_getConveniosPorRevisarCount();
+
+    //check
+    List<TutorExternoDTO> obtenerTutores() throws ReadException;
+
+    //check
+    List<EstudianteDTO> obtenerEstudiantes() throws ReadException;
+
+    //check
+    EntidadColaborativaDTO obtenerEntidadColaborativaByNombreEntidad(String nombreEntidadColaborativa) throws ReadException;
+
+    //check
+    PlanDeTrabajoDTO obtenerPlanByTitulo(String titulo) throws ReadException;
+
+    List<EntidadColaborativaDTO> obtenerEntidadesColaborativas() throws ReadException;
 }

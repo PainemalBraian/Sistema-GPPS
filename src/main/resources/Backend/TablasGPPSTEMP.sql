@@ -191,16 +191,16 @@ INSERT INTO Usuarios (username, password, nombreCompleto, email, idRol, activo) 
 ('admin', 'contrasena123', 'Administrador General', 'admin@mail.com', 6, true);
 
 INSERT INTO Usuarios (idUsuario,username, password, nombreCompleto, email, idRol, activo) VALUES
-(-10,"A Definir",123456789, 'XXXXXX','XXXXXX',-10,false);
+(-10,"A Definir",123456789, 'A Definir','A Definir',-10,false);
 
 -- Estudiantes
 INSERT INTO Estudiantes (idEstudiante, idUsuario, matricula, carrera) VALUES
-(-10,-10, 'A Definir','A Definir'),
+(-10,-10, 'XXXXXX','A Definir'),
 (1,1, 'MAT123', 'Ingeniería de Software');
 
 -- Docentes
 INSERT INTO Docentes (idDocente, idUsuario, legajo) VALUES
-(-10,-10, 'A Definir'),
+(-10,-10, 'XXXXXX'),
 (2,2, 'LEG456');
 
 -- Entidades Colaborativas
@@ -217,6 +217,52 @@ INSERT INTO TutoresExternos (idTutor,idUsuario, nombreEntidadColaborativa) VALUE
 INSERT INTO DirectoresCarrera (idDirector,idUsuario, nombreCompleto) VALUES
 (-10,-10, 'A Definir'),
 (5,5, 'Ana Rodriguez');
+
+-- ----------Carga Usuarios Extra--------------
+
+-- Estudiantes
+INSERT INTO Usuarios (username, password, nombreCompleto, email, idRol, activo) VALUES
+('estudiante2', 'contrasena123', 'Lucia Fernandez', 'lucia.fernandez@mail.com', 1, true),
+('estudiante3', 'contrasena123', 'Marcos Ramirez', 'marcos.ramirez@mail.com', 1, true),
+('estudiante4', 'contrasena123', 'Sofia Ruiz', 'sofia.ruiz@mail.com', 1, true);
+
+-- Docentes
+INSERT INTO Usuarios (username, password, nombreCompleto, email, idRol, activo) VALUES
+('docente2', 'contrasena123', 'Roberto Alvarez', 'roberto.alvarez@mail.com', 2, true),
+('docente3', 'contrasena123', 'Laura Martinez', 'laura.martinez@mail.com', 2, true),
+('docente4', 'contrasena123', 'Gustavo López', 'gustavo.lopez@mail.com', 2, true);
+
+-- Representantes de Entidad Colaboradora
+INSERT INTO Usuarios (username, password, nombreCompleto, email, idRol, activo) VALUES
+('entidad2', 'contrasena123', 'Entidad XYZ', 'entidad.xyz@mail.com', 3, true),
+('entidad3', 'contrasena123', 'Cooperativa Delta', 'cooperativa.delta@mail.com', 3, true),
+('entidad4', 'contrasena123', 'Fundación Beta', 'fundacion.beta@mail.com', 3, true);
+
+-- Tutores Externos
+INSERT INTO Usuarios (username, password, nombreCompleto, email, idRol, activo) VALUES
+('tutor2', 'contrasena123', 'Veronica Herrera', 'veronica.herrera@mail.com', 4, true),
+('tutor3', 'contrasena123', 'Esteban Quiroga', 'esteban.quiroga@mail.com', 4, true),
+('tutor4', 'contrasena123', 'Natalia Sosa', 'natalia.sosa@mail.com', 4, true);
+
+INSERT INTO Estudiantes (idEstudiante, idUsuario, matricula, carrera) VALUES
+(7, 7, 'MAT124', 'Ingeniería de Sistemas'),
+(8, 8, 'MAT125', 'Licenciatura en Informática'),
+(9, 9, 'MAT126', 'Ingeniería Electrónica');
+
+INSERT INTO Docentes (idDocente, idUsuario, legajo) VALUES
+(10, 10, 'LEG457'),
+(11, 11, 'LEG458'),
+(12, 12, 'LEG459');
+
+INSERT INTO EntidadesColaborativas (idEntidad, idUsuario, nombreEntidad, cuit, direccionEntidad) VALUES
+(13, 13, 'Entidad XYZ', '30987654321', 'Av. Siempre Viva 742'),
+(14, 14, 'Cooperativa Delta', '30223344556', 'Calle Río 456'),
+(15, 15, 'Fundación Beta', '30889977665', 'Boulevard Central 89');
+
+INSERT INTO TutoresExternos (idTutor, idUsuario, nombreEntidadColaborativa) VALUES
+(16, 16, 'Entidad XYZ'),
+(17, 17, 'Cooperativa Delta'),
+(18, 18, 'Fundación Beta');
 
 -- ----------Carga Elementos PPS--------------
 
@@ -256,6 +302,8 @@ INSERT INTO Informes (idActividad, titulo, descripcion, archivo_pdf, fecha) VALU
 (2, 'Informe Act Avanzada 1','Descripcion D', NULL, '2024-12-23'),
 (2, 'Informe Act Avanzada 2','Descripcion E', NULL, '2025-01-15'),
 (3, 'Informe Act Intermedia','Descripcion F', NULL, '2024-12-15');
+
+-- Relaciones
 
 INSERT INTO Relacion_Entidad_Proyectos (idEntidad, idProyecto) VALUES
 (3, 1),
