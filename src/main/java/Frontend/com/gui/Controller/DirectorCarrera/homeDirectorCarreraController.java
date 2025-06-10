@@ -118,14 +118,65 @@ public class homeDirectorCarreraController { // Nombre de clase cambiado
 
     @FXML
     public void validarPlanesTrabajo(ActionEvent event) {
-        // US: Como miembro de la Dirección de Carrera, quiero verificar la coherencia y viabilidad de las propuestas de planes de trabajo...
-//        navegar("/Frontend/vistas/DirectorCarrera/validarPlanesTrabajo.fxml", bundle.getString("title.validarPlanesTrabajo"), event);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/DirectorCarrera/GestionDePlanesTrabajos.fxml"));
+            Parent root = loader.load();
+
+            GestionPlanesTrabajosController controller = loader.getController();
+            controller.setPersistenceAPI(api);
+
+            Stage stage = new Stage();
+            stage.setTitle("Gestión de Planes de Trabajos - GPPS");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            ((Stage) ((Button) event.getSource()).getScene().getWindow()).close();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al abrir la gestión de planes de trabajos", e);
+            mostrarAlerta("Error", "No se pudo abrir la gestión de planes de trabajos.");
+        }
     }
 
     @FXML
     public void validarInformesFinales(ActionEvent event) {
-        // US: Como miembro de la Dirección de Carrera, quiero validar los informes finales de las PPS...
-        navegar("/Frontend/vistas/DirectorCarrera/validarInformesFinales.fxml", bundle.getString("title.validarInformesFinales"), event);
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/DirectorCarrera/GestionInformesFinales.fxml"));
+//            Parent root = loader.load();
+//
+//            GestionValidarInformesFinalesController controller = loader.getController();
+//            controller.setPersistenceAPI(api);
+//
+//            Stage stage = new Stage();
+//            stage.setTitle("Gestión de Informes Finales - GPPS");
+//            stage.setScene(new Scene(root));
+//            stage.show();
+//
+//            ((Stage) ((Button) event.getSource()).getScene().getWindow()).close();
+//        } catch (Exception e) {
+//            LOGGER.log(Level.SEVERE, "Error al abrir la gestión de Informes Finales", e);
+//            mostrarAlerta("Error", "No se pudo abrir la gestion de Informes Finales");
+//        }
+    }
+
+    @FXML
+    public void validarPropuestasProyectos(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/DirectorCarrera/GestionPropuestasProyectos.fxml"));
+            Parent root = loader.load();
+
+            GestionProyectosController controller = loader.getController();
+            controller.setPersistenceAPI(api);
+
+            Stage stage = new Stage();
+            stage.setTitle("Gestión de Propuestas de Proyectos - GPPS");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            ((Stage) ((Button) event.getSource()).getScene().getWindow()).close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "No se pudo abrir la gestión de proyectos");
+        }
     }
 
     @FXML
@@ -212,6 +263,8 @@ public class homeDirectorCarreraController { // Nombre de clase cambiado
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+
+
 
     // Interfaz opcional para controladores que necesitan la API
     public interface ControllerNecesitaAPI {

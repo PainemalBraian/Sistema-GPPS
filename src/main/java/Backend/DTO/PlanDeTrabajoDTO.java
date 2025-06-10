@@ -20,6 +20,10 @@ public class PlanDeTrabajoDTO extends ItemDTO{
         this.habilitado = habilitado;
     }
 
+    public PlanDeTrabajoDTO() {
+
+    }
+
     public DocenteDTO getDocente() {
         return docente;
     }

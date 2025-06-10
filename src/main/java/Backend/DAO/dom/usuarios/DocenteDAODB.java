@@ -204,5 +204,43 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
             throw new ReadException(e.getMessage());
         }
     }
+
+    public Docente buscarByNombre(String nombre) throws UserException {
+        try {
+            Connection conn = connect();
+            PreparedStatement statement = conn.prepareStatement(
+                    "SELECT * FROM Docentes D " +
+                            "JOIN Usuarios U ON D.idUsuario = U.idUsuario " +
+                            "WHERE U.nombreCompleto = ?"
+            );
+            statement.setString(1, nombre);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
+                Docente docente = new Docente(usuario, result.getString("legajo"));
+                // Cargar informes relacionados
+                List<Estudiante> estudiantes = buscarEstudiantes(result.getInt("idUsuario"));
+                docente.setEstudiantesAsignados(estudiantes);
+
+                statement.close();
+                result.close();
+                disconnect();
+                return docente;
+            } else {
+                statement.close();
+                result.close();
+                disconnect();
+                throw new UserException("Docente no encontrado.");
+            }
+        }
+        catch (SQLException e) {
+            throw new UserException("Error al buscar el docente en la base de datos: " + e.getMessage());
+        }
+        catch(ConnectionException | ReadException e){
+            throw new UserException(e.getMessage());
+        }
+    }
 }
 

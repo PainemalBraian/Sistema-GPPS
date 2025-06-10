@@ -49,7 +49,7 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
             while (result.next()) {
                 TutorExterno tutor = new TutorExterno(
                         UsuarioDAODB.buscarByID(result.getInt("idUsuario")),
-                        result.getString("requisitos")
+                        result.getString("nombreEntidadColaborativa")
                 );
 //                tutor.setProyectosAsignados(buscarProyectosAsignados()); Implementar usando tabla de relacion_Tutores_Proyectos.
                 tutores.add(tutor);
@@ -57,7 +57,7 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
 
             return tutores;
         } catch (SQLException e) {
-            throw new ReadException("Error al obtener los datos de los tutores.");
+            throw new ReadException("Error al obtener los datos de los tutores." + e.getMessage());
         } catch (ConnectionException e) {
             throw new ReadException(e.getMessage());
         } catch (UserException e) {
@@ -147,6 +147,37 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
             throw new UserException("Error al validar: " + e.getMessage());
         }
         catch (ConnectionException e) {
+            throw new UserException(e.getMessage());
+        }
+    }
+
+    public TutorExterno buscarByNombre(String nombre) throws UserException {
+        try {
+            Connection conn = connect();
+            PreparedStatement statement = conn.prepareStatement(
+                    "SELECT * FROM TutoresExternos TE " +
+                            "JOIN Usuarios U ON TE.idUsuario = U.idUsuario " +
+                            "WHERE U.nombreCompleto = ?");
+            statement.setString(1, nombre);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                Usuario usuario = UsuarioDAODB.buscarByID(result.getInt("idUsuario"));
+                TutorExterno tutorExt = new TutorExterno(usuario, result.getString("nombreEntidadColaborativa") );
+                tutorExt.setIdUsuario(result.getInt("idTutor"));
+                disconnect();
+                statement.close();
+                result.close();
+                return tutorExt;
+            } else {
+                throw new UserException("Tutor no encontrado.");
+            }
+        }
+        catch (SQLException e) {
+            throw new UserException("Error al buscar el usuario en la base de datos: " + e.getMessage());
+        }
+        catch(ConnectionException e){
             throw new UserException(e.getMessage());
         }
     }
