@@ -2,7 +2,8 @@
 
 GPPS es una aplicación desarrollada en Java utilizando JavaFX y Maven, diseñada para gestionar las Prácticas Profesionales Supervisadas de estudiantes universitarios. Permite a los diferentes actores involucrados (estudiantes, docentes, tutores, entidades colaboradoras y dirección de carrera) interactuar en un entorno digital que simula una experiencia profesional real.
 
-- RUN ejectuables del programa para Windows y Linux situados en proyecto base
+- Instaladores de dependencias requeridas por el programa. Para SO windows y Linux situados en el proyecto base
+- RUNS Ejectuables del programa para Windows y Linux situados en el proyecto base
 
 ## 🚀 Características principales
 
