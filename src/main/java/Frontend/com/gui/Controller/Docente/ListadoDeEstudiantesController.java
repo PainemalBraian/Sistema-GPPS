@@ -5,6 +5,7 @@ import Backend.DTO.ActividadDTO;
 import Backend.DTO.ConvenioPPSDTO;
 import Backend.DTO.EstudianteDTO;
 import Backend.Exceptions.ReadException;
+import Backend.Exceptions.UserException;
 import Frontend.com.gui.Controller.Estudiante.HomeController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -18,9 +19,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -84,6 +83,26 @@ public class ListadoDeEstudiantesController {
     }
 
     private void cargarTabla() {
+        // Obtener listado de estudiantes
+        List<EstudianteDTO> estudiantes = null;
+        try {
+            estudiantes = api.obtenerEstudiantesByDocenteUsername(api.obtenerUsername());
+        } catch (ReadException | UserException e) {
+            mostrarAlerta("No se pudo cargar tabla", e.getMessage());
+        }
+
+        // Pre-cargar todos los convenios relacionados a cada estudiante
+        Map<String, ConvenioPPSDTO> conveniosPorUsuario = new HashMap<>();
+        for (EstudianteDTO estudiante : estudiantes) {
+            try {
+                ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(estudiante.getUsername());
+                conveniosPorUsuario.put(estudiante.getUsername(), convenio);
+            } catch (Exception e) {
+                LOGGER.warning("No se pudo obtener el convenio para el estudiante " + estudiante.getUsername() + ": " + e.getMessage());
+                conveniosPorUsuario.put(estudiante.getUsername(), null);
+            }
+        }
+
         // Configurar columnas básicas
         colNombre.setCellValueFactory(data -> new SimpleStringProperty(
                 data.getValue().getNombre() != null ? data.getValue().getNombre() : "N/A"
@@ -97,75 +116,50 @@ public class ListadoDeEstudiantesController {
                 data.getValue().getEmail() != null ? data.getValue().getEmail() : "N/A"
         ));
 
-        // Configurar columnas de práctica profesional
         colProyecto.setCellValueFactory(data -> {
-            try {
-                ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(data.getValue().getUsername());
-                return new SimpleStringProperty(
-                        convenio != null && convenio.getProyecto() != null
-                                ? convenio.getProyecto().getTitulo()
-                                : "Sin proyecto asignado"
-                );
-            } catch (Exception e) {
-                LOGGER.warning("Error al obtener proyecto para estudiante: " + e.getMessage());
-                return new SimpleStringProperty("Sin proyecto");
-            }
+            ConvenioPPSDTO convenio = conveniosPorUsuario.get(data.getValue().getUsername());
+            String proyecto = (convenio != null && convenio.getProyecto() != null)
+                    ? convenio.getProyecto().getTitulo()
+                    : "Sin proyecto asignado";
+            return new SimpleStringProperty(proyecto);
         });
 
         colTutor.setCellValueFactory(data -> {
-            try {
-                ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(data.getValue().getUsername());
-                return new SimpleStringProperty(
-                        convenio != null && convenio.getPlan() != null && convenio.getPlan().getTutor() != null
-                                ? convenio.getPlan().getTutor().getNombre()
-                                : "Sin tutor asignado"
-                );
-            } catch (Exception e) {
-                LOGGER.warning("Error al obtener tutor para estudiante: " + e.getMessage());
-                return new SimpleStringProperty("Sin tutor");
-            }
+            ConvenioPPSDTO convenio = conveniosPorUsuario.get(data.getValue().getUsername());
+            String tutor = (convenio != null && convenio.getPlan() != null && convenio.getPlan().getTutor() != null)
+                    ? convenio.getPlan().getTutor().getNombre()
+                    : "Sin tutor asignado";
+            return new SimpleStringProperty(tutor);
         });
 
         colEmpresa.setCellValueFactory(data -> {
-            try {
-                ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(data.getValue().getUsername());
-                return new SimpleStringProperty(
-                        convenio != null && convenio.getEntidad() != null
-                                ? convenio.getEntidad().getNombre()
-                                : "Sin empresa asignada"
-                );
-            } catch (Exception e) {
-                LOGGER.warning("Error al obtener empresa para estudiante: " + e.getMessage());
-                return new SimpleStringProperty("Sin empresa");
-            }
+            ConvenioPPSDTO convenio = conveniosPorUsuario.get(data.getValue().getUsername());
+            String empresa = (convenio != null && convenio.getEntidad() != null)
+                    ? convenio.getEntidad().getNombre()
+                    : "Sin empresa asignada";
+            return new SimpleStringProperty(empresa);
         });
 
         colDuracion.setCellValueFactory(data -> {
-            try {
-                ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(data.getValue().getUsername());
-                if (convenio != null && convenio.getPlan() != null && convenio.getPlan().getActividades() != null) {
-                    int totalHoras = calcularDuracionTotalActividades(convenio.getPlan().getActividades());
-                    return new SimpleStringProperty(totalHoras + " horas");
-                } else {
-                    return new SimpleStringProperty("No definida");
-                }
-            } catch (Exception e) {
-                LOGGER.warning("Error al obtener duración para estudiante: " + e.getMessage());
+            ConvenioPPSDTO convenio = conveniosPorUsuario.get(data.getValue().getUsername());
+            if (convenio != null && convenio.getPlan() != null && convenio.getPlan().getActividades() != null) {
+                int totalHoras = calcularDuracionTotalActividades(convenio.getPlan().getActividades());
+                return new SimpleStringProperty(totalHoras + " horas");
+            } else {
                 return new SimpleStringProperty("No definida");
             }
         });
 
         colEstado.setCellValueFactory(data -> {
-            try {
-                ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(data.getValue().getUsername());
-                String estado = determinarEstadoPractica(convenio);
-                return new SimpleStringProperty(estado);
-            } catch (Exception e) {
-                LOGGER.warning("Error al obtener estado para estudiante: " + e.getMessage());
-                return new SimpleStringProperty("Pendiente");
-            }
+            ConvenioPPSDTO convenio = conveniosPorUsuario.get(data.getValue().getUsername());
+            String estado = determinarEstadoPractica(convenio);
+            return new SimpleStringProperty(estado);
         });
+
+        // Cargar datos en la tabla
+        tablaEstudiantes.setItems(FXCollections.observableArrayList(estudiantes));
     }
+
 
     private String determinarEstadoPractica(ConvenioPPSDTO convenio) {
         if (convenio == null) {
@@ -186,33 +180,23 @@ public class ListadoDeEstudiantesController {
 
     private void cargarEstudiantes() {
         listaEstudiantes.clear();
+
         try {
-            List<ConvenioPPSDTO> convenios = api.obtenerConvenios();
+            List<EstudianteDTO> estudiantes = api.obtenerEstudiantesByDocenteUsername(api.obtenerUsername());
+            listaEstudiantes.setAll(estudiantes);
+            LOGGER.info("Cargados " + estudiantes.size() + " estudiantes");
 
-            Set<String> usuariosVistos = new HashSet<>();
-
-            for (ConvenioPPSDTO convenio : convenios) {
-                EstudianteDTO estudiante = convenio.getEstudiante();
-                if (estudiante != null && estudiante.getUsername() != null) {
-                    // Solo agregar si no hemos visto este usuario antes
-                    if (!usuariosVistos.contains(estudiante.getUsername())) {
-                        listaEstudiantes.add(estudiante);
-                        usuariosVistos.add(estudiante.getUsername());
-                    }
-                }
-            }
-
-            LOGGER.info("Cargados " + listaEstudiantes.size() + " estudiantes únicos de " + convenios.size() + " convenios");
-
-            // Aplicar filtro actual
             aplicarFiltro();
             actualizarLabelsInformativos();
 
         } catch (ReadException e) {
             LOGGER.severe("Error al cargar estudiantes: " + e.getMessage());
             mostrarAlerta("Error al cargar estudiantes", e.getMessage());
+        } catch (UserException e) {
+            throw new RuntimeException(e);
         }
     }
+
 
     @FXML
     private void filtrarEstudiantes() {

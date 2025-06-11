@@ -18,6 +18,7 @@ GPPS es una aplicación desarrollada en Java utilizando JavaFX y Maven, diseñad
 ## 🛠 Tecnologías utilizadas
 
 - **Lenguaje Principal:** Java 24
+- https://jdk.java.net/24/
   
 - **Framework UI:** JavaFX
     🧰 Scene Builder (GUI visual para JavaFX)

@@ -194,7 +194,10 @@ public class ProyectoDAODB extends DBAcces implements PROYECTODAO {
 
             ResultSet result = statement.executeQuery();
             if (result.next()) {
-                int idTutor = result.getInt("idTutor");
+                int idTutor = -10;
+                 if (result.getInt("idTutor") != 0){
+                     idTutor = result.getInt("idTutor");
+                 }
                 TutorExterno tutor = new TutorExternoDAODB().buscarByID(idTutor);
                 proyecto = new Proyecto(
                         result.getInt("idProyecto"),
