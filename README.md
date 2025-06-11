@@ -27,14 +27,21 @@ https://gluonhq.com/products/javafx/
 
 SDK de Project Structure: Oracle OpenJDK 24.0.1
 
-Configurar Run del compilador. Agregar (VM OPTION)
+Comandos de ejecución por terminal RUN
+Situar la terminal en el directorio del proyecto "...\Sistema-GPPS"
+
+mvn clean           -> Construir dependencias del pom
+mvn javafx:run      -> Ejecutar Proyecto
+
+Sí se desea
+Configurar Run del compilador. Agregar en sección (VM OPTION) Probado en IntellIJ
 --module-path "C:\...\javafx-sdk-24.0.1\lib"  Directorio del sdk
 --add-modules javafx.controls,javafx.fxml
 --enable-native-access=ALL-UNNAMED
 --enable-native-access=javafx.graphics
 
-
-Configuración de Variable de entorno del sistema (Variables del sistema)
+(Si es solicitado)
+Configuración de Variable de entorno del sistema (Variables del sistema) 
 DIRECTORIO DEL SDK 24.0.1/bin
 Agregar Path
 C:\Users\...\Sistema-GPPS\.idea\libraries\javafx-sdk-24.0.1\bin
