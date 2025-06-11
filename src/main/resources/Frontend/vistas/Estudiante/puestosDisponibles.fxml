@@ -3,65 +3,75 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="Frontend.com.Controller.gui.Docente.ListadoDeEstudiantesController"
-            stylesheets="@../../StyleSheets/Docente/ListadoDeEstudiantes.css">
+<AnchorPane prefHeight="550.0" prefWidth="800.0" styleClass="root"
+            stylesheets="@../../StyleSheets/Estudiante/puestosDisponibles.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Frontend.com.gui.Controller.Estudiante.PuestosDisponiblesController">
 
     <children>
-        <BorderPane AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
-                    AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
-
-            <!-- Cabecera -->
-            <top>
-                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="header-box">
-                    <padding>
-                        <Insets top="20" right="20" bottom="20" left="20"/>
-                    </padding>
-                    <Label styleClass="header-title" text="Listado de Estudiantes"/>
-                </HBox>
-            </top>
-
-            <!-- Contenido central -->
-            <center>
-                <VBox spacing="15" padding="20" styleClass="content-area">
-
-                    <!-- Filtro de estado -->
-                    <HBox spacing="10">
-                        <Label text="Filtrar por estado:"/>
-                        <ComboBox fx:id="filtroEstadoPractica" prefWidth="200.0"/>
-                    </HBox>
-
-                    <!-- Tabla de estudiantes -->
-                    <TableView fx:id="tablaEstudiantes" prefHeight="500" prefWidth="800">
-                        <columns>
-                            <TableColumn fx:id="colNombre" text="Nombre"/>
-                            <TableColumn fx:id="colCarrera" text="Carrera"/>
-                            <TableColumn fx:id="colCorreo" text="Correo"/>
-                            <TableColumn fx:id="colProyecto" text="Título del Proyecto"/>
-                            <TableColumn fx:id="colTutor" text="Tutor"/>
-                            <TableColumn fx:id="colEmpresa" text="Empresa"/>
-                            <TableColumn fx:id="colDuracion" text="Duración"/>
-                        </columns>
-                        <columnResizePolicy>
-                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                        </columnResizePolicy>
-                    </TableView>
-
-                    <!-- Botones de acción -->
-                    <HBox spacing="10">
-                        <Button fx:id="btnVerCronograma" text="Ver Cronograma" onAction="#verCronograma"/>
-                        <Button fx:id="btnVerAvances" text="Ver Avances" onAction="#verAvances"/>
-                        <Button fx:id="btnVerInformes" text="Ver Informes" onAction="#verInformes"/>
-                        <Button fx:id="btnComunicaciones" text="Comunicaciones" onAction="#verComunicaciones"/>
-                        <Button fx:id="btnVolver" text="Volver" onAction="#volverHome"/>
-                    </HBox>
-
-                </VBox>
-            </center>
-        </BorderPane>
+        <SplitPane dividerPositions="0.3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0" styleClass="list-pane">
+                    <children>
+                        <Label layoutX="1.0" layoutY="7.0" prefHeight="53.0" prefWidth="236.0"
+                               styleClass="panel-title" text="Oportunidades de PPS Disponibles"
+                               AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="7.0">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <ListView fx:id="lvOportunidades" layoutX="14.0" layoutY="44.0" prefHeight="490.0" prefWidth="226.0"
+                                  styleClass="opportunity-list" AnchorPane.bottomAnchor="50.0"
+                                  AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0" />
+                        <Button fx:id="btnVolverHome" alignment="CENTER"
+                                contentDisplay="RIGHT" mnemonicParsing="false"
+                                onAction="#VolverHome" prefHeight="30.0" prefWidth="124.0" styleClass="inscribe-button"
+                                text="Volver" textAlignment="CENTER"
+                                AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="596.0" styleClass="detail-pane">
+                    <children>
+                        <VBox fx:id="vboxDetail" spacing="10.0"
+                              AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
+                              AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                            <children>
+                                <Label fx:id="lblTituloOportunidad" styleClass="detail-title"
+                                       text="Selecciona una oportunidad" wrapText="true">
+                                    <font>
+                                        <Font name="System Bold" size="16.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblEmpresa" styleClass="detail-subtitle"
+                                       text="Empresa: -" wrapText="true" />
+                                <Label fx:id="lblArea" styleClass="detail-subtitle"
+                                       text="Área: -" wrapText="true" />
+                                <Label fx:id="lblUbicacion" styleClass="detail-subtitle"
+                                       text="Ubicación: -" />
+                                <Label fx:id="lblTutor" styleClass="detail-subtitle"
+                                       text="Tutor externo encargado: -" />
+                                <Label fx:id="lblDescripcionLabel" styleClass="detail-label"
+                                       text="Descripción:" />
+                                <TextArea fx:id="taDescripcion" editable="false" prefHeight="150.0"
+                                          styleClass="detail-description" wrapText="true" VBox.vgrow="ALWAYS" />
+                                <Label fx:id="lblRequisitosLabel" styleClass="detail-label"
+                                       text="Requisitos:" />
+                                <TextArea fx:id="taRequisitos" editable="false" prefHeight="100.0"
+                                          styleClass="detail-requirements" wrapText="true" VBox.vgrow="ALWAYS" />
+                                <Button fx:id="btnInscribir" contentDisplay="CENTER" mnemonicParsing="false"
+                                        onAction="#handleInscribir" prefHeight="40.0" prefWidth="192.0"
+                                        styleClass="inscribe-button" text="Inscribirme a esta PPS" />
+                            </children>
+                            <padding>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </padding>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
     </children>
 </AnchorPane>

@@ -90,8 +90,15 @@ public class PlanDeTrabajoDAODB extends DBAcces implements PLANDETRABAJODAO{
                 int idPlan = result.getInt("idPlanDeTrabajo");
                 String titulo = result.getString("titulo");
                 String descripcion = result.getString("descripcion");
-                int idDocente = result.getInt("idDocente");
-                int idTutor = result.getInt("idTutor");
+                int idDocente = -10;
+                if(result.getInt("idDocente") != 0) {
+                    idDocente = result.getInt("idDocente");
+                }
+                int idTutor = -10;
+                if(result.getInt("idTutor") != 0) {
+                    idTutor = result.getInt("idTutor");
+                }
+
                 int idInforme = result.getInt("idInformeFinal");
 
                 Docente docente = new DocenteDAODB().buscarByID(idDocente);
@@ -123,6 +130,7 @@ public class PlanDeTrabajoDAODB extends DBAcces implements PLANDETRABAJODAO{
         } catch (SQLException e) {
             throw new ReadException("Error al leer el plan de trabajo: " + e.getMessage());
         } catch (EmptyException | UserException e) {
+            e.printStackTrace();
             throw new ReadException("Error al construir el plan de trabajo: " + e.getMessage());
         }
     }

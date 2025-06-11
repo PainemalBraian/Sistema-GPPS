@@ -170,6 +170,7 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
             throw new UserException("Error al buscar el docente en la base de datos: " + e.getMessage());
         }
         catch(ConnectionException|ReadException e){
+            e.printStackTrace();
             throw new UserException(e.getMessage());
         }
     }
