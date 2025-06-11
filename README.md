@@ -16,7 +16,7 @@ GPPS es una aplicación desarrollada en Java utilizando JavaFX y Maven, diseñad
 
 ## 🛠 Tecnologías utilizadas
 
-- **Lenguaje:** Java 24.0.1
+- **Lenguaje Principal:** Java 24
   
 - **Framework UI:** JavaFX
     🧰 Scene Builder (GUI visual para JavaFX)
@@ -65,10 +65,15 @@ IGNORAR
 
 - **Gestor de dependencias:** Maven
 
-- **Base de datos:** SQL
+- **Base de datos:** MySQL
+
+- **Generación de PDF:** OpenPDF
 
 - **Estilos UI:** CSS para JavaFX
+  
+- **Entorno de desarrollo (IDE):** IntelliJ IDEA
 
+- **Herramienta de diseño visual de interfaces:** Scene Builder
 
 ## 👀 Visualizador WEB del diagrama de relaciones
 - **https://drawsql.app/teams/d-314/diagrams/gpps/embed**
