@@ -8,9 +8,12 @@ import static java.util.Objects.isNull;
 
 public class Informe extends Item{
     private byte[] archivoPDF; // Esto debe representar el PDF como binario
-    private int porcentajeAvance; // Validaciónes aún pendientes 0-10
+    private int porcentajeAvance = -1; // Campo a borrar en el futuro, no corresponder a la estructura del objeto, dejado para evitar errores de ultima instancia
     private LocalDate fecha = LocalDate.now();
     private String tituloActividad;
+    private boolean aprobado;
+    private int calificacionDocente;
+    private int calificacionTutor;
 
     public Informe(int id, String titulo, String descripcion, byte[] archivo) throws EmptyException {
         super(id, titulo, descripcion);
@@ -29,7 +32,6 @@ public class Informe extends Item{
     }
 
     public Informe() {
-
     }
 ///////////////////////// METHODS ///////////////////////////////
 
@@ -51,7 +53,19 @@ public class Informe extends Item{
         return tituloActividad;
     }
 
-///////////////////// SETTERS ///////////////////////////////////////////////
+    public boolean isAprobado() {
+        return aprobado;
+    }
+
+    public int getCalificacionDocente() {
+        return calificacionDocente;
+    }
+
+    public int getCalificacionTutor() {
+        return calificacionTutor;
+    }
+
+    ///////////////////// SETTERS ///////////////////////////////////////////////
 ///
     public void setArchivoPDF(byte[] archivoPDF) throws EmptyException {
 //    if (isNull(archivoPDF))
@@ -75,5 +89,17 @@ public class Informe extends Item{
 
     public void setTituloActividad(String tituloActividad) {
         this.tituloActividad = tituloActividad;
+    }
+
+    public void setAprobado(boolean aprobado) {
+        this.aprobado = aprobado;
+    }
+
+    public void setCalificacionDocente(int calificacionDocente) {
+        this.calificacionDocente = calificacionDocente;
+    }
+
+    public void setCalificacionTutor(int calificacionTutor) {
+        this.calificacionTutor = calificacionTutor;
     }
 }

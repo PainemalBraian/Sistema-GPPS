@@ -3,6 +3,7 @@ package Backend.DAO.dom.usuarios;
 import Backend.DAO.DBAcces;
 import Backend.DAO.UsuarioDAODB;
 import Backend.DAO.interfaces.usuarios.TUTOREXTERNODAO;
+import Backend.Entidades.Estudiante;
 import Backend.Entidades.TutorExterno;
 import Backend.Entidades.Usuario;
 import Backend.Exceptions.*;
@@ -22,12 +23,13 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(
-                    "INSERT INTO TutoresExternos(idUsuario, nombreEntidadColaborativa) " +
-                            "VALUES (?, ?)"
+                    "INSERT INTO TutoresExternos(idUsuario, nombreEntidadColaborativa,idTutor) " +
+                            "VALUES (?, ?, ?)"
             );
-            statement.setInt(1, UsuarioDAODB.create(tutor));
+            int id = UsuarioDAODB.create(tutor);
+            statement.setInt(1, id);
             statement.setString(2, tutor.getNombreEntidadColaborativa());
-
+            statement.setInt(3, id);
             statement.executeUpdate();
             statement.close();
             disconnect();
@@ -180,5 +182,41 @@ public class TutorExternoDAODB extends DBAcces implements TUTOREXTERNODAO {
         catch(ConnectionException e){
             throw new UserException(e.getMessage());
         }
+    }
+
+    public List<Estudiante> buscarEstudiantes(int idTutor) throws ReadException {
+        List<Estudiante> estudiantes = new ArrayList<>();
+
+        String sql = "SELECT idEstudiante FROM Relacion_Tutor_Estudiantes WHERE idTutor = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
+
+            statement.setInt(1, idTutor);
+
+            try (ResultSet result = statement.executeQuery()) {
+                EstudianteDAODB estudianteDAO = new EstudianteDAODB();
+
+                while (result.next()) {
+                    int idEstudiante = result.getInt("idEstudiante");
+                    Estudiante estudiante = estudianteDAO.buscarByID(idEstudiante);
+                    estudiantes.add(estudiante);
+                }
+            } catch (UserException e) {
+                throw new ReadException(e.getMessage());
+            }
+
+            return estudiantes;
+
+        } catch (SQLException e) {
+            throw new ReadException("Error SQL al obtener los estudiantes del Tutor." + e.getMessage());
+        } catch (ConnectionException e) {
+            throw new ReadException(e.getMessage());
+        }
+    }
+
+    public List<Estudiante> buscarEstudiantesbyTutorUsername(String username) throws UserException, ReadException {
+        int idTutor = buscarByUsername(username).getIdUsuario();
+        return buscarEstudiantes(idTutor);
     }
 }
