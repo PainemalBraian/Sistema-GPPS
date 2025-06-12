@@ -220,7 +220,7 @@ public class evaluarInformesController {
 
         try {
             // Obtener todos los estudiantes disponibles
-            List<EstudianteDTO> estudiantes = api.obtenerEstudiantesByTutorUsername(api.obtenerUsername());
+            List<EstudianteDTO> estudiantes = api.obtenerEstudiantesByDocenteUsername(api.obtenerUsername());
 
             if (estudiantes != null && !estudiantes.isEmpty()) {
                 listaEstudiantes.clear();

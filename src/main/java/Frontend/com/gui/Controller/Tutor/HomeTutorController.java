@@ -2,6 +2,7 @@ package Frontend.com.gui.Controller.Tutor;
 
 import Backend.API.API;
 import Backend.Exceptions.UserException;
+import Frontend.com.gui.Controller.Estudiante.PuestosDisponiblesController;
 import Frontend.com.gui.Controller.IngresoController;
 import Frontend.com.gui.Controller.MensajesController;
 import javafx.event.ActionEvent;
@@ -68,12 +69,46 @@ public class HomeTutorController {
 
     @FXML
     public void verSeguimiento(ActionEvent event) {
-        navegar("/Frontend/vistas/Tutor/seguimientoEstudiante.fxml", "Seguimiento", event);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Tutor/listadoEstudiantes.fxml"));
+            Parent root = loader.load();
+
+            listadoEstudiantesController controller = loader.getController();
+            controller.setPersistenceAPI(api);
+
+            Stage stage = new Stage();
+            stage.setTitle("Evaluar informes");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error al abrir mensajes", e);
+            mostrarAlerta("Error", "No se pudo abrir la pantalla de mensajes");
+        }
     }
 
     @FXML
     public void evaluarInformeEstudiante(ActionEvent event) {
-        navegar("/Frontend/vistas/Tutor/evaluarInformes.fxml", "Evaluar Informes", event);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Tutor/evaluarInformes.fxml"));
+            Parent root = loader.load();
+
+            evaluarInformesController controller = loader.getController();
+            controller.setPersistenceAPI(api);
+
+            Stage stage = new Stage();
+            stage.setTitle("Evaluar informes");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error al abrir mensajes", e);
+            mostrarAlerta("Error", "No se pudo abrir la pantalla de mensajes");
+        }
     }
 
     @FXML
