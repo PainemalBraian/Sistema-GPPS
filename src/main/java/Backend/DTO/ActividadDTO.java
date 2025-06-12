@@ -9,6 +9,7 @@ public class ActividadDTO extends ItemDTO{
     private int duracion;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
+    private int porcentajeAvance;
     private Boolean calificacion; // null por defecto, indicando "no cargada".
 
     public ActividadDTO(int id, String titulo, String descripcion, LocalDate fechaFin, int duracion,LocalDate fechaInicio) {
@@ -16,6 +17,13 @@ public class ActividadDTO extends ItemDTO{
         this.fechaFin = fechaFin;
         this.duracion = duracion;
         this.fechaInicio=fechaInicio;
+    }
+    public ActividadDTO(int id, String titulo, String descripcion, LocalDate fechaFin, int duracion,LocalDate fechaInicio, int porcentajeAvance) {
+        super(id, titulo, descripcion);
+        this.fechaFin = fechaFin;
+        this.duracion = duracion;
+        this.fechaInicio=fechaInicio;
+        this.porcentajeAvance = porcentajeAvance;
     }
 
     public List<InformeDTO> getInformes() {
@@ -60,5 +68,13 @@ public class ActividadDTO extends ItemDTO{
 
     public void addInforme(InformeDTO informe) {
         informes.add(informe);
+    }
+
+    public int getPorcentajeAvance() {
+        return porcentajeAvance;
+    }
+
+    public void setPorcentajeAvance(int porcentajeAvance) {
+        this.porcentajeAvance = porcentajeAvance;
     }
 }

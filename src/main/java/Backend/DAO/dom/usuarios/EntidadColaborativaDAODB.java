@@ -24,14 +24,16 @@ public class EntidadColaborativaDAODB extends DBAcces implements ENTIDADCOLABORA
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(
-                    "INSERT INTO EntidadesColaborativas(idUsuario, nombreEntidad, cuit, direccionEntidad) " +
-                            "VALUES (?, ?, ?, ?)"
+                    "INSERT INTO EntidadesColaborativas(idUsuario, nombreEntidad, cuit, direccionEntidad, idEntidad) " +
+                            "VALUES (?, ?, ?, ?, ?)"
             );
             // Guardar en la base de datos
-            statement.setInt(1, UsuarioDAODB.create(entidad));
+            int id = UsuarioDAODB.create(entidad);
+            statement.setInt(1, id);
             statement.setString(2, entidad.getNombreEntidad());
             statement.setString(3, entidad.getCuit());
-            statement.setString(4, entidad.getDireccionEntidad()); //Falta relacion con colección Proyectos
+            statement.setString(4, entidad.getDireccionEntidad());
+            statement.setInt(5, id);
 
             statement.executeUpdate();
             statement.close();

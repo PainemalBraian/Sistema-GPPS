@@ -15,7 +15,7 @@ public class ActividadDAODB extends DBAcces implements ACTIVIDADDAO {
     public void create(Actividad actividad) throws CreateException {
         try (Connection conn = connect();
              PreparedStatement statement = conn.prepareStatement(
-                     "INSERT INTO actividades(titulo, descripcion, duracion, fechaFin, fechaInicio) VALUES (?, ?, ?, ?, ?)",
+                     "INSERT INTO actividades(titulo, descripcion, duracion, fechaFin, fechaInicio, porcentajeAvance) VALUES (?, ?, ?, ?, ?, ?)",
                      Statement.RETURN_GENERATED_KEYS
              )) {
 
@@ -24,6 +24,7 @@ public class ActividadDAODB extends DBAcces implements ACTIVIDADDAO {
             statement.setInt(3, actividad.getDuracion());
             statement.setDate(4, Date.valueOf(actividad.getFechaFin()));
             statement.setDate(5, Date.valueOf(actividad.getFechaInicio()));
+            statement.setInt(6, actividad.getPorcentajeAvance());
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted == 0) {
@@ -84,6 +85,8 @@ public class ActividadDAODB extends DBAcces implements ACTIVIDADDAO {
                         result.getInt("duracion"),
                         result.getDate("fechaInicio").toLocalDate());
 
+                actividad.setPorcentajeAvance(result.getInt("porcentajeAvance"));
+
                 // Cargar informes relacionados
                 List<Informe> informes = buscarInformes(id);
                 actividad.setInformes(informes);
@@ -116,6 +119,8 @@ public class ActividadDAODB extends DBAcces implements ACTIVIDADDAO {
                         result.getDate("fechaFin").toLocalDate(),
                         result.getInt("duracion"),
                         result.getDate("fechaInicio").toLocalDate());
+
+                actividad.setPorcentajeAvance(result.getInt("porcentajeAvance"));
 
                 // Cargar informes relacionados
                 List<Informe> informes = buscarInformes(result.getInt("idActividad"));
@@ -172,6 +177,8 @@ public class ActividadDAODB extends DBAcces implements ACTIVIDADDAO {
                         result.getInt("duracion"),
                         result.getDate("fechaInicio").toLocalDate());
 
+                actividad.setPorcentajeAvance(result.getInt("porcentajeAvance"));
+
                 // Cargar informes relacionados
                 List<Informe> informes = buscarInformes(result.getInt("idActividad"));
                 actividad.setInformes(informes);
@@ -216,4 +223,30 @@ public class ActividadDAODB extends DBAcces implements ACTIVIDADDAO {
             throw new ReadException(e.getMessage());
         }
     }
+
+    public void update(Actividad actividad) throws CreateException {
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "UPDATE Actividades SET titulo=?, descripcion=?, duracion=?, fechaFin=?, fechaInicio=?, porcentajeAvance=? WHERE idActividad=?"
+             )) {
+
+            stmt.setString(1, actividad.getTitulo());
+            stmt.setString(2, actividad.getDescripcion());
+            stmt.setInt(3, actividad.getDuracion());
+            stmt.setDate(4, Date.valueOf(actividad.getFechaFin()));
+            stmt.setDate(5, Date.valueOf(actividad.getFechaInicio()));
+            stmt.setInt(6, actividad.getPorcentajeAvance());
+            stmt.setInt(7, actividad.getID());
+
+            int rows = stmt.executeUpdate();
+            if (rows == 0) {
+                throw new CreateException("No se pudo actualizar la Actividad con ID: " + actividad.getID());
+            }
+
+        } catch (SQLException | ConnectionException e) {
+            throw new CreateException("Error al actualizar la Actividad: " + e.getMessage());
+        }
+    }
+
+
 }

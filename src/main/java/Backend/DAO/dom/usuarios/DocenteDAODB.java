@@ -27,12 +27,14 @@ public class DocenteDAODB extends DBAcces implements DOCENTEDAO {
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(
-                    "INSERT INTO Docentes(idUsuario, legajo) " +
-                            "VALUES (?, ?)"
+                    "INSERT INTO Docentes(idUsuario, legajo, idDocente) " +
+                            "VALUES (?, ?, ?)"
             );
             // Guardar en la base de datos
-            statement.setInt(1, UsuarioDAODB.create(docente.getUsuario()));
+            int id = UsuarioDAODB.create(docente.getUsuario());
+            statement.setInt(1, id);
             statement.setString(2, docente.getLegajo()); //Falta relacion con colección estudiantes
+            statement.setInt(3, id);
 
             statement.executeUpdate();
             statement.close();

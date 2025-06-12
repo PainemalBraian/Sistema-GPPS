@@ -244,9 +244,9 @@ public class PersistanceAPI implements API {
         }
         if (rol.getNombre().equals("Director de Carrera")){
             DirectorCarrera director = new DirectorCarrera(usuario);
-            UsuarioDAODB.create(director);
+            DirectorCarreraDAODB.create(director);
         }
-        if (rol.getNombre().equals("Administrador")){
+        if (rol.getNombre().equals("Administrador")){ // falta implementar
             Administrador administrador = new Administrador(usuario);
             UsuarioDAODB.create(administrador);
         }
@@ -461,8 +461,8 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
             Informe informe = InformeDAODB.buscarByTitulo(titulo);
 
             InformeDTO informeDTO = new InformeDTO(informe.getID(), informe.getTitulo(),
-                    informe.getDescripcion(), informe.getArchivoPDF(), informe.getFecha(),informe.getPorcentajeAvance());
-
+                    informe.getDescripcion(), informe.getArchivoPDF(), informe.getFecha());
+            informeDTO.setPorcentajeAvance(-1); // Campo a borrar posteriormente
 
             return informeDTO;
         } catch (ReadException e) {
@@ -640,6 +640,21 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
     }
 
     @Override
+    public List<EstudianteDTO> obtenerEstudiantesByTutorUsername(String username) throws ReadException {
+        try {
+            List <EstudianteDTO> estudiantes = new ArrayList<>();
+            List<Estudiante> estudiantesRelacionados = TutorExternoDAODB.buscarEstudiantesbyTutorUsername(username);
+            for (Estudiante estudiante : estudiantesRelacionados){
+                estudiantes.add(convertirAEstudianteDTO(estudiante));
+            }
+
+            return estudiantes;
+        } catch (UserException e) {
+            throw new ReadException(e.getMessage());
+        }
+    }
+
+    @Override
     public void inscribirEstudiante(UsuarioDTO estudiante, ProyectoDTO proyecto) throws CreateException {
 
         try {
@@ -693,7 +708,6 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
     public void actualizarProyecto(ProyectoDTO proyecto) throws CreateException {
         try {
             ProyectoDAODB.update(convertirAProyecto(proyecto));
-
         } catch (CreateException | EmptyException | UserException e) {
             throw new CreateException(e.getMessage());
         }
@@ -703,9 +717,60 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
     public void actualizarPlanDeTrabajo(PlanDeTrabajoDTO plan) throws CreateException {
         try {
             PlanDeTrabajoDAODB.update(convertirAPlanDeTrabajo(plan));
-
         } catch (CreateException | EmptyException | UserException e) {
-            e.printStackTrace();
+            throw new CreateException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void actualizarInforme(InformeDTO informe) throws CreateException {
+        try {
+            InformeDAODB.update(convertirAInforme(informe));
+        } catch (CreateException | EmptyException e) {
+            throw new CreateException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void actualizarActividad(ActividadDTO actividad) throws CreateException {
+        try {
+            ActividadDAODB.update(convertirAActividad(actividad));
+        } catch (CreateException | EmptyException e) {
+            throw new CreateException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void actualizarCalificacionInformeDocente(String tituloInforme, int calificacionDocente) throws CreateException {
+        try {
+            Informe informe = InformeDAODB.buscarByTitulo(tituloInforme);
+            informe.setCalificacionDocente(calificacionDocente);
+            InformeDAODB.update(informe);
+
+        } catch (CreateException | ReadException e) {
+            throw new CreateException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void actualizarCalificacionInformeTutor(String tituloInforme, int calificacionTutor) throws CreateException {
+        try {
+            Informe informe = InformeDAODB.buscarByTitulo(tituloInforme);
+            informe.setCalificacionTutor(calificacionTutor);
+            InformeDAODB.update(informe);
+
+        } catch (CreateException | ReadException e) {
+            throw new CreateException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void actualizarPorcentajeAvanceActividad(String username, String tituloActividad, int porcentaje) throws CreateException {
+        try {
+            Actividad actividad = ActividadDAODB.buscarByTitulo(tituloActividad);
+            actividad.setPorcentajeAvance(porcentaje);
+            ActividadDAODB.update(actividad);
+        } catch (CreateException | ReadException | EmptyException e) {
             throw new CreateException(e.getMessage());
         }
     }
@@ -994,7 +1059,7 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
         if (informe == null)
             return new InformeDTO();
 //            throw new EmptyException("El informe que se intenta convertir no existe.");
-        return new InformeDTO(informe.getID(),informe.getTitulo(),informe.getDescripcion(),informe.getArchivoPDF(),informe.getFecha(),informe.getPorcentajeAvance());
+        return new InformeDTO(informe.getID(),informe.getTitulo(),informe.getDescripcion(),informe.getArchivoPDF(),informe.getFecha(),-1);
 
     }
 
@@ -1101,7 +1166,7 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
         return actividades;
     }
 
-    private Informe convertirAInforme(InformeDTO informeDTO) throws UserException, EmptyException {
+    private Informe convertirAInforme(InformeDTO informeDTO) throws EmptyException {
         if (informeDTO == null || informeDTO.getID() == 0) {
             return new Informe();
 //            throw new UserException("El informeDTO que se intenta convertir no existe.");

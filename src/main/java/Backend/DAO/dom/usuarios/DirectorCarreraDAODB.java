@@ -19,11 +19,23 @@ import java.util.List;
 public class DirectorCarreraDAODB extends DBAcces implements DirectorCarreraDAO {
     @Override
     public void create(DirectorCarrera director) throws RegisterExceptions {
-        try {
+        try {Connection conn = connect();
+            PreparedStatement statement = conn.prepareStatement(
+                    "INSERT INTO DirectoresCarrea(idUsuario,idDirector,nombreCompleto) " +
+                            "VALUES (?, ?, ?)"
+            );
+
             UsuarioDAODB userdaoDB= new UsuarioDAODB(); // manera simplificada, ya que  director no tiene datos adicionales
-            userdaoDB.create(director.getUsuario());
-        }
-        catch (UserException e) {
+            int id = userdaoDB.create(director);
+            statement.setInt(1, id);
+            statement.setInt(2, id);
+            statement.setString(3, director.getNombre());
+            statement.executeUpdate();
+            statement.close();
+            disconnect();
+        } catch (SQLException e) {
+            throw new RegisterExceptions("Error al crear y guardar el director: " + e.getMessage());
+        }catch(ConnectionException e){
             throw new RegisterExceptions(e.getMessage());
         }
     }

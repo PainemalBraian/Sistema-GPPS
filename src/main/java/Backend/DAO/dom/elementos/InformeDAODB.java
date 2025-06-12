@@ -15,7 +15,7 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
     public void create(Informe informe) throws CreateException {
         try (Connection conn = connect();
              PreparedStatement statement = conn.prepareStatement(
-                     "INSERT INTO Informes(titulo, descripcion, archivo_pdf, fecha, idActividad, porcentajeAvance) VALUES (?, ?, ?, ?, ?, ?)",
+                     "INSERT INTO Informes(titulo, descripcion, archivo_pdf, fecha, idActividad, porcentajeAvance, calificacionDocente, calificacionTutor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                      Statement.RETURN_GENERATED_KEYS
              )) {
 
@@ -26,6 +26,9 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
             int idActividad = new ActividadDAODB().buscarByTitulo(informe.getTituloActividad()).getID();
             statement.setInt(5, idActividad);
             statement.setInt(6, informe.getPorcentajeAvance());
+
+            statement.setInt(7, informe.getCalificacionDocente());
+            statement.setInt(8, informe.getCalificacionTutor());
 
             // Ejecutar el INSERT
             statement.executeUpdate();
@@ -79,6 +82,8 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
                         result.getString("descripcion"),
                         result.getBytes("archivo_pdf")
                 );
+                informe.setCalificacionDocente(result.getInt("calificacionDocente"));
+                informe.setCalificacionTutor(result.getInt("calificacionTutor"));
                 informe.setFecha(result.getDate("fecha").toLocalDate());
                 informe.setPorcentajeAvance(result.getInt("porcentajeAvance"));
                 informes.add(informe);
@@ -110,6 +115,8 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
                 LocalDate fecha = result.getDate("fecha").toLocalDate();
 
                 Informe informe = new Informe(idInforme, titulo, descripcion, archivo);
+                informe.setCalificacionDocente(result.getInt("calificacionDocente"));
+                informe.setCalificacionTutor(result.getInt("calificacionTutor"));
                 informe.setFecha(fecha);
                 informe.setPorcentajeAvance(result.getInt("porcentajeAvance"));
                 result.close();
@@ -142,6 +149,9 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
                 LocalDate fecha = result.getDate("fecha").toLocalDate();
 
                 Informe informe = new Informe(idInforme, titulo, descripcion, archivo);
+
+                informe.setCalificacionDocente(result.getInt("calificacionDocente"));
+                informe.setCalificacionTutor(result.getInt("calificacionTutor"));
                 informe.setFecha(fecha);
                 informe.setPorcentajeAvance(result.getInt("porcentajeAvance"));
                 result.close();
@@ -179,6 +189,38 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
         }
         catch (ConnectionException e) {
             throw new ReadException(e.getMessage());
+        }
+    }
+
+    public void update(Informe informe) throws CreateException {
+        String sql = "UPDATE Informes SET titulo = ?, descripcion = ?, archivo_pdf = ?, fecha = ?, idActividad = ?, porcentajeAvance = ?, calificacionDocente = ?, calificacionTutor = ? WHERE idInforme = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
+
+            statement.setString(1, informe.getTitulo());
+            statement.setString(2, informe.getDescripcion());
+            statement.setBytes(3, informe.getArchivoPDF());
+            statement.setDate(4, Date.valueOf(informe.getFecha()));
+            int idActividad = new ActividadDAODB().buscarByTitulo(informe.getTituloActividad()).getID();
+            statement.setInt(5, idActividad);
+            statement.setInt(6, informe.getPorcentajeAvance());
+            statement.setInt(7, informe.getCalificacionDocente());
+            statement.setInt(8, informe.getCalificacionTutor());
+            statement.setInt(9, informe.getID());
+
+            int rows = statement.executeUpdate();
+            if (rows == 0) {
+                throw new CreateException("No se actualizó ningún informe con ID: " + informe.getID());
+            }
+
+            // Actualiza relación también si lo considerás necesario
+            // actualizarRelacionInforme(conn, idActividad, informe.getID()); // solo si aplica
+
+        } catch (ConnectionException | ReadException e) {
+            throw new CreateException(e.getMessage());
+        } catch (SQLException e) {
+            throw new CreateException("Error al actualizar el informe: " + e.getMessage());
         }
     }
 
