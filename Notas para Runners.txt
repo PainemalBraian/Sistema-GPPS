@@ -1,4 +1,0 @@
-Darle permisos de ejecución si es que los requiere (Terminal)
-para runner Linux
-
-chmod +x run.sh

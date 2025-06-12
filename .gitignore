@@ -31,4 +31,10 @@ bin/
 
 
 # Ignorar JDK local
-.idea/libraries/jdk-24.0.1/
+.idea/libraries/Linux/jdk-24.0.1/
+.idea/libraries/Linux/openjdk-24.0.1/
+.idea/libraries/Windows/jdk-24.0.1/
+.idea/libraries/Windows/jdk-24.0.1/
+
+# ignorar SDK Linux
+.idea/libraries/Linux/javafx-sdk-24.0.1/
