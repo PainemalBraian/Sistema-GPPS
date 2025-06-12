@@ -3,3 +3,18 @@ para runner Linux
 
 chmod +x run.sh
 chmod +x configurar-jdk.sh
+
+
+IMPORTANTE
+Tener ubicado las carpetas de las librerias en las siguientes ubicaciónes del proyecto (Según SO)
+Respetar los nombres esperedos para cada libreria
+
+...\Sistema-GPPS\.idea\libraries\Linux
+JavaFXSDK ->	"javafx-sdk-24.0.1"
+JavaJDK -> 	"jdk-24.0.1"
+
+...\Sistema-GPPS\.idea\libraries\Windows
+JavaFXSDK ->	"javafx-sdk-24.0.1"
+JavaJDK -> 	"jdk-24.0.1"
+
+

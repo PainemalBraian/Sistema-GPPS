@@ -38,26 +38,36 @@ Situar la terminal en el directorio del proyecto "...\Sistema-GPPS"
 - mvn javafx:run      -> Ejecutar Proyecto
 
 ## Configuración del run para compilador (IntellIJ)
-Configurar Run del compilador. Agregar en sección (VM OPTION) . (Ajustar path objetivo del comando)
+Configurar Run del compilador. Agregar en sección (VM OPTION) . (Ajustar path objetivo del comando /Windows/ o /Linux/)
 
-- --module-path "C:\...\javafx-sdk-24.0.1\lib"
---add-modules javafx.controls,javafx.fxml
---enable-native-access=ALL-UNNAMED
---enable-native-access=javafx.graphics
-
+- `   --module-path "$PROJECT_DIR$/.idea/libraries/Windows/javafx-sdk-24.0.1/lib" --add-modules javafx.controls,javafx.fxml --enable-native-access=ALL-UNNAMED --enable-native-access=javafx.graphics 
+`
 ## Configuración de Variables de entorno del sistema (Si es solicitado)
+- AVISO
+  Los ejecutables del programa estan preparados para armar esto "automaticamente" pero si se necesita configurar manualmente seguir lo siguiente.
 
-Configuración de Variable de entorno del sistema (Variables del sistema)
+  En caso de error por versión incompatible se tendrá que ajustar la versión del jdk usado por el sistema.
+  Windows - Configuración de Variable de entorno del sistema (Variables del sistema)
+- Agregar en la variable de sistema "Path" el path Absoluto del "jdk-24.0.1\bin"
+- C:\Users\...\openjdk-24.0.1\bin
 
-- Agregar Path DIRECTORIO DEL SDK 24.0.1/bin
+  Linux - Si aparece un error por versión incompatible, podés configurar el JDK local con estos comandos.
+# 1. Ubicá la carpeta raíz del proyecto.
+- `   cd /ruta/hacia/el/proyecto/Sistema-GPPS
+`
+# 2. Configurar el JDK local
+- `    export JAVA_HOME="$PWD/.idea/libraries/Linux/jdk-24.0.1"
+`   
+- ` export PATH="$JAVA_HOME/bin:$PATH"
+`
+# 3. (Opcional) Verificar la version cargada
+- java -version
 
-- C:\Users\...\Sistema-GPPS\.idea\libraries\javafx-sdk-24.0.1\bin
-- C:\Users\...\openjdk-24\bin
-- C:\Users\...\Sistema-GPPS\.idea\libraries\javafx-sdk-24.0.1\lib
-- %JAVA_HOME24%\bin
 
+- (Opcional)
 - Nueva Variable
-- JAVA_HOME24
+- JAVA_HOME
+- %JAVA_HOME%\bin
 - C:\...\.jdks\openjdk-24.0.1
 
 ## Otros
