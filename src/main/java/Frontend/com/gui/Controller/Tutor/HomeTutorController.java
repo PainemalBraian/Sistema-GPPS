@@ -65,15 +65,6 @@ public class HomeTutorController {
         btnCerrarSesion.setText(bundle.getString("button.cerrarSesion"));
     }
 
-    @FXML
-    public void registrarProyecto(ActionEvent event) {
-        navegar("/Frontend/vistas/Tutor/registrarProyecto.fxml", "Registrar Proyecto", event);
-    }
-
-    @FXML
-    public void actualizarEmpresa(ActionEvent event) {
-        navegar("/Frontend/vistas/Tutor/actualizarEmpresa.fxml", "Actualizar Empresa", event);
-    }
 
     @FXML
     public void verSeguimiento(ActionEvent event) {

@@ -803,6 +803,21 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
         }
     }
 
+    @Override
+    public void actualizarCalificacionInforme(String titulo, int porcentajeInt) {
+
+    }
+
+    @Override
+    public void actualizarPorcentajeAvanceActividad(String username, String titulo, int porcentajeInt) {
+
+    }
+
+    @Override
+    public List<InformeDTO> obtenerInformesByEstudianteYActividad(String usernameEstudiante, String actividadTitulo) {
+        return List.of();
+    }
+
     private void cargarPropuestaDeConvenio(ProyectoDTO proyectoDTO, EstudianteDTO estudianteDTO, EntidadColaborativaDTO entidadDTO) throws CreateException {
         try {
             PlanDeTrabajo plan = new PlanDeTrabajo();

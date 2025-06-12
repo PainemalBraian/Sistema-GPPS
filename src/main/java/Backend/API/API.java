@@ -165,4 +165,10 @@ public interface API {
     PlanDeTrabajoDTO obtenerPlanByTitulo(String titulo) throws ReadException;
 
     List<EntidadColaborativaDTO> obtenerEntidadesColaborativas() throws ReadException;
+
+    void actualizarCalificacionInforme(String titulo, int porcentajeInt);
+
+    void actualizarPorcentajeAvanceActividad(String username, String titulo, int porcentajeInt);
+
+    List<InformeDTO> obtenerInformesByEstudianteYActividad(String usernameEstudiante, String actividadTitulo);
 }
