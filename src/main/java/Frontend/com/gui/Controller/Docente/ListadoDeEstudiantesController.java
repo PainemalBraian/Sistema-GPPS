@@ -6,7 +6,6 @@ import Backend.DTO.ConvenioPPSDTO;
 import Backend.DTO.EstudianteDTO;
 import Backend.Exceptions.ReadException;
 import Backend.Exceptions.UserException;
-import Frontend.com.gui.Controller.Estudiante.HomeController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +18,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,7 +41,7 @@ public class ListadoDeEstudiantesController {
 
     // Botones de acciones
     @FXML private Button verCronogramaButton;
-    @FXML private Button verAvancesButton;
+    @FXML private Button verConvenioButton;
     @FXML private Button verDetallesButton;
     @FXML private Button btnVolver;
 
@@ -239,30 +239,109 @@ public class ListadoDeEstudiantesController {
         EstudianteDTO estudiante = tablaEstudiantes.getSelectionModel().getSelectedItem();
         if (estudiante != null) {
             try {
-                // Aquí implementarías la navegación a la vista de cronograma
-                LOGGER.info("Abriendo cronograma para estudiante: " + estudiante.getNombre());
-                mostrarInfo("Cronograma", "Abriendo cronograma para: " + estudiante.getNombre());
-                // Ejemplo: navegarACronograma(estudiante);
+                List<ActividadDTO> actividades = api.obtenerActividadesByEstudianteUsername(estudiante.getUsername());
+
+                if (actividades == null || actividades.isEmpty()) {
+                    mostrarInfo("Cronograma", "El estudiante no tiene actividades registradas.");
+                    return;
+                }
+
+                // Ordenar por fecha de inicio
+                actividades.sort(Comparator.comparing(ActividadDTO::getFechaInicio));
+
+                StringBuilder cronograma = new StringBuilder();
+                cronograma.append("=== CRONOGRAMA DE ACTIVIDADES ===\n");
+                cronograma.append("Estudiante: ").append(estudiante.getNombre()).append("\n\n");
+
+                for (ActividadDTO actividad : actividades) {
+                    cronograma.append("➤ ").append(actividad.getTitulo()).append("\n");
+                    cronograma.append("   Fecha de inicio: ").append(actividad.getFechaInicio()).append("\n");
+                    cronograma.append("   Fecha de fin: ").append(actividad.getFechaFin()).append("\n");
+                    cronograma.append("   Duración estimada: ").append(actividad.getDuracion()).append(" horas\n");
+                    cronograma.append("   Informes entregados: ").append(
+                            actividad.getInformes() != null ? actividad.getInformes().size() : 0
+                    ).append("\n");
+
+                    LocalDate hoy = LocalDate.now();
+                    if (actividad.getFechaFin().isBefore(hoy)) {
+                        cronograma.append("   Estado: Finalizada\n");
+                    } else if (actividad.getFechaInicio().isAfter(hoy)) {
+                        cronograma.append("   Estado: Pendiente\n");
+                    } else {
+                        cronograma.append("   Estado: En curso\n");
+                    }
+
+                    cronograma.append("-----------------------------\n");
+                }
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Cronograma del Estudiante");
+                alert.setHeaderText("Distribución temporal de actividades");
+                alert.setContentText(cronograma.toString());
+                alert.getDialogPane().setPrefSize(500, 400);
+                alert.showAndWait();
+
+                LOGGER.info("Mostrando cronograma para estudiante: " + estudiante.getNombre());
             } catch (Exception e) {
-                mostrarAlerta("Error", "Error al abrir cronograma: " + e.getMessage());
+                mostrarAlerta("Error", "Error al obtener el cronograma: " + e.getMessage());
             }
         }
     }
 
+
     @FXML
-    private void verAvances() {
-        EstudianteDTO estudiante = tablaEstudiantes.getSelectionModel().getSelectedItem();
-        if (estudiante != null) {
-            try {
-                // Aquí implementarías la navegación a la vista de avances
-                LOGGER.info("Abriendo avances para estudiante: " + estudiante.getNombre());
-                mostrarInfo("Avances", "Abriendo avances para: " + estudiante.getNombre());
-                // Ejemplo: navegarAAvances(estudiante);
-            } catch (Exception e) {
-                mostrarAlerta("Error", "Error al abrir avances: " + e.getMessage());
+    private void verConvenio() {
+            EstudianteDTO estudiante = tablaEstudiantes.getSelectionModel().getSelectedItem();
+            if (estudiante != null) {
+                try {
+                    ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(estudiante.getUsername());
+
+                    if (convenio == null) {
+                        mostrarInfo("Convenio", "El estudiante no tiene un convenio registrado.");
+                        return;
+                    }
+
+                    StringBuilder info = new StringBuilder();
+                    info.append("=== CONVENIO DEL ESTUDIANTE ===\n");
+                    info.append("Estudiante: ").append(estudiante.getNombre()).append("\n\n");
+
+                    info.append("Título del convenio: ").append(convenio.getTitulo()).append("\n");
+                    info.append("Descripción: ").append(convenio.getDescripcion()).append("\n\n");
+
+                    if (convenio.getProyecto() != null) {
+                        info.append("Proyecto: ").append(convenio.getProyecto().getTitulo()).append("\n");
+                    }
+
+                    if (convenio.getEntidad() != null) {
+                        info.append("Entidad colaboradora: ").append(convenio.getEntidad().getNombre()).append("\n");
+                    }
+
+                    if (convenio.getDocente() != null) {
+                        info.append("Docente responsable: ").append(convenio.getDocente().getNombre()).append("\n");
+                    }
+
+                    if (convenio.getTutor() != null) {
+                        info.append("Tutor externo: ").append(convenio.getTutor().getNombre()).append("\n");
+                    }
+
+                    info.append("Estado: ").append(convenio.isHabilitado() ? "Habilitado" : "No habilitado").append("\n");
+
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Convenio del Estudiante");
+                    alert.setHeaderText("Información del convenio");
+                    alert.setContentText(info.toString());
+                    alert.getDialogPane().setPrefSize(500, 400);
+                    alert.showAndWait();
+
+                    LOGGER.info("Mostrando convenio para estudiante: " + estudiante.getNombre());
+                } catch (Exception e) {
+                    mostrarAlerta("Error", "Error al obtener el convenio: " + e.getMessage());
             }
         }
+
     }
+
 
     @FXML
     private void verDetalles() {
@@ -339,7 +418,7 @@ public class ListadoDeEstudiantesController {
 
     private void actualizarBotonesAccion(boolean habilitado) {
         verCronogramaButton.setDisable(!habilitado);
-        verAvancesButton.setDisable(!habilitado);
+        verConvenioButton.setDisable(!habilitado);
         verDetallesButton.setDisable(!habilitado);
     }
 

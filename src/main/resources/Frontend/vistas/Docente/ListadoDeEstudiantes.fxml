@@ -59,7 +59,7 @@
 
                     <Button fx:id="verCronogramaButton" onAction="#verCronograma" prefHeight="50.0" prefWidth="180.0" styleClass="action-button" text="📅 Ver Cronograma" />
 
-                    <Button fx:id="verAvancesButton" onAction="#verAvances" prefHeight="50.0" prefWidth="180.0" styleClass="action-button" text="📊 Ver Avances" />
+                    <Button fx:id="verConvenioButton" onAction="#verConvenio" prefHeight="50.0" prefWidth="180.0" styleClass="action-button" text="📊 Ver Convenio" />
 
                     <Button fx:id="verDetallesButton" onAction="#verDetalles" prefHeight="50.0" prefWidth="180.0" styleClass="action-button" text="📋 Ver Detalles" />
 
