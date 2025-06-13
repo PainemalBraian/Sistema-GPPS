@@ -742,6 +742,32 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
     }
 
     @Override
+    public void actualizarCalificacionInformeTutor(String tituloInforme, int calificacionTutor) throws CreateException {
+        try {
+            String tituloLimpio = tituloInforme.trim();
+            Informe informe = InformeDAODB.buscarByTitulo(tituloLimpio);
+
+            if (informe == null) {
+                informe = buscarInformePorTituloFlexible(tituloLimpio);
+            }
+
+            if (informe == null) {
+                throw new CreateException("No se encontró el informe con título: '" + tituloLimpio + "'");
+            }
+
+            informe.setCalificacionTutor(calificacionTutor);
+            InformeDAODB.update(informe);
+
+        } catch (CreateException e) {
+            throw e;
+        } catch (ReadException e) {
+            throw new CreateException("Error al leer el informe: " + e.getMessage());
+        } catch (Exception e) {
+            throw new CreateException("Error inesperado al actualizar calificación: " + e.getMessage());
+        }
+    }
+
+    @Override
     public void actualizarCalificacionInformeDocente(String tituloInforme, int calificacionDocente) throws CreateException {
         try {
             String tituloLimpio = tituloInforme.trim();
@@ -813,18 +839,6 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
         }
 
         return null;
-    }
-
-    @Override
-    public void actualizarCalificacionInformeTutor(String tituloInforme, int calificacionTutor) throws CreateException {
-        try {
-            Informe informe = InformeDAODB.buscarByTitulo(tituloInforme);
-            informe.setCalificacionTutor(calificacionTutor);
-            InformeDAODB.update(informe);
-
-        } catch (CreateException | ReadException e) {
-            throw new CreateException(e.getMessage());
-        }
     }
 
     @Override

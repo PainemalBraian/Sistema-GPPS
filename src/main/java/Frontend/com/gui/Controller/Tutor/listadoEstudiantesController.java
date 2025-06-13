@@ -86,7 +86,7 @@ public class listadoEstudiantesController {
         // Obtener listado de estudiantes
         List<EstudianteDTO> estudiantes = null;
         try {
-            estudiantes = api.obtenerEstudiantesByDocenteUsername(api.obtenerUsername());
+            estudiantes = api.obtenerEstudiantesByTutorUsername(api.obtenerUsername());
         } catch (ReadException | UserException e) {
             mostrarAlerta("No se pudo cargar tabla", e.getMessage());
         }
@@ -182,7 +182,7 @@ public class listadoEstudiantesController {
         listaEstudiantes.clear();
 
         try {
-            List<EstudianteDTO> estudiantes = api.obtenerEstudiantesByDocenteUsername(api.obtenerUsername());
+            List<EstudianteDTO> estudiantes = api.obtenerEstudiantesByTutorUsername(api.obtenerUsername());
             listaEstudiantes.setAll(estudiantes);
             LOGGER.info("Cargados " + estudiantes.size() + " estudiantes");
 

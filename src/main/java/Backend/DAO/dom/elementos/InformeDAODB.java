@@ -204,13 +204,15 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
             throw new CreateException("El título del informe no puede estar vacío");
         }
 
-        String sql = "UPDATE Informes SET calificacionDocente = ? WHERE titulo = ?";
+        // SQL que actualiza ambos campos de calificación
+        String sql = "UPDATE Informes SET calificacionDocente = ?, calificacionTutor = ? WHERE titulo = ?";
 
         try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, informe.getCalificacionDocente());
-            stmt.setString(2, informe.getTitulo().trim());
+            stmt.setInt(2, informe.getCalificacionTutor());
+            stmt.setString(3, informe.getTitulo().trim());
 
             int filasAfectadas = stmt.executeUpdate();
 
