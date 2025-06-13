@@ -13,6 +13,7 @@ public class Actividad extends Item{
     private int duracion;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
+    private int porcentajeAvance;
     private Boolean calificacion; // null por defecto, indicando "no cargada".
 
     public Actividad() {
@@ -77,6 +78,10 @@ public class Actividad extends Item{
         return fechaInicio;
     }
 
+    public int getPorcentajeAvance() {
+        return porcentajeAvance;
+    }
+
     //////////////// SETTERS //////////////////////////////////////////////////////
     public void setInformes(List <Informe> informes) throws EmptyException {
         if (informes == null) {throw new EmptyException("La lista de informes no debe estar vacia.");}
@@ -102,4 +107,11 @@ public class Actividad extends Item{
         this.fechaInicio = fechaInicio;
     }
 
+    public void setPorcentajeAvance(int porcentajeAvance) throws EmptyException {
+        if (porcentajeAvance < 0 || porcentajeAvance > 100)
+            throw new EmptyException("El porcentaje debe ser valido y estar entre 0 - 100.");
+        if (isNull(porcentajeAvance))
+            porcentajeAvance = 0;
+        this.porcentajeAvance = porcentajeAvance;
+    }
 }

@@ -52,15 +52,15 @@ Configurar Run del compilador. Agregar en sección (VM OPTION) . (Ajustar path o
 - C:\Users\...\openjdk-24.0.1\bin
 
   Linux - Si aparece un error por versión incompatible, podés configurar el JDK local con estos comandos.
-# 1. Ubicá la carpeta raíz del proyecto.
+ 1. Ubicá la carpeta raíz del proyecto.
 - `   cd /ruta/hacia/el/proyecto/Sistema-GPPS
 `
-# 2. Configurar el JDK local
+ 2. Configurar el JDK local
 - `    export JAVA_HOME="$PWD/.idea/libraries/Linux/jdk-24.0.1"
 `   
 - ` export PATH="$JAVA_HOME/bin:$PATH"
 `
-# 3. (Opcional) Verificar la version cargada
+ 3. (Opcional) Verificar la version cargada
 - java -version
 
 

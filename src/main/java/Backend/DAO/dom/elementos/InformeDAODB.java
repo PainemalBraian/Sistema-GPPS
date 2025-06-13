@@ -10,12 +10,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.sql.DriverManager.getConnection;
+
 public class InformeDAODB extends DBAcces implements INFORMEDAO {
     @Override
     public void create(Informe informe) throws CreateException {
         try (Connection conn = connect();
              PreparedStatement statement = conn.prepareStatement(
-                     "INSERT INTO Informes(titulo, descripcion, archivo_pdf, fecha, idActividad, porcentajeAvance) VALUES (?, ?, ?, ?, ?, ?)",
+                     "INSERT INTO Informes(titulo, descripcion, archivo_pdf, fecha, idActividad, porcentajeAvance, calificacionDocente, calificacionTutor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                      Statement.RETURN_GENERATED_KEYS
              )) {
 
@@ -26,6 +28,9 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
             int idActividad = new ActividadDAODB().buscarByTitulo(informe.getTituloActividad()).getID();
             statement.setInt(5, idActividad);
             statement.setInt(6, informe.getPorcentajeAvance());
+
+            statement.setInt(7, informe.getCalificacionDocente());
+            statement.setInt(8, informe.getCalificacionTutor());
 
             // Ejecutar el INSERT
             statement.executeUpdate();
@@ -79,6 +84,8 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
                         result.getString("descripcion"),
                         result.getBytes("archivo_pdf")
                 );
+                informe.setCalificacionDocente(result.getInt("calificacionDocente"));
+                informe.setCalificacionTutor(result.getInt("calificacionTutor"));
                 informe.setFecha(result.getDate("fecha").toLocalDate());
                 informe.setPorcentajeAvance(result.getInt("porcentajeAvance"));
                 informes.add(informe);
@@ -93,6 +100,7 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
             throw new ReadException(e.getMessage());
         }
     }
+
 
     @Override
     public Informe buscarByID(int id) throws ReadException {
@@ -110,6 +118,8 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
                 LocalDate fecha = result.getDate("fecha").toLocalDate();
 
                 Informe informe = new Informe(idInforme, titulo, descripcion, archivo);
+                informe.setCalificacionDocente(result.getInt("calificacionDocente"));
+                informe.setCalificacionTutor(result.getInt("calificacionTutor"));
                 informe.setFecha(fecha);
                 informe.setPorcentajeAvance(result.getInt("porcentajeAvance"));
                 result.close();
@@ -142,6 +152,9 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
                 LocalDate fecha = result.getDate("fecha").toLocalDate();
 
                 Informe informe = new Informe(idInforme, titulo, descripcion, archivo);
+
+                informe.setCalificacionDocente(result.getInt("calificacionDocente"));
+                informe.setCalificacionTutor(result.getInt("calificacionTutor"));
                 informe.setFecha(fecha);
                 informe.setPorcentajeAvance(result.getInt("porcentajeAvance"));
                 result.close();
@@ -179,6 +192,38 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
         }
         catch (ConnectionException e) {
             throw new ReadException(e.getMessage());
+        }
+    }
+
+    public void update(Informe informe) throws CreateException {
+        if (informe == null) {
+            throw new CreateException("El informe no puede ser null");
+        }
+
+        if (informe.getTitulo() == null || informe.getTitulo().trim().isEmpty()) {
+            throw new CreateException("El título del informe no puede estar vacío");
+        }
+
+        // SQL que actualiza ambos campos de calificación
+        String sql = "UPDATE Informes SET calificacionDocente = ?, calificacionTutor = ? WHERE titulo = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, informe.getCalificacionDocente());
+            stmt.setInt(2, informe.getCalificacionTutor());
+            stmt.setString(3, informe.getTitulo().trim());
+
+            int filasAfectadas = stmt.executeUpdate();
+
+            if (filasAfectadas == 0) {
+                throw new CreateException("No se encontró el informe en la base de datos para actualizar");
+            }
+
+        } catch (SQLException e) {
+            throw new CreateException("Error de base de datos al actualizar el informe: " + e.getMessage());
+        } catch (ConnectionException e) {
+            throw new RuntimeException(e);
         }
     }
 

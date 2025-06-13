@@ -83,7 +83,8 @@ CREATE TABLE Actividades (
     descripcion TEXT,
     fechaInicio DATE NOT NULL,
     fechaFin DATE NOT NULL,
-    calificacion BOOLEAN DEFAULT NULL -- NULL indica "calificación no cargada"
+    calificacion BOOLEAN DEFAULT NULL, -- NULL indica "calificación no cargada"
+	porcentajeAvance int
 );
 
 CREATE TABLE Informes (
@@ -94,6 +95,8 @@ CREATE TABLE Informes (
     porcentajeAvance INT,
     archivo_pdf LONGBLOB, -- Contenido del PDF
     fecha DATE NOT NULL,
+    calificacionDocente int,
+    calificacionTutor int,
     FOREIGN KEY (idActividad) REFERENCES Actividades(idActividad)
 );
 
@@ -134,6 +137,14 @@ CREATE TABLE Relacion_Docente_Estudiantes(
     FOREIGN KEY (idEstudiante) REFERENCES Estudiantes(idEstudiante), 
     FOREIGN KEY (idDocente) REFERENCES Docentes(idDocente),
     PRIMARY KEY (idEstudiante, idDocente)  -- Evita duplicados
+);
+
+CREATE TABLE Relacion_Tutor_Estudiantes(
+    idEstudiante INT NOT NULL,
+    idTutor INT NOT NULL,
+    FOREIGN KEY (idEstudiante) REFERENCES Estudiantes(idEstudiante), 
+    FOREIGN KEY (idTutor) REFERENCES tutoresexternos(idTutor),
+    PRIMARY KEY (idEstudiante, idTutor)  -- Evita duplicados
 );
 
 CREATE TABLE Relacion_Tutor_Proyectos(
@@ -268,8 +279,8 @@ INSERT INTO TutoresExternos (idTutor, idUsuario, nombreEntidadColaborativa) VALU
 
 INSERT INTO PlanesDeTrabajos (titulo, descripcion, habilitado, idDocente, idTutor, idInformeFinal) VALUES
 ('Plan Energía Solar', 'Plan de trabajo para proyecto solar', true, 2, 4, null),
-('Plan IoT', 'Plan de trabajo para proyecto IoT', true, 2, 4, null),
-('Plan SiS', 'Plan de trabajo para proyecto SiS', true, 2, 4, null);
+('Plan IoT', 'Plan de trabajo para proyecto IoT', true, 10, 16, null),
+('Plan SiS', 'Plan de trabajo para proyecto SiS', true, 11, 17, null);
 
 INSERT INTO PlanesDeTrabajos (idPlanDeTrabajo,titulo, descripcion, habilitado, idDocente, idTutor, idInformeFinal) VALUES
 (-10,'A Definir', 'A Definir', false, -10, -10, null);
@@ -278,30 +289,33 @@ INSERT INTO PlanesDeTrabajos (idPlanDeTrabajo,titulo, descripcion, habilitado, i
 INSERT INTO Proyectos (titulo, habilitado, descripcion, areaDeInteres, ubicacion, objetivos, requisitos, idTutor) VALUES
 ('Proyecto Solar', true, 'Proyecto de energías renovables', 'Energía', 'Campus Universitario', 'Desarrollar paneles solares', 'Conocimientos en energías renovables', 4),
 ('Proyecto IoT', true, 'Proyecto de dispositivos inteligentes', 'Tecnología', 'Edificio de Informática', 'Crear dispositivos inteligentes', 'Conocimientos en electrónica', 4),
-('Proyecto SiS', true, 'Proyecto de Afinidad de conomientos Teóricos', 'Sistemas', 'Salón de informatica', 'Planificación organizada de técnicas de la carrera', 'Conocimientos teoricos de Licenciatura en Sistemas', 4);
+('Proyecto SiS', true, 'Proyecto de Afinidad de conomientos Teóricos', 'Sistemas', 'Salón de informatica', 'Planificación organizada de técnicas de la carrera', 'Conocimientos teoricos de Licenciatura en Sistemas', 4),
+('Proyecto AgroTech', true, 'Tecnología aplicada al agro para mejorar la producción', 'Agrotecnología', 'Campo Experimental UNRN', 'Desarrollar sensores para monitoreo de cultivos', 'Conocimientos en IoT y agronomía', 16),
+('Proyecto SaludApp', true, 'Aplicación móvil para seguimiento de pacientes crónicos', 'Salud', 'Hospital Escuela', 'Implementar una app con alertas médicas', 'Conocimientos en desarrollo móvil y salud digital', 17),
+('Proyecto EcoUrbano', true, 'Planificación urbana sustentable', 'Urbanismo', 'Municipalidad de Viedma', 'Diseñar espacios públicos sostenibles', 'Conocimientos en urbanismo y medio ambiente', 18);
 
 -- Convenios PPS
 INSERT INTO ConveniosPPS (titulo, descripcion, habilitado, idProyecto, idEstudiante, idEntidad, idPlan) VALUES
 ('Convenio IoT Inteligente', 'Convenio para dispositivos inteligentes', true, 1, 1, 3, 1),
-('Convenio Energía Renovable', 'Convenio para desarrollar paneles solares', true, 2, 1, 3, 2),
-('Convenio Practicantes', 'Convenio para practicas estudiantiles', true, 3, 1, 3, 3);
+('Convenio Energía Renovable', 'Convenio para desarrollar paneles solares', true, 2, 7, 13, 2),
+('Convenio Practicantes', 'Convenio para practicas estudiantiles', true, 3, 8, 14, 3);
 
 
 -- Actividades
-INSERT INTO Actividades (titulo, duracion, descripcion, fechaInicio, fechaFin, calificacion) VALUES
-('Actividad Inicial', 20, 'Introducción al proyecto', '2024-12-20', '2024-12-30', NULL),
-('Actividad Avanzada', 30, 'Desarrollo de funcionalidades', '2024-12-10', '2024-12-30', NULL),
-('Actividad Intermedia 1', 15, 'Definición de Requerimientos', '2024-12-01', '2024-12-30', NULL),
-('Actividad Intermedia 2', 20, 'Definición de Casos de Usos', '2024-12-02', '2024-12-30', NULL),
-('Actividad Intermedia 3', 25, 'Definición de Diagrama de Clases', '2024-12-03', '2024-12-30', NULL);
+INSERT INTO Actividades (titulo, duracion, descripcion, fechaInicio, fechaFin, calificacion, porcentajeAvance) VALUES
+('Actividad Inicial', 20, 'Introducción al proyecto', '2024-12-20', '2024-12-30', NULL,20),
+('Actividad Avanzada', 30, 'Desarrollo de funcionalidades', '2024-12-10', '2024-12-30', NULL,30),
+('Actividad Intermedia 1', 15, 'Definición de Requerimientos', '2024-12-01', '2024-12-30', NULL,40),
+('Actividad Intermedia 2', 20, 'Definición de Casos de Usos', '2024-12-02', '2024-12-30', NULL,0),
+('Actividad Intermedia 3', 25, 'Definición de Diagrama de Clases', '2024-12-03', '2024-12-30', NULL,0);
 
-INSERT INTO Informes (idActividad, titulo, descripcion, archivo_pdf, fecha) VALUES
-(1, 'Informe Act Inicial','Descripcion A', NULL, '2024-12-31'),
-(1, 'Informe Act Inicial 1','Descripcion B', NULL, '2024-12-25'),
-(1, 'Informe Act Inicial 2','Descripcion C', NULL, '2024-12-20'),
-(2, 'Informe Act Avanzada 1','Descripcion D', NULL, '2024-12-23'),
-(2, 'Informe Act Avanzada 2','Descripcion E', NULL, '2025-01-15'),
-(3, 'Informe Act Intermedia','Descripcion F', NULL, '2024-12-15');
+INSERT INTO Informes (idActividad, titulo, descripcion, archivo_pdf, fecha, calificacionDocente, calificacionTutor) VALUES
+(1, 'Informe Act Inicial','Descripcion A', NULL, '2024-12-31',50,70),
+(1, 'Informe Act Inicial 1','Descripcion B', NULL, '2024-12-25',60,80),
+(1, 'Informe Act Inicial 2','Descripcion C', NULL, '2024-12-20',40,50),
+(2, 'Informe Act Avanzada 1','Descripcion D', NULL, '2024-12-23',10,15),
+(2, 'Informe Act Avanzada 2','Descripcion E', NULL, '2025-01-15',20,20),
+(3, 'Informe Act Intermedia','Descripcion F', NULL, '2024-12-15',0,0);
 
 -- Relaciones
 
@@ -316,8 +330,14 @@ INSERT INTO Relacion_Tutor_Proyectos (idTutor, idProyecto) VALUES
 (4, 3);
 
 INSERT INTO Relacion_Docente_Estudiantes (idDocente, idEstudiante) VALUES
-(2, 1);
+(2, 1),
+(2, 7),
+(2, 8);
 
+INSERT INTO Relacion_Tutor_Estudiantes (idTutor, idEstudiante) VALUES
+(4, 1),
+(4, 7),
+(4, 8);
 
 INSERT INTO Relacion_Actividad_Informes (idActividad, idInforme) VALUES
 (1, 1),
@@ -333,4 +353,5 @@ INSERT INTO Relacion_PlanDeTrabajo_Actividades (idPlan, idActividad) VALUES
 (3, 3), -- Plan SiS incluye Actividad Intermedia 1
 (3, 4), -- Plan SiS incluye Actividad Intermedia 2
 (3, 5); -- Plan SiS incluye Actividad Intermedia 3
+
 

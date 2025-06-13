@@ -24,13 +24,14 @@ public class EstudianteDAODB extends DBAcces implements ESTUDIANTEDAO {
         try {
             Connection conn = connect();
             PreparedStatement statement = conn.prepareStatement(
-                    "INSERT INTO Estudiantes(idUsuario, matricula, carrera) " +
-                            "VALUES (?, ?, ?)"
+                    "INSERT INTO Estudiantes(idUsuario, matricula, carrera,idEstudiante) " +
+                            "VALUES (?, ?, ?, ?)"
             );
-            statement.setInt(1, UsuarioDAODB.create(estudiante));
+            int id = UsuarioDAODB.create(estudiante);
+            statement.setInt(1, id);
             statement.setString(2, estudiante.getMatricula());
             statement.setString(3, estudiante.getCarrera());
-
+            statement.setInt(4, id);
             statement.executeUpdate();
             statement.close();
             disconnect();

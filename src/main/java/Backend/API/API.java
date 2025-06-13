@@ -128,6 +128,8 @@ public interface API {
     //check
     List<EstudianteDTO> obtenerEstudiantesByDocenteUsername(String username) throws ReadException;
 
+    List<EstudianteDTO> obtenerEstudiantesByTutorUsername(String username) throws ReadException;
+
     //check
     void inscribirEstudiante(UsuarioDTO estudiante, ProyectoDTO proyecto) throws CreateException;
 
@@ -145,6 +147,20 @@ public interface API {
 
     //check
     void actualizarPlanDeTrabajo(PlanDeTrabajoDTO plan) throws CreateException;
+
+
+    void actualizarInforme(InformeDTO informe) throws CreateException;
+
+
+    void actualizarActividad(ActividadDTO actividad) throws CreateException;
+
+
+    void actualizarCalificacionInformeDocente(String tituloInforme, int calificacionDocente) throws CreateException;
+
+    void actualizarCalificacionInformeTutor(String tituloInforme, int calificacionTutor) throws CreateException;
+
+
+    void actualizarPorcentajeAvanceActividad(String username, String actividad, int porcentaje) throws CreateException;
 
     //check
     String director_getConveniosActivosCount();
@@ -165,4 +181,6 @@ public interface API {
     PlanDeTrabajoDTO obtenerPlanByTitulo(String titulo) throws ReadException;
 
     List<EntidadColaborativaDTO> obtenerEntidadesColaborativas() throws ReadException;
+
+
 }
