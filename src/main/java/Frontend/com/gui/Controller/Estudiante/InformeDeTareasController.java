@@ -42,7 +42,8 @@ public class InformeDeTareasController {
     @FXML private TableView<InformeDTO> informesTableView;
     @FXML private TableColumn<InformeDTO, String> colTituloInforme;
     @FXML private TableColumn<InformeDTO, LocalDate> colFechaInforme;
-    @FXML private TableColumn<InformeDTO, String> colPorcentajeInforme;
+    @FXML private TableColumn<InformeDTO, Integer> colCalificacionDocente;
+    @FXML private TableColumn<InformeDTO, Integer> colCalificacionTutor;
     @FXML private TableColumn<InformeDTO, Void> colContenidoInforme;
 
     private API api;
@@ -97,7 +98,8 @@ public class InformeDeTareasController {
     private void configurarTableViewInformes() {
         colTituloInforme.setCellValueFactory(new PropertyValueFactory<>("titulo"));
         colFechaInforme.setCellValueFactory(new PropertyValueFactory<>("fecha"));
-        colPorcentajeInforme.setCellValueFactory(new PropertyValueFactory<>("porcentajeAvance"));
+        colCalificacionDocente.setCellValueFactory(new PropertyValueFactory<>("calificacionDocente"));
+        colCalificacionTutor.setCellValueFactory(new PropertyValueFactory<>("calificacionTutor"));
 
         colContenidoInforme.setCellFactory(new Callback<TableColumn<InformeDTO, Void>, TableCell<InformeDTO, Void>>() {
             @Override

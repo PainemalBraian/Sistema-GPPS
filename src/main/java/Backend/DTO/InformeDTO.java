@@ -9,6 +9,7 @@ public class InformeDTO extends ItemDTO{
     private int calificacionDocente;
     private int calificacionTutor;
 
+
     public InformeDTO(int id, String titulo, String descripcion, byte[] archivo,LocalDate fecha, int porcentajeAvance) {
         super(id, titulo, descripcion);
         this.archivo = archivo;
