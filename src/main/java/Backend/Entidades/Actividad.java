@@ -56,7 +56,7 @@ public class Actividad extends Item{
 
 //////////////// GETTERS //////////////////////////////////////////////////////
     public Boolean getCalificacion() throws EmptyException {
-        if (calificacion == null) {throw new EmptyException("Calificación no cargada");}
+//        if (calificacion == null) {throw new EmptyException("Calificación no cargada");}
 
         return calificacion;
     }

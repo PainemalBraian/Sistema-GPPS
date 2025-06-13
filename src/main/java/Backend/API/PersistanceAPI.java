@@ -479,6 +479,9 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
                     actividad.getDescripcion(), actividad.getFechaFin(), actividad.getDuracion(),
                     actividad.getFechaInicio());
 
+            actividadDTO.setCalificacion(actividad.getCalificacion());
+            actividadDTO.setPorcentajeAvance(actividad.getPorcentajeAvance());
+
             if (actividad.getInformes()!=null){
                 List<InformeDTO> informes = convertirAListaInformesDTO(actividad.getInformes());
                 actividadDTO.setInformes(informes);}
@@ -1115,6 +1118,8 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
             informesDTO.add(convertirAInformeDTO(informe));
         }
         actividadDTO.setInformes(informesDTO);
+        actividadDTO.setCalificacion(actividad.getCalificacion());
+        actividadDTO.setPorcentajeAvance(actividad.getPorcentajeAvance());
         return actividadDTO;
     }
 
@@ -1122,7 +1127,10 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
         if (informe == null)
             return new InformeDTO();
 //            throw new EmptyException("El informe que se intenta convertir no existe.");
-        return new InformeDTO(informe.getID(),informe.getTitulo(),informe.getDescripcion(),informe.getArchivoPDF(),informe.getFecha(),-1);
+        InformeDTO informeDTO = new InformeDTO(informe.getID(),informe.getTitulo(),informe.getDescripcion(),informe.getArchivoPDF(),informe.getFecha(),-1);
+        informeDTO.setCalificacionDocente(informe.getCalificacionDocente());
+        informeDTO.setCalificacionTutor(informe.getCalificacionTutor());
+        return informeDTO;
 
     }
 

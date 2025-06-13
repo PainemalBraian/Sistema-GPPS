@@ -42,8 +42,8 @@ public class InformeDeTareasController {
     @FXML private TableView<InformeDTO> informesTableView;
     @FXML private TableColumn<InformeDTO, String> colTituloInforme;
     @FXML private TableColumn<InformeDTO, LocalDate> colFechaInforme;
-    @FXML private TableColumn<InformeDTO, String> colCalificacionDocente;
-    @FXML private TableColumn<InformeDTO, String> colCalificacionTutor;
+    @FXML private TableColumn<InformeDTO, Integer> colCalificacionDocente;
+    @FXML private TableColumn<InformeDTO, Integer> colCalificacionTutor;
     @FXML private TableColumn<InformeDTO, Void> colContenidoInforme;
 
     private API api;
