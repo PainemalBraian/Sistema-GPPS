@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.sql.DriverManager.getConnection;
+
 public class InformeDAODB extends DBAcces implements INFORMEDAO {
     @Override
     public void create(Informe informe) throws CreateException {
@@ -98,6 +100,7 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
             throw new ReadException(e.getMessage());
         }
     }
+
 
     @Override
     public Informe buscarByID(int id) throws ReadException {
@@ -193,34 +196,32 @@ public class InformeDAODB extends DBAcces implements INFORMEDAO {
     }
 
     public void update(Informe informe) throws CreateException {
-        String sql = "UPDATE Informes SET titulo = ?, descripcion = ?, archivo_pdf = ?, fecha = ?, idActividad = ?, porcentajeAvance = ?, calificacionDocente = ?, calificacionTutor = ? WHERE idInforme = ?";
+        if (informe == null) {
+            throw new CreateException("El informe no puede ser null");
+        }
+
+        if (informe.getTitulo() == null || informe.getTitulo().trim().isEmpty()) {
+            throw new CreateException("El título del informe no puede estar vacío");
+        }
+
+        String sql = "UPDATE Informes SET calificacionDocente = ? WHERE titulo = ?";
 
         try (Connection conn = connect();
-             PreparedStatement statement = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            statement.setString(1, informe.getTitulo());
-            statement.setString(2, informe.getDescripcion());
-            statement.setBytes(3, informe.getArchivoPDF());
-            statement.setDate(4, Date.valueOf(informe.getFecha()));
-            int idActividad = new ActividadDAODB().buscarByTitulo(informe.getTituloActividad()).getID();
-            statement.setInt(5, idActividad);
-            statement.setInt(6, informe.getPorcentajeAvance());
-            statement.setInt(7, informe.getCalificacionDocente());
-            statement.setInt(8, informe.getCalificacionTutor());
-            statement.setInt(9, informe.getID());
+            stmt.setInt(1, informe.getCalificacionDocente());
+            stmt.setString(2, informe.getTitulo().trim());
 
-            int rows = statement.executeUpdate();
-            if (rows == 0) {
-                throw new CreateException("No se actualizó ningún informe con ID: " + informe.getID());
+            int filasAfectadas = stmt.executeUpdate();
+
+            if (filasAfectadas == 0) {
+                throw new CreateException("No se encontró el informe en la base de datos para actualizar");
             }
 
-            // Actualiza relación también si lo considerás necesario
-            // actualizarRelacionInforme(conn, idActividad, informe.getID()); // solo si aplica
-
-        } catch (ConnectionException | ReadException e) {
-            throw new CreateException(e.getMessage());
         } catch (SQLException e) {
-            throw new CreateException("Error al actualizar el informe: " + e.getMessage());
+            throw new CreateException("Error de base de datos al actualizar el informe: " + e.getMessage());
+        } catch (ConnectionException e) {
+            throw new RuntimeException(e);
         }
     }
 

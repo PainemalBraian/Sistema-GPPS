@@ -278,7 +278,7 @@ public class evaluarInformesController {
         }
 
         try {
-            List<InformeDTO> informes = api.obtenerInformesByEstudianteYActividad(usernameEstudiante, actividadTitulo);
+            List<InformeDTO> informes = api.obtenerInformesByActividadTitulo(actividadTitulo);
 
             if (informes != null && !informes.isEmpty()) {
                 ObservableList<InformeDTO> informesObservable = FXCollections.observableArrayList(informes);
@@ -315,7 +315,7 @@ public class evaluarInformesController {
                 }
 
                 // Actualizar la calificación del informe
-                api.actualizarCalificacionInforme(informe.getTitulo(), porcentajeInt);
+                api.actualizarCalificacionInformeTutor(informe.getTitulo(), porcentajeInt);
 
                 // Refrescar la tabla
                 EstudianteDTO estudianteSeleccionado = estudiantesComboBox.getValue();

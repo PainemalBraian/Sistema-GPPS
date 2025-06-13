@@ -142,7 +142,6 @@ public class EvaluarInformesController {
     private void configurarTableViewInformes() {
         colTituloInforme.setCellValueFactory(new PropertyValueFactory<>("titulo"));
         colFechaInforme.setCellValueFactory(new PropertyValueFactory<>("fecha"));
-        btnCalificar.setCellValueFactory(new PropertyValueFactory<>("porcentajeAvance"));
 
         // Configurar la columna de calificar con botones
         btnCalificar.setCellFactory(new Callback<TableColumn<InformeDTO, String>, TableCell<InformeDTO, String>>() {
@@ -221,6 +220,7 @@ public class EvaluarInformesController {
         try {
             // Obtener todos los estudiantes disponibles
             List<EstudianteDTO> estudiantes = api.obtenerEstudiantesByDocenteUsername(api.obtenerUsername());
+            System.out.println();
 
             if (estudiantes != null && !estudiantes.isEmpty()) {
                 listaEstudiantes.clear();
@@ -278,7 +278,7 @@ public class EvaluarInformesController {
         }
 
         try {
-            List<InformeDTO> informes = api.obtenerInformesByEstudianteYActividad(usernameEstudiante, actividadTitulo);
+            List<InformeDTO> informes = api.obtenerInformesByActividadTitulo(actividadTitulo);
 
             if (informes != null && !informes.isEmpty()) {
                 ObservableList<InformeDTO> informesObservable = FXCollections.observableArrayList(informes);
@@ -314,11 +314,28 @@ public class EvaluarInformesController {
                     return;
                 }
 
-                // Actualizar la calificación del informe
-                api.actualizarCalificacionInforme(informe.getTitulo(), porcentajeInt);
+                // Debug: Mostrar información del informe
+                String tituloInforme = informe.getTitulo();
+                LOGGER.info("Intentando actualizar calificación para informe:");
+                LOGGER.info("Título: '" + tituloInforme + "'");
+                LOGGER.info("Longitud del título: " + tituloInforme.length());
+                LOGGER.info("Título sin espacios: '" + tituloInforme.trim() + "'");
+
+                // Obtener estudiante seleccionado para pasar como parámetro
+                EstudianteDTO estudianteSeleccionado = estudiantesComboBox.getValue();
+                if (estudianteSeleccionado == null) {
+                    mostrarAlerta("Error", "Debe seleccionar un estudiante.", Alert.AlertType.ERROR);
+                    return;
+                }
+
+                // Actualizar la calificación del informe con información adicional
+                // Intenta pasar más parámetros si tu método lo permite
+                api.actualizarCalificacionInformeDocente(
+                        tituloInforme.trim(), // Eliminar espacios
+                        porcentajeInt
+                );
 
                 // Refrescar la tabla
-                EstudianteDTO estudianteSeleccionado = estudiantesComboBox.getValue();
                 ActividadDTO actividadSeleccionada = actividadComboBox.getValue();
                 if (estudianteSeleccionado != null && actividadSeleccionada != null) {
                     cargarYMostrarInformesDeEstudianteYActividad(estudianteSeleccionado.getUsername(),
@@ -331,6 +348,12 @@ public class EvaluarInformesController {
                 mostrarAlerta("Error de Formato", "Por favor ingrese un número válido.", Alert.AlertType.ERROR);
             } catch (Exception e) {
                 LOGGER.log(Level.SEVERE, "Error al actualizar calificación", e);
+
+                // Debug adicional
+                LOGGER.severe("Detalles del error:");
+                LOGGER.severe("Mensaje: " + e.getMessage());
+                LOGGER.severe("Tipo de excepción: " + e.getClass().getSimpleName());
+
                 mostrarAlerta("Error", "No se pudo actualizar la calificación: " + e.getMessage(), Alert.AlertType.ERROR);
             }
         });
