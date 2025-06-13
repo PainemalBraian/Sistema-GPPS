@@ -7,6 +7,7 @@ public class InformeDTO extends ItemDTO{
     private LocalDate fecha;
     private int porcentajeAvance;
 
+
     public InformeDTO(int id, String titulo, String descripcion, byte[] archivo,LocalDate fecha, int porcentajeAvance) {
         super(id, titulo, descripcion);
         this.archivo = archivo;
