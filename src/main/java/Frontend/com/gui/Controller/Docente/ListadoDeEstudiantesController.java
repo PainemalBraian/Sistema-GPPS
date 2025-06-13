@@ -4,6 +4,7 @@ import Backend.API.API;
 import Backend.DTO.ActividadDTO;
 import Backend.DTO.ConvenioPPSDTO;
 import Backend.DTO.EstudianteDTO;
+import Backend.DTO.InformeDTO;
 import Backend.Exceptions.ReadException;
 import Backend.Exceptions.UserException;
 import javafx.beans.property.SimpleStringProperty;
@@ -246,7 +247,6 @@ public class ListadoDeEstudiantesController {
                     return;
                 }
 
-                // Ordenar por fecha de inicio
                 actividades.sort(Comparator.comparing(ActividadDTO::getFechaInicio));
 
                 StringBuilder cronograma = new StringBuilder();
@@ -254,13 +254,12 @@ public class ListadoDeEstudiantesController {
                 cronograma.append("Estudiante: ").append(estudiante.getNombre()).append("\n\n");
 
                 for (ActividadDTO actividad : actividades) {
-                    cronograma.append("➤ ").append(actividad.getTitulo()).append("\n");
+                    cronograma.append("➤ Actividad: ").append(actividad.getTitulo()).append("\n");
+                    cronograma.append("   Descripción: ").append(actividad.getDescripcion()).append("\n");
                     cronograma.append("   Fecha de inicio: ").append(actividad.getFechaInicio()).append("\n");
                     cronograma.append("   Fecha de fin: ").append(actividad.getFechaFin()).append("\n");
                     cronograma.append("   Duración estimada: ").append(actividad.getDuracion()).append(" horas\n");
-                    cronograma.append("   Informes entregados: ").append(
-                            actividad.getInformes() != null ? actividad.getInformes().size() : 0
-                    ).append("\n");
+                    cronograma.append("   Porcentaje de avance: ").append(actividad.getPorcentajeAvance()).append("%\n");
 
                     LocalDate hoy = LocalDate.now();
                     if (actividad.getFechaFin().isBefore(hoy)) {
@@ -270,15 +269,42 @@ public class ListadoDeEstudiantesController {
                     } else {
                         cronograma.append("   Estado: En curso\n");
                     }
+                    
+                    List<InformeDTO> informes = api.obtenerInformesByActividadTitulo(actividad.getTitulo());
+
+                    if (informes != null && !informes.isEmpty()) {
+                        cronograma.append("   Informes entregados: ").append(informes.size()).append("\n");
+
+                        for (int i = 0; i < informes.size(); i++) {
+                            InformeDTO informe = informes.get(i);
+
+                            System.out.println("Informe #" + (i + 1) + " → Docente: " + informe.getCalificacionDocente() + " | Tutor: " + informe.getCalificacionTutor());
+
+                            cronograma.append("      ▸ Informe #").append(i + 1).append("\n");
+                            cronograma.append("         Fecha: ").append(informe.getFecha()).append("\n");
+                            cronograma.append("         Porcentaje de avance: ").append(informe.getPorcentajeAvance()).append("%\n");
+                            cronograma.append("         Calificación Docente: ").append(informe.getCalificacionDocente()).append("\n");
+                            cronograma.append("         Calificación Tutor: ").append(informe.getCalificacionTutor()).append("\n");
+                        }
+                    } else {
+                        cronograma.append("   No hay informes entregados para esta actividad.\n");
+                    }
+
 
                     cronograma.append("-----------------------------\n");
                 }
 
+                // Mostrar en un TextArea con scroll
+                TextArea textArea = new TextArea(cronograma.toString());
+                textArea.setEditable(false);
+                textArea.setWrapText(true);
+                textArea.setPrefSize(600, 500);
+
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Cronograma del Estudiante");
-                alert.setHeaderText("Distribución temporal de actividades");
-                alert.setContentText(cronograma.toString());
-                alert.getDialogPane().setPrefSize(500, 400);
+                alert.setHeaderText("Distribución temporal de actividades e informes");
+                alert.getDialogPane().setContent(textArea);
+                alert.getDialogPane().setPrefSize(620, 550);
                 alert.showAndWait();
 
                 LOGGER.info("Mostrando cronograma para estudiante: " + estudiante.getNombre());
@@ -287,6 +313,7 @@ public class ListadoDeEstudiantesController {
             }
         }
     }
+
 
 
     @FXML
