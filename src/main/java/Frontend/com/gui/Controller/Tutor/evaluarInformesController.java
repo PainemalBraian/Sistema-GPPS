@@ -1,4 +1,4 @@
-package Frontend.com.gui.Controller.Docente;
+package Frontend.com.gui.Controller.Tutor;
 
 import Backend.API.API;
 import Backend.DTO.ActividadDTO;
@@ -14,7 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+        import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
@@ -28,9 +28,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class EvaluarInformesController {
+public class evaluarInformesController {
 
-    private static final Logger LOGGER = Logger.getLogger(Frontend.com.gui.Controller.Docente.EvaluarInformesController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Frontend.com.gui.Controller.Tutor.evaluarInformesController.class.getName());
 
     @FXML
     private Button volverButton;
@@ -176,7 +176,6 @@ public class EvaluarInformesController {
                 };
             }
         });
-
         // Configurar la columna de descargar PDF
         btnDescargarPDF.setCellFactory(new Callback<TableColumn<InformeDTO, Void>, TableCell<InformeDTO, Void>>() {
             @Override
@@ -219,8 +218,7 @@ public class EvaluarInformesController {
 
         try {
             // Obtener todos los estudiantes disponibles
-            List<EstudianteDTO> estudiantes = api.obtenerEstudiantesByDocenteUsername(api.obtenerUsername());
-            System.out.println();
+            List<EstudianteDTO> estudiantes = api.obtenerEstudiantesByTutorUsername(api.obtenerUsername());
 
             if (estudiantes != null && !estudiantes.isEmpty()) {
                 listaEstudiantes.clear();
@@ -330,7 +328,7 @@ public class EvaluarInformesController {
 
                 // Actualizar la calificación del informe con información adicional
                 // Intenta pasar más parámetros si tu método lo permite
-                api.actualizarCalificacionInformeDocente(
+                api.actualizarCalificacionInformeTutor(
                         tituloInforme.trim(), // Eliminar espacios
                         porcentajeInt
                 );
@@ -435,12 +433,13 @@ public class EvaluarInformesController {
         });
     }
 
+
     @FXML
     public void VolverHome(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Docente/homeDocente.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Tutor/homeTutor.fxml"));
             Parent root = loader.load();
-            HomeDocenteController controller = loader.getController();
+            HomeTutorController controller = loader.getController();
 
             if (this.api != null) {
                 controller.setPersistenceAPI(this.api);

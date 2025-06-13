@@ -588,6 +588,7 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
 
             return actividades;
         } catch (ReadException e) {
+            e.printStackTrace();
             throw new ReadException("Error al obtener las actividades. " + e.getMessage());
         }
     }
@@ -741,27 +742,103 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
     }
 
     @Override
-    public void actualizarCalificacionInformeDocente(String tituloInforme, int calificacionDocente) throws CreateException {
+    public void actualizarCalificacionInformeTutor(String tituloInforme, int calificacionTutor) throws CreateException {
         try {
-            Informe informe = InformeDAODB.buscarByTitulo(tituloInforme);
-            informe.setCalificacionDocente(calificacionDocente);
+            String tituloLimpio = tituloInforme.trim();
+            Informe informe = InformeDAODB.buscarByTitulo(tituloLimpio);
+
+            if (informe == null) {
+                informe = buscarInformePorTituloFlexible(tituloLimpio);
+            }
+
+            if (informe == null) {
+                throw new CreateException("No se encontró el informe con título: '" + tituloLimpio + "'");
+            }
+
+            informe.setCalificacionTutor(calificacionTutor);
             InformeDAODB.update(informe);
 
-        } catch (CreateException | ReadException e) {
-            throw new CreateException(e.getMessage());
+        } catch (CreateException e) {
+            throw e;
+        } catch (ReadException e) {
+            throw new CreateException("Error al leer el informe: " + e.getMessage());
+        } catch (Exception e) {
+            throw new CreateException("Error inesperado al actualizar calificación: " + e.getMessage());
         }
     }
 
     @Override
-    public void actualizarCalificacionInformeTutor(String tituloInforme, int calificacionTutor) throws CreateException {
+    public void actualizarCalificacionInformeDocente(String tituloInforme, int calificacionDocente) throws CreateException {
         try {
-            Informe informe = InformeDAODB.buscarByTitulo(tituloInforme);
-            informe.setCalificacionTutor(calificacionTutor);
+            String tituloLimpio = tituloInforme.trim();
+            Informe informe = InformeDAODB.buscarByTitulo(tituloLimpio);
+
+            if (informe == null) {
+                informe = buscarInformePorTituloFlexible(tituloLimpio);
+            }
+
+            if (informe == null) {
+                throw new CreateException("No se encontró el informe con título: '" + tituloLimpio + "'");
+            }
+
+            informe.setCalificacionDocente(calificacionDocente);
             InformeDAODB.update(informe);
 
-        } catch (CreateException | ReadException e) {
-            throw new CreateException(e.getMessage());
+        } catch (CreateException e) {
+            throw e;
+        } catch (ReadException e) {
+            throw new CreateException("Error al leer el informe: " + e.getMessage());
+        } catch (Exception e) {
+            throw new CreateException("Error inesperado al actualizar calificación: " + e.getMessage());
         }
+    }
+
+    private Informe buscarInformePorTituloFlexible(String titulo) {
+        try {
+            String[] variaciones = {
+                    titulo,
+                    titulo.toLowerCase(),
+                    titulo.toUpperCase(),
+                    titulo.trim(),
+                    titulo.replaceAll("\\s+", " ")
+            };
+
+            for (String variacion : variaciones) {
+                try {
+                    Informe informe = InformeDAODB.buscarByTitulo(variacion);
+                    if (informe != null) {
+                        return informe;
+                    }
+                } catch (Exception e) {
+                    // Continuar con la siguiente variación
+                }
+            }
+
+            return buscarConLike(titulo);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private Informe buscarConLike(String titulo) {
+        try {
+            List<Informe> todosLosInformes = InformeDAODB.obtenerInformes();
+
+            for (Informe inf : todosLosInformes) {
+                String tituloInforme = inf.getTitulo();
+
+                if (tituloInforme.trim().equalsIgnoreCase(titulo.trim()) ||
+                        tituloInforme.contains(titulo) ||
+                        titulo.contains(tituloInforme)) {
+                    return inf;
+                }
+            }
+        } catch (Exception e) {
+            // e
+        }
+
+        return null;
     }
 
     @Override
@@ -867,6 +944,7 @@ public void cargarConvenio(String tituloConvenio, String descripcionConvenio, Pr
             throw new ReadException(e.getMessage());
         }
     }
+
 
     private void cargarPropuestaDeConvenio(ProyectoDTO proyectoDTO, EstudianteDTO estudianteDTO, EntidadColaborativaDTO entidadDTO) throws CreateException {
         try {

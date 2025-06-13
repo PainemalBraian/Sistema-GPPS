@@ -181,4 +181,6 @@ public interface API {
     PlanDeTrabajoDTO obtenerPlanByTitulo(String titulo) throws ReadException;
 
     List<EntidadColaborativaDTO> obtenerEntidadesColaborativas() throws ReadException;
+
+
 }

@@ -1,4 +1,4 @@
-package Frontend.com.gui.Controller.Docente;
+package Frontend.com.gui.Controller.Tutor;
 
 import Backend.API.API;
 import Backend.DTO.ActividadDTO;
@@ -24,9 +24,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class ListadoDeEstudiantesController {
+public class listadoEstudiantesController {
 
-    private static final Logger LOGGER = Logger.getLogger(ListadoDeEstudiantesController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(listadoEstudiantesController.class.getName());
 
     @FXML private TableView<EstudianteDTO> tablaEstudiantes;
 
@@ -86,7 +86,7 @@ public class ListadoDeEstudiantesController {
         // Obtener listado de estudiantes
         List<EstudianteDTO> estudiantes = null;
         try {
-            estudiantes = api.obtenerEstudiantesByDocenteUsername(api.obtenerUsername());
+            estudiantes = api.obtenerEstudiantesByTutorUsername(api.obtenerUsername());
         } catch (ReadException | UserException e) {
             mostrarAlerta("No se pudo cargar tabla", e.getMessage());
         }
@@ -182,7 +182,7 @@ public class ListadoDeEstudiantesController {
         listaEstudiantes.clear();
 
         try {
-            List<EstudianteDTO> estudiantes = api.obtenerEstudiantesByDocenteUsername(api.obtenerUsername());
+            List<EstudianteDTO> estudiantes = api.obtenerEstudiantesByTutorUsername(api.obtenerUsername());
             listaEstudiantes.setAll(estudiantes);
             LOGGER.info("Cargados " + estudiantes.size() + " estudiantes");
 
@@ -291,52 +291,52 @@ public class ListadoDeEstudiantesController {
 
     @FXML
     private void verConvenio() {
-            EstudianteDTO estudiante = tablaEstudiantes.getSelectionModel().getSelectedItem();
-            if (estudiante != null) {
-                try {
-                    ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(estudiante.getUsername());
+        EstudianteDTO estudiante = tablaEstudiantes.getSelectionModel().getSelectedItem();
+        if (estudiante != null) {
+            try {
+                ConvenioPPSDTO convenio = api.obtenerConvenioPPSByEstudianteUsername(estudiante.getUsername());
 
-                    if (convenio == null) {
-                        mostrarInfo("Convenio", "El estudiante no tiene un convenio registrado.");
-                        return;
-                    }
+                if (convenio == null) {
+                    mostrarInfo("Convenio", "El estudiante no tiene un convenio registrado.");
+                    return;
+                }
 
-                    StringBuilder info = new StringBuilder();
-                    info.append("=== CONVENIO DEL ESTUDIANTE ===\n");
-                    info.append("Estudiante: ").append(estudiante.getNombre()).append("\n\n");
+                StringBuilder info = new StringBuilder();
+                info.append("=== CONVENIO DEL ESTUDIANTE ===\n");
+                info.append("Estudiante: ").append(estudiante.getNombre()).append("\n\n");
 
-                    info.append("Título del convenio: ").append(convenio.getTitulo()).append("\n");
-                    info.append("Descripción: ").append(convenio.getDescripcion()).append("\n\n");
+                info.append("Título del convenio: ").append(convenio.getTitulo()).append("\n");
+                info.append("Descripción: ").append(convenio.getDescripcion()).append("\n\n");
 
-                    if (convenio.getProyecto() != null) {
-                        info.append("Proyecto: ").append(convenio.getProyecto().getTitulo()).append("\n");
-                    }
+                if (convenio.getProyecto() != null) {
+                    info.append("Proyecto: ").append(convenio.getProyecto().getTitulo()).append("\n");
+                }
 
-                    if (convenio.getEntidad() != null) {
-                        info.append("Entidad colaboradora: ").append(convenio.getEntidad().getNombre()).append("\n");
-                    }
+                if (convenio.getEntidad() != null) {
+                    info.append("Entidad colaboradora: ").append(convenio.getEntidad().getNombre()).append("\n");
+                }
 
-                    if (convenio.getDocente() != null) {
-                        info.append("Docente responsable: ").append(convenio.getDocente().getNombre()).append("\n");
-                    }
+                if (convenio.getDocente() != null) {
+                    info.append("Docente responsable: ").append(convenio.getDocente().getNombre()).append("\n");
+                }
 
-                    if (convenio.getTutor() != null) {
-                        info.append("Tutor externo: ").append(convenio.getTutor().getNombre()).append("\n");
-                    }
+                if (convenio.getTutor() != null) {
+                    info.append("Tutor externo: ").append(convenio.getTutor().getNombre()).append("\n");
+                }
 
-                    info.append("Estado: ").append(convenio.isHabilitado() ? "Habilitado" : "No habilitado").append("\n");
+                info.append("Estado: ").append(convenio.isHabilitado() ? "Habilitado" : "No habilitado").append("\n");
 
 
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Convenio del Estudiante");
-                    alert.setHeaderText("Información del convenio");
-                    alert.setContentText(info.toString());
-                    alert.getDialogPane().setPrefSize(500, 400);
-                    alert.showAndWait();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Convenio del Estudiante");
+                alert.setHeaderText("Información del convenio");
+                alert.setContentText(info.toString());
+                alert.getDialogPane().setPrefSize(500, 400);
+                alert.showAndWait();
 
-                    LOGGER.info("Mostrando convenio para estudiante: " + estudiante.getNombre());
-                } catch (Exception e) {
-                    mostrarAlerta("Error", "Error al obtener el convenio: " + e.getMessage());
+                LOGGER.info("Mostrando convenio para estudiante: " + estudiante.getNombre());
+            } catch (Exception e) {
+                mostrarAlerta("Error", "Error al obtener el convenio: " + e.getMessage());
             }
         }
 
@@ -393,9 +393,9 @@ public class ListadoDeEstudiantesController {
     @FXML
     public void volverHome(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Docente/homeDocente.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Frontend/vistas/Tutor/homeTutor.fxml"));
             Parent root = loader.load();
-            HomeDocenteController controller = loader.getController();
+            HomeTutorController controller = loader.getController();
 
             if (this.api != null) {
                 controller.setPersistenceAPI(this.api);
